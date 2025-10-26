@@ -1,9 +1,11 @@
-<!DOCTYPE html><html><head>
+<!DOCTYPE html>
+<!-- saved from url=(0099)file:///C:/Users/Mohammad%20Baqbanzadeh/AppData/Local/Temp/crossnote2025927-10740-1ibfyp1.wk2p.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
       <title>potential_method_analysis</title>
-      <meta charset="utf-8">
+      
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
-      <link rel="stylesheet" href="file:///c:\Users\Mohammad Baqbanzadeh\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.8.19\crossnote\dependencies\katex\katex.min.css">
+      <link rel="stylesheet" href="./potential_method_analysis_files/katex.min.css">
       
       
       
@@ -25,7 +27,7 @@
       <div class="crossnote markdown-preview  ">
       
 
-  <link href="https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.css" rel="stylesheet" type="text/css">
+  <link href="./potential_method_analysis_files/Vazir.css" rel="stylesheet" type="text/css">
   <style>
     body, div, p, h1, h2, h3, h4, h5, h6 {
       font-family: 'Vazir', sans-serif;
@@ -74,7 +76,7 @@
 <ul>
 <li><code>PUSH(S, x)</code>: هزینه واقعی <code>cᵢ = 1</code>.</li>
 <li><code>POP(S)</code>: هزینه واقعی <code>cᵢ = 1</code>.</li>
-<li><code>MULTIPOP(S, k)</code>: که <code>k</code> عنصر را برمی‌دارد. هزینه واقعی <code>cᵢ = min(k, s)</code> که <code>s</code> تعداد عناصر پشته است.</li>
+<li><code>MULTIPOP(S, k)</code>: <code>k</code> عنصر را برمی‌دارد. هزینه واقعی <code>cᵢ = min(k, s)</code> که <code>s</code> تعداد عناصر پشته است.</li>
 </ul>
 <p><strong>تابع پتانسیل:</strong> <code>Φ(D)</code> را برابر با <strong>تعداد عناصر موجود در پشته</strong> تعریف می‌کنیم.<br>
 برای یک پشته خالی اولیه <code>D₀</code>، داریم <code>Φ(D₀) = 0</code>. از آنجایی که تعداد عناصر پشته هرگز منفی نیست، <code>Φ(Dᵢ) ≥ 0</code> برای همه <code>i</code> ها.</p>
@@ -101,10 +103,10 @@
 <li>
 <p><strong><code>MULTIPOP(S, k)</code></strong>:</p>
 <ul>
-<li>هزینه واقعی: <code dir="rtl">cᵢ = k'</code> که <code dir="rtl">k' = min(k, s)</code>.</li>
-<li>قبل از عمل <code>s</code> عنصر و بعد از آن <code dir="rtl">s-k'</code> عنصر داریم.</li>
-<li>تغییر پتانسیل: <code dir="rtl">ΔΦ = Φ(Dᵢ) - Φ(Dᵢ₋₁) = (s-k') - s = -k'</code>.</li>
-<li>هزینه سرشکن: <code dir="rtl">ĉᵢ = cᵢ + ΔΦ = k' + (-k') = 0</code>.</li>
+<li>هزینه واقعی: <code>cᵢ = k'</code> که <code>k' = min(k, s)</code>.</li>
+<li>قبل از عمل <code>s</code> عنصر و بعد از آن <code>s-k'</code> عنصر داریم.</li>
+<li>تغییر پتانسیل: <code>ΔΦ = Φ(Dᵢ) - Φ(Dᵢ₋₁) = (s-k') - s = -k'</code>.</li>
+<li>هزینه سرشکن: <code>ĉᵢ = cᵢ + ΔΦ = k' + (-k') = 0</code>.</li>
 </ul>
 </li>
 </ol>
@@ -216,6 +218,108 @@
 <li>از آنجایی که <code>c</code> یک ثابت است، کل هزینه <code>O(n)</code> است.</li>
 </ul>
 <p>موفق باشید!</p>
+<hr>
+<h1 id="صحبتی-با-chatgpt">صحبتی با ChatGPT </h1>
+<hr>
+<h2 id="چطور-تابع-پتانسیل-خوب-انتخاب-کنیم">چطور تابع پتانسیل خوب انتخاب کنیم؟ </h2>
+<p>🎯 <strong>هدف تابع پتانسیل چیه؟</strong></p>
+<p>تابع پتانسیل <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi></mrow><annotation encoding="application/x-tex">\Phi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Φ</span></span></span></span> یه چیز <strong>اختیاری ولی هوشمندانه</strong>‌ست که ما انتخابش می‌کنیم تا:</p>
+<ul>
+<li>تغییرات هزینه بین عملیات‌ها رو «صاف» کنه؛</li>
+<li>عملیات گرون (costly) رو با عملیات ارزون جبران کنه.</li>
+</ul>
+<p>به زبان ساده:</p>
+<blockquote>
+<p>پتانسیل مثل یه “حساب بانکی” برای هزینه‌ست:<br>
+در بعضی عملیات‌ها پول (هزینه) ذخیره می‌کنی، در بعضی دیگه خرج می‌کنی،<br>
+ولی میانگین هزینه همیشه کم می‌مونه.</p>
+</blockquote>
+<hr>
+<p>💡 <strong>تعریف رسمی (خلاصه‌شده)</strong></p>
+<p>برای هر حالت از داده‌ساختار <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">D_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>، یه تابع پتانسیل داریم:<br>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi mathvariant="normal">Φ</mi><mo stretchy="false">(</mo><msub><mi>D</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\Phi(D_i) \ge 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></span></p>
+<p>و برای هر عملیات <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span>:<br>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mover accent="true"><msub><mi>c</mi><mi>i</mi></msub><mo>^</mo></mover><mo>=</mo><msub><mi>c</mi><mi>i</mi></msub><mo>+</mo><mi mathvariant="normal">Φ</mi><mo stretchy="false">(</mo><msub><mi>D</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo>−</mo><mi mathvariant="normal">Φ</mi><mo stretchy="false">(</mo><msub><mi>D</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\hat{c_i} = c_i + \Phi(D_i) - \Phi(D_{i-1})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p>که در اون:</p>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">c_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>: هزینه واقعی عملیات</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><msub><mi>c</mi><mi>i</mi></msub><mo>^</mo></mover></mrow><annotation encoding="application/x-tex">\hat{c_i}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span>: هزینه سرشکن (amortized cost)</li>
+</ul>
+<hr>
+<p>🧠 <strong>اما سؤال اصلی: چطوری یه تابع پتانسیل خوب انتخاب کنیم؟</strong></p>
+<h3 id="۱-باید-حس-و-شهود-داشته-باشه-از-چیزی-که-هزینه-رو-تعیین-میکنه">۱. باید حس و شهود داشته باشه از “چیزی که هزینه رو تعیین می‌کنه” </h3>
+<p>پتانسیل باید نشون بده <strong>چقدر “کار ذخیره‌شده” در ساختار</strong> وجود داره — یعنی چیزی که اگه زیاد بشه، ممکنه در آینده هزینه بده.</p>
+<p>مثلاً:</p>
+<ul>
+<li>توی <strong>شمارنده بیتی</strong>، بیت‌های ۱ نشون‌دهنده‌ی “کار ذخیره‌شده” هستن، چون هر بیت ۱ بالاخره یه روز باید صفر بشه (هزینه ایجاد کنه).<br>
+👉 پس <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi><mo>=</mo><mtext>تعداد&nbsp;بیت‌های&nbsp;۱</mtext></mrow><annotation encoding="application/x-tex">\Phi = \text{تعداد بیت‌های ۱}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Φ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0em;"></span><span class="mord text"><span class="mord">تعداد&nbsp;بیت‌های&nbsp;۱</span></span></span></span></span></li>
+<li>توی <strong>پشته با دوتا استک</strong>، پتانسیل می‌تونه باشه “تعداد آیتم‌هایی که باید منتقل بشن ولی هنوز منتقل نشدن”.</li>
+</ul>
+<hr>
+<h3 id="۲-باید-اختلاف--phid_i---phid_i-1--معنیدار-باشه">۲. باید اختلاف <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi><mo stretchy="false">(</mo><msub><mi>D</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo>−</mo><mi mathvariant="normal">Φ</mi><mo stretchy="false">(</mo><msub><mi>D</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Phi(D_i) - \Phi(D_{i-1})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> معنی‌دار باشه </h3>
+<p>یعنی وقتی یه عملیات انجام می‌دی:</p>
+<ul>
+<li>اگر عملیات “ساده” بود، پتانسیل زیاد بشه (چون کار رو انداختی برای آینده).</li>
+<li>اگر عملیات “سخت” بود، پتانسیل کم بشه (چون داری اون کار ذخیره‌شده رو انجام می‌دی).</li>
+</ul>
+<p>به این ترتیب هزینه‌ها متعادل می‌شن.</p>
+<hr>
+<h3 id="۳-باید--phid_0--0--و-همیشه--phid_i-ge-0-">۳. باید <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi><mo stretchy="false">(</mo><msub><mi>D</mi><mn>0</mn></msub><mo stretchy="false">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\Phi(D_0) = 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> و همیشه <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi><mo stretchy="false">(</mo><msub><mi>D</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\Phi(D_i) \ge 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> </h3>
+<p>تا تحلیل درست بمونه — چون پتانسیل منفی یعنی داری “بدهکار هزینه” می‌شی که معنی نداره.</p>
+<hr>
+<p>📘 <strong>چند مثال ساده از انتخاب تابع پتانسیل</strong></p>
+<table>
+<thead>
+<tr>
+<th>مثال</th>
+<th>ایده‌ی شهودی</th>
+<th>تابع پتانسیل پیشنهادی <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi><mo stretchy="false">(</mo><msub><mi>D</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Phi(D_i)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></th>
+<th>نتیجه</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>شمارنده بیتی</td>
+<td>هر بیت ۱ بالاخره صفر میشه → “کار ذخیره‌شده”</td>
+<td>تعداد بیت‌های ۱</td>
+<td>هزینه سرشکن = O(1)</td>
+</tr>
+<tr>
+<td>آرایه پویا (Dynamic Array)</td>
+<td>وقتی آرایه نصف‌پر میشه → در آینده نیاز به resize داری</td>
+<td>|2·num - size|</td>
+<td>هزینه سرشکن = O(1) برای append</td>
+</tr>
+<tr>
+<td>صف با دو استک</td>
+<td>عناصر در استک ورودی باید در آینده به خروجی منتقل بشن</td>
+<td>تعداد عناصر در استک ورودی</td>
+<td>هزینه سرشکن = O(1) برای enqueue/dequeue</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p>🔍 <strong>روش قدم‌به‌قدم برای پیدا کردن تابع پتانسیل</strong></p>
+<ol>
+<li><strong>بفهم عملیات‌ها چه هزینه‌ای دارن</strong> (کدوم گرونن؟ کِی اتفاق می‌افتن؟)</li>
+<li><strong>تشخیص بده چه چیزی در ساختار “انباشت میشه”</strong> که باعث هزینه در آینده میشه.</li>
+<li>تابع پتانسیل رو به نحوی بنویس که اون انباشت رو نشون بده.</li>
+<li>بررسی کن که <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi><mo stretchy="false">(</mo><msub><mi>D</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo>−</mo><mi mathvariant="normal">Φ</mi><mo stretchy="false">(</mo><msub><mi>D</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Phi(D_i) - \Phi(D_{i-1})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> بتونه هزینه‌ها رو متعادل کنه.</li>
+<li>مطمئن شو که <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi><mo stretchy="false">(</mo><msub><mi>D</mi><mn>0</mn></msub><mo stretchy="false">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\Phi(D_0) = 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> و همیشه غیرمنفیه.</li>
+</ol>
+<hr>
+<p>💬 <strong>یه مثال تازه برای تمرین</strong></p>
+<p>فرض کن یه صف (queue) با دو پشته داری — یکی برای enqueue و یکی برای dequeue.<br>
+در این ساختار:</p>
+<ul>
+<li>وقتی enqueue می‌کنی → فقط push به استک اول (ارزون)</li>
+<li>وقتی dequeue می‌کنی → اگه استک دوم خالی باشه، کل عناصر از اولی به دومی منتقل می‌شن (گرون!)</li>
+</ul>
+<p>پس تابع پتانسیل می‌تونه باشه:<br>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi mathvariant="normal">Φ</mi><mo>=</mo><mtext>تعداد&nbsp;عناصر&nbsp;در&nbsp;استک&nbsp;اول</mtext></mrow><annotation encoding="application/x-tex">\Phi = \text{تعداد عناصر در استک اول}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Φ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0em;"></span><span class="mord text"><span class="mord">تعداد&nbsp;عناصر&nbsp;در&nbsp;استک&nbsp;اول</span></span></span></span></span></span><br>
+چون هر چی این عدد بزرگ‌تر بشه، احتمال یه عملیات گرون در آینده بیشتره.<br>
+و واقعاً این پتانسیل باعث میشه هزینه سرشکن O(1) بشه.</p>
+<hr>
 </div>
 
       </div>
@@ -227,5 +331,4 @@
     
     
     
-  
-    </body></html>
+  </body></html>
