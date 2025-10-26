@@ -1,10 +1,6 @@
 <head>
   <link href="https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.css" rel="stylesheet" type="text/css">
-  <style>
-    body, div, p, h1, h2, h3, h4, h5, h6 {
-      font-family: 'Vazir', sans-serif;
-    }
-  </style>
+  
 </head>
 
 <div dir="rtl" align="right" style="padding: 0 60px;">
