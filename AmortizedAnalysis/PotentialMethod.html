@@ -1,330 +1,316 @@
-<!DOCTYPE html><html><head>
-      <title>potential_method_analysis</title>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     
-      <link rel="stylesheet" href="file:///c:\Users\Mohammad Baqbanzadeh\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.8.19\crossnote\dependencies\katex\katex.min.css">
-     
-     
-     
-     
-     
-      <style>
-      code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.4;-moz-tab-size:8;-o-tab-size:8;tab-size:8;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:.8em;overflow:auto;border-radius:3px;background:#f5f5f5}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal;background:#f5f5f5}.token.blockquote,.token.comment{color:#969896}.token.cdata{color:#183691}.token.doctype,.token.macro.property,.token.punctuation,.token.variable{color:#333}.token.builtin,.token.important,.token.keyword,.token.operator,.token.rule{color:#a71d5d}.token.attr-value,.token.regex,.token.string,.token.url{color:#183691}.token.atrule,.token.boolean,.token.code,.token.command,.token.constant,.token.entity,.token.number,.token.property,.token.symbol{color:#0086b3}.token.prolog,.token.selector,.token.tag{color:#63a35c}.token.attr-name,.token.class,.token.class-name,.token.function,.token.id,.token.namespace,.token.pseudo-class,.token.pseudo-element,.token.url-reference .token.variable{color:#795da3}.token.entity{cursor:help}.token.title,.token.title .token.punctuation{font-weight:700;color:#1d3e81}.token.list{color:#ed6a43}.token.inserted{background-color:#eaffea;color:#55a532}.token.deleted{background-color:#ffecec;color:#bd2c00}.token.bold{font-weight:700}.token.italic{font-style:italic}.language-json .token.property{color:#183691}.language-markup .token.tag .token.punctuation{color:#333}.language-css .token.function,code.language-css{color:#0086b3}.language-yaml .token.atrule{color:#63a35c}code.language-yaml{color:#183691}.language-ruby .token.function{color:#333}.language-markdown .token.url{color:#795da3}.language-makefile .token.symbol{color:#795da3}.language-makefile .token.variable{color:#183691}.language-makefile .token.builtin{color:#0086b3}.language-bash .token.keyword{color:#0086b3}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview ul{list-style:disc}.markdown-preview ul ul{list-style:circle}.markdown-preview ul ul ul{list-style:square}.markdown-preview ol{list-style:decimal}.markdown-preview ol ol,.markdown-preview ul ol{list-style-type:lower-roman}.markdown-preview ol ol ol,.markdown-preview ol ul ol,.markdown-preview ul ol ol,.markdown-preview ul ul ol{list-style-type:lower-alpha}.markdown-preview .newpage,.markdown-preview .pagebreak{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center!important}.markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .status{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0;min-height:100vh}@media screen and (min-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{font-size:14px!important;padding:1em}}@media print{html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% - 300px);padding:2em calc(50% - 457px - 300px / 2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
-/* Please visit the URL below for more information: */
-/* https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
-      </style>
-      <!-- The content below will be included at the end of the <head> element. --><script type="text/javascript">
-  document.addEventListener("DOMContentLoaded", function () {
-    // your code here
-  });
-</script></head><body for="html-export">
-   
-   
-      <div class="crossnote markdown-preview ">
-     
-  <link href="https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.css" rel="stylesheet" type="text/css">
-  <style>
+<head>  <link href="https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.css" rel="stylesheet" type="text/css">  <style>
+  
     body, div, p, h1, h2, h3, h4, h5, h6 {
+  
       font-family: 'Vazir', sans-serif;
+  
     }
-  </style>
-<div dir="rtl" align="right" style="padding: 0 60px;">
-<p align="center" dir="rtl" style="font-weight: bold; font-size: 24px;">
-</p><h1 id="تحلیل-سرشکن-به-روش-پتانسیل-potential-method">تحلیل سرشکن به روش پتانسیل (Potential Method) </h1>
-<h2 id="مقدمه-تحلیل-سرشکن-چیست">مقدمه: تحلیل سرشکن چیست؟ </h2>
-<p>در تحلیل الگوریتم‌ها، گاهی هزینه اجرای یک عمل (Operation) در بدترین حالت (Worst Case) بسیار زیاد است، اما این حالت به ندرت اتفاق می‌افتد. اگر دنباله‌ای از <code>n</code> عمل را اجرا کنیم، هزینه کل ممکن است آنقدرها هم بد نباشد. <strong>تحلیل سرشکن (Amortized Analysis)</strong> به ما کمک می‌کند تا هزینه "متوسط" هر عمل را در طول یک دنباله از عملیات محاسبه کنیم، حتی اگر برخی از آن عملیات‌ها به تنهایی بسیار پرهزینه باشند.</p>
-<p>نکته مهم این است که تحلیل سرشکن با تحلیل حالت متوسط (Average-Case Analysis) فرق دارد؛ در اینجا هیچ احتمالی در کار نیست و ما یک <strong>تضمین</strong> برای هزینه متوسط هر عمل در بدترین دنباله از عملیات ارائه می‌دهیم.</p>
-<p>سه روش متداول برای تحلیل سرشکن وجود دارد:</p>
-<ol>
-<li><strong>روش تجمعی (Aggregate Analysis):</strong> هزینه کل <code>n</code> عمل را <code>T(n)</code> محاسبه کرده و هزینه سرشکن هر عمل را <code>T(n)/n</code> در نظر می‌گیریم.</li>
-<li><strong>روش حسابداری (Accounting Method):</strong> به هر عمل یک هزینه سرشکن اختصاص می‌دهیم. اگر این هزینه از هزینه واقعی بیشتر باشد، "اعتبار" (Credit) ذخیره می‌کنیم تا بعداً برای عملیات پرهزینه استفاده شود.</li>
-<li><strong>روش پتانسیل (Potential Method):</strong> این روش که موضوع اصلی این بحث است، اعتبار را به صورت "انرژی پتانسیل" کل ساختمان داده در نظر می‌گیرد.</li>
-</ol>
-<hr>
-<h2 id="روش-پتانسیل-the-potential-method">روش پتانسیل (The Potential Method) </h2>
-<p>این روش، کار از پیش پرداخت شده (prepaid work) را به عنوان <strong>انرژی پتانسیل</strong> (<code>Φ</code>) در نظر می‌گیرد که می‌تواند برای پرداخت هزینه عملیات‌های بعدی آزاد شود. ما پتانسیل را به کل ساختمان داده نسبت می‌دهیم، نه به اشیاء خاص درون آن.</p>
-<h3 id="تعاریف-اصلی">تعاریف اصلی </h3>
-<ul>
-<li>فرض کنید <code>D₀</code> ساختمان داده اولیه ما باشد. ما دنباله‌ای از <code>n</code> عمل را روی آن انجام می‌دهیم.</li>
-<li><code>cᵢ</code> هزینه <strong>واقعی</strong> عمل <code>i</code>-ام است.</li>
-<li><code>Dᵢ</code> حالت ساختمان داده پس از انجام عمل <code>i</code>-ام روی <code>Dᵢ₋₁</code> است.</li>
-<li><strong>تابع پتانسیل <code>Φ</code></strong>: این تابع هر حالت <code>Dᵢ</code> از ساختمان داده را به یک عدد حقیقی <code>Φ(Dᵢ)</code> نگاشت می‌کند. این عدد، پتانسیل آن حالت است.</li>
-</ul>
-<p><strong>هزینه سرشکن (Amortized Cost)</strong> عمل <code>i</code>-ام (<code>ĉᵢ</code>) به صورت زیر تعریف می‌شود:</p>
-<pre data-role="codeBlock" data-info="" class="language-text"><code>ĉᵢ = cᵢ + Φ(Dᵢ) - Φ(Dᵢ₋₁)
-</code></pre><p>بنابراین، هزینه سرشکن برابر است با هزینه واقعی به اضافه <strong>تغییر در پتانسیل</strong> ناشی از آن عمل.</p>
-<ul>
-<li>اگر <code>Φ(Dᵢ) &gt; Φ(Dᵢ₋₁)</code>، تغییر پتانسیل مثبت است. یعنی هزینه سرشکن <code>ĉᵢ</code> از هزینه واقعی <code>cᵢ</code> بیشتر است. ما ساختمان داده را "بیشتر شارژ" کرده‌ایم و پتانسیل آن را افزایش داده‌ایم.</li>
-<li>اگر <code>Φ(Dᵢ) &lt; Φ(Dᵢ₋₁)</code>، تغییر پتانسیل منفی است. یعنی هزینه سرشکن <code>ĉᵢ</code> از هزینه واقعی <code>cᵢ</code> کمتر است. کاهش پتانسیل، هزینه واقعی عمل را "پرداخت" می‌کند.</li>
-</ul>
-<h3 id="هزینه-سرشکن-کل">هزینه سرشکن کل </h3>
-<p>هزینه سرشکن کل برای <code>n</code> عمل برابر است با:</p>
-<pre data-role="codeBlock" data-info="" class="language-text"><code>Σ(ĉᵢ) [for i=1 to n] = Σ(cᵢ + Φ(Dᵢ) - Φ(Dᵢ₋₁)) [for i=1 to n]
-</code></pre><p>این یک سری تلسکوپی است و نتیجه آن می‌شود:</p>
-<pre data-role="codeBlock" data-info="" class="language-text"><code>Σ(ĉᵢ) = Σ(cᵢ) + Φ(Dₙ) - Φ(D₀)
-</code></pre><p>برای اینکه هزینه سرشکن کل یک کران بالا (Upper Bound) برای هزینه واقعی کل باشد، باید داشته باشیم:</p>
-<pre data-role="codeBlock" data-info="" class="language-text"><code>Φ(Dₙ) ≥ Φ(D₀)
-</code></pre><p>در عمل، ما معمولاً <code>Φ(D₀) = 0</code> تعریف می‌کنیم و سپس نشان می‌دهیم که <code>Φ(Dᵢ) ≥ 0</code> برای تمام <code>i</code> ها. این کار تضمین می‌کند که پتانسیل هرگز منفی نمی‌شود و هزینه سرشکن کل همواره یک کران بالا برای هزینه واقعی کل است.</p>
-<hr>
-<h2 id="مثال-۱-عملیات-پشته-stack">مثال ۱: عملیات پشته (Stack) </h2>
-<p>یک پشته با سه عمل را در نظر بگیرید:</p>
-<ul>
-<li><code>PUSH(S, x)</code>: هزینه واقعی <code>cᵢ = 1</code>.</li>
-<li><code>POP(S)</code>: هزینه واقعی <code>cᵢ = 1</code>.</li>
-<li><code>MULTIPOP(S, k)</code>: <code>k</code> عنصر را برمی‌دارد. هزینه واقعی <code>cᵢ = min(k, s)</code> که <code>s</code> تعداد عناصر پشته است.</li>
-</ul>
-<p><strong>تابع پتانسیل:</strong> <code>Φ(D)</code> را برابر با <strong>تعداد عناصر موجود در پشته</strong> تعریف می‌کنیم.<br>
-برای یک پشته خالی اولیه <code>D₀</code>، داریم <code>Φ(D₀) = 0</code>. از آنجایی که تعداد عناصر پشته هرگز منفی نیست، <code>Φ(Dᵢ) ≥ 0</code> برای همه <code>i</code> ها.</p>
-<p><strong>تحلیل هزینه‌ها:</strong></p>
-<ol>
-<li>
-<p><strong><code>PUSH</code></strong>:</p>
-<ul>
-<li>هزینه واقعی: <code>cᵢ = 1</code>.</li>
-<li>فرض کنید قبل از عمل، <code>s</code> عنصر در پشته وجود دارد. پس از <code>PUSH</code>، ما در پشته <code>s+1</code> عنصر خواهیم داشت.</li>
-<li>تغییر پتانسیل: <code>ΔΦ = Φ(Dᵢ) - Φ(Dᵢ₋₁) = (s+1) - s = 1</code>.</li>
-<li>هزینه سرشکن: <code>ĉᵢ = cᵢ + ΔΦ = 1 + 1 = 2</code>.</li>
-</ul>
-</li>
-<li>
-<p><strong><code>POP</code></strong>:</p>
-<ul>
-<li>هزینه واقعی: <code>cᵢ = 1</code>.</li>
-<li>قبل از عمل <code>s</code> عنصر و بعد از آن <code>s-1</code> عنصر داریم.</li>
-<li>تغییر پتانسیل: <code>ΔΦ = Φ(Dᵢ) - Φ(Dᵢ₋₁) = (s-1) - s = -1</code>.</li>
-<li>هزینه سرشکن: <code>ĉᵢ = cᵢ + ΔΦ = 1 + (-1) = 0</code>.</li>
-</ul>
-</li>
-<li>
-<p><strong><code>MULTIPOP(S, k)</code></strong>:</p>
-<ul>
-<li>هزینه واقعی: <code>cᵢ = k'</code> که <code>k' = min(k, s)</code>.</li>
-<li>قبل از عمل <code>s</code> عنصر و بعد از آن <code>s-k'</code> عنصر داریم.</li>
-<li>تغییر پتانسیل: <code>ΔΦ = Φ(Dᵢ) - Φ(Dᵢ₋₁) = (s-k') - s = -k'</code>.</li>
-<li>هزینه سرشکن: <code>ĉᵢ = cᵢ + ΔΦ = k' + (-k') = 0</code>.</li>
-</ul>
-</li>
-</ol>
-<p><strong>نتیجه:</strong> هزینه سرشکن هر سه عمل <code>O(1)</code> است. بنابراین، هزینه کل یک دنباله از <code>n</code> عمل در بدترین حالت <code>O(n)</code> خواهد بود.</p>
-<hr>
-<h2 id="مثال-۲-شمارنده-دودویی-binary-counter">مثال ۲: شمارنده دودویی (Binary Counter) </h2>
-<p>یک شمارنده <code>k</code>-بیتی را در نظر بگیرید که با عمل <code>INCREMENT</code> یکی به آن اضافه می‌شود. هزینه واقعی <code>INCREMENT</code> برابر با تعداد بیت‌هایی است که تغییر می‌کنند (از 1 به 0 یا از 0 به 1). در بدترین حالت (وقتی همه بیت‌ها 1 هستند)، هزینه <code>k</code> است.</p>
-<p><strong>تابع پتانسیل:</strong> <code>Φ(D)</code> را برابر با <strong>تعداد بیت‌های 1 در شمارنده</strong> تعریف می‌کنیم.</p>
-<p><strong>تحلیل هزینه <code>INCREMENT</code>:</strong></p>
-<ul>
-<li>فرض کنید عمل <code>i</code>-ام <code>INCREMENT</code> باعث می‌شود <code>tᵢ</code> بیت از 1 به 0 تغییر کنند (reset شوند).</li>
-<li>این عمل حداکثر یک بیت را از 0 به 1 تغییر می‌دهد (set می‌کند).</li>
-<li>پس هزینه واقعی: <code>cᵢ ≤ tᵢ + 1</code>.</li>
-<li>فرض کنید <code>bᵢ</code> تعداد بیت‌های 1 پس از عمل <code>i</code>-ام باشد. <code>bᵢ₋₁</code> تعداد بیت‌های 1 قبل از آن است.</li>
-<li>پس از ریست شدن <code>tᵢ</code> بیت و ست شدن حداکثر یک بیت، تعداد جدید بیت‌های 1 برابر است با: <code>bᵢ ≤ bᵢ₋₁ - tᵢ + 1</code>.</li>
-<li>تغییر پتانسیل: <code>ΔΦ = Φ(Dᵢ) - Φ(Dᵢ₋₁) = bᵢ - bᵢ₋₁ ≤ (bᵢ₋₁ - tᵢ + 1) - bᵢ₋₁ = 1 - tᵢ</code>.</li>
-<li>هزینه سرشکن: <code>ĉᵢ = cᵢ + ΔΦ ≤ (tᵢ + 1) + (1 - tᵢ) = 2</code>.</li>
-</ul>
-<p><strong>نتیجه:</strong> هزینه سرشکن عمل <code>INCREMENT</code> حداکثر 2، یعنی <code>O(1)</code> است. بنابراین هزینه <code>n</code> عمل <code>INCREMENT</code> برابر <code>O(n)</code> است.</p>
-<hr>
-<h2 id="تمرینها-و-مسائل-حل-شده-از-clrs">تمرین‌ها و مسائل حل شده (از CLRS) </h2>
-<p>در این بخش، چند تمرین از فصل ۱۷ کتاب CLRS را با استفاده از روش پتانسیل حل می‌کنیم.</p>
-<h3 id="تمرین-173-1">تمرین 17.3-1 </h3>
-<p><strong>مسئله:</strong> فرض کنید یک تابع پتانسیل <code>Φ</code> داریم که <code>Φ(Dᵢ) ≥ Φ(D₀)</code> برای تمام <code>i</code> ها، اما <code>Φ(D₀) ≠ 0</code>. نشان دهید یک تابع پتانسیل <code>'Φ</code> وجود دارد که <code>Φ'(D₀) = 0</code> و <code>Φ'(Dᵢ) ≥ 0</code> و هزینه‌های سرشکن با آن یکسان هستند.</p>
-<p><strong>حل:</strong><br>
-تابع پتانسیل جدید را به صورت زیر تعریف می‌کنیم:<br>
-<code>Φ'(Dᵢ) = Φ(Dᵢ) - Φ(D₀)</code></p>
-<ol>
-<li>
-<p><strong>بررسی شرایط اولیه:</strong></p>
-<ul>
-<li><code>Φ'(D₀) = Φ(D₀) - Φ(D₀) = 0</code>. شرط اول برقرار است.</li>
-<li>طبق فرض، <code>Φ(Dᵢ) ≥ Φ(D₀)</code> است، بنابراین <code>Φ(Dᵢ) - Φ(D₀) ≥ 0</code>. پس <code>Φ'(Dᵢ) ≥ 0</code> برای تمام <code>i</code> ها. شرط دوم نیز برقرار است.</li>
-</ul>
-</li>
-<li>
-<p><strong>بررسی هزینه سرشکن:</strong><br>
-هزینه سرشکن جدید <code>ĉ'ᵢ</code> را محاسبه می‌کنیم:<br>
-<code>ĉ'ᵢ = cᵢ + Φ'(Dᵢ) - Φ'(Dᵢ₋₁)</code><br>
-<code>ĉ'ᵢ = cᵢ + (Φ(Dᵢ) - Φ(D₀)) - (Φ(Dᵢ₋₁) - Φ(D₀))</code><br>
-<code>ĉ'ᵢ = cᵢ + Φ(Dᵢ) - Φ(D₀) - Φ(Dᵢ₋₁) + Φ(D₀)</code><br>
-<code>ĉ'ᵢ = cᵢ + Φ(Dᵢ) - Φ(Dᵢ₋₁)</code><br>
-این عبارت دقیقاً برابر با هزینه سرشکن قبلی (<code>ĉᵢ</code>) است. بنابراین هزینه‌های سرشکن یکسان باقی می‌مانند.</p>
-</li>
-</ol>
-<h3 id="تمرین-173-2-بازحل-تمرین-171-3">تمرین 17.3-2 (بازحل تمرین 17.1-3) </h3>
-<p><strong>مسئله:</strong> دنباله‌ای از <code>n</code> عمل را روی یک ساختمان داده انجام می‌دهیم. هزینه عمل <code>i</code>-ام برابر <code>i</code> است اگر <code>i</code> توانی دقیق از 2 باشد، و در غیر این صورت 1 است. از روش پتانسیل برای تعیین هزینه سرشکن هر عمل استفاده کنید.</p>
-<p><strong>حل:</strong><br>
-می‌خواهیم یک هزینه سرشکن ثابت <code>ĉ</code> پیدا کنیم.<br>
-<strong>تابع پتانسیل:</strong> پتانسیل را طوری تعریف می‌کنیم که قبل از عملیات گران (وقتی <code>i</code> توان 2 است) به اندازه کافی انرژی ذخیره کرده باشیم.<br>
-<code>Φ(Dᵢ) = 2 * (i - 2^floor(log₂i))</code><br>
-این تابع در واقع <code>2</code> ضربدر فاصله <code>i</code> از نزدیک‌ترین توان 2 کوچکتر یا مساوی آن است. <code>Φ(D₀)=0</code>.</p>
-<p><strong>تحلیل هزینه‌ها:</strong></p>
-<ol>
-<li>
-<p><strong>حالت اول: <code>i</code> توان دقیقی از 2 نیست.</strong></p>
-<ul>
-<li>هزینه واقعی: <code>cᵢ = 1</code>.</li>
-<li>در این حالت <code>floor(log₂(i-1)) = floor(log₂i)</code>. بگذارید <code>m = 2^floor(log₂i)</code>.</li>
-<li><code>Φ(Dᵢ) = 2(i - m)</code></li>
-<li><code>Φ(Dᵢ₋₁) = 2((i-1) - m)</code></li>
-<li><code>ΔΦ = Φ(Dᵢ) - Φ(Dᵢ₋₁) = 2(i-m) - 2(i-1-m) = 2</code>.</li>
-<li>هزینه سرشکن: <code>ĉᵢ = cᵢ + ΔΦ = 1 + 2 = 3</code>.</li>
-</ul>
-</li>
-<li>
-<p><strong>حالت دوم: <code>i</code> توان دقیقی از 2 است.</strong></p>
-<ul>
-<li>هزینه واقعی: <code>cᵢ = i</code>.</li>
-<li>در این حالت <code>i = 2^log₂i</code>، بنابراین <code>i - 2^floor(log₂i) = 0</code>. پس <code>Φ(Dᵢ) = 0</code>.</li>
-<li>برای <code>i-1</code>، نزدیک‌ترین توان 2 کوچکتر، <code>i/2</code> است.</li>
-<li><code>Φ(Dᵢ₋₁) = 2 * ((i-1) - 2^floor(log₂(i-1))) = 2 * ((i-1) - i/2) = 2 * (i/2 - 1) = i - 2</code>.</li>
-<li><code>ΔΦ = Φ(Dᵢ) - Φ(Dᵢ₋₁) = 0 - (i - 2) = -i + 2</code>.</li>
-<li>هزینه سرشکن: <code>ĉᵢ = cᵢ + ΔΦ = i + (-i + 2) = 2</code>.</li>
-</ul>
-</li>
-</ol>
-<p><strong>نتیجه:</strong> هزینه سرشکن هر عمل حداکثر 3 است، یعنی <code>O(1)</code>.</p>
-<h3 id="تمرین-173-4">تمرین 17.3-4 </h3>
-<p><strong>مسئله:</strong> هزینه واقعی کل اجرای <code>n</code> عمل پشته (PUSH, POP, MULTIPOP) چقدر است، با فرض اینکه پشته با <code>s₀</code> شیء شروع شده و با <code>sₙ</code> شیء تمام می‌شود؟</p>
-<p><strong>حل:</strong><br>
-از فرمول اصلی هزینه کل استفاده می‌کنیم:<br>
-<code>Σcᵢ = Σĉᵢ - (Φ(Dₙ) - Φ(D₀))</code></p>
-<ul>
-<li><code>Φ(D)</code> تعداد اشیاء در پشته است. پس <code>Φ(D₀) = s₀</code> و <code>Φ(Dₙ) = sₙ</code>.</li>
-<li>هزینه سرشکن <code>PUSH</code> برابر 2 و برای <code>POP</code> و <code>MULTIPOP</code> برابر 0 است.</li>
-<li>فرض کنید در دنباله <code>n</code> عمل، <code>n_push</code> عمل <code>PUSH</code> و <code>n_pop+n_multipop</code> عمل دیگر داشته باشیم.</li>
-<li>هزینه سرشکن کل: <code>Σĉᵢ = 2 * n_push</code>.</li>
-<li>جایگذاری در فرمول:<br>
-<code>Σcᵢ = (2 * n_push) - (sₙ - s₀)</code></li>
-</ul>
-<p>این عبارت، هزینه واقعی کل را بر حسب تعداد <code>PUSH</code> ها و تعداد عناصر اولیه و نهایی بیان می‌کند.</p>
-<h3 id="تمرین-173-5">تمرین 17.3-5 </h3>
-<p><strong>مسئله:</strong> فرض کنید یک شمارنده با <code>b</code> بیت 1 شروع به کار می‌کند. نشان دهید هزینه <code>n</code> عمل <code>INCREMENT</code> برابر <code>O(n)</code> است اگر <code>n = Ω(b)</code>.</p>
-<p><strong>حل:</strong><br>
-از تحلیل مثال شمارنده دودویی استفاده می‌کنیم.</p>
-<ul>
-<li>هزینه واقعی کل: <code>Σcᵢ ≤ Σĉᵢ - (Φ(Dₙ) - Φ(D₀))</code>.</li>
-<li>هزینه سرشکن هر <code>INCREMENT</code> حداکثر 2 بود. پس <code>Σĉᵢ ≤ 2n</code>.</li>
-<li><code>Φ(D)</code> تعداد بیت‌های 1 است.</li>
-<li><code>Φ(D₀) = b</code> (تعداد بیت‌های 1 در ابتدا).</li>
-<li><code>Φ(Dₙ) = bₙ</code> (تعداد بیت‌های 1 در انتها).</li>
-<li>پس: <code>Σcᵢ ≤ 2n - (bₙ - b) = 2n - bₙ + b</code>.</li>
-<li>از آنجایی که تعداد بیت‌های 1 هرگز منفی نیست، <code>bₙ ≥ 0</code>.</li>
-<li>بنابراین: <code>Σcᵢ ≤ 2n + b</code>.</li>
-<li>فرض مسئله این است که <code>n = Ω(b)</code>، یعنی <code>n</code> با نرخ <code>b</code> یا سریع‌تر رشد می‌کند. به عبارت دیگر، یک ثابت <code>c &gt; 0</code> وجود دارد که <code>n ≥ c*b</code>، یا <code>b ≤ n/c</code>.</li>
-<li>این را در نابرابری هزینه کل جایگذاری می‌کنیم:<br>
-<code>Σcᵢ ≤ 2n + n/c = (2 + 1/c) * n</code>.</li>
-<li>از آنجایی که <code>c</code> یک ثابت است، کل هزینه <code>O(n)</code> است.</li>
-</ul>
-<p>موفق باشید!</p>
-<hr>
-<h1 id="صحبتی-با-chatgpt">صحبتی با ChatGPT </h1>
-<hr>
-<h2 id="چطور-تابع-پتانسیل-خوب-انتخاب-کنیم">چطور تابع پتانسیل خوب انتخاب کنیم؟ </h2>
-<p>🎯 <strong>هدف تابع پتانسیل چیه؟</strong></p>
-<p>تابع پتانسیل <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Φ</span></span></span></span> یه چیز <strong>اختیاری ولی هوشمندانه</strong>‌ست که ما انتخابش می‌کنیم تا:</p>
-<ul>
-<li>تغییرات هزینه بین عملیات‌ها رو «صاف» کنه؛</li>
-<li>عملیات گرون (costly) رو با عملیات ارزون جبران کنه.</li>
-</ul>
-<p>به زبان ساده:</p>
-<blockquote>
-<p>پتانسیل مثل یه “حساب بانکی” برای هزینه‌ست:<br>
-در بعضی عملیات‌ها پول (هزینه) ذخیره می‌کنی، در بعضی دیگه خرج می‌کنی،<br>
-ولی میانگین هزینه همیشه کم می‌مونه.</p>
-</blockquote>
-<hr>
-<p>💡 <strong>تعریف رسمی (خلاصه‌شده)</strong></p>
-<p>برای هر حالت از داده‌ساختار <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s"></span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>، یه تابع پتانسیل داریم:<br>
-<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s"></span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></span></p>
-<p>و برای هر عملیات <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span>:<br>
-<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s"></span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">^</span></span></span></span><span class="vlist-s"></span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s"></span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s"></span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s"></span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
-<p>که در اون:</p>
-<ul>
-<li><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s"></span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>: هزینه واقعی عملیات</li>
-<li><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s"></span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">^</span></span></span></span><span class="vlist-s"></span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span>: هزینه سرشکن (amortized cost)</li>
-</ul>
-<hr>
-<p>🧠 <strong>اما سؤال اصلی: چطوری یه تابع پتانسیل خوب انتخاب کنیم؟</strong></p>
-<h3 id="۱-باید-حس-و-شهود-داشته-باشه-از-چیزی-که-هزینه-رو-تعیین-میکنه">۱. باید حس و شهود داشته باشه از “چیزی که هزینه رو تعیین می‌کنه” </h3>
-<p>پتانسیل باید نشون بده <strong>چقدر “کار ذخیره‌شده” در ساختار</strong> وجود داره — یعنی چیزی که اگه زیاد بشه، ممکنه در آینده هزینه بده.</p>
-<p>مثلاً:</p>
-<ul>
-<li>توی <strong>شمارنده بیتی</strong>، بیت‌های ۱ نشون‌دهنده‌ی “کار ذخیره‌شده” هستن، چون هر بیت ۱ بالاخره یه روز باید صفر بشه (هزینه ایجاد کنه).<br>
-👉 پس <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Φ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0em;"></span><span class="mord text"><span class="mord">تعداد&nbsp;بیت‌های&nbsp;۱</span></span></span></span></span></li>
-<li>توی <strong>پشته با دوتا استک</strong>، پتانسیل می‌تونه باشه “تعداد آیتم‌هایی که باید منتقل بشن ولی هنوز منتقل نشدن”.</li>
-</ul>
-<hr>
-<h3 id="۲-باید-اختلاف--phid_i---phid_i-1--معنیدار-باشه">۲. باید اختلاف <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s"></span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s"></span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> معنی‌دار باشه </h3>
-<p>یعنی وقتی یه عملیات انجام می‌دی:</p>
-<ul>
-<li>اگر عملیات “ساده” بود، پتانسیل زیاد بشه (چون کار رو انداختی برای آینده).</li>
-<li>اگر عملیات “سخت” بود، پتانسیل کم بشه (چون داری اون کار ذخیره‌شده رو انجام می‌دی).</li>
-</ul>
-<p>به این ترتیب هزینه‌ها متعادل می‌شن.</p>
-<hr>
-<h3 id="۳-باید--phid_0--0--و-همیشه--phid_i-ge-0-">۳. باید <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s"></span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> و همیشه <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s"></span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> </h3>
-<p>تا تحلیل درست بمونه — چون پتانسیل منفی یعنی داری “بدهکار هزینه” می‌شی که معنی نداره.</p>
-<hr>
-<p>📘 <strong>چند مثال ساده از انتخاب تابع پتانسیل</strong></p>
-<table>
-<thead>
-<tr>
-<th>مثال</th>
-<th>ایده‌ی شهودی</th>
-<th>تابع پتانسیل پیشنهادی <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s"></span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></th>
-<th>نتیجه</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>شمارنده بیتی</td>
-<td>هر بیت ۱ بالاخره صفر میشه → “کار ذخیره‌شده”</td>
-<td>تعداد بیت‌های ۱</td>
-<td>هزینه سرشکن = O(1)</td>
-</tr>
-<tr>
-<td>آرایه پویا (Dynamic Array)</td>
-<td>وقتی آرایه نصف‌پر میشه → در آینده نیاز به resize داری</td>
-<td>|2·num - size|</td>
-<td>هزینه سرشکن = O(1) برای append</td>
-</tr>
-<tr>
-<td>صف با دو استک</td>
-<td>عناصر در استک ورودی باید در آینده به خروجی منتقل بشن</td>
-<td>تعداد عناصر در استک ورودی</td>
-<td>هزینه سرشکن = O(1) برای enqueue/dequeue</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<p>🔍 <strong>روش قدم‌به‌قدم برای پیدا کردن تابع پتانسیل</strong></p>
-<ol>
-<li><strong>بفهم عملیات‌ها چه هزینه‌ای دارن</strong> (کدوم گرونن؟ کِی اتفاق می‌افتن؟)</li>
-<li><strong>تشخیص بده چه چیزی در ساختار “انباشت میشه”</strong> که باعث هزینه در آینده میشه.</li>
-<li>تابع پتانسیل رو به نحوی بنویس که اون انباشت رو نشون بده.</li>
-<li>بررسی کن که <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s"></span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s"></span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> بتونه هزینه‌ها رو متعادل کنه.</li>
-<li>مطمئن شو که <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Φ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s"></span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> و همیشه غیرمنفیه.</li>
-</ol>
-<hr>
-<p>💬 <strong>یه مثال تازه برای تمرین</strong></p>
-<p>فرض کن یه صف (queue) با دو پشته داری — یکی برای enqueue و یکی برای dequeue.<br>
-در این ساختار:</p>
-<ul>
-<li>وقتی enqueue می‌کنی → فقط push به استک اول (ارزون)</li>
-<li>وقتی dequeue می‌کنی → اگه استک دوم خالی باشه، کل عناصر از اولی به دومی منتقل می‌شن (گرون!)</li>
-</ul>
-<p>پس تابع پتانسیل می‌تونه باشه:<br>
-<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Φ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0em;"></span><span class="mord text"><span class="mord">تعداد&nbsp;عناصر&nbsp;در&nbsp;استک&nbsp;اول</span></span></span></span></span></span><br>
-چون هر چی این عدد بزرگ‌تر بشه، احتمال یه عملیات گرون در آینده بیشتره.<br>
-و واقعاً این پتانسیل باعث میشه هزینه سرشکن O(1) بشه.</p>
-<hr>
+  
+  </style></head><div dir="rtl" align="right" style="padding: 0 60px;"><p align="center" dir="rtl" style="font-weight: bold; font-size: 24px;">تحلیل سرشکن به روش پتانسیل (Potential Method)
+
+مقدمه: تحلیل سرشکن چیست؟
+
+در تحلیل الگوریتم‌ها، گاهی هزینه اجرای یک عمل (Operation) در بدترین حالت (Worst Case) بسیار زیاد است، اما این حالت به ندرت اتفاق می‌افتد. اگر دنباله‌ای از n عمل را اجرا کنیم، هزینه کل ممکن است آنقدرها هم بد نباشد. تحلیل سرشکن (Amortized Analysis) به ما کمک می‌کند تا هزینه "متوسط" هر عمل را در طول یک دنباله از عملیات محاسبه کنیم، حتی اگر برخی از آن عملیات‌ها به تنهایی بسیار پرهزینه باشند.
+
+نکته مهم این است که تحلیل سرشکن با تحلیل حالت متوسط (Average-Case Analysis) فرق دارد؛ در اینجا هیچ احتمالی در کار نیست و ما یک تضمین برای هزینه متوسط هر عمل در بدترین دنباله از عملیات ارائه می‌دهیم.
+
+سه روش متداول برای تحلیل سرشکن وجود دارد:
+
+1. روش تجمعی (Aggregate Analysis): هزینه کل n عمل را T(n) محاسبه کرده و هزینه سرشکن هر عمل را T(n)/n در نظر می‌گیریم.
+
+
+2. روش حسابداری (Accounting Method): به هر عمل یک هزینه سرشکن اختصاص می‌دهیم. اگر این هزینه از هزینه واقعی بیشتر باشد، "اعتبار" (Credit) ذخیره می‌کنیم تا بعداً برای عملیات پرهزینه استفاده شود.
+
+
+3. روش پتانسیل (Potential Method): این روش که موضوع اصلی این بحث است، اعتبار را به صورت "انرژی پتانسیل" کل ساختمان داده در نظر می‌گیرد.
+
+
+
+
+---
+
+روش پتانسیل (The Potential Method)
+
+این روش، کار از پیش پرداخت شده (prepaid work) را به عنوان انرژی پتانسیل (Φ) در نظر می‌گیرد که می‌تواند برای پرداخت هزینه عملیات‌های بعدی آزاد شود. ما پتانسیل را به کل ساختمان داده نسبت می‌دهیم، نه به اشیاء خاص درون آن.
+
+تعاریف اصلی
+
+فرض کنید D₀ ساختمان داده اولیه ما باشد. ما دنباله‌ای از n عمل را روی آن انجام می‌دهیم.
+
+cᵢ هزینه واقعی عمل i-ام است.
+
+Dᵢ حالت ساختمان داده پس از انجام عمل i-ام روی Dᵢ₋₁ است.
+
+تابع پتانسیل Φ: این تابع هر حالت Dᵢ از ساختمان داده را به یک عدد حقیقی Φ(Dᵢ) نگاشت می‌کند. این عدد، پتانسیل آن حالت است.
+
+
+هزینه سرشکن (Amortized Cost) عمل i-ام (ĉᵢ) به صورت زیر تعریف می‌شود:
+
+ĉᵢ = cᵢ + Φ(Dᵢ) - Φ(Dᵢ₋₁)
+
+بنابراین، هزینه سرشکن برابر است با هزینه واقعی به اضافه تغییر در پتانسیل ناشی از آن عمل.
+
+اگر Φ(Dᵢ) > Φ(Dᵢ₋₁)، تغییر پتانسیل مثبت است. یعنی هزینه سرشکن ĉᵢ از هزینه واقعی cᵢ بیشتر است. ما ساختمان داده را "بیشتر شارژ" کرده‌ایم و پتانسیل آن را افزایش داده‌ایم.
+
+اگر Φ(Dᵢ) < Φ(Dᵢ₋₁)، تغییر پتانسیل منفی است. یعنی هزینه سرشکن ĉᵢ از هزینه واقعی cᵢ کمتر است. کاهش پتانسیل، هزینه واقعی عمل را "پرداخت" می‌کند.
+
+
+هزینه سرشکن کل
+
+هزینه سرشکن کل برای n عمل برابر است با:
+
+Σ(ĉᵢ) [for i=1 to n] = Σ(cᵢ + Φ(Dᵢ) - Φ(Dᵢ₋₁)) [for i=1 to n]
+
+این یک سری تلسکوپی است و نتیجه آن می‌شود:
+
+Σ(ĉᵢ) = Σ(cᵢ) + Φ(Dₙ) - Φ(D₀)
+
+برای اینکه هزینه سرشکن کل یک کران بالا (Upper Bound) برای هزینه واقعی کل باشد، باید داشته باشیم:
+
+Φ(Dₙ) ≥ Φ(D₀)
+
+در عمل، ما معمولاً Φ(D₀) = 0 تعریف می‌کنیم و سپس نشان می‌دهیم که Φ(Dᵢ) ≥ 0 برای تمام i ها. این کار تضمین می‌کند که پتانسیل هرگز منفی نمی‌شود و هزینه سرشکن کل همواره یک کران بالا برای هزینه واقعی کل است.
+
+
+---
+
+مثال ۱: عملیات پشته (Stack)
+
+یک پشته با سه عمل را در نظر بگیرید:
+
+PUSH(S, x): هزینه واقعی cᵢ = 1.
+
+POP(S): هزینه واقعی cᵢ = 1.
+
+MULTIPOP(S, k): k عنصر را برمی‌دارد. هزینه واقعی cᵢ = min(k, s) که s تعداد عناصر پشته است.
+
+
+تابع پتانسیل: Φ(D) را برابر با تعداد عناصر موجود در پشته تعریف می‌کنیم.
+
+برای یک پشته خالی اولیه D₀، داریم Φ(D₀) = 0. از آنجایی که تعداد عناصر پشته هرگز منفی نیست، Φ(Dᵢ) ≥ 0 برای همه i ها.
+
+تحلیل هزینه‌ها:
+
+1. PUSH:
+
+هزینه واقعی: cᵢ = 1.
+
+فرض کنید قبل از عمل، s عنصر در پشته وجود دارد. پس از PUSH، s+1 عنصر خواهیم داشت.
+
+تغییر پتانسیل: ΔΦ = Φ(Dᵢ) - Φ(Dᵢ₋₁) = (s+1) - s = 1.
+
+هزینه سرشکن: ĉᵢ = cᵢ + ΔΦ = 1 + 1 = 2.
+
+
+
+2. POP:
+
+هزینه واقعی: cᵢ = 1.
+
+قبل از عمل s عنصر و بعد از آن s-1 عنصر داریم.
+
+تغییر پتانسیل: ΔΦ = Φ(Dᵢ) - Φ(Dᵢ₋₁) = (s-1) - s = -1.
+
+هزینه سرشکن: ĉᵢ = cᵢ + ΔΦ = 1 + (-1) = 0.
+
+
+
+3. MULTIPOP(S, k):
+
+هزینه واقعی: cᵢ = k' که k' = min(k, s).
+
+قبل از عمل s عنصر و بعد از آن s-k' عنصر داریم.
+
+تغییر پتانسیل: ΔΦ = Φ(Dᵢ) - Φ(Dᵢ₋₁) = (s-k') - s = -k'.
+
+هزینه سرشکن: ĉᵢ = cᵢ + ΔΦ = k' + (-k') = 0.
+
+
+
+
+نتیجه: هزینه سرشکن هر سه عمل O(1) است. بنابراین، هزینه کل یک دنباله از n عمل در بدترین حالت O(n) خواهد بود.
+
+
+---
+
+مثال ۲: شمارنده دودویی (Binary Counter)
+
+یک شمارنده k-بیتی را در نظر بگیرید که با عمل INCREMENT یکی به آن اضافه می‌شود. هزینه واقعی INCREMENT برابر با تعداد بیت‌هایی است که تغییر می‌کنند (از 1 به 0 یا از 0 به 1). در بدترین حالت (وقتی همه بیت‌ها 1 هستند)، هزینه k است.
+
+تابع پتانسیل: Φ(D) را برابر با تعداد بیت‌های 1 در شمارنده تعریف می‌کنیم.
+
+تحلیل هزینه INCREMENT:
+
+فرض کنید عمل i-ام INCREMENT باعث می‌شود tᵢ بیت از 1 به 0 تغییر کنند (reset شوند).
+
+این عمل حداکثر یک بیت را از 0 به 1 تغییر می‌دهد (set می‌کند).
+
+پس هزینه واقعی: cᵢ ≤ tᵢ + 1.
+
+فرض کنید bᵢ تعداد بیت‌های 1 پس از عمل i-ام باشد. bᵢ₋₁ تعداد بیت‌های 1 قبل از آن است.
+
+پس از ریست شدن tᵢ بیت و ست شدن حداکثر یک بیت، تعداد جدید بیت‌های 1 برابر است با: bᵢ ≤ bᵢ₋₁ - tᵢ + 1.
+
+تغییر پتانسیل: ΔΦ = Φ(Dᵢ) - Φ(Dᵢ₋₁) = bᵢ - bᵢ₋₁ ≤ (bᵢ₋₁ - tᵢ + 1) - bᵢ₋₁ = 1 - tᵢ.
+
+هزینه سرشکن: ĉᵢ = cᵢ + ΔΦ ≤ (tᵢ + 1) + (1 - tᵢ) = 2.
+
+
+نتیجه: هزینه سرشکن عمل INCREMENT حداکثر 2، یعنی O(1) است. بنابراین هزینه n عمل INCREMENT برابر O(n) است.
+
+
+---
+
+تمرین‌ها و مسائل حل شده (از CLRS)
+
+در این بخش، چند تمرین از فصل ۱۷ کتاب CLRS را با استفاده از روش پتانسیل حل می‌کنیم.
+
+تمرین 17.3-1
+
+مسئله: فرض کنید یک تابع پتانسیل Φ داریم که Φ(Dᵢ) ≥ Φ(D₀) برای تمام i ها، اما Φ(D₀) ≠ 0. نشان دهید یک تابع پتانسیل 'Φ وجود دارد که Φ'(D₀) = 0 و Φ'(Dᵢ) ≥ 0 و هزینه‌های سرشکن با آن یکسان هستند.
+
+حل:
+
+تابع پتانسیل جدید را به صورت زیر تعریف می‌کنیم:
+
+Φ'(Dᵢ) = Φ(Dᵢ) - Φ(D₀)
+
+1. بررسی شرایط اولیه:
+
+Φ'(D₀) = Φ(D₀) - Φ(D₀) = 0. شرط اول برقرار است.
+
+طبق فرض، Φ(Dᵢ) ≥ Φ(D₀) است، بنابراین Φ(Dᵢ) - Φ(D₀) ≥ 0. پس Φ'(Dᵢ) ≥ 0 برای تمام i ها. شرط دوم نیز برقرار است.
+
+
+
+2. بررسی هزینه سرشکن:
+
+هزینه سرشکن جدید ĉ'ᵢ را محاسبه می‌کنیم:
+
+ĉ'ᵢ = cᵢ + Φ'(Dᵢ) - Φ'(Dᵢ₋₁)
+
+ĉ'ᵢ = cᵢ + (Φ(Dᵢ) - Φ(D₀)) - (Φ(Dᵢ₋₁) - Φ(D₀))
+
+ĉ'ᵢ = cᵢ + Φ(Dᵢ) - Φ(D₀) - Φ(Dᵢ₋₁) + Φ(D₀)
+
+ĉ'ᵢ = cᵢ + Φ(Dᵢ) - Φ(Dᵢ₋₁)
+
+این عبارت دقیقاً برابر با هزینه سرشکن قبلی (ĉᵢ) است. بنابراین هزینه‌های سرشکن یکسان باقی می‌مانند.
+
+
+
+تمرین 17.3-2 (بازحل تمرین 17.1-3)
+
+مسئله: دنباله‌ای از n عمل را روی یک ساختمان داده انجام می‌دهیم. هزینه عمل i-ام برابر i است اگر i توانی دقیق از 2 باشد، و در غیر این صورت 1 است. از روش پتانسیل برای تعیین هزینه سرشکن هر عمل استفاده کنید.
+
+حل:
+
+می‌خواهیم یک هزینه سرشکن ثابت ĉ پیدا کنیم.
+
+تابع پتانسیل: پتانسیل را طوری تعریف می‌کنیم که قبل از عملیات گران (وقتی i توان 2 است) به اندازه کافی انرژی ذخیره کرده باشیم.
+
+Φ(Dᵢ) = 2 * (i - 2^floor(log₂i))
+
+این تابع در واقع 2 ضربدر فاصله i از نزدیک‌ترین توان 2 کوچکتر یا مساوی آن است. Φ(D₀)=0.
+
+تحلیل هزینه‌ها:
+
+1. حالت اول: i توان دقیقی از 2 نیست.
+
+هزینه واقعی: cᵢ = 1.
+
+در این حالت floor(log₂(i-1)) = floor(log₂i). بگذارید m = 2^floor(log₂i).
+
+Φ(Dᵢ) = 2(i - m)
+
+Φ(Dᵢ₋₁) = 2((i-1) - m)
+
+ΔΦ = Φ(Dᵢ) - Φ(Dᵢ₋₁) = 2(i-m) - 2(i-1-m) = 2.
+
+هزینه سرشکن: ĉᵢ = cᵢ + ΔΦ = 1 + 2 = 3.
+
+
+
+2. حالت دوم: i توان دقیقی از 2 است.
+
+هزینه واقعی: cᵢ = i.
+
+در این حالت i = 2^log₂i، بنابراین i - 2^floor(log₂i) = 0. پس Φ(Dᵢ) = 0.
+
+برای i-1، نزدیک‌ترین توان 2 کوچکتر، i/2 است.
+
+Φ(Dᵢ₋₁) = 2 * ((i-1) - 2^floor(log₂(i-1))) = 2 * ((i-1) - i/2) = 2 * (i/2 - 1) = i - 2.
+
+ΔΦ = Φ(Dᵢ) - Φ(Dᵢ₋₁) = 0 - (i - 2) = -i + 2.
+
+هزینه سرشکن: ĉᵢ = cᵢ + ΔΦ = i + (-i + 2) = 2.
+
+
+
+
+نتیجه: هزینه سرشکن هر عمل حداکثر 3 است، یعنی O(1).
+
+تمرین 17.3-4
+
+مسئله: هزینه واقعی کل اجرای n عمل پشته (PUSH, POP, MULTIPOP) چقدر است، با فرض اینکه پشته با s₀ شیء شروع شده و با sₙ شیء تمام می‌شود؟
+
+حل:
+
+از فرمول اصلی هزینه کل استفاده می‌کنیم:
+
+Σcᵢ = Σĉᵢ - (Φ(Dₙ) - Φ(D₀))
+
+Φ(D) تعداد اشیاء در پشته است. پس Φ(D₀) = s₀ و Φ(Dₙ) = sₙ.
+
+هزینه سرشکن PUSH برابر 2 و برای POP و MULTIPOP برابر 0 است.
+
+فرض کنید در دنباله n عمل، n_push عمل PUSH و n_pop+n_multipop عمل دیگر داشته باشیم.
+
+هزینه سرشکن کل: Σĉᵢ = 2 * n_push.
+
+جایگذاری در فرمول:
+
+Σcᵢ = (2 * n_push) - (sₙ - s₀)
+
+
+این عبارت، هزینه واقعی کل را بر حسب تعداد PUSH ها و تعداد عناصر اولیه و نهایی بیان می‌کند.
+
+تمرین 17.3-5
+
+مسئله: فرض کنید یک شمارنده با b بیت 1 شروع به کار می‌کند. نشان دهید هزینه n عمل INCREMENT برابر O(n) است اگر n = Ω(b).
+
+حل:
+
+از تحلیل مثال شمارنده دودویی استفاده می‌کنیم.
+
+هزینه واقعی کل: Σcᵢ ≤ Σĉᵢ - (Φ(Dₙ) - Φ(D₀)).
+
+هزینه سرشکن هر INCREMENT حداکثر 2 بود. پس Σĉᵢ ≤ 2n.
+
+Φ(D) تعداد بیت‌های 1 است.
+
+Φ(D₀) = b (تعداد بیت‌های 1 در ابتدا).
+
+Φ(Dₙ) = bₙ (تعداد بیت‌های 1 در انتها).
+
+پس: Σcᵢ ≤ 2n - (bₙ - b) = 2n - bₙ + b.
+
+از آنجایی که تعداد بیت‌های 1 هرگز منفی نیست، bₙ ≥ 0.
+
+بنابراین: Σcᵢ ≤ 2n + b.
+
+فرض مسئله این است که n = Ω(b)، یعنی n با نرخ b یا سریع‌تر رشد می‌کند. به عبارت دیگر، یک ثابت c > 0 وجود دارد که n ≥ c*b، یا b ≤ n/c.
+
+این را در نابرابری هزینه کل جایگذاری می‌کنیم:
+
+Σcᵢ ≤ 2n + n/c = (2 + 1/c) * n.
+
+از آنجایی که c یک ثابت است، کل هزینه O(n) است.
+
+
+موفق باشید!
+
+
+---
+
 </div>
-      </div>
-     
-     
-   
-   
-   
-   
-   
-   
- 
-    </body></html>
