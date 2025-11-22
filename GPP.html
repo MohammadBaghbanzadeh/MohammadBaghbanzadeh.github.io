@@ -1,0 +1,470 @@
+<!DOCTYPE html><html><head>
+      <title>GPP</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:///c:\Users\Mohammad Baqbanzadeh\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.8.20\crossnote\dependencies\katex\katex.min.css">
+      
+      
+      
+      
+      
+      <style>
+      code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.4;-moz-tab-size:8;-o-tab-size:8;tab-size:8;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:.8em;overflow:auto;border-radius:3px;background:#f5f5f5}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal;background:#f5f5f5}.token.blockquote,.token.comment{color:#969896}.token.cdata{color:#183691}.token.doctype,.token.macro.property,.token.punctuation,.token.variable{color:#333}.token.builtin,.token.important,.token.keyword,.token.operator,.token.rule{color:#a71d5d}.token.attr-value,.token.regex,.token.string,.token.url{color:#183691}.token.atrule,.token.boolean,.token.code,.token.command,.token.constant,.token.entity,.token.number,.token.property,.token.symbol{color:#0086b3}.token.prolog,.token.selector,.token.tag{color:#63a35c}.token.attr-name,.token.class,.token.class-name,.token.function,.token.id,.token.namespace,.token.pseudo-class,.token.pseudo-element,.token.url-reference .token.variable{color:#795da3}.token.entity{cursor:help}.token.title,.token.title .token.punctuation{font-weight:700;color:#1d3e81}.token.list{color:#ed6a43}.token.inserted{background-color:#eaffea;color:#55a532}.token.deleted{background-color:#ffecec;color:#bd2c00}.token.bold{font-weight:700}.token.italic{font-style:italic}.language-json .token.property{color:#183691}.language-markup .token.tag .token.punctuation{color:#333}.language-css .token.function,code.language-css{color:#0086b3}.language-yaml .token.atrule{color:#63a35c}code.language-yaml{color:#183691}.language-ruby .token.function{color:#333}.language-markdown .token.url{color:#795da3}.language-makefile .token.symbol{color:#795da3}.language-makefile .token.variable{color:#183691}.language-makefile .token.builtin{color:#0086b3}.language-bash .token.keyword{color:#0086b3}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview ul{list-style:disc}.markdown-preview ul ul{list-style:circle}.markdown-preview ul ul ul{list-style:square}.markdown-preview ol{list-style:decimal}.markdown-preview ol ol,.markdown-preview ul ol{list-style-type:lower-roman}.markdown-preview ol ol ol,.markdown-preview ol ul ol,.markdown-preview ul ol ol,.markdown-preview ul ul ol{list-style-type:lower-alpha}.markdown-preview .newpage,.markdown-preview .pagebreak{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center!important}.markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .status{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0;min-height:100vh}@media screen and (min-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{font-size:14px!important;padding:1em}}@media print{html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% - 300px);padding:2em calc(50% - 457px - 300px / 2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+      <!-- The content below will be included at the end of the <head> element. --><script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    // your code here
+  });
+</script></head><body for="html-export">
+    
+    
+      <div class="crossnote markdown-preview  ">
+      
+<link href="https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.css" rel="stylesheet" type="text/css">
+  <style>
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body, div, p, h1, h2, h3, h4, h5, h6 {
+      font-family: 'Vazir', sans-serif;
+    }
+    .math {
+      direction: ltr;
+      unicode-bidi: isolate;
+      display: block;
+      text-align: center;
+      margin: 12px auto;
+      font-size: 1.2em;
+    }
+    .math_normal {
+      direction: ltr;
+      unicode-bidi: isolate;
+      display: inline-block;
+    }
+    .header-container {
+    background-color: #f0f0f0;
+    border: 2px solid #333333;
+    border-radius: 10px;
+    padding: 10px;
+    color: black;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    }
+    .logo-block {
+      text-align: center;
+      min-width: 120px;
+    }
+    .logo-img {
+      width: 80px;
+      height: auto;
+      margin-bottom: 6px;
+    }
+    .info-block {
+      flex-grow: 1;
+      text-align: center;
+      color: black;
+      line-height: 1.8;
+      font-size: 17px;
+    }
+    .info-block strong {
+      color: black;
+      font-weight: bold;
+    }
+    hr {
+      border: none;
+      height: 1px;
+      background: #ccc;
+      margin: 0;
+    }
+  </style>
+<div dir="rtl" align="right" style="padding: 0 60px;">
+<div class="header-container">
+  <div class="logo-block">
+    <img src="FUM_Logo.png" alt="لوگوی دانشگاه فردوسی مشهد" class="logo-img">
+    <div><p><strong>دانشگاه فردوسی مشهد</strong></p></div>
+  </div>
+  <div class="info-block">
+    <p style="font-size: 30px;"><strong>گراف کاوی</strong></p>
+    <p style="font-size: 25px;"><strong>Graph Data Preprocessing &amp; Feature Engineering</strong></p>
+    <p style="font-size: 20px;"><strong>محمد باغبان‌زاده</strong></p>
+  </div>
+  <div class="logo-block">
+    <img src="MathmaticaFacultyLogo.jpg" alt="لوگوی دانشکده علوم ریاضی" class="logo-img">
+    <div><p><strong>دانشکده علوم ریاضی</strong></p></div>
+  </div>
+</div>
+<h1 id="مقدمه">مقدمه </h1>
+<p>پردازش گراف‌ها یکی از چالش‌برانگیزترین کارها در یادگیری ماشین و علوم داده است، زیرا:</p>
+<ul>
+<li>ساختار <strong>نامنظم</strong> دارند</li>
+<li>دسترسی حافظه در آن‌ها <strong>پیوسته و خطی نیست</strong></li>
+<li>محاسبات روی گراف‌ها معمولاً <strong>وابستگی شدید به همسایه‌ها</strong> دارند</li>
+<li>در کاربردهایی مثل GNN، بخش بزرگی از هزینهٔ محاسباتی مربوط به <strong>پیش‌پردازش و آماده‌سازی داده</strong> است</li>
+</ul>
+<p>به همین دلیل، مقالهٔ <em>A Survey of Graph Pre-processing Methods</em> بر این تأکید دارد که:</p>
+<blockquote>
+<p><strong>پیش‌پردازش گراف (GPP) اگر درست انجام نشود، می‌تواند از کل فرایند یادگیری سنگین‌تر شود.</strong></p>
+</blockquote>
+<h3 id="مثال-مهم-از-مقاله-graph500-چیست">مثال مهم از مقاله: Graph500 چیست؟ </h3>
+<p>Graph500 یک بنچمارک جهانی برای ارزیابی الگوریتم‌ها و سیستم‌های پردازش گراف است. معمولاً کارهایی مثل BFS روی گراف‌های عظیم (با میلیاردها یال) روی ابرکامپیوترها اجرا می‌شود.</p>
+<p>در مقاله آمده است که:</p>
+<ul>
+<li>زمان BFS روی یک سیستم عظیم ≈ <strong>۰.۲۵ ثانیه</strong></li>
+<li>اما زمان پیش‌پردازش (ساخت CSR و...) ≈ <strong>۳۹۰ ثانیه</strong></li>
+</ul>
+<p>یعنی:</p>
+<div class="math">
+C_TIME / BFS_TIME ≈ 1560
+</div>
+<p>پس GPP <em>گاهی هزار برابر سنگین‌تر از خود الگوریتم</em> است.</p>
+<hr>
+<h1 id="اهداف-gpp">اهداف GPP </h1>
+<p>GPP برای بهبود سه چیز انجام می‌شود:</p>
+<h2 id="۱-محاسبه-computing">۱. <strong>محاسبه (Computing)</strong> </h2>
+<ul>
+<li>کاهش کارهای تکراری</li>
+<li>کم کردن تعداد عملیات پیچیده</li>
+<li>افزایش بهره‌وری cache</li>
+</ul>
+<h2 id="۲-ذخیرهسازی-storage">۲. <strong>ذخیره‌سازی (Storage)</strong> </h2>
+<ul>
+<li>کاهش اندازهٔ گراف</li>
+<li>کم کردن I/O در حافظه</li>
+</ul>
+<h2 id="۳-ارتباط-communication">۳. <strong>ارتباط (Communication)</strong> </h2>
+<ul>
+<li>کم کردن پیام‌رسانی بین واحدهای پردازشی</li>
+<li>بهبود locality برای اجرای توزیع‌شده</li>
+</ul>
+<hr>
+<h1 id="طبقهبندی-بزرگ-gpp-taxonomy">طبقه‌بندی بزرگ GPP (Taxonomy) </h1>
+<p>مقاله روش‌ها را در دو دیدگاه اصلی دسته‌بندی می‌کند:</p>
+<h2 id="-دیدگاه-اول-algorithmic-perspective">🔵 دیدگاه اول: Algorithmic Perspective </h2>
+<h3 id="الف-graph-representation-optimization">الف) <strong>Graph Representation Optimization</strong> </h3>
+<ol>
+<li>Partition</li>
+<li>Sampling</li>
+<li>Sparsification</li>
+<li>Reconstruction</li>
+</ol>
+<h3 id="ب-data-representation-optimization">ب) <strong>Data Representation Optimization</strong> </h3>
+<ol start="5">
+<li>Quantization</li>
+<li>Reorder</li>
+<li>Reorganization</li>
+</ol>
+<h2 id="-دیدگاه-دوم-hardware-perspective">🔵 دیدگاه دوم: Hardware Perspective </h2>
+<ul>
+<li>Efficient computing</li>
+<li>Efficient storage</li>
+<li>Efficient communication</li>
+</ul>
+<hr>
+<h1 id="بخش-اول-graph-representation-optimization">بخش اول: Graph Representation Optimization </h1>
+<h2 id="۱-partition--تقسیمبندی-گراف">۱) Partition — تقسیم‌بندی گراف </h2>
+<h3 id="تعریف">تعریف </h3>
+<p>پارتیشن کردن یعنی گره‌ها یا یال‌ها را طوری به چند بخش تقسیم کنیم که:</p>
+<ul>
+<li><em>توازن بار</em> بین بخش‌ها حفظ شود</li>
+<li><em>تعداد یال‌های بینِ بخش‌ها</em> حداقل شود</li>
+<li><em>locality حافظه</em> بهتر شود</li>
+</ul>
+<h3 id="چرا-مهم-است">چرا مهم است؟ </h3>
+<p>در سیستم‌های توزیع‌شده، وقتی دو گره در دو پارتیشن مختلف قرار می‌گیرند، ارتباط آن‌ها هزینهٔ زیادی دارد.<br>
+پس کاهش <strong>edge-cut</strong> بسیار مهم است.</p>
+<h3 id="انواع-partition">انواع partition </h3>
+<h3 id="edge-cut-partitioning">Edge-cut partitioning </h3>
+<p>در این روش گره‌ها بین پارتیشن‌ها تقسیم می‌شوند و هر یالی که دو سرش در پارتیشن‌های مختلف باشد «بریده» محسوب می‌شود.<br>
+هدف: کاهش تعداد edge-cut برای کم کردن هزینهٔ ارتباط بین پارتیشن‌ها.</p>
+<h3 id="vertex-cut-partitioning">Vertex-cut partitioning </h3>
+<p>در این روش یال‌ها بین پارتیشن‌ها پخش می‌شوند و گره‌ها ممکن است در چند پارتیشن تکرار شوند (replicate).<br>
+این روش برای گراف‌هایی که گره‌های با درجهٔ خیلی بالا دارند مناسب‌تر است، چون بار پردازشی بین پارتیشن‌ها بهتر پخش می‌شود.</p>
+<h3 id="streaming-partitioning">Streaming partitioning </h3>
+<p>مخصوص گراف‌های خیلی بزرگ که نمی‌شود یک‌باره وارد حافظه کرد.<br>
+گراف به صورت جریان (یال‌به‌یال یا گره‌به‌گره) می‌آید و باید <em>همان لحظه</em> تصمیم بگیریم در کدام پارتیشن قرار بگیرد.<br>
+مناسب داده‌های آنلاین و گراف‌های پویا.</p>
+<hr>
+<h2 id="مثال-و-کد-پارتیشن-با-metis">مثال و کد پارتیشن با METIS </h2>
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code><span class="token keyword keyword-import">import</span> networkx <span class="token keyword keyword-as">as</span> nx
+<span class="token keyword keyword-import">import</span> pymetis
+
+ <span class="token comment"># گراف نمونه</span>
+G <span class="token operator">=</span> nx<span class="token punctuation">.</span>karate_club_graph<span class="token punctuation">(</span><span class="token punctuation">)</span>
+n_parts <span class="token operator">=</span> <span class="token number">4</span>
+
+<span class="token comment"># ساخت adjacency list مناسب pymetis</span>
+adj <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token builtin">list</span><span class="token punctuation">(</span>G<span class="token punctuation">.</span>neighbors<span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword keyword-for">for</span> i <span class="token keyword keyword-in">in</span> G<span class="token punctuation">.</span>nodes<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+edgecuts<span class="token punctuation">,</span> parts <span class="token operator">=</span> pymetis<span class="token punctuation">.</span>part_graph<span class="token punctuation">(</span>n_parts<span class="token punctuation">,</span> adjacency<span class="token operator">=</span>adj<span class="token punctuation">)</span>
+
+<span class="token keyword keyword-print">print</span><span class="token punctuation">(</span><span class="token string">"Edge cuts:"</span><span class="token punctuation">,</span> edgecuts<span class="token punctuation">)</span>
+<span class="token keyword keyword-for">for</span> node<span class="token punctuation">,</span> part <span class="token keyword keyword-in">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>G<span class="token punctuation">.</span>nodes<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> parts<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword keyword-print">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Node </span><span class="token interpolation"><span class="token punctuation">{</span>node<span class="token punctuation">}</span></span><span class="token string"> -&gt; Partition </span><span class="token interpolation"><span class="token punctuation">{</span>part<span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+</code></pre><h2 id="۲-sampling--نمونهگیری-برای-آموزش-gnn">۲) Sampling — نمونه‌گیری برای آموزش GNN </h2>
+<h3 id="چرا-نیاز-داریم">چرا نیاز داریم؟ </h3>
+<p>در GNNها، کامپیوتر باید تمام همسایه‌های گره‌ها را بررسی کند.<br>
+در گراف‌های واقعی (خصوصاً شبکه‌های اجتماعی)، این تعداد ممکن است میلیون‌ها باشد ➜ پس آموزش غیرممکن می‌شود.</p>
+<p>Sampling کمک می‌کند:</p>
+<p>mini-batch ایجاد کنیم</p>
+<p>حافظه مصرفی را کم کنیم</p>
+<p>سرعت آموزش را زیاد کنیم</p>
+<h3 id="انواع-sampling">انواع sampling </h3>
+<ul>
+<li>
+<p>Node-wise (مثل GraphSAGE)</p>
+</li>
+<li>
+<p>Layer-wise (مثل FastGCN)</p>
+</li>
+<li>
+<p>Subgraph-based (مثل GraphSAINT)</p>
+</li>
+</ul>
+<h2 id="مثال-کد-sampling--pytorch-geometric-neighborloader">مثال کد Sampling — PyTorch Geometric NeighborLoader </h2>
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code><span class="token keyword keyword-from">from</span> torch_geometric<span class="token punctuation">.</span>datasets <span class="token keyword keyword-import">import</span> Planetoid
+<span class="token keyword keyword-from">from</span> torch_geometric<span class="token punctuation">.</span>loader <span class="token keyword keyword-import">import</span> NeighborLoader
+
+dataset <span class="token operator">=</span> Planetoid<span class="token punctuation">(</span>root<span class="token operator">=</span><span class="token string">"data/Cora"</span><span class="token punctuation">,</span> name<span class="token operator">=</span><span class="token string">"Cora"</span><span class="token punctuation">)</span>
+data <span class="token operator">=</span> dataset<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+
+loader <span class="token operator">=</span> NeighborLoader<span class="token punctuation">(</span>
+    data<span class="token punctuation">,</span>
+    input_nodes<span class="token operator">=</span>data<span class="token punctuation">.</span>train_mask<span class="token punctuation">,</span>
+    num_neighbors<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">,</span>   <span class="token comment"># نمونه‌گیری همسایه‌ها در هر لایه</span>
+    batch_size<span class="token operator">=</span><span class="token number">64</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword keyword-for">for</span> batch <span class="token keyword keyword-in">in</span> loader<span class="token punctuation">:</span>
+    <span class="token keyword keyword-print">print</span><span class="token punctuation">(</span><span class="token string">"Batch nodes:"</span><span class="token punctuation">,</span> batch<span class="token punctuation">.</span>x<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword keyword-print">print</span><span class="token punctuation">(</span><span class="token string">"Batch edges:"</span><span class="token punctuation">,</span> batch<span class="token punctuation">.</span>edge_index<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword keyword-break">break</span>
+</code></pre><hr>
+<h1 id="۳-sparsification--حذف-یالهای-غیرضروری">۳) Sparsification — حذف یال‌های غیرضروری </h1>
+<h3 id="هدف">هدف </h3>
+<p>کاهش تراکم گراف، کاهش محاسبات و کاهش ارتباطات.</p>
+<h3 id="انواع">انواع </h3>
+<ul>
+<li>Accuracy-oriented</li>
+</ul>
+<p>یال‌های مهم نگه داشته می‌شوند، بقیه حذف می‌شود</p>
+<p>مثل DropEdge</p>
+<ul>
+<li>Execution-oriented</li>
+</ul>
+<p>هدف کاهش هزینهٔ محاسبه است بدون توجه زیاد به مدل</p>
+<h3 id="کد-ساده-dropedge">کد ساده DropEdge </h3>
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code><span class="token keyword keyword-import">import</span> torch
+
+<span class="token keyword keyword-def">def</span> <span class="token function">drop_edge</span><span class="token punctuation">(</span>edge_index<span class="token punctuation">,</span> drop_rate<span class="token operator">=</span><span class="token number">0.2</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    m <span class="token operator">=</span> edge_index<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+    mask <span class="token operator">=</span> <span class="token punctuation">(</span>torch<span class="token punctuation">.</span>rand<span class="token punctuation">(</span>m<span class="token punctuation">)</span> <span class="token operator">&gt;</span> drop_rate<span class="token punctuation">)</span>
+    <span class="token keyword keyword-return">return</span> edge_index<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> mask<span class="token punctuation">]</span>
+
+<span class="token comment"># edge_index : [2, number_of_edges]</span>
+new_edge_index <span class="token operator">=</span> drop_edge<span class="token punctuation">(</span>edge_index<span class="token punctuation">,</span> <span class="token number">0.2</span><span class="token punctuation">)</span>
+</code></pre><hr>
+<h1 id="۴-reconstruction--بازسازی-و-ادغام-همسایهها">۴) Reconstruction — بازسازی و ادغام همسایه‌ها </h1>
+<h3 id="ایدهٔ-اصلی">ایدهٔ اصلی </h3>
+<p>اگر چند گره همسایه‌های تکراری دارند، یا محاسباتشان مشابه است، آن‌ها را:</p>
+<p>merge کنیم</p>
+<p>cache کنیم</p>
+<p>یا نتایج میانی را reuse کنیم</p>
+<p>بدون اینکه اطلاعات حذف شود.</p>
+<p>این روش در سیستم‌های GNN با سربار ارتباطی زیاد بسیار مفید است.</p>
+<h2 id="مثال-ساده-از-aggregation-caching">مثال ساده از Aggregation Caching </h2>
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code>cache <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword keyword-def">def</span> <span class="token function">aggregate_with_cache</span><span class="token punctuation">(</span>node<span class="token punctuation">,</span> adj<span class="token punctuation">,</span> X<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    neigh <span class="token operator">=</span> <span class="token builtin">tuple</span><span class="token punctuation">(</span><span class="token builtin">sorted</span><span class="token punctuation">(</span>adj<span class="token punctuation">[</span>node<span class="token punctuation">]</span><span class="token punctuation">.</span>tolist<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    
+    <span class="token keyword keyword-if">if</span> neigh <span class="token keyword keyword-in">in</span> cache<span class="token punctuation">:</span>
+        <span class="token keyword keyword-return">return</span> cache<span class="token punctuation">[</span>neigh<span class="token punctuation">]</span>
+    
+    aggr <span class="token operator">=</span> X<span class="token punctuation">[</span>adj<span class="token punctuation">[</span>node<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span>dim<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+    cache<span class="token punctuation">[</span>neigh<span class="token punctuation">]</span> <span class="token operator">=</span> aggr
+    
+    <span class="token keyword keyword-return">return</span> aggr
+</code></pre><hr>
+<h1 id="بخش-دوم-data-representation-optimization">بخش دوم: Data Representation Optimization </h1>
+<h1 id="۵-quantization--کاهش-دقت-دادهها">۵) Quantization — کاهش دقت داده‌ها </h1>
+<h3 id="هدف-1">هدف </h3>
+<p>کاهش حافظه</p>
+<p>کاهش پهنای‌باند</p>
+<p>افزایش سرعت روی CPU/GPU/FPGA</p>
+<h3 id="انواع-1">انواع </h3>
+<p>Degree-free (معمولی)</p>
+<p>Degree-aware (در گراف‌ها خیلی مهم می‌شود)</p>
+<h2 id="مثال-quantization-ساده-8bit">مثال Quantization ساده (8bit) </h2>
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code><span class="token keyword keyword-import">import</span> torch
+
+<span class="token keyword keyword-def">def</span> <span class="token function">quantize_8bit</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    x_min <span class="token operator">=</span> x<span class="token punctuation">.</span><span class="token builtin">min</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    x_max <span class="token operator">=</span> x<span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    scale <span class="token operator">=</span> <span class="token punctuation">(</span>x_max <span class="token operator">-</span> x_min<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">255.0</span>
+
+    q <span class="token operator">=</span> torch<span class="token punctuation">.</span><span class="token builtin">round</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x <span class="token operator">-</span> x_min<span class="token punctuation">)</span> <span class="token operator">/</span> scale<span class="token punctuation">)</span><span class="token punctuation">.</span>clamp<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">.</span>to<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>uint8<span class="token punctuation">)</span>
+    <span class="token keyword keyword-return">return</span> q<span class="token punctuation">,</span> x_min<span class="token punctuation">,</span> scale
+
+<span class="token keyword keyword-def">def</span> <span class="token function">dequantize_8bit</span><span class="token punctuation">(</span>q<span class="token punctuation">,</span> x_min<span class="token punctuation">,</span> scale<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword keyword-return">return</span> q<span class="token punctuation">.</span><span class="token builtin">float</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> scale <span class="token operator">+</span> x_min
+</code></pre><hr>
+<h1 id="۶-reordering--بازبرچینش-گرهها">۶) Reordering — بازبرچینش گره‌ها </h1>
+<h3 id="چرا-مهم-است-1">چرا مهم است؟ </h3>
+<p>گراف‌ها معمولاً دسترسی غیرپیوسته به حافظه ایجاد می‌کنند.</p>
+<p>اگر گره‌های مرتبط مجدداً شماره‌گذاری شوند:</p>
+<p>locality بهتر می‌شود</p>
+<p>cache miss کاهش می‌یابد</p>
+<p>سرعت کل الگوریتم افزایش می‌یابد</p>
+<h2 id="مثال-درجهمحور-hub-sorting">مثال: درجه‌محور (Hub Sorting) </h2>
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code><span class="token keyword keyword-import">import</span> networkx <span class="token keyword keyword-as">as</span> nx
+
+G <span class="token operator">=</span> nx<span class="token punctuation">.</span>read_edgelist<span class="token punctuation">(</span><span class="token string">"graph.txt"</span><span class="token punctuation">,</span> nodetype<span class="token operator">=</span><span class="token builtin">int</span><span class="token punctuation">)</span>
+deg <span class="token operator">=</span> <span class="token builtin">dict</span><span class="token punctuation">(</span>G<span class="token punctuation">.</span>degree<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+sorted_nodes <span class="token operator">=</span> <span class="token builtin">sorted</span><span class="token punctuation">(</span>G<span class="token punctuation">.</span>nodes<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> key<span class="token operator">=</span><span class="token keyword keyword-lambda">lambda</span> n<span class="token punctuation">:</span> deg<span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">,</span> reverse<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+mapping <span class="token operator">=</span> <span class="token punctuation">{</span>old<span class="token punctuation">:</span> new <span class="token keyword keyword-for">for</span> new<span class="token punctuation">,</span> old <span class="token keyword keyword-in">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>sorted_nodes<span class="token punctuation">)</span><span class="token punctuation">}</span>
+
+G_reordered <span class="token operator">=</span> nx<span class="token punctuation">.</span>relabel_nodes<span class="token punctuation">(</span>G<span class="token punctuation">,</span> mapping<span class="token punctuation">)</span>
+</code></pre><hr>
+<h1 id="۷-reorganization--شاردسازی-و-بلوکبندی-tiling">۷) Reorganization — شاردسازی و بلوک‌بندی (Tiling) </h1>
+<h3 id="هدف-2">هدف </h3>
+<p>اینکه داده به‌صورت Sequential Access درآید.</p>
+<h3 id="مثلاً">مثلاً: </h3>
+<p>در GraphChi شاردها استفاده می‌شوند</p>
+<p>در GridGraph گراف به بلوک‌های 2D تقسیم می‌شود</p>
+<h2 id="مثال-ساده-ساخت-shard-بر-اساس-id-گرهٔ-مبدا">مثال ساده: ساخت Shard بر اساس ID گرهٔ مبدا </h2>
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code><span class="token keyword keyword-import">import</span> torch
+
+<span class="token keyword keyword-def">def</span> <span class="token function">make_shards</span><span class="token punctuation">(</span>edge_index<span class="token punctuation">,</span> num_shards<span class="token operator">=</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    N <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>edge_index<span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>item<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span>
+    shard_size <span class="token operator">=</span> <span class="token punctuation">(</span>N <span class="token operator">+</span> num_shards <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">//</span> num_shards
+
+    shards <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword keyword-for">for</span> i <span class="token keyword keyword-in">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>num_shards<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        lo <span class="token operator">=</span> i <span class="token operator">*</span> shard_size
+        hi <span class="token operator">=</span> <span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">*</span> shard_size
+        mask <span class="token operator">=</span> <span class="token punctuation">(</span>edge_index<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">&gt;=</span> lo<span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token punctuation">(</span>edge_index<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">&lt;</span> hi<span class="token punctuation">)</span>
+        shards<span class="token punctuation">.</span>append<span class="token punctuation">(</span>edge_index<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> mask<span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+    <span class="token keyword keyword-return">return</span> shards
+</code></pre><hr>
+<h1 id="بخش-سوم-feature-engineering-برای-گراف">بخش سوم: Feature Engineering برای گراف </h1>
+<p>در گراف‌ها ویژگی‌های خوب خیلی وقت‌ها از خود مدل GNN مهم‌ترن!</p>
+<p>تا حالا شاید فکر می‌کردیم مدل‌های گراف خیلی هوشمندن و خودشون همه چیز رو یاد می‌گیرن،<br>
+ولی واقعیت اینه که اگر ویژگی‌های اولیه درست نباشن،<br>
+بهترین GNN دنیا هم نمی‌تونه عملکرد خوبی داشته باشه.</p>
+<hr>
+<h1 id="۱-structural-features">۱) Structural Features </h1>
+<p>این ویژگی‌ها از <strong>ساختار توپولوژیک گراف</strong> استخراج می‌شوند و مستقل از هر نوع embedding یادگرفتنی هستند.</p>
+<h3 id="--degree-درجهٔ-گره">- Degree (درجهٔ گره) </h3>
+<p>تعداد همسایه‌های یک گره.<br>
+این ویژگی نشانه‌ای از <strong>اهمیت، مرکزیت یا تأثیرگذاری</strong> یک نود در شبکه است.<br>
+گره‌های پراتصال معمولاً در بسیاری از گراف‌ها نقش «هاب» دارند.</p>
+<h3 id="--betweenness-centrality">- Betweenness Centrality </h3>
+<p>نشان می‌دهد یک گره <strong>تا چه حد روی مسیرهای کوتاه قرار می‌گیرد</strong>.<br>
+این ویژگی برای کارهایی مثل تحلیل شبکه‌های اجتماعی، تشخیص گره‌های مهم، و تشخیص گره‌های واسط کاربرد زیادی دارد.</p>
+<h3 id="--clustering-coefficient-ضریب-خوشهبندی">- Clustering Coefficient (ضریب خوشه‌بندی) </h3>
+<p>اندازه‌گیری می‌کند که <strong>همسایه‌های یک گره چقدر با یکدیگر مرتبط‌اند</strong>.<br>
+برای تحلیل ساختارهای محلی مثل مثلث‌ها و اجتماع‌ها کاربرد دارد.</p>
+<h3 id="--pagerank">- PageRank </h3>
+<p>سنجشی از «اهمیت» گره بر اساس مدل پخش تصادفی گوگل.<br>
+برای تشخیص نودهای تأثیرگذار در شبکه‌های اجتماعی و لینک‌تحلیل استفاده می‌شود.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code><span class="token keyword keyword-import">import</span> networkx <span class="token keyword keyword-as">as</span> nx
+
+deg <span class="token operator">=</span> <span class="token builtin">dict</span><span class="token punctuation">(</span>nx<span class="token punctuation">.</span>degree<span class="token punctuation">(</span>G<span class="token punctuation">)</span><span class="token punctuation">)</span>
+clustering <span class="token operator">=</span> nx<span class="token punctuation">.</span>clustering<span class="token punctuation">(</span>G<span class="token punctuation">)</span>
+pagerank <span class="token operator">=</span> nx<span class="token punctuation">.</span>pagerank<span class="token punctuation">(</span>G<span class="token punctuation">)</span>
+</code></pre><hr>
+<h1 id="۲-spectral--positional-features">۲) Spectral / Positional Features </h1>
+<p>ویژگی‌های طیفی (Spectral) و موقعیتی (Positional) اطلاعات بسیار مهمی از <strong>جایگاه گره‌ها در کل ساختار گراف</strong> به ما می‌دهند.</p>
+<p>به طور عامیانه؛<br>
+برای این کار از ماتریس Laplacian استفاده می‌کنیم.<br>
+این ماتریس رو اگر Eigenvectorهای اولش رو بگیریم،<br>
+همون‌ها تبدیل می‌شن به یک جور مختصات هندسی برای گره‌ها.</p>
+<p>مبنای لاپلاسیان:</p>
+<p><span class="math_normal"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>=</mo><msup><mi>D</mi><mrow><mo>−</mo><mn>1</mn><mi mathvariant="normal">/</mi><mn>2</mn></mrow></msup><mo stretchy="false">(</mo><mi>D</mi><mo>−</mo><mi>A</mi><mo stretchy="false">)</mo><msup><mi>D</mi><mrow><mo>−</mo><mn>1</mn><mi mathvariant="normal">/</mi><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">L = D^{-1/2} (D - A) D^{-1/2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.138em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1/2</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.138em;vertical-align:-0.25em;"></span><span class="mord mathnormal">A</span><span class="mclose">)</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1/2</span></span></span></span></span></span></span></span></span></span></span></span></span></p>
+<h2 id="چرا-این-فرمول-مهم-است">چرا این فرمول مهم است؟ </h2>
+<p>این لاپلاسیان نرمال‌سازی‌شده باعث می‌شود وزن گره‌های پراتصال (hub nodes) کنترل شود.</p>
+<p>مقادیر ویژه (eigenvalues) و بردارهای ویژه (eigenvectors) آن اطلاعات هندسی دربارهٔ گراف می‌دهند.</p>
+<p>eigenvectorهای مربوط به مقادیر ویژهٔ کوچک، جایگاه گره‌ها در ساختار کلی گراف را مشخص می‌کنند<br> مثل:</p>
+<p>embedding‌های طیفی (spectral embedding)</p>
+<p>تقسیم‌بندی گراف</p>
+<p>ویژگی‌های موقعیتی مفید برای GNN</p>
+<p>به همین دلیل در بسیاری از مقاله‌ها از Laplacian eigenvectors به‌عنوان positional embedding برای گره‌ها استفاده می‌شود.</p>
+<h3 id="محاسبهٔ-eigenvectorهای-کوچک">محاسبهٔ eigenvectorهای کوچک: </h3>
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code><span class="token keyword keyword-from">from</span> scipy<span class="token punctuation">.</span>sparse<span class="token punctuation">.</span>linalg <span class="token keyword keyword-import">import</span> eigsh
+<span class="token keyword keyword-import">import</span> numpy <span class="token keyword keyword-as">as</span> np
+
+L <span class="token operator">=</span> nx<span class="token punctuation">.</span>normalized_laplacian_matrix<span class="token punctuation">(</span>G<span class="token punctuation">)</span>
+vals<span class="token punctuation">,</span> vecs <span class="token operator">=</span> eigsh<span class="token punctuation">(</span>L<span class="token punctuation">,</span> k<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">)</span>  <span class="token comment"># اولین 8 مؤلفه</span>
+positional_emb <span class="token operator">=</span> vecs
+</code></pre><hr>
+<h1 id="۳-random-walk-features">۳) Random-walk Features </h1>
+<p>ایده: حرکت تصادفی در گراف (random walk) مسیرهایی را ایجاد می‌کند که اطلاعات ساختاری و محلی را مدل می‌کند.<br>
+مدل‌هایی مثل node2vec و DeepWalk این ایده را به embedding تبدیل می‌کنند.</p>
+<p>به طور عامیانه؛<br>
+ما یک راه‌رونده تصادفی رو روی گراف راه می‌اندازیم،<br>
+مسیرهایی که طی می‌کنه تبدیل می‌شن به یک نوع توصیف از ساختار شبکه.</p>
+<p>این روش‌ها نه‌تنها اطلاعات محلی رو می‌گیرن،<br>
+بلکه ویژگی‌های سطح‌بالا رو هم خوب مدل می‌کنن.<br>
+به همین دلیل embeddingهای خروجی‌شون (که همون فیچرها هستن)<br>
+برای GNN بسیار مفید و حتی گاهی ضروری هستن.</p>
+<p>چرا این ویژگی‌ها مهم‌اند؟</p>
+<p>اطلاعات local + global را باهم ترکیب می‌کنند</p>
+<p>نسبت به ساختارهای پیچیدهٔ گراف حساس‌اند</p>
+<p>برای مدل‌های ML معمولی (SVM، MLP) و GNNها بسیار مفیدند</p>
+<p>مثل node2vec / DeepWalk<br>
+(در اینجا فقط نمونهٔ استفاده از کتابخانهٔ node2vec)</p>
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code><span class="token keyword keyword-from">from</span> node2vec <span class="token keyword keyword-import">import</span> Node2Vec
+
+node2vec <span class="token operator">=</span> Node2Vec<span class="token punctuation">(</span>G<span class="token punctuation">,</span> dimensions<span class="token operator">=</span><span class="token number">16</span><span class="token punctuation">,</span> walk_length<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">,</span> num_walks<span class="token operator">=</span><span class="token number">200</span><span class="token punctuation">)</span>
+model <span class="token operator">=</span> node2vec<span class="token punctuation">.</span>fit<span class="token punctuation">(</span><span class="token punctuation">)</span>
+emb <span class="token operator">=</span> model<span class="token punctuation">.</span>wv
+</code></pre><hr>
+<h1 id="۴-edge-features">۴) Edge Features </h1>
+<p>همیشه گره‌ها همه‌ی اطلاعات رو ندارن؛</p>
+<p>برای گراف‌های heterogeneous مهم است:</p>
+<ul>
+<li>
+<p>نوع رابطه</p>
+</li>
+<li>
+<p>وزن</p>
+</li>
+<li>
+<p>timestamp</p>
+</li>
+<li>
+<p>تعداد مثلث‌ها</p>
+</li>
+</ul>
+<h2 id="مثال-ساده">مثال ساده: </h2>
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code><span class="token keyword keyword-import">import</span> networkx <span class="token keyword keyword-as">as</span> nx
+
+<span class="token keyword keyword-for">for</span> u<span class="token punctuation">,</span> v <span class="token keyword keyword-in">in</span> G<span class="token punctuation">.</span>edges<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    G<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"triangles"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span><span class="token builtin">list</span><span class="token punctuation">(</span>nx<span class="token punctuation">.</span>common_neighbors<span class="token punctuation">(</span>G<span class="token punctuation">,</span> u<span class="token punctuation">,</span> v<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre><hr>
+<h1 id="جمعبندی-نهایی">جمع‌بندی نهایی </h1>
+<p>GPP بخش عظیمی از هزینهٔ پردازش گراف را تشکیل می‌دهد.</p>
+<p>با Partition، Sampling، Sparsification، Reconstruction و… می‌توان کارایی را چند برابر افزایش داد.</p>
+<p>Feature Engineering بخش مهمی برای عملکرد GNN است.</p>
+<p>انتخاب روش‌ها باید بسته به نوع کار، اندازهٔ گراف و سخت‌افزار باشد.</p>
+</div>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
