@@ -31,8 +31,18 @@ async function build() {
     if (!path.startsWith(local + '/') || document.mime !== 'application/pdf' || typeof document.title !== 'string') throw new Error('Invalid document');
     const bytes = await readFile(path);
     if (bytes.subarray(0, 5).toString() !== '%PDF-') throw new Error('Invalid PDF');
-    documents.push({category:document.category === 'paper' ? 'paper' : 'proposal', title:document.title, summary:document.summary || '', filename:document.filename || 'document.pdf', mime:document.mime, data:bytes.toString('base64')});
+    document.assetId ||= randomBytes(16).toString('hex');
+    document.assetKey ||= randomBytes(32).toString('base64url');
+    if (!/^[a-f0-9]{32}$/.test(document.assetId)) throw new Error('Invalid asset ID');
+    const encryptedUrl = `data/documents/${document.assetId}.enc.json`;
+    const encrypted = await seal({mime:document.mime, data:bytes.toString('base64')}, document.assetKey);
+    const verified = await unseal(encrypted, document.assetKey);
+    if (!Buffer.from(verified.data, 'base64').equals(bytes)) throw new Error('PDF verification failed');
+    await mkdir(resolve(root, 'data/documents'), {recursive:true});
+    await writeFile(resolve(root, encryptedUrl), JSON.stringify(encrypted) + '\n');
+    documents.push({category:document.category === 'paper' ? 'paper' : 'proposal', title:document.title, summary:document.summary || '', filename:document.filename || 'document.pdf', mime:document.mime, encryptedUrl, key:document.assetKey});
   }
+  await writeFile(catalogPath, JSON.stringify(catalog, null, 2) + '\n', {mode:0o600});
   const envelope = await seal({version:1, title:catalog.title, description:catalog.description, reports, documents, ...(catalog.activity ? {activity:catalog.activity} : {})}, await readPassword());
   const check = await unseal(envelope, await readPassword());
   if (check.reports.length !== reports.length || check.reports.some((r,i) => r.html !== reports[i].html)) throw new Error('Archive verification failed');
