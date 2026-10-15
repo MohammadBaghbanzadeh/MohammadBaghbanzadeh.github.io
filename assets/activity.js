@@ -47,7 +47,7 @@ export async function loadActivity(config,parent) {
     for(let i=0;i<5;i++){const square=document.createElement('span');square.className='activity-cell';square.dataset.level=i;square.setAttribute('aria-hidden','true');legend.append(square);}legend.append(document.createTextNode('بیشتر'));
     status.textContent=persian.format(total)+' کامیت در '+persian.format(active)+' روز فعال · یک سال اخیر';
     const range=document.createElement('div');range.className='activity-range';range.append(document.createTextNode(formatDate(firstDate)));const last=document.createElement('span');last.textContent=formatDate(today);range.append(last);
-    const note=document.createElement('p');note.className='activity-note';note.textContent='هر مربع یک روز است؛ سبز پررنگ‌تر یعنی کامیت بیشتر. زمان‌ها به وقت تهران‌اند. آخرین همگام‌سازی: '+new Intl.DateTimeFormat('fa-IR',{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Tehran'}).format(new Date(data.updatedAt));
+    const note=document.createElement('p');note.className='activity-note';note.textContent='هر مربع یک روز است؛ سبز پررنگ‌تر یعنی کامیت بیشتر. زمان‌ها به وقت تهران‌اند و همگام‌سازی خودکار حدود هر ساعت انجام می‌شود. آخرین همگام‌سازی: '+new Intl.DateTimeFormat('fa-IR',{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Tehran'}).format(new Date(data.updatedAt));
     section.append(scroll,range,legend,detail,note);
   } catch {if (request===revision && section.isConnected) status.textContent='تقویم فعالیت‌ها فعلاً در دسترس نیست؛ کمی بعد دوباره وارد شوید.';}
 }

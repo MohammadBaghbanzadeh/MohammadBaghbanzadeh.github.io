@@ -1,0 +1,63 @@
+name: Update encrypted activity
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/activity.yml'
+      - 'scripts/activity.mjs'
+      - 'assets/activity-crypto.js'
+      - 'assets/activity-public-key.json'
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: encrypted-activity-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out public site
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: main
+      - name: Prepare Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - name: Check encryption and date grouping
+        run: npm test
+      - name: Refresh encrypted snapshot
+        env:
+          ACTIVITY_REPOSITORY: ${{ secrets.ACTIVITY_REPOSITORY }}
+          ACTIVITY_READ_KEY: ${{ secrets.ACTIVITY_READ_KEY }}
+        run: node scripts/activity.mjs
+      - name: Publish encrypted changes
+        id: publish
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add data/activity.enc.json data/activity.digest
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update encrypted activity calendar"
+          git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Request Pages publication
+        if: steps.publish.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SITE_REPOSITORY: ${{ github.repository }}
+        run: gh api --method POST "repos/$SITE_REPOSITORY/pages/builds" --silent

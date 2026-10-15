@@ -19,7 +19,7 @@ export function summarize(commits,now=new Date()) {
     const entries=days.get(date)||[];
     entries.push({sha:commit.sha.slice(0,12),message:commit.message.slice(0,300)});days.set(date,entries);
   }
-  return {version:1,timezone:'Asia/Tehran',start,end:today,updatedAt:now.toISOString(),metric:'commits',days:[...days].sort(([a],[b])=>a.localeCompare(b)).map(([date,commits])=>({date,count:commits.length,commits}))};
+  return {version:1,timezone:'Asia/Tehran',start,end:today,updatedAt:now.toISOString(),metric:'commits',days:[...days].sort(([a],[b])=>a.localeCompare(b)).map(([date,commits])=>({date,count:commits.length,commits:commits.sort((a,b)=>a.sha.localeCompare(b.sha))}))};
 }
 async function collect() {
   if (process.env.ACTIVITY_LOCAL_REPOSITORY) {
@@ -40,7 +40,7 @@ async function collect() {
     const env={...process.env,GIT_SSH_COMMAND:`ssh -i ${quote(keyFile)} -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=${quote(hosts)}`};
     const options={cwd:temporary,env,encoding:'utf8',stdio:['ignore','pipe','pipe'],maxBuffer:20*1024*1024};
     execFileSync('git',['init','--bare','.'],options);
-    execFileSync('git',['fetch','--quiet','--filter=blob:none','--shallow-since=370 days ago',`git@github.com:${repository}.git`,'HEAD'],options);
+    execFileSync('git',['fetch','--quiet','--filter=blob:none',`git@github.com:${repository}.git`,'HEAD'],options);
     const output=execFileSync('git',['log','--since=370 days ago','--format=%H%x00%cI%x00%s','FETCH_HEAD'],options);
     return output.trim().split('\n').filter(Boolean).map(line=>{const [sha,date,message]=line.split('\0');return {sha,date,message};});
   } finally {await rm(temporary,{recursive:true,force:true});}
