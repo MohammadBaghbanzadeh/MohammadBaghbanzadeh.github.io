@@ -25,7 +25,7 @@ async function build() {
     if (!path.startsWith(local + '/')) throw new Error('Report sources must be inside .private');
     reports.push({week:report.week, title:report.title, summary:report.summary || '', html:await readFile(path, 'utf8')});
   }
-  const envelope = await seal({version:1, title:catalog.title, description:catalog.description, reports}, await readPassword());
+  const envelope = await seal({version:1, title:catalog.title, description:catalog.description, reports, ...(catalog.activity ? {activity:catalog.activity} : {})}, await readPassword());
   const check = await unseal(envelope, await readPassword());
   if (check.reports.length !== reports.length || check.reports.some((r,i) => r.html !== reports[i].html)) throw new Error('Archive verification failed');
   await mkdir(dirname(outputPath), {recursive:true});

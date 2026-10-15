@@ -8,7 +8,7 @@ const types = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-
 createServer(async (req,res) => {
   try {
     const url = new URL(req.url, 'http://localhost');const path = decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname);
-    if (path.split('/').some(part => part.startsWith('.')) || !/^\/(index\.html|vault\.html|assets\/|data\/archive\.enc\.json|GML\/|AmortizedAnalysis\/|courses\/)/.test(path)) throw new Error('Not found');
+    if (path.split('/').some(part => part.startsWith('.')) || !/^\/(index\.html|vault\.html|assets\/|data\/(?:archive|activity)\.enc\.json|GML\/|AmortizedAnalysis\/|courses\/)/.test(path)) throw new Error('Not found');
     let target = resolve(root,'.'+path);
     if ((await stat(target)).isDirectory()) target = resolve(target,'index.html');
     if (!target.startsWith(root+sep) || !(await stat(target)).isFile()) throw new Error('Not found');

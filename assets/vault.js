@@ -1,4 +1,5 @@
 import {unseal, toBase64} from './crypto.js';
+import {loadActivity, clearActivity} from './activity.js';
 const $ = id => document.getElementById(id);
 let archive = null, idleTimer, lastOpener, generation = 0, reportFont = '';
 const digits = n => new Intl.NumberFormat('fa-IR').format(n);
@@ -21,6 +22,7 @@ function lock(reason = '') {
   clearTimeout(idleTimer);
   closeReport();
   archive = null;
+  clearActivity();
   lastOpener = null;
   $('report-list').replaceChildren();
   for (const id of ['workspace-title','workspace-description','workspace-count']) $(id).textContent = '';
@@ -82,6 +84,7 @@ function render(payload) {
     actions.append(view);card.append(number, copy, actions);$('report-list').append(card);
   }
   $('locked-view').hidden = true;$('workspace').hidden = false;$('workspace-title').focus();resetIdle();
+  loadActivity(payload.activity,$('workspace'));
 }
 $('unlock-form').addEventListener('submit', async event => {
   event.preventDefault();
