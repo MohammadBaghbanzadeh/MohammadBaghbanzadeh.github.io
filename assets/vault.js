@@ -78,11 +78,20 @@ function render(payload) {
   $('workspace-count').textContent = '';
   function group(title, count) {
     const section = document.createElement('section');section.className = 'workspace-group';
-    const heading = document.createElement('div');heading.className = 'workspace-group-heading';
-    const label = document.createElement('h2');label.textContent = title;
-    const total = document.createElement('span');total.textContent = `${digits(count)} مورد`;
-    heading.append(label, total);
-    const list = document.createElement('div');list.className = 'report-list';
+    const heading = document.createElement('h2');heading.className = 'workspace-group-heading';
+    const toggle = document.createElement('button');toggle.type = 'button';toggle.className = 'workspace-group-toggle';
+    const label = document.createElement('span');label.textContent = title;
+    const total = document.createElement('span');total.className = 'workspace-group-count';total.textContent = `${digits(count)} مورد`;
+    const action = document.createElement('span');action.className = 'workspace-group-action';action.textContent = 'بازکردن +';
+    const list = document.createElement('div');list.className = 'report-list';list.hidden = true;
+    list.id = `workspace-group-${$('report-list').children.length}`;
+    toggle.setAttribute('aria-controls', list.id);toggle.setAttribute('aria-expanded', 'false');
+    toggle.addEventListener('click', () => {
+      list.hidden = !list.hidden;
+      toggle.setAttribute('aria-expanded', String(!list.hidden));
+      action.textContent = list.hidden ? 'بازکردن +' : 'جمع‌کردن −';
+    });
+    toggle.append(label, total, action);heading.append(toggle);
     section.append(heading, list);$('report-list').append(section);return list;
   }
   const proposals = (payload.documents || []).filter(d => d.category !== 'paper');
