@@ -31,7 +31,7 @@ async function build() {
     if (!path.startsWith(local + '/') || document.mime !== 'application/pdf' || typeof document.title !== 'string') throw new Error('Invalid document');
     const bytes = await readFile(path);
     if (bytes.subarray(0, 5).toString() !== '%PDF-') throw new Error('Invalid PDF');
-    documents.push({title:document.title, summary:document.summary || '', filename:document.filename || 'document.pdf', mime:document.mime, data:bytes.toString('base64')});
+    documents.push({category:document.category === 'paper' ? 'paper' : 'proposal', title:document.title, summary:document.summary || '', filename:document.filename || 'document.pdf', mime:document.mime, data:bytes.toString('base64')});
   }
   const envelope = await seal({version:1, title:catalog.title, description:catalog.description, reports, documents, ...(catalog.activity ? {activity:catalog.activity} : {})}, await readPassword());
   const check = await unseal(envelope, await readPassword());

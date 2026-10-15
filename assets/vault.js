@@ -85,20 +85,23 @@ function render(payload) {
     const list = document.createElement('div');list.className = 'report-list';
     section.append(heading, list);$('report-list').append(section);return list;
   }
-  const documentList = (payload.documents || []).length ? group('پروپوزال', payload.documents.length) : null;
+  const proposals = (payload.documents || []).filter(d => d.category !== 'paper');
+  const papers = (payload.documents || []).filter(d => d.category === 'paper');
+  const documentList = proposals.length ? group('پروپوزال', proposals.length) : null;
   const weeklyList = group('گزارش‌های هفتگی پیاده‌سازی', payload.reports.length);
+  const paperList = papers.length ? group('مقالات پایه و مرتبط', papers.length) : null;
   for (const documentFile of payload.documents || []) {
     const card = document.createElement('article');card.className = 'report-card';
     const type = document.createElement('span');type.className = 'report-number';type.textContent = 'PDF';type.dir = 'ltr';
     const copy = document.createElement('div');copy.className = 'report-copy';
-    const title = document.createElement('h3');title.textContent = documentFile.title;
+    const title = document.createElement('h3');title.textContent = documentFile.title;title.dir = 'auto';
     const summary = document.createElement('p');summary.textContent = documentFile.summary || '';
     copy.append(title, summary);
     const actions = document.createElement('div');actions.className = 'report-actions';
     const url = URL.createObjectURL(new Blob([fromBase64(documentFile.data)], {type:'application/pdf'}));documentUrls.add(url);
     const view = document.createElement('a');view.className = 'button primary';view.href = url;view.target = '_blank';view.rel = 'noopener noreferrer';view.textContent = 'مشاهدهٔ PDF ↗';
     const download = document.createElement('a');download.className = 'button outline';download.href = url;download.download = (documentFile.filename || 'document.pdf').replace(/[^a-zA-Z0-9._-]/g, '_');download.textContent = 'دانلود';
-    actions.append(view, download);card.append(type, copy, actions);documentList.append(card);
+    actions.append(view, download);card.append(type, copy, actions);(documentFile.category === 'paper' ? paperList : documentList).append(card);
   }
   for (const report of [...payload.reports].sort((a,b) => a.week - b.week)) {
     const card = document.createElement('article');card.className = 'report-card';
