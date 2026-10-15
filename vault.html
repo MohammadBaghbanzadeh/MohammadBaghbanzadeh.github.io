@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#f7f6f2">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; frame-src 'self' about:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>بخش خصوصی · محمد باغبان‌زاده</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/site.css">
+  <script type="module" src="assets/vault.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">رفتن به محتوا</a>
+  <header class="site-header wrap"><a class="brand" href="./"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="./">بازگشت به صفحهٔ اصلی <span aria-hidden="true">↗</span></a></nav></header>
+  <main class="vault-main wrap" id="main">
+    <noscript><p class="js-warning">برای بازکردن این بخش، JavaScript مرورگر باید فعال باشد.</p></noscript>
+    <section id="locked-view">
+      <div class="vault-intro"><p class="eyebrow mono" dir="ltr">PRIVATE WORKSPACE</p><h1>ورود به بخش خصوصی</h1><p>رمز دسترسی را از صاحب سایت دریافت کنید.</p></div>
+      <form id="unlock-form" class="unlock-card">
+        <svg class="unlock-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="11" y="21" width="26" height="21" rx="4"/><path d="M16 21v-7a8 8 0 0 1 16 0v7"/><circle cx="24" cy="31" r="2"/><path d="M24 33v3"/></svg>
+        <label class="field-label" for="password">رمز دسترسی</label>
+        <div class="password-row"><button class="reveal-button" id="reveal-password" type="button" aria-pressed="false" aria-controls="password">نمایش</button><input id="password" type="password" name="password" autocomplete="current-password" required maxlength="256" aria-describedby="unlock-message" spellcheck="false" autocapitalize="off"></div>
+        <p id="unlock-message" class="form-message" role="status" aria-live="polite"></p>
+        <button id="unlock-button" class="button primary" type="submit">بازکردن بخش خصوصی <span aria-hidden="true">←</span></button>
+        <p class="form-hint">رمز در این سایت ذخیره نمی‌شود. با بستن یا تازه‌سازی صفحه، بخش دوباره قفل می‌شود.</p>
+      </form>
+    </section>
+    <section id="workspace" hidden aria-labelledby="workspace-title">
+      <div class="workspace-head"><div><p class="eyebrow mono" dir="ltr">RESEARCH JOURNAL</p><h1 id="workspace-title" tabindex="-1"></h1><p id="workspace-description"></p></div><button class="button outline" id="lock-button" type="button">قفل‌کردن <span aria-hidden="true">↗</span></button></div>
+      <p class="workspace-count" id="workspace-count"></p><div class="report-list" id="report-list"></div>
+      <p class="empty-weeks">گزارش‌های هفته‌های بعد پس از آماده‌شدن، به همین فهرست اضافه می‌شوند.</p>
+      <p class="workspace-note">دسترسی را با افراد دیگر به اشتراک نگذارید. این بخش پس از ۱۵ دقیقه بی‌کاری، خودکار قفل می‌شود.</p>
+    </section>
+  </main>
+  <section class="viewer" id="report-viewer" hidden aria-label="نمایش گزارش" role="dialog" aria-modal="true"><div class="viewer-toolbar"><span id="viewer-title" class="viewer-title"></span><div class="viewer-actions"><button id="fullscreen-report" type="button">تمام‌صفحه</button><button id="close-report" type="button">بازگشت به فهرست ×</button></div></div><iframe id="report-frame" title="گزارش" sandbox="allow-scripts" allow="fullscreen" allowfullscreen referrerpolicy="no-referrer"></iframe></section>
+  <footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><span class="mono" dir="ltr">Private by design.</span><a href="./">صفحهٔ اصلی</a></footer>
+</body>
+</html>
