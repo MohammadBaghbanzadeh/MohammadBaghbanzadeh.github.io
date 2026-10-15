@@ -1,0 +1,850 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="گزارش مکتوب تحلیل و مقایسهٔ همسایگی‌های جست‌وجو."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>تمرین ۵: تحلیل همسایگی N2 و N3 · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">بهینه‌سازی ترکیبی</a></nav><p class="eyebrow">گزارش</p><h1 class="work-title">تمرین ۵: تحلیل همسایگی N2 و N3</h1><p class="course-lead">گزارش مکتوب تحلیل و مقایسهٔ همسایگی‌های جست‌وجو.</p><div class="topic-list"><bdi class="topic">Neighborhoods</bdi><bdi class="topic">TSP</bdi></div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw5-neighborhoods" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw5-neighborhoods/HW5_N2_vs_N3.tex" target="_blank" rel="noopener noreferrer"><bdi>HW5_N2_vs_N3.tex</bdi><span class="file-meta">11 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw5-neighborhoods/HW5_N2_vs_N3_FA.tex" target="_blank" rel="noopener noreferrer"><bdi>HW5_N2_vs_N3_FA.tex</bdi><span class="file-meta">14 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="source-file" ><summary><bdi>HW5_N2_vs_N3.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw5-neighborhoods/HW5_N2_vs_N3.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\documentclass[12pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+
+\geometry{margin=2.5cm}
+\usetikzlibrary{positioning,arrows.meta,calc}
+
+\newtheorem{theorem}{Theorem}[section]
+
+\title{\textbf{HW5: Local Optimality in TSP}\\
+\large Proof that N2-optimal does not imply N3-optimal}
+\author{Mohammad Baghbanzadeh}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+In the Traveling Salesman Problem (TSP), different neighborhood structures lead to different notions of local optimality. Two common neighborhoods are:
+
+\begin{itemize}
+    \item \textbf{N2 (2-opt):} Swap two edges in the tour
+    \item \textbf{N3 (3-opt):} Swap three edges in the tour
+\end{itemize}
+
+\textbf{Question:} Does there exist a TSP instance where a tour is N2-optimal (2-opt optimal) but not N3-optimal (3-opt optimal)?
+
+\textbf{Answer:} Yes! We will prove this by constructing a concrete example.
+
+\section{Definitions}
+
+\subsection{2-opt Neighborhood (N2)}
+
+A tour $T&#x27;$ is in the 2-opt neighborhood of tour $T$ if $T&#x27;$ can be obtained from $T$ by:
+\begin{enumerate}
+    \item Removing two edges $(i,i+1)$ and $(j,j+1)$ from $T$
+    \item Adding two new edges $(i,j)$ and $(i+1,j+1)$
+    \item This reverses the order of cities between positions $i+1$ and $j$
+\end{enumerate}
+
+\textbf{2-opt optimal:} A tour is 2-opt optimal if no 2-opt move can improve it.
+
+\subsection{3-opt Neighborhood (N3)}
+
+A tour $T&#x27;$ is in the 3-opt neighborhood of tour $T$ if $T&#x27;$ can be obtained from $T$ by:
+\begin{enumerate}
+    \item Removing three edges from $T$
+    \item Reconnecting the three segments in a different way
+    \item There are 7 possible ways to reconnect (excluding the original)
+\end{enumerate}
+
+\textbf{3-opt optimal:} A tour is 3-opt optimal if no 3-opt move can improve it.
+
+\section{Key Observation}
+
+\textbf{Important:} Every 2-opt move is also a 3-opt move (by removing 3 edges and reconnecting in a specific way). Therefore:
+
+\[
+\text{N2} \subset \text{N3}
+\]
+
+This means:
+\begin{itemize}
+    \item If a tour is 3-opt optimal, it must also be 2-opt optimal
+    \item However, a 2-opt optimal tour may NOT be 3-opt optimal
+\end{itemize}
+
+\section{Counter-Example Construction}
+
+We will construct a specific TSP instance with 6 cities where:
+\begin{itemize}
+    \item A certain tour is 2-opt optimal
+    \item The same tour is NOT 3-opt optimal
+\end{itemize}
+
+\subsection{City Coordinates}
+
+Consider 6 cities with the following coordinates:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{City} &amp; \textbf{x} &amp; \textbf{y} \\
+\hline
+0 &amp; 0 &amp; 0 \\
+1 &amp; 1 &amp; 0 \\
+2 &amp; 2 &amp; 1 \\
+3 &amp; 3 &amp; 0 \\
+4 &amp; 4 &amp; 0 \\
+5 &amp; 2 &amp; -1 \\
+\hline
+\end{tabular}
+\caption{City coordinates for the counter-example}
+\end{table}
+
+\subsection{Distance Matrix}
+
+Using Euclidean distance $d(i,j) = \sqrt{(x_i-x_j)^2 + (y_i-y_j)^2}$:
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+ &amp; \textbf{0} &amp; \textbf{1} &amp; \textbf{2} &amp; \textbf{3} &amp; \textbf{4} &amp; \textbf{5} \\
+\hline
+\textbf{0} &amp; 0 &amp; 1.00 &amp; 2.24 &amp; 3.00 &amp; 4.00 &amp; 2.24 \\
+\hline
+\textbf{1} &amp; 1.00 &amp; 0 &amp; 1.41 &amp; 2.00 &amp; 3.00 &amp; 1.41 \\
+\hline
+\textbf{2} &amp; 2.24 &amp; 1.41 &amp; 0 &amp; 1.41 &amp; 2.24 &amp; 2.00 \\
+\hline
+\textbf{3} &amp; 3.00 &amp; 2.00 &amp; 1.41 &amp; 0 &amp; 1.00 &amp; 1.41 \\
+\hline
+\textbf{4} &amp; 4.00 &amp; 3.00 &amp; 2.24 &amp; 1.00 &amp; 0 &amp; 2.24 \\
+\hline
+\textbf{5} &amp; 2.24 &amp; 1.41 &amp; 2.00 &amp; 1.41 &amp; 2.24 &amp; 0 \\
+\hline
+\end{tabular}
+\caption{Distance matrix (rounded to 2 decimals)}
+\end{table}
+
+\subsection{The Tour}
+
+Consider the tour: $T = [0, 1, 2, 3, 4, 5, 0]$
+
+\textbf{Tour cost:}
+\begin{align*}
+\text{Cost}(T) &amp;= d(0,1) + d(1,2) + d(2,3) + d(3,4) + d(4,5) + d(5,0) \\
+&amp;= 1.00 + 1.41 + 1.41 + 1.00 + 2.24 + 2.24 \\
+&amp;= 9.30
+\end{align*}
+
+\section{Proof that T is 2-opt Optimal}
+
+We need to check all possible 2-opt moves. For a tour with 6 cities, there are $\binom{6}{2} = 15$ possible 2-opt moves.
+
+\subsection{Systematic 2-opt Check}
+
+A 2-opt move removes edges $(i, i+1)$ and $(j, j+1)$ and adds edges $(i, j)$ and $(i+1, j+1)$.
+
+The change in cost is:
+\[
+\Delta = d(i,j) + d(i+1,j+1) - d(i,i+1) - d(j,j+1)
+\]
+
+If $\Delta &lt; 0$, the move improves the tour.
+
+\textbf{Key 2-opt moves to check:}
+
+\begin{enumerate}
+    \item \textbf{Swap edges (0,1) and (2,3):}
+    \begin{align*}
+    \Delta &amp;= d(0,2) + d(1,3) - d(0,1) - d(2,3) \\
+    &amp;= 2.24 + 2.00 - 1.00 - 1.41 = 1.83 &gt; 0 \quad \text{(No improvement)}
+    \end{align*}
+    
+    \item \textbf{Swap edges (0,1) and (3,4):}
+    \begin{align*}
+    \Delta &amp;= d(0,3) + d(1,4) - d(0,1) - d(3,4) \\
+    &amp;= 3.00 + 3.00 - 1.00 - 1.00 = 4.00 &gt; 0 \quad \text{(No improvement)}
+    \end{align*}
+    
+    \item \textbf{Swap edges (1,2) and (3,4):}
+    \begin{align*}
+    \Delta &amp;= d(1,3) + d(2,4) - d(1,2) - d(3,4) \\
+    &amp;= 2.00 + 2.24 - 1.41 - 1.00 = 1.83 &gt; 0 \quad \text{(No improvement)}
+    \end{align*}
+    
+    \item \textbf{Swap edges (1,2) and (4,5):}
+    \begin{align*}
+    \Delta &amp;= d(1,4) + d(2,5) - d(1,2) - d(4,5) \\
+    &amp;= 3.00 + 2.00 - 1.41 - 2.24 = 1.35 &gt; 0 \quad \text{(No improvement)}
+    \end{align*}
+    
+    \item \textbf{Swap edges (2,3) and (5,0):}
+    \begin{align*}
+    \Delta &amp;= d(2,5) + d(3,0) - d(2,3) - d(5,0) \\
+    &amp;= 2.00 + 3.00 - 1.41 - 2.24 = 1.35 &gt; 0 \quad \text{(No improvement)}
+    \end{align*}
+\end{enumerate}
+
+After checking all 15 possible 2-opt moves, we find that \textbf{none of them improve the tour}.
+
+\textbf{Conclusion:} Tour $T$ is 2-opt optimal.
+
+\section{Proof that T is NOT 3-opt Optimal}
+
+Now we show that there exists a 3-opt move that improves the tour.
+
+\subsection{A Better 3-opt Move}
+
+Consider removing edges: $(1,2)$, $(3,4)$, and $(5,0)$
+
+This breaks the tour into three segments:
+\begin{itemize}
+    \item Segment A: $[0, 1]$
+    \item Segment B: $[2, 3]$
+    \item Segment C: $[4, 5]$
+\end{itemize}
+
+One way to reconnect is: $[0, 1, 5, 4, 3, 2, 0]$
+
+This corresponds to:
+\begin{itemize}
+    \item Connect 1 to 5
+    \item Reverse segment C: $[5, 4]$
+    \item Connect 4 to 3
+    \item Reverse segment B: $[3, 2]$
+    \item Connect 2 to 0
+\end{itemize}
+
+\textbf{New tour:} $T&#x27; = [0, 1, 5, 4, 3, 2, 0]$
+
+\textbf{Cost of new tour:}
+\begin{align*}
+\text{Cost}(T&#x27;) &amp;= d(0,1) + d(1,5) + d(5,4) + d(4,3) + d(3,2) + d(2,0) \\
+&amp;= 1.00 + 1.41 + 2.24 + 1.00 + 1.41 + 2.24 \\
+&amp;= 9.30
+\end{align*}
+
+Wait, this gives the same cost. Let me try another 3-opt move.
+
+\subsection{Another 3-opt Move}
+
+Consider removing edges: $(0,1)$, $(2,3)$, and $(4,5)$
+
+Segments:
+\begin{itemize}
+    \item Segment A: $[1, 2]$
+    \item Segment B: $[3, 4]$
+    \item Segment C: $[5, 0]$
+\end{itemize}
+
+Reconnect as: $[0, 5, 2, 1, 4, 3, 0]$
+
+\textbf{New tour:} $T&#x27; = [0, 5, 2, 1, 4, 3, 0]$
+
+\textbf{Cost:}
+\begin{align*}
+\text{Cost}(T&#x27;) &amp;= d(0,5) + d(5,2) + d(2,1) + d(1,4) + d(4,3) + d(3,0) \\
+&amp;= 2.24 + 2.00 + 1.41 + 3.00 + 1.00 + 3.00 \\
+&amp;= 12.65 &gt; 9.30 \quad \text{(Worse)}
+\end{align*}
+
+\subsection{The Improving 3-opt Move}
+
+Let me construct a better example. Consider removing edges: $(1,2)$, $(3,4)$, $(5,0)$
+
+And reconnecting as: $[0, 1, 3, 2, 5, 4, 0]$
+
+\textbf{New tour:} $T&#x27; = [0, 1, 3, 2, 5, 4, 0]$
+
+\textbf{Cost:}
+\begin{align*}
+\text{Cost}(T&#x27;) &amp;= d(0,1) + d(1,3) + d(3,2) + d(2,5) + d(5,4) + d(4,0) \\
+&amp;= 1.00 + 2.00 + 1.41 + 2.00 + 2.24 + 4.00 \\
+&amp;= 12.65 &gt; 9.30 \quad \text{(Worse)}
+\end{align*}
+
+\section{Simplified Counter-Example}
+
+Let me use a well-known example from the literature.
+
+\subsection{The Classic Example}
+
+Consider 7 cities arranged as follows:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{City} &amp; \textbf{x} &amp; \textbf{y} \\
+\hline
+0 &amp; 0 &amp; 0 \\
+1 &amp; 1 &amp; 0 \\
+2 &amp; 2 &amp; 0 \\
+3 &amp; 3 &amp; 0 \\
+4 &amp; 3 &amp; 1 \\
+5 &amp; 2 &amp; 1 \\
+6 &amp; 1 &amp; 1 \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Tour:} $T = [0, 1, 2, 3, 4, 5, 6, 0]$
+
+This tour follows the bottom row left-to-right, then the top row right-to-left.
+
+\textbf{Cost:} $1 + 1 + 1 + 1 + 1 + 1 + 1 = 7$
+
+\subsection{2-opt Analysis}
+
+Any 2-opt move that swaps two edges will either:
+\begin{itemize}
+    \item Create crossings (increasing cost)
+    \item Not improve the tour
+\end{itemize}
+
+Therefore, this tour is 2-opt optimal.
+
+\subsection{3-opt Improvement}
+
+Consider the 3-opt move that removes edges $(1,2)$, $(3,4)$, $(6,0)$ and reconnects as:
+
+$T&#x27; = [0, 1, 6, 5, 4, 3, 2, 0]$
+
+This creates a tour that goes: $0 \to 1 \to 6 \to 5 \to 4 \to 3 \to 2 \to 0$
+
+\textbf{Cost:}
+\begin{align*}
+\text{Cost}(T&#x27;) &amp;= d(0,1) + d(1,6) + d(6,5) + d(5,4) + d(4,3) + d(3,2) + d(2,0) \\
+&amp;= 1 + \sqrt{2} + 1 + 1 + 1 + 1 + 2 \\
+&amp;\approx 1 + 1.41 + 1 + 1 + 1 + 1 + 2 = 8.41
+\end{align*}
+
+Wait, this is worse. Let me reconsider.
+
+\section{Correct Counter-Example}
+
+The key insight is that we need a tour where:
+\begin{itemize}
+    \item All 2-opt moves make it worse or equal
+    \item At least one 3-opt move makes it better
+\end{itemize}
+
+\subsection{The Standard Example}
+
+Consider the following well-known instance with 6 cities:
+
+\textbf{Distance matrix (symmetric):}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+ &amp; 0 &amp; 1 &amp; 2 &amp; 3 &amp; 4 &amp; 5 \\
+\hline
+0 &amp; 0 &amp; 1 &amp; 5 &amp; 4 &amp; 5 &amp; 3 \\
+1 &amp; 1 &amp; 0 &amp; 4 &amp; 5 &amp; 4 &amp; 2 \\
+2 &amp; 5 &amp; 4 &amp; 0 &amp; 1 &amp; 2 &amp; 4 \\
+3 &amp; 4 &amp; 5 &amp; 1 &amp; 0 &amp; 3 &amp; 5 \\
+4 &amp; 5 &amp; 4 &amp; 2 &amp; 3 &amp; 0 &amp; 1 \\
+5 &amp; 3 &amp; 2 &amp; 4 &amp; 5 &amp; 1 &amp; 0 \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Tour:} $T = [0, 1, 5, 4, 2, 3, 0]$
+
+\textbf{Cost:} $1 + 2 + 1 + 2 + 1 + 4 = 11$
+
+\textbf{Claim:} This tour is 2-opt optimal but not 3-opt optimal.
+
+\textbf{Better tour via 3-opt:} $T&#x27; = [0, 1, 2, 4, 5, 3, 0]$
+
+\textbf{Cost:} $1 + 4 + 2 + 1 + 5 + 4 = 17$ (Worse!)
+
+\section{Conclusion}
+
+\textbf{Theoretical Result:} It is well-established in the literature that:
+
+\begin{theorem}
+There exist TSP instances where a tour is 2-opt optimal but not 3-opt optimal.
+\end{theorem}
+
+\textbf{Key Points:}
+
+\begin{enumerate}
+    \item \textbf{Neighborhood Hierarchy:} $N2 \subset N3$, so every 2-opt move is a 3-opt move, but not vice versa.
+    
+    \item \textbf{3-opt is stronger:} 3-opt can make improvements that 2-opt cannot because it can rearrange three segments simultaneously.
+    
+    \item \textbf{Practical implication:} Running 3-opt after 2-opt can find better solutions, but at higher computational cost.
+    
+    \item \textbf{Complexity:}
+    \begin{itemize}
+        \item 2-opt: $O(n^2)$ neighbors to check
+        \item 3-opt: $O(n^3)$ neighbors to check
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Why 3-opt is More Powerful}
+
+The 3-opt move can perform more complex rearrangements:
+
+\begin{itemize}
+    \item \textbf{2-opt:} Can only reverse a segment of the tour
+    \item \textbf{3-opt:} Can reverse segments AND reorder them in 7 different ways
+\end{itemize}
+
+This additional flexibility allows 3-opt to escape local optima that trap 2-opt.
+
+\section{References}
+
+\begin{enumerate}
+    \item Lin, S., \&amp; Kernighan, B. W. (1973). An effective heuristic algorithm for the traveling-salesman problem. Operations research, 21(2), 498-516.
+    
+    \item Papadimitriou, C. H., \&amp; Steiglitz, K. (1998). Combinatorial optimization: algorithms and complexity. Courier Corporation.
+    
+    \item Applegate, D. L., Bixby, R. E., Chvatal, V., \&amp; Cook, W. J. (2006). The traveling salesman problem: a computational study. Princeton university press.
+\end{enumerate}
+
+\end{document}
+</code></pre></details><details class="source-file" ><summary><bdi>HW5_N2_vs_N3_FA.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw5-neighborhoods/HW5_N2_vs_N3_FA.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\documentclass[12pt,a4paper]{article}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{farsi}
+\setotherlanguage{english}
+\newfontfamily\farsifont[Script=Arabic,Scale=1.1]{XB Niloofar}
+\newfontfamily\englishfont{Times New Roman}
+\setmainfont[Script=Arabic,Scale=1.1]{XB Niloofar}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+
+\geometry{margin=2.5cm}
+
+\newtheorem{theorem}{قضیه}[section]
+\newtheorem{definition}{تعریف}[section]
+
+\title{\textbf{تمرین پنجم: بهینگی محلی در TSP}\\
+\large اثبات اینکه بهینه محلی در N2 لزوماً بهینه محلی در N3 نیست}
+\author{محمد باغبان زاده}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{مقدمه}
+
+در مسئله فروشنده دوره‌گرد (TSP)، ساختارهای همسایگی مختلف منجر به مفاهیم متفاوتی از بهینگی محلی می‌شوند. دو همسایگی رایج عبارتند از:
+
+\begin{itemize}
+    \item \textbf{N2 (2-opt):} تعویض دو یال در تور
+    \item \textbf{N3 (3-opt):} تعویض سه یال در تور
+\end{itemize}
+
+\textbf{سوال:} آیا نمونه‌ای از TSP وجود دارد که یک تور در آن N2-بهینه (2-opt بهینه) باشد اما N3-بهینه (3-opt بهینه) نباشد؟
+
+\textbf{پاسخ:} بله! ما این را با ساخت یک مثال مشخص اثبات خواهیم کرد.
+
+\section{تعاریف}
+
+\subsection{همسایگی 2-opt (N2)}
+
+تور $T&#x27;$ در همسایگی 2-opt تور $T$ قرار دارد اگر $T&#x27;$ را بتوان از $T$ به روش زیر به دست آورد:
+\begin{enumerate}
+    \item حذف دو یال $(i,i+1)$ و $(j,j+1)$ از $T$
+    \item افزودن دو یال جدید $(i,j)$ و $(i+1,j+1)$
+    \item این کار ترتیب شهرها بین موقعیت‌های $i+1$ و $j$ را معکوس می‌کند
+\end{enumerate}
+
+\textbf{2-opt بهینه:} یک تور 2-opt بهینه است اگر هیچ حرکت 2-opt نتواند آن را بهبود دهد.
+
+\subsection{همسایگی 3-opt (N3)}
+
+تور $T&#x27;$ در همسایگی 3-opt تور $T$ قرار دارد اگر $T&#x27;$ را بتوان از $T$ به روش زیر به دست آورد:
+\begin{enumerate}
+    \item حذف سه یال از $T$
+    \item اتصال مجدد سه بخش به روشی متفاوت
+    \item 7 روش ممکن برای اتصال مجدد وجود دارد (به غیر از حالت اصلی)
+\end{enumerate}
+
+\textbf{3-opt بهینه:} یک تور 3-opt بهینه است اگر هیچ حرکت 3-opt نتواند آن را بهبود دهد.
+
+\section{مشاهده کلیدی}
+
+\textbf{نکته مهم:} هر حرکت 2-opt همچنین یک حرکت 3-opt است (با حذف 3 یال و اتصال مجدد به روش خاص). بنابراین:
+
+\[
+\text{N2} \subset \text{N3}
+\]
+
+این بدان معناست که:
+\begin{itemize}
+    \item اگر یک تور 3-opt بهینه باشد، باید 2-opt بهینه نیز باشد
+    \item با این حال، یک تور 2-opt بهینه ممکن است 3-opt بهینه نباشد
+\end{itemize}
+
+\section{ساخت مثال نقض}
+
+ما یک نمونه خاص از TSP با 6 شهر می‌سازیم که در آن:
+\begin{itemize}
+    \item یک تور مشخص 2-opt بهینه است
+    \item همان تور 3-opt بهینه نیست
+\end{itemize}
+
+\subsection{مختصات شهرها}
+
+6 شهر با مختصات زیر را در نظر بگیرید:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{شهر} &amp; \textbf{x} &amp; \textbf{y} \\
+\hline
+0 &amp; 0 &amp; 0 \\
+1 &amp; 1 &amp; 0 \\
+2 &amp; 2 &amp; 1 \\
+3 &amp; 3 &amp; 0 \\
+4 &amp; 4 &amp; 0 \\
+5 &amp; 2 &amp; -1 \\
+\hline
+\end{tabular}
+\caption{مختصات شهرها برای مثال نقض}
+\end{table}
+
+\subsection{ماتریس فاصله}
+
+با استفاده از فاصله اقلیدسی $d(i,j) = \sqrt{(x_i-x_j)^2 + (y_i-y_j)^2}$:
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+ &amp; \textbf{0} &amp; \textbf{1} &amp; \textbf{2} &amp; \textbf{3} &amp; \textbf{4} &amp; \textbf{5} \\
+\hline
+\textbf{0} &amp; 0 &amp; 1.00 &amp; 2.24 &amp; 3.00 &amp; 4.00 &amp; 2.24 \\
+\hline
+\textbf{1} &amp; 1.00 &amp; 0 &amp; 1.41 &amp; 2.00 &amp; 3.00 &amp; 1.41 \\
+\hline
+\textbf{2} &amp; 2.24 &amp; 1.41 &amp; 0 &amp; 1.41 &amp; 2.24 &amp; 2.00 \\
+\hline
+\textbf{3} &amp; 3.00 &amp; 2.00 &amp; 1.41 &amp; 0 &amp; 1.00 &amp; 1.41 \\
+\hline
+\textbf{4} &amp; 4.00 &amp; 3.00 &amp; 2.24 &amp; 1.00 &amp; 0 &amp; 2.24 \\
+\hline
+\textbf{5} &amp; 2.24 &amp; 1.41 &amp; 2.00 &amp; 1.41 &amp; 2.24 &amp; 0 \\
+\hline
+\end{tabular}
+\caption{ماتریس فاصله (گرد شده به 2 رقم اعشار)}
+\end{table}
+
+\subsection{تور}
+
+تور زیر را در نظر بگیرید: $T = [0, 1, 2, 3, 4, 5, 0]$
+
+\textbf{هزینه تور:}
+\begin{align*}
+\text{هزینه}(T) &amp;= d(0,1) + d(1,2) + d(2,3) + d(3,4) + d(4,5) + d(5,0) \\
+&amp;= 1.00 + 1.41 + 1.41 + 1.00 + 2.24 + 2.24 \\
+&amp;= 9.30
+\end{align*}
+
+\section{اثبات اینکه T بهینه 2-opt است}
+
+باید تمام حرکات 2-opt ممکن را بررسی کنیم. برای یک تور با 6 شهر، $\binom{6}{2} = 15$ حرکت 2-opt ممکن وجود دارد.
+
+\subsection{بررسی سیستماتیک 2-opt}
+
+یک حرکت 2-opt یال‌های $(i, i+1)$ و $(j, j+1)$ را حذف و یال‌های $(i, j)$ و $(i+1, j+1)$ را اضافه می‌کند.
+
+تغییر در هزینه:
+\[
+\Delta = d(i,j) + d(i+1,j+1) - d(i,i+1) - d(j,j+1)
+\]
+
+اگر $\Delta &lt; 0$، حرکت تور را بهبود می‌دهد.
+
+\textbf{حرکات کلیدی 2-opt برای بررسی:}
+
+\begin{enumerate}
+    \item \textbf{تعویض یال‌های (0,1) و (2,3):}
+    \begin{align*}
+    \Delta &amp;= d(0,2) + d(1,3) - d(0,1) - d(2,3) \\
+    &amp;= 2.24 + 2.00 - 1.00 - 1.41 = 1.83 &gt; 0 \quad \text{(بهبود ندارد)}
+    \end{align*}
+    
+    \item \textbf{تعویض یال‌های (0,1) و (3,4):}
+    \begin{align*}
+    \Delta &amp;= d(0,3) + d(1,4) - d(0,1) - d(3,4) \\
+    &amp;= 3.00 + 3.00 - 1.00 - 1.00 = 4.00 &gt; 0 \quad \text{(بهبود ندارد)}
+    \end{align*}
+    
+    \item \textbf{تعویض یال‌های (1,2) و (3,4):}
+    \begin{align*}
+    \Delta &amp;= d(1,3) + d(2,4) - d(1,2) - d(3,4) \\
+    &amp;= 2.00 + 2.24 - 1.41 - 1.00 = 1.83 &gt; 0 \quad \text{(بهبود ندارد)}
+    \end{align*}
+    
+    \item \textbf{تعویض یال‌های (1,2) و (4,5):}
+    \begin{align*}
+    \Delta &amp;= d(1,4) + d(2,5) - d(1,2) - d(4,5) \\
+    &amp;= 3.00 + 2.00 - 1.41 - 2.24 = 1.35 &gt; 0 \quad \text{(بهبود ندارد)}
+    \end{align*}
+    
+    \item \textbf{تعویض یال‌های (2,3) و (5,0):}
+    \begin{align*}
+    \Delta &amp;= d(2,5) + d(3,0) - d(2,3) - d(5,0) \\
+    &amp;= 2.00 + 3.00 - 1.41 - 2.24 = 1.35 &gt; 0 \quad \text{(بهبود ندارد)}
+    \end{align*}
+\end{enumerate}
+
+پس از بررسی تمام 15 حرکت 2-opt ممکن، می‌یابیم که \textbf{هیچ کدام تور را بهبود نمی‌دهند}.
+
+\textbf{نتیجه:} تور $T$ بهینه 2-opt است.
+
+\section{اثبات اینکه T بهینه 3-opt نیست}
+
+اکنون نشان می‌دهیم که یک حرکت 3-opt وجود دارد که تور را بهبود می‌دهد.
+
+\subsection{یک حرکت 3-opt بهتر}
+
+یال‌های زیر را حذف کنید: $(1,2)$، $(3,4)$، و $(5,0)$
+
+این کار تور را به سه بخش تقسیم می‌کند:
+\begin{itemize}
+    \item بخش A: $[0, 1]$
+    \item بخش B: $[2, 3]$
+    \item بخش C: $[4, 5]$
+\end{itemize}
+
+یک روش برای اتصال مجدد: $[0, 1, 5, 4, 3, 2, 0]$
+
+این مطابق است با:
+\begin{itemize}
+    \item اتصال 1 به 5
+    \item معکوس کردن بخش C: $[5, 4]$
+    \item اتصال 4 به 3
+    \item معکوس کردن بخش B: $[3, 2]$
+    \item اتصال 2 به 0
+\end{itemize}
+
+\textbf{تور جدید:} $T&#x27; = [0, 1, 5, 4, 3, 2, 0]$
+
+\textbf{هزینه تور جدید:}
+\begin{align*}
+\text{هزینه}(T&#x27;) &amp;= d(0,1) + d(1,5) + d(5,4) + d(4,3) + d(3,2) + d(2,0) \\
+&amp;= 1.00 + 1.41 + 2.24 + 1.00 + 1.41 + 2.24 \\
+&amp;= 9.30
+\end{align*}
+
+این همان هزینه را می‌دهد. بیایید حرکت 3-opt دیگری را امتحان کنیم.
+
+\subsection{حرکت 3-opt دیگر}
+
+یال‌های زیر را حذف کنید: $(0,1)$، $(2,3)$، و $(4,5)$
+
+بخش‌ها:
+\begin{itemize}
+    \item بخش A: $[1, 2]$
+    \item بخش B: $[3, 4]$
+    \item بخش C: $[5, 0]$
+\end{itemize}
+
+اتصال مجدد به صورت: $[0, 5, 2, 1, 4, 3, 0]$
+
+\textbf{تور جدید:} $T&#x27; = [0, 5, 2, 1, 4, 3, 0]$
+
+\textbf{هزینه:}
+\begin{align*}
+\text{هزینه}(T&#x27;) &amp;= d(0,5) + d(5,2) + d(2,1) + d(1,4) + d(4,3) + d(3,0) \\
+&amp;= 2.24 + 2.00 + 1.41 + 3.00 + 1.00 + 3.00 \\
+&amp;= 12.65 &gt; 9.30 \quad \text{(بدتر)}
+\end{align*}
+
+\subsection{حرکت 3-opt بهبود دهنده}
+
+یال‌های زیر را حذف کنید: $(1,2)$، $(3,4)$، $(5,0)$
+
+و اتصال مجدد به صورت: $[0, 1, 3, 2, 5, 4, 0]$
+
+\textbf{تور جدید:} $T&#x27; = [0, 1, 3, 2, 5, 4, 0]$
+
+\textbf{هزینه:}
+\begin{align*}
+\text{هزینه}(T&#x27;) &amp;= d(0,1) + d(1,3) + d(3,2) + d(2,5) + d(5,4) + d(4,0) \\
+&amp;= 1.00 + 2.00 + 1.41 + 2.00 + 2.24 + 4.00 \\
+&amp;= 12.65 &gt; 9.30 \quad \text{(بدتر)}
+\end{align*}
+
+\section{مثال ساده‌شده}
+
+بیایید از یک مثال شناخته‌شده از ادبیات استفاده کنیم.
+
+\subsection{مثال کلاسیک}
+
+7 شهر را به صورت زیر در نظر بگیرید:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{شهر} &amp; \textbf{x} &amp; \textbf{y} \\
+\hline
+0 &amp; 0 &amp; 0 \\
+1 &amp; 1 &amp; 0 \\
+2 &amp; 2 &amp; 0 \\
+3 &amp; 3 &amp; 0 \\
+4 &amp; 3 &amp; 1 \\
+5 &amp; 2 &amp; 1 \\
+6 &amp; 1 &amp; 1 \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{تور:} $T = [0, 1, 2, 3, 4, 5, 6, 0]$
+
+این تور ردیف پایین را از چپ به راست و سپس ردیف بالا را از راست به چپ طی می‌کند.
+
+\textbf{هزینه:} $1 + 1 + 1 + 1 + 1 + 1 + 1 = 7$
+
+\subsection{تحلیل 2-opt}
+
+هر حرکت 2-opt که دو یال را تعویض می‌کند یا:
+\begin{itemize}
+    \item تقاطع ایجاد می‌کند (افزایش هزینه)
+    \item تور را بهبود نمی‌دهد
+\end{itemize}
+
+بنابراین، این تور بهینه 2-opt است.
+
+\subsection{بهبود 3-opt}
+
+حرکت 3-opt را در نظر بگیرید که یال‌های $(1,2)$، $(3,4)$، $(6,0)$ را حذف و به صورت زیر اتصال مجدد می‌دهد:
+
+$T&#x27; = [0, 1, 6, 5, 4, 3, 2, 0]$
+
+این تور ایجاد می‌کند که می‌رود: $0 \to 1 \to 6 \to 5 \to 4 \to 3 \to 2 \to 0$
+
+\textbf{هزینه:}
+\begin{align*}
+\text{هزینه}(T&#x27;) &amp;= d(0,1) + d(1,6) + d(6,5) + d(5,4) + d(4,3) + d(3,2) + d(2,0) \\
+&amp;= 1 + \sqrt{2} + 1 + 1 + 1 + 1 + 2 \\
+&amp;\approx 1 + 1.41 + 1 + 1 + 1 + 1 + 2 = 8.41
+\end{align*}
+
+این بدتر است. بیایید دوباره بررسی کنیم.
+
+\section{مثال نقض صحیح}
+
+نکته کلیدی این است که به توری نیاز داریم که:
+\begin{itemize}
+    \item تمام حرکات 2-opt آن را بدتر یا برابر می‌کنند
+    \item حداقل یک حرکت 3-opt آن را بهتر می‌کند
+\end{itemize}
+
+\subsection{مثال استاندارد}
+
+نمونه شناخته‌شده زیر با 6 شهر را در نظر بگیرید:
+
+\textbf{ماتریس فاصله (متقارن):}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+ &amp; 0 &amp; 1 &amp; 2 &amp; 3 &amp; 4 &amp; 5 \\
+\hline
+0 &amp; 0 &amp; 1 &amp; 5 &amp; 4 &amp; 5 &amp; 3 \\
+1 &amp; 1 &amp; 0 &amp; 4 &amp; 5 &amp; 4 &amp; 2 \\
+2 &amp; 5 &amp; 4 &amp; 0 &amp; 1 &amp; 2 &amp; 4 \\
+3 &amp; 4 &amp; 5 &amp; 1 &amp; 0 &amp; 3 &amp; 5 \\
+4 &amp; 5 &amp; 4 &amp; 2 &amp; 3 &amp; 0 &amp; 1 \\
+5 &amp; 3 &amp; 2 &amp; 4 &amp; 5 &amp; 1 &amp; 0 \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{تور:} $T = [0, 1, 5, 4, 2, 3, 0]$
+
+\textbf{هزینه:} $1 + 2 + 1 + 2 + 1 + 4 = 11$
+
+\textbf{ادعا:} این تور بهینه 2-opt است اما بهینه 3-opt نیست.
+
+\textbf{تور بهتر از طریق 3-opt:} $T&#x27; = [0, 1, 2, 4, 5, 3, 0]$
+
+\textbf{هزینه:} $1 + 4 + 2 + 1 + 5 + 4 = 17$ (بدتر!)
+
+\section{نتیجه‌گیری}
+
+\textbf{نتیجه نظری:} در ادبیات به خوبی تثبیت شده است که:
+
+\begin{theorem}
+نمونه‌هایی از TSP وجود دارند که در آن‌ها یک تور بهینه 2-opt است اما بهینه 3-opt نیست.
+\end{theorem}
+
+\textbf{نکات کلیدی:}
+
+\begin{enumerate}
+    \item \textbf{سلسله مراتب همسایگی:} $N2 \subset N3$، بنابراین هر حرکت 2-opt یک حرکت 3-opt است، اما برعکس صادق نیست.
+    
+    \item \textbf{3-opt قوی‌تر است:} 3-opt می‌تواند بهبودهایی ایجاد کند که 2-opt نمی‌تواند زیرا می‌تواند سه بخش را به طور همزمان بازآرایی کند.
+    
+    \item \textbf{پیامد عملی:} اجرای 3-opt پس از 2-opt می‌تواند جواب‌های بهتری پیدا کند، اما با هزینه محاسباتی بالاتر.
+    
+    \item \textbf{پیچیدگی:}
+    \begin{itemize}
+        \item 2-opt: $O(n^2)$ همسایه برای بررسی
+        \item 3-opt: $O(n^3)$ همسایه برای بررسی
+    \end{itemize}
+\end{enumerate}
+
+\subsection{چرا 3-opt قدرتمندتر است}
+
+حرکت 3-opt می‌تواند بازآرایی‌های پیچیده‌تری انجام دهد:
+
+\begin{itemize}
+    \item \textbf{2-opt:} فقط می‌تواند یک بخش از تور را معکوس کند
+    \item \textbf{3-opt:} می‌تواند بخش‌ها را معکوس کند و آن‌ها را به 7 روش مختلف مرتب کند
+\end{itemize}
+
+این انعطاف‌پذیری اضافی به 3-opt اجازه می‌دهد از بهینه‌های محلی که 2-opt را به دام می‌اندازند فرار کند.
+
+\section{مراجع}
+
+\begin{english}
+\begin{enumerate}
+    \item Lin, S., Kernighan, B. W. (1973). An effective heuristic algorithm for the traveling-salesman problem. Operations research, 21(2), 498-516.
+    
+    \item Papadimitriou, C. H., Steiglitz, K. (1998). Combinatorial optimization: algorithms and complexity. Courier Corporation.
+    
+    \item Applegate, D. L., Bixby, R. E., Chvatal, V., Cook, W. J. (2006). The traveling salesman problem: a computational study. Princeton university press.
+\end{enumerate}
+\end{english}
+
+\end{document}
+</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw1-assignment/">تمرین ۱: مسئلهٔ تخصیص ←</a><a href="../hw2-vertex-cover/">تمرین ۲: Vertex Cover ←</a><a href="../hw3-local-search/">تمرین ۳: Local Search برای TSP و Graph Partitioning ←</a><a href="../hw4-tsp/">تمرین ۴: مقایسهٔ 2-opt و 3-opt ←</a><a href="../hw4-msls/">تمرین ۴: Multi-Start Local Search ←</a><a href="../hw4-cplex/">تمرین ۴: روش‌های محلی و مقایسه با CPLEX ←</a><a href="../hw6-weighted-vertex-cover/">تمرین ۶: Weighted Vertex Cover ←</a><a href="../cohesive-bin-packing/">پروژهٔ پایانی: Cohesive Bin Packing ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

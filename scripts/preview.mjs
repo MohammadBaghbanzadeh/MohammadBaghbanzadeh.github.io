@@ -8,8 +8,9 @@ const types = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-
 createServer(async (req,res) => {
   try {
     const url = new URL(req.url, 'http://localhost');const path = decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname);
-    if (path.split('/').some(part => part.startsWith('.')) || !/^\/(index\.html|vault\.html|assets\/|data\/archive\.enc\.json|GML\/|AmortizedAnalysis\/)/.test(path)) throw new Error('Not found');
-    const target = resolve(root,'.'+path);
+    if (path.split('/').some(part => part.startsWith('.')) || !/^\/(index\.html|vault\.html|assets\/|data\/archive\.enc\.json|GML\/|AmortizedAnalysis\/|courses\/)/.test(path)) throw new Error('Not found');
+    let target = resolve(root,'.'+path);
+    if ((await stat(target)).isDirectory()) target = resolve(target,'index.html');
     if (!target.startsWith(root+sep) || !(await stat(target)).isFile()) throw new Error('Not found');
     res.writeHead(200, {'Content-Type':types[extname(target)] || 'application/octet-stream','Cache-Control':'no-store','Referrer-Policy':'no-referrer'});res.end(await readFile(target));
   } catch {res.writeHead(404);res.end('Not found');}

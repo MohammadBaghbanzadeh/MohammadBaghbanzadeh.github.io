@@ -1,0 +1,606 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="اسکلت نوت‌بوک EDA، نمایش ویژگی‌ها و مدل‌های توصیه‌گر؛ دارای بخش‌های TODO."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>قالب پروژهٔ سیستم توصیه‌گر کتاب · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">داده‌کاوی</a></nav><p class="eyebrow">قالب پروژه ـ ناتمام</p><h1 class="work-title">قالب پروژهٔ سیستم توصیه‌گر کتاب</h1><p class="course-lead">اسکلت نوت‌بوک EDA، نمایش ویژگی‌ها و مدل‌های توصیه‌گر؛ دارای بخش‌های TODO.</p><div class="topic-list"><bdi class="topic">Recommender Systems</bdi><bdi class="topic">Word2Vec</bdi><bdi class="topic">TF-IDF</bdi></div><div class="work-note">این فایل قالب آموزشی با ۴۶ نشانگر TODO است و به‌عنوان پروژهٔ تکمیل‌شده یا آزمایش موفق معرفی نمی‌شود.</div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/data-mining/recommender-template" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/data-mining/recommender-template/Advanced_Recommender_Systems_Project.ipynb" target="_blank" rel="noopener noreferrer"><bdi>Advanced_Recommender_Systems_Project.ipynb</bdi><span class="file-meta">42 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/data-mining/recommender-template/Advanced_Recommender_Systems_Project_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>Advanced_Recommender_Systems_Project_notebook.py</bdi><span class="file-meta">21 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="notebook-notes"><summary>بخشی از توضیحات نوت‌بوک</summary><pre class="notes-preview"># 📓 Final Project: Advanced Recommender Systems
+**Course:** Data Mining (DM)  
+**Dataset:** Persian Book Recommender Dataset (Taaghche/Digikala Inspired)  
+**Objective:** Design, implement, and evaluate Content-Based, Collaborative Filtering (Memory and Model-based), and Hybrid recommender systems.
+
+---
+
+## 🛠️ Project Guidelines &amp; Submission Instructions
+1. **Environment Setup:** Run the first cell to install the necessary libraries (`scikit-learn`, `gensim`, `pandas`, `numpy`, `matplotlib`, `seaborn`, `scipy`).
+2. **Implementation:** You must complete all sections marked with `### TODO`. Do not modify the provided helper functions or the evaluation framework.
+3. **Theory &amp; Questions:** Explain your results and answer the theoretical questions in the provided markdown cells.
+4. **Deliverables:** Submit this completed Jupyter Notebook (`.ipynb`) with all cells executed and outputs showing.
+5. **Academic Integrity:** All work must be your own. Plagiarism will result in a zero grade.
+
+---
+
+### 📦 Task 0: Install and Import Libraries
+Ensure all required libraries are installed. The next cell handles installation and imports.
+
+
+## 📌 Phase 1: Data Exploration and Preprocessing
+In this section, we will load and preprocess the real-world **Persian Book Recommender Dataset** from GitHub. This dataset contains book metadata (genres, authors, brands, tags) and transaction logs (invoices representing user purchases).
+
+### 1.0 Dataset Setup (GitHub)
+We retrieve the dataset directly from the official repository: [shenasa-ai/persian-book-recommender-dataset](https://github.com/shenasa-ai/persian-book-recommender-dataset). We download `data.zip`, extract its CSV files (`customer.csv`, `goods.csv`, `sales.csv`), downsample the interaction matrix to a standardized size of $150 \times 30$ to keep computations fast, and map features to matching formats for recommender modeling.
+</pre></details><details class="source-file" open><summary><bdi>Advanced_Recommender_Systems_Project_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/data-mining/recommender-template/Advanced_Recommender_Systems_Project_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Exported notebook code; may contain IPython commands.
+# %%
+# Import necessary libraries
+import sys
+# Install missing packages if running in Colab or a clean environment
+!{sys.executable} -m pip install -q numpy pandas scikit-learn gensim matplotlib seaborn scipy
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import re
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from gensim.models import Word2Vec
+from scipy.sparse import csr_matrix
+import warnings
+warnings.filterwarnings(&#x27;ignore&#x27;)
+
+# Set random seed for reproducibility
+np.random.seed(42)
+print(&#x27;Setup complete. All libraries imported successfully.&#x27;)
+
+
+# %%
+import sys
+import os
+import zipfile
+import urllib.request
+import numpy as np
+import pandas as pd
+
+# URL of the dataset from GitHub (with fallback option)
+dataset_url = &quot;https://github.com/shenasa-ai/persian-book-recommender-dataset/blob/main/data.zip?raw=true&quot;
+hf_url = &quot;https://huggingface.co/datasets/shenasa-ai/persian-book-recommender-dataset/resolve/main/data.zip&quot;
+zip_filename = &quot;persian_book_dataset.zip&quot;
+extracted_folder = &quot;extracted_data&quot;
+
+def download_and_extract_dataset():
+    if not os.path.exists(extracted_folder):
+        print(&quot;Downloading dataset from GitHub...&quot;)
+        try:
+            urllib.request.urlretrieve(dataset_url, zip_filename)
+        except Exception as e:
+            print(f&quot;Failed to download from GitHub: {e}. Trying fallback from Hugging Face...&quot;)
+            urllib.request.urlretrieve(hf_url, zip_filename)
+        
+        print(&quot;Extracting dataset...&quot;)
+        with zipfile.ZipFile(zip_filename, &#x27;r&#x27;) as zip_ref:
+            zip_ref.extractall(extracted_folder)
+        print(&quot;Extraction complete.&quot;)
+    else:
+        print(&quot;Dataset already downloaded and extracted.&quot;)
+
+# Download and extract the dataset
+download_and_extract_dataset()
+
+# Load CSVs from the extracted folder
+goods_df = pd.read_csv(os.path.join(extracted_folder, &#x27;goods.csv&#x27;))
+sales_df = pd.read_csv(os.path.join(extracted_folder, &#x27;sales.csv&#x27;))
+
+# Basic data cleaning
+goods_df[&#x27;good_id&#x27;] = goods_df[&#x27;good_id&#x27;].astype(int)
+for col in [&#x27;brand&#x27;, &#x27;author&#x27;, &#x27;translator&#x27;, &#x27;catgory&#x27;, &#x27;tag&#x27;]:
+    goods_df[col] = goods_df[col].fillna(&#x27;نامشخص&#x27;).astype(str)
+
+# Helper dictionary to convert digits to Persian words
+# This preserves anonymized integer codes (e.g. author 115) from being removed by standard Persian text-cleaning regex
+digit_map = {
+    &#x27;0&#x27;: &#x27;صفر&#x27;, &#x27;1&#x27;: &#x27;یک&#x27;, &#x27;2&#x27;: &#x27;دو&#x27;, &#x27;3&#x27;: &#x27;سه&#x27;, &#x27;4&#x27;: &#x27;چهار&#x27;,
+    &#x27;5&#x27;: &#x27;پنج&#x27;, &#x27;6&#x27;: &#x27;شش&#x27;, &#x27;7&#x27;: &#x27;هفت&#x27;, &#x27;8&#x27;: &#x27;هشت&#x27;, &#x27;9&#x27;: &#x27;نه&#x27;,
+    &#x27;|&#x27;: &#x27; &#x27;
+}
+def num_to_persian_words(val):
+    if pd.isna(val) or val == &#x27;نامشخص&#x27;:
+        return &#x27;نامشخص&#x27;
+    return &#x27;&#x27;.join(digit_map.get(c, c) for c in str(val))
+
+# Set fixed dimensions to match downstream project tasks (150 active users, 30 popular books)
+num_users = 150
+num_books = 30
+
+# Get top active users and popular books from sales transactions
+book_counts = sales_df[&#x27;good_id&#x27;].value_counts()
+user_counts = sales_df[&#x27;member_id&#x27;].value_counts()
+
+top_users = user_counts.head(num_users).index.tolist()
+top_books = book_counts.head(num_books).index.tolist()
+
+# Filter transactions for these top active users and books
+filtered_sales = sales_df[sales_df[&#x27;member_id&#x27;].isin(top_users) &amp; sales_df[&#x27;good_id&#x27;].isin(top_books)].copy()
+
+# Map member/goods IDs to standard 0-indexed ranges [0, 149] and [0, 29]
+user_map = {old_id: new_id for new_id, old_id in enumerate(top_users)}
+book_map = {old_id: new_id for new_id, old_id in enumerate(top_books)}
+
+filtered_sales[&#x27;user_id&#x27;] = filtered_sales[&#x27;member_id&#x27;].map(user_map)
+filtered_sales[&#x27;book_id&#x27;] = filtered_sales[&#x27;good_id&#x27;].map(book_map)
+
+# Build books metadata DataFrame
+books_df = goods_df[goods_df[&#x27;good_id&#x27;].isin(top_books)].copy()
+books_df[&#x27;book_id&#x27;] = books_df[&#x27;good_id&#x27;].map(book_map)
+books_df = books_df.sort_values(&#x27;book_id&#x27;).reset_index(drop=True)
+
+# Create readable titles, categories (genres), and Persian descriptions
+books_df[&#x27;title&#x27;] = books_df[&#x27;book_id&#x27;].apply(lambda x: f&quot;کتاب شماره {x}&quot;)
+books_df[&#x27;genre&#x27;] = books_df[&#x27;catgory&#x27;].apply(lambda x: num_to_persian_words(x.split(&#x27;|&#x27;)[0]))
+
+def build_description(row):
+    author_w = num_to_persian_words(row[&#x27;author&#x27;])
+    translator_w = num_to_persian_words(row[&#x27;translator&#x27;])
+    category_w = num_to_persian_words(row[&#x27;catgory&#x27;])
+    tag_w = num_to_persian_words(row[&#x27;tag&#x27;])
+    brand_w = num_to_persian_words(row[&#x27;brand&#x27;])
+    return f&quot;کتاب با نویسنده {author_w} و مترجم {translator_w} و دسته بندی {category_w} و برچسب {tag_w} و برند {brand_w}&quot;
+
+books_df[&#x27;description&#x27;] = books_df.apply(build_description, axis=1)
+
+# Convert transaction purchase counts into ratings (scale 3 to 5)
+user_book_sales = filtered_sales.groupby([&#x27;user_id&#x27;, &#x27;book_id&#x27;]).size().reset_index(name=&#x27;purchase_count&#x27;)
+
+def map_purchase_to_rating(count):
+    if count == 1:
+        return 3.0
+    elif count == 2:
+        return 4.0
+    else:
+        return 5.0
+
+user_book_sales[&#x27;rating&#x27;] = user_book_sales[&#x27;purchase_count&#x27;].apply(map_purchase_to_rating)
+ratings_df = user_book_sales[[&#x27;user_id&#x27;, &#x27;book_id&#x27;, &#x27;rating&#x27;]]
+
+# Generate implicit actions based on transaction patterns
+implicit_list = []
+for idx, row in user_book_sales.iterrows():
+    u, b, count = int(row[&#x27;user_id&#x27;]), int(row[&#x27;book_id&#x27;]), int(row[&#x27;purchase_count&#x27;])
+    implicit_list.append({&#x27;user_id&#x27;: u, &#x27;book_id&#x27;: b, &#x27;action&#x27;: &#x27;click&#x27;})
+    if count &gt;= 1:
+        implicit_list.append({&#x27;user_id&#x27;: u, &#x27;book_id&#x27;: b, &#x27;action&#x27;: &#x27;read&#x27;})
+    if count &gt;= 2:
+        implicit_list.append({&#x27;user_id&#x27;: u, &#x27;book_id&#x27;: b, &#x27;action&#x27;: &#x27;shelf&#x27;})
+
+implicit_df = pd.DataFrame(implicit_list)
+
+print(f&quot;Loaded GitHub dataset with {len(books_df)} books.&quot;)
+print(f&quot;Explicit ratings (purchase-derived): {len(ratings_df)}&quot;)
+print(f&quot;Implicit interactions: {len(implicit_df)}&quot;)
+
+# %%
+### TODO: Task 1.1 - Complete EDA and Plotting
+# 1. Calculate and print average rating
+avg_rating = 0.0 # TODO
+
+# 2. Calculate genre distribution (value_counts)
+genre_counts = None # TODO
+
+# 3. Calculate implicit feedback counts
+implicit_counts = None # TODO
+
+print(f&#x27;Average rating: {avg_rating:.2f}&#x27;)
+print(&#x27;\nGenre distribution:&#x27;)
+print(genre_counts)
+print(&#x27;\nImplicit feedback counts:&#x27;)
+print(implicit_counts)
+
+# 4. Plot Rating distribution
+# TODO: Plot a histogram/bar chart of explicit ratings using matplotlib/seaborn
+plt.figure(figsize=(6, 4))
+# plt.bar(...) or sns.countplot(...)
+plt.title(&#x27;Distribution of Explicit Ratings&#x27;)
+plt.xlabel(&#x27;Rating&#x27;)
+plt.ylabel(&#x27;Count&#x27;)
+plt.show()
+
+
+# %%
+### TODO: Task 1.2 - Sparsity and Cold-Start Detection
+
+num_users = 150
+num_books = 30
+
+# 1. Build the user-item interaction matrix R (size: num_users x num_books)
+# Fill with 0 for missing values
+R = np.zeros((num_users, num_books))
+for idx, row in ratings_df.iterrows():
+    # TODO: Populate R with ratings
+    pass
+
+# 2. Calculate Sparsity
+sparsity = 0.0 # TODO
+print(f&#x27;User-Item matrix sparsity: {sparsity:.2%} ({sparsity:.4f})&#x27;)
+
+# 3. Find Cold-Start Users and Items (rated &lt;= 1 times)
+cold_users = [] # TODO
+cold_books = [] # TODO
+
+print(f&#x27;Number of cold-start users: {len(cold_users)}&#x27;)
+print(f&#x27;Cold-start user IDs: {cold_users}&#x27;)
+print(f&#x27;Number of cold-start books: {len(cold_books)}&#x27;)
+print(f&#x27;Cold-start book IDs: {cold_books}&#x27;)
+
+
+# %%
+def clean_persian_text(text):
+    # TODO: Remove special characters, numbers, punctuations, and return cleaned space-separated string
+    # Hint: You can use regex to keep only Persian characters and spaces: r&#x27;[^آ-ی\s]&#x27;
+    cleaned = text # TODO
+    return cleaned
+
+# Clean descriptions
+cleaned_descriptions = books_df[&#x27;description&#x27;].apply(clean_persian_text).tolist()
+
+### TODO: Task 2.1 - Compute TF-IDF Features
+# Initialize TfidfVectorizer with ngram_range=(1,2)
+tfidf_vec = TfidfVectorizer() # TODO (add parameters)
+tfidf_matrix = None # TODO: fit_transform
+
+print(f&#x27;TF-IDF Feature Matrix Shape: {tfidf_matrix.shape}&#x27;)
+
+
+# %%
+### TODO: Task 2.2 - Word Embeddings Feature Matrix
+tokenized_descriptions = [desc.split() for desc in cleaned_descriptions]
+
+# 1. Train Word2Vec model
+w2v_model = None # TODO
+
+# 2. Calculate average word vectors for each book
+embedding_matrix = np.zeros((num_books, 32))
+for i, tokens in enumerate(tokenized_descriptions):
+    # TODO: Average the word vectors of tokens that exist in w2v_model.wv
+    pass
+
+print(f&#x27;Word2Vec Embedding Matrix Shape: {embedding_matrix.shape}&#x27;)
+
+
+# %%
+### TODO: Task 2.3 - Content-Based Recommender Function
+def recommend_content_based(user_id, top_k=5, feature_matrix=tfidf_matrix.toarray()):
+    # 1. Get positive books and their user ratings
+    # Filter ratings_df for this user
+    user_ratings = ratings_df[ratings_df[&#x27;user_id&#x27;] == user_id]
+    
+    # Return empty list or fallback if user has no ratings (Cold Start)
+    if len(user_ratings) == 0:
+        # Return top_k popular books as fallback
+        popular_books = ratings_df.groupby(&#x27;book_id&#x27;).size().sort_values(ascending=False).index.tolist()
+        return [b for b in popular_books if b &lt; num_books][:top_k]
+        
+    # 2. Build User Profile
+    # user_profile = weighted sum of feature_matrix[book_id] * weight
+    # weight = rating - 2.5
+    user_profile = np.zeros(feature_matrix.shape[1])
+    
+    # TODO: Implement user profile construction
+    
+    # 3. Calculate similarity of User Profile to all books
+    # similarities = cosine_similarity(user_profile, feature_matrix)
+    similarities = np.zeros(num_books) # TODO
+    
+    # 4. Filter out already rated books by the user and sort
+    # TODO
+    
+    recommended_ids = [] # TODO: top_k recommendations
+    return recommended_ids
+
+# Test for User ID 10
+test_user = 10
+rec_books = recommend_content_based(test_user, top_k=3)
+print(f&#x27;Recommendations for User {test_user}: {rec_books}&#x27;)
+print(&#x27;Recommended titles:&#x27;, books_df.loc[rec_books, &#x27;title&#x27;].tolist())
+
+
+# %%
+### TODO: Task 3.1 - User-Based &amp; Item-Based CF
+
+# 1. Calculate Pearson Correlation similarity matrix between users
+def compute_user_similarities(R):
+    # Note: R is (num_users, num_books)
+    # Center R by subtracting mean rating of each user (only for rated items, ignore 0s)
+    R_centered = np.zeros_like(R)
+    for u in range(R.shape[0]):
+        rated_indices = R[u] &gt; 0
+        if rated_indices.any():
+            R_centered[u, rated_indices] = R[u, rated_indices] - np.mean(R[u, rated_indices])
+            
+    # Compute cosine similarity on centered ratings to get Pearson correlation
+    # TODO: user_sim of shape (num_users, num_users)
+    user_sim = np.zeros((R.shape[0], R.shape[0]))
+    return user_sim
+
+user_sim = compute_user_similarities(R)
+
+# 2. Calculate Jaccard similarity matrix between books
+def compute_jaccard_item_similarities(R_bin):
+    # R_bin is a binary matrix (shape: num_users, num_books) showing positive interaction (ratings &gt;= 3.0)
+    # TODO: item_sim of shape (num_books, num_books)
+    item_sim = np.zeros((R_bin.shape[1], R_bin.shape[1]))
+    return item_sim
+
+R_bin = (R &gt;= 3.0).astype(float)
+item_sim = compute_jaccard_item_similarities(R_bin)
+
+# 3. Rating prediction formula for User-Based CF:
+# R_pred(u, i) = mean_R(u) + sum(sim(u, v) * R_centered(v, i)) / sum(|sim(u, v)|)
+def predict_rating_user_based(user_id, book_id, R, user_sim, k_neighbors=10):
+    # TODO: Predict explicit rating
+    pred_rating = 0.0
+    return pred_rating
+
+print(&#x27;User Sim shape:&#x27;, user_sim.shape)
+print(&#x27;Item Sim shape:&#x27;, item_sim.shape)
+
+
+# %%
+class MatrixFactorizationSGD:
+    def __init__(self, num_users, num_items, num_factors=8, lr=0.01, reg=0.05, epochs=30):
+        self.num_users = num_users
+        self.num_items = num_items
+        self.num_factors = num_factors
+        self.lr = lr
+        self.reg = reg
+        self.epochs = epochs
+        
+        # Initialize Latent Matrices randomly
+        self.P = np.random.normal(scale=1./self.num_factors, size=(self.num_users, self.num_factors))
+        self.Q = np.random.normal(scale=1./self.num_factors, size=(self.num_items, self.num_factors))
+        
+    def fit(self, train_ratings_df):
+        # train_ratings_df contains columns: user_id, book_id, rating
+        for epoch in range(self.epochs):
+            # Shuffle the data each epoch
+            shuffled_df = train_ratings_df.sample(frac=1.0).reset_index(drop=True)
+            for idx, row in shuffled_df.iterrows():
+                u = int(row[&#x27;user_id&#x27;])
+                i = int(row[&#x27;book_id&#x27;])
+                r = row[&#x27;rating&#x27;]
+                
+                # TODO: Implement SGD update rules
+                # 1. Compute prediction error: error = r - P_u^T * Q_i
+                # 2. Update P_u
+                # 3. Update Q_i
+                pass
+                
+    def predict(self, user_id, item_id):
+        # TODO: Return dot product P_u^T * Q_i + clamp it between 1.0 and 5.0
+        pred = 3.0
+        return pred
+
+# Instantiate and train MF-SGD
+mf = MatrixFactorizationSGD(num_users, num_books, num_factors=10, epochs=25)
+mf.fit(ratings_df)
+print(&#x27;Matrix Factorization SGD trained successfully.&#x27;)
+
+
+# %%
+class BPRMF:
+    def __init__(self, num_users, num_items, num_factors=8, lr=0.05, reg=0.01, epochs=15):
+        self.num_users = num_users
+        self.num_items = num_items
+        self.num_factors = num_factors
+        self.lr = lr
+        self.reg = reg
+        self.epochs = epochs
+        
+        # Initialize factors
+        self.W = np.random.normal(scale=1./self.num_factors, size=(self.num_users, self.num_factors)) # user factors
+        self.H = np.random.normal(scale=1./self.num_factors, size=(self.num_items, self.num_factors)) # item factors
+        
+    def fit(self, implicit_df):
+        # 1. Prepare positive interactions dictionary for fast lookup
+        # Positive actions are read or shelf
+        pos_df = implicit_df[implicit_df[&#x27;action&#x27;].isin([&#x27;read&#x27;, &#x27;shelf&#x27;])]
+        user_pos = pos_df.groupby(&#x27;user_id&#x27;)[&#x27;book_id&#x27;].apply(set).to_dict()
+        
+        # Remove users with no positive interactions to avoid errors
+        users_with_pos = list(user_pos.keys())
+        if len(users_with_pos) == 0:
+            return
+            
+        # 2. Main SGD training loop
+        num_triplets = len(pos_df) * 3  # number of triplets to sample per epoch
+        
+        for epoch in range(self.epochs):
+            for _ in range(num_triplets):
+                # Sample random user u with positive interactions
+                u = np.random.choice(users_with_pos)
+                pos_items = user_pos[u]
+                if len(pos_items) == 0: continue
+                
+                # Sample positive item i
+                i = np.random.choice(list(pos_items))
+                
+                # Sample negative item j (not in user&#x27;s positive interactions)
+                j = np.random.choice(self.num_items)
+                while j in pos_items:
+                    j = np.random.choice(self.num_items)
+                    
+                # TODO: Implement BPR updates
+                # 1. Compute prediction score: x_uij = W_u^T * H_i - W_u^T * H_j
+                # 2. Compute sigmoid derivative helper: sigmoid_deriv = 1 / (1 + exp(x_uij))
+                # 3. Apply gradient updates to W_u, H_i, H_j
+                pass
+                
+    def recommend(self, user_id, top_k=5):
+        # TODO: Compute ranking scores for all items: score = W_u^T * H
+        # Return top_k item indices sorted descending
+        scores = np.dot(self.W[user_id], self.H.T)
+        return np.argsort(scores)[::-1][:top_k].tolist()
+
+# Instantiate and train BPR
+bpr = BPRMF(num_users, num_books, num_factors=8, epochs=20)
+bpr.fit(implicit_df)
+print(&#x27;BPR recommender trained successfully.&#x27;)
+
+
+# %%
+class HybridRecommender:
+    def __init__(self, cb_func, mf_model, alpha=0.5):
+        self.cb_func = cb_func # recommend_content_based function
+        self.mf = mf_model     # trained MatrixFactorizationSGD instance
+        self.alpha = alpha     # weight factor for Weighted Hybrid
+        
+    def recommend(self, user_id, top_k=5):
+        # TODO: Implement your choice of Hybrid Model (e.g. Switching or Weighted Hybrid)
+        # Let&#x27;s write a switching hybrid based on user profile activity:
+        user_ratings = ratings_df[ratings_df[&#x27;user_id&#x27;] == user_id]
+        
+        # If user has &lt;= 1 ratings, we switch to Content-Based
+        if len(user_ratings) &lt;= 1:
+            # Content-based recommendations
+            return self.cb_func(user_id, top_k=top_k)
+        else:
+            # CF-based recommendation: predict ratings for all items not yet rated
+            # and sort by predicted rating
+            rated_items = set(user_ratings[&#x27;book_id&#x27;].tolist())
+            predictions = []
+            for item_id in range(num_books):
+                if item_id not in rated_items:
+                    pred = self.mf.predict(user_id, item_id)
+                    predictions.append((item_id, pred))
+            
+            # Sort descending by predicted rating
+            predictions.sort(key=lambda x: x[1], reverse=True)
+            return [item_id for item_id, _ in predictions[:top_k]]
+
+# Instantiate Hybrid Recommender
+hybrid = HybridRecommender(recommend_content_based, mf, alpha=0.4)
+rec_hybrid = hybrid.recommend(10, top_k=3)
+print(&#x27;Hybrid recommendations for User 10:&#x27;, rec_hybrid)
+
+
+# %%
+# Split ratings into Train (80%) and Test (20%)
+from sklearn.model_selection import train_test_split
+train_ratings, test_ratings = train_test_split(ratings_df, test_size=0.2, random_state=42)
+print(f&#x27;Train ratings shape: {train_ratings.shape}&#x27;)
+print(f&#x27;Test ratings shape: {test_ratings.shape}&#x27;)
+
+
+# %%
+### TODO: Task 5.1 - RMSE and MAE evaluation
+def evaluate_rating_prediction(model, test_df):
+    # model is a trained model with a .predict(user_id, item_id) function
+    # test_df contains columns user_id, book_id, rating
+    
+    errors = []
+    abs_errors = []
+    
+    for idx, row in test_df.iterrows():
+        u = int(row[&#x27;user_id&#x27;])
+        i = int(row[&#x27;book_id&#x27;])
+        r_true = row[&#x27;rating&#x27;]
+        
+        r_pred = model.predict(u, i) # TODO: get model prediction
+        
+        # TODO: Calculate errors
+        errors.append(0.0)
+        abs_errors.append(0.0)
+        
+    rmse = 0.0 # TODO
+    mae = 0.0 # TODO
+    return rmse, mae
+
+# Train MF on train_ratings only
+mf_eval = MatrixFactorizationSGD(num_users, num_books, num_factors=10, epochs=25)
+mf_eval.fit(train_ratings)
+
+mf_rmse, mf_mae = evaluate_rating_prediction(mf_eval, test_ratings)
+print(f&#x27;Matrix Factorization SGD -&gt; RMSE: {mf_rmse:.4f}, MAE: {mf_mae:.4f}&#x27;)
+
+
+# %%
+### TODO: Task 5.2 - Ranking Metrics Evaluation
+def evaluate_ranking(recommender_model, test_ratings_df, top_k=5):
+    # recommender_model has a .recommend(user_id, top_k) function
+    precisions = []
+    recalls = []
+    aps = []
+    ndcgs = []
+    hits = []
+    
+    # Get positive ground truth books for each user in the test set (rating &gt;= 4)
+    test_pos = test_ratings_df[test_ratings_df[&#x27;rating&#x27;] &gt;= 4.0]
+    user_test_pos = test_pos.groupby(&#x27;user_id&#x27;)[&#x27;book_id&#x27;].apply(set).to_dict()
+    
+    for u in range(num_users):
+        if u not in user_test_pos or len(user_test_pos[u]) == 0:
+            continue
+            
+        rel = user_test_pos[u]
+        rec = recommender_model.recommend(u, top_k=top_k)
+        
+        # TODO: Calculate Metrics
+        # 1. Precision@K
+        # 2. Recall@K
+        # 3. Average Precision (AP)
+        # 4. NDCG@K
+        # 5. Hit Rate (1 if hit, else 0)
+        
+        precision_k = 0.0 # TODO
+        recall_k = 0.0 # TODO
+        ap = 0.0 # TODO
+        ndcg = 0.0 # TODO
+        hit = 0 # TODO
+        
+        precisions.append(precision_k)
+        recalls.append(recall_k)
+        aps.append(ap)
+        ndcgs.append(ndcg)
+        hits.append(hit)
+        
+    return {
+        &#x27;Precision@K&#x27;: np.mean(precisions),
+        &#x27;Recall@K&#x27;: np.mean(recalls),
+        &#x27;MAP&#x27;: np.mean(aps),
+        &#x27;nDCG&#x27;: np.mean(ndcgs),
+        &#x27;HitRate&#x27;: np.mean(hits)
+    }
+
+# Wrap content-based recommender to expose a .recommend(user_id, top_k) signature
+class CBF_Wrapper:
+    def recommend(self, user_id, top_k):
+        return recommend_content_based(user_id, top_k)
+
+cbf_model = CBF_Wrapper()
+
+# Compare Content-Based vs Hybrid on test set
+cbf_metrics = evaluate_ranking(cbf_model, test_ratings, top_k=5)
+hybrid_metrics = evaluate_ranking(hybrid, test_ratings, top_k=5)
+bpr_metrics = evaluate_ranking(bpr, test_ratings, top_k=5)
+
+print(&#x27;Ranking Metrics (Top 5):&#x27;)
+print(&#x27;Content-Based CF:&#x27;, cbf_metrics)
+print(&#x27;Hybrid CF Model:&#x27;, hybrid_metrics)
+print(&#x27;BPR Model (Implicit):&#x27;, bpr_metrics)
+
+
+# %%
+### TODO: Task 5.3 - Comparison Plotting
+# 1. Create a summary DataFrame
+results_data = {
+    &#x27;Model&#x27;: [&#x27;Content-Based&#x27;, &#x27;BPR (Implicit)&#x27;, &#x27;Hybrid (Switching)&#x27;],
+    &#x27;Precision@5&#x27;: [cbf_metrics[&#x27;Precision@K&#x27;], bpr_metrics[&#x27;Precision@K&#x27;], hybrid_metrics[&#x27;Precision@K&#x27;]],
+    &#x27;Recall@5&#x27;: [cbf_metrics[&#x27;Recall@K&#x27;], bpr_metrics[&#x27;Recall@K&#x27;], hybrid_metrics[&#x27;Recall@K&#x27;]],
+    &#x27;nDCG@5&#x27;: [cbf_metrics[&#x27;nDCG&#x27;], bpr_metrics[&#x27;nDCG&#x27;], hybrid_metrics[&#x27;nDCG&#x27;]],
+    &#x27;HitRate@5&#x27;: [cbf_metrics[&#x27;HitRate&#x27;], bpr_metrics[&#x27;HitRate&#x27;], hybrid_metrics[&#x27;HitRate&#x27;]]
+}
+df_results = pd.DataFrame(results_data)
+print(df_results)
+
+# 2. Plot comparison bar chart of metrics using seaborn/matplotlib
+# TODO: Plot Precision@5 and Recall@5 for each model
+plt.figure(figsize=(10, 5))
+# df_melted = pd.melt(df_results, id_vars=&#x27;Model&#x27;, value_vars=[&#x27;Precision@5&#x27;, &#x27;Recall@5&#x27;])
+# sns.barplot(x=&#x27;Model&#x27;, y=&#x27;value&#x27;, hue=&#x27;variable&#x27;, data=df_melted)
+plt.title(&#x27;Recommender Systems Performance Comparison&#x27;)
+plt.ylabel(&#x27;Score&#x27;)
+plt.show()
+
+</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw3-recommenders/">تمرین ۳: Recommender Systems ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

@@ -1,0 +1,574 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="نوت‌بوک آزمایش کاهش نویز با SPORCO، همراه با متن صورت تمرین."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>تمرین ۳: کاهش نویز تصویر با Sparse Coding · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">یادگیری ماشین آماری</a></nav><p class="eyebrow">نوت‌بوک و صورت تمرین</p><h1 class="work-title">تمرین ۳: کاهش نویز تصویر با Sparse Coding</h1><p class="course-lead">نوت‌بوک آزمایش کاهش نویز با SPORCO، همراه با متن صورت تمرین.</p><div class="topic-list"><bdi class="topic">Sparse Coding</bdi><bdi class="topic">Image Denoising</bdi><bdi class="topic">SPORCO</bdi></div><div class="work-note">این کار از مثال‌های SPORCO اقتباس شده است؛ ارجاع و مجوز کتابخانه در مخزن آمده است. تصاویر اشخاص و خروجی‌های حاوی آن‌ها منتشر نشده‌اند.</div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/hw3-image-denoising" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/hw3-image-denoising/gwnden_clr.ipynb" target="_blank" rel="noopener noreferrer"><bdi>gwnden_clr.ipynb</bdi><span class="file-meta">8 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/hw3-image-denoising/gwnden_clr_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>gwnden_clr_notebook.py</bdi><span class="file-meta">5 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/hw3-image-denoising/report.md" target="_blank" rel="noopener noreferrer"><bdi>report.md</bdi><span class="file-meta">12 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="notebook-notes"><summary>بخشی از توضیحات نوت‌بوک</summary><pre class="notes-preview"># Image Denoising on User Images
+=================================
+
+This notebook demonstrates Gaussian white noise removal from color images using sparse coding.
+The original example used a color image (RGB), but this version processes grayscale images.
+
+## User Images
+- **Gen-M-Safa.jpg**: 562 x 450 pixels
+- **M-PilAfkan.jpg**: 649 x 600 pixels
+
+
+## Summary
+
+| Image | Size | Noisy PSNR | Denoised PSNR | Improvement |
+|-------|------|------------|---------------|-------------|
+| Gen-M-Safa.jpg | 562×450 | 20.00 dB | 23.77 dB | +3.77 dB |
+| M-PilAfkan.jpg | 649×600 | 19.80 dB | 30.23 dB | +10.43 dB |
+
+### Method Details
+- **Algorithm**: Block Principal Component Pursuit (BPDN)
+- **Block size**: 8×8 pixels
+- **Stride**: 2×2 (75% overlap)
+- **Dictionary**: G:8x8x64 (64 atoms of size 8×8)
+- **Regularization (λ)**: 0.1
+- **Max iterations**: 250
+- **Relative tolerance**: 3e-3</pre></details><details class="source-file" open><summary><bdi>gwnden_clr_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/hw3-image-denoising/gwnden_clr_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Exported notebook code; may contain IPython commands.
+# %%
+from __future__ import print_function
+import numpy as np
+from PIL import Image
+from sporco import util, array, plot
+import sporco.metric as sm
+from sporco.admm import bpdn
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+# %%
+# Load Gen-M-Safa.jpg
+img = np.array(Image.open(&#x27;Gen-M-Safa.jpg&#x27;).convert(&#x27;L&#x27;), dtype=np.float64) / 255.0
+print(f&quot;Gen-M-Safa.jpg - Shape: {img.shape}&quot;)
+
+# Pad image to make dimensions compatible
+blksz = (8, 8)
+stpsz = (2, 2)
+h, w = img.shape
+pad_h = (blksz[0] - h % stpsz[0]) % stpsz[0]
+pad_w = (blksz[1] - w % stpsz[1]) % stpsz[1]
+img_padded = np.pad(img, ((0, pad_h), (0, pad_w)), mode=&#x27;edge&#x27;)
+
+# Add Gaussian noise
+np.random.seed(12345)
+sigma = 0.1
+imgn = img_padded + np.random.normal(0.0, sigma, img_padded.shape)
+
+# Extract blocks
+blocks = array.extract_blocks(imgn, blksz, stpsz)
+blockmeans = np.mean(blocks, axis=(0, 1))
+blocks -= blockmeans
+blocks = blocks.reshape(np.prod(blksz), -1)
+print(f&quot;Number of blocks: {blocks.shape[1]}&quot;)
+
+# Load dictionary
+D = util.convdicts()[&#x27;G:8x8x64&#x27;].reshape(np.prod(blksz), -1)
+print(f&quot;Dictionary shape: {D.shape}&quot;)
+
+# Set solver options
+lmbda = 1e-1
+opt = bpdn.BPDN.Options({&#x27;Verbose&#x27;: False, &#x27;MaxMainIter&#x27;: 250,
+                         &#x27;RelStopTol&#x27;: 3e-3, &#x27;AuxVarObj&#x27;: False,
+                         &#x27;AutoRho&#x27;: {&#x27;Enabled&#x27;: False}, &#x27;rho&#x27;: 1e1*lmbda})
+
+# Solve
+print(&quot;Running BPDN solver...&quot;)
+b = bpdn.BPDN(D, blocks, lmbda, opt)
+X = b.solve()
+
+# Reconstruct denoised image
+reconstructed = np.dot(D, X).reshape(blksz + (-1,)) + blockmeans
+imgd = array.average_blocks(reconstructed, img_padded.shape, stpsz)
+imgd = imgd[:h, :w]  # Crop back to original size
+
+# Calculate PSNR
+psnr_noisy = sm.psnr(img, imgn[:h, :w])
+psnr_denoised = sm.psnr(img, imgd)
+
+print(f&quot;Noisy image PSNR: {psnr_noisy:.2f} dB&quot;)
+print(f&quot;Denoised image PSNR: {psnr_denoised:.2f} dB&quot;)
+print(f&quot;BPDN solve time: {b.timer.elapsed(&#x27;solve&#x27;):.2f} s&quot;)
+
+# Save denoised image
+imgd_uint8 = np.clip(imgd * 255, 0, 255).astype(np.uint8)
+Image.fromarray(imgd_uint8).save(&#x27;Gen-M-Safa_denoised.png&#x27;)
+print(&quot;Saved: Gen-M-Safa_denoised.png&quot;)
+
+# Display results
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+axes[0].imshow(img, cmap=&#x27;gray&#x27;)
+axes[0].set_title(&#x27;Original Image&#x27;)
+axes[0].axis(&#x27;off&#x27;)
+axes[1].imshow(imgn[:h, :w], cmap=&#x27;gray&#x27;)
+axes[1].set_title(f&#x27;Noisy Image (σ={sigma})\nPSNR: {psnr_noisy:.2f} dB&#x27;)
+axes[1].axis(&#x27;off&#x27;)
+axes[2].imshow(imgd, cmap=&#x27;gray&#x27;)
+axes[2].set_title(f&#x27;Denoised Image\nPSNR: {psnr_denoised:.2f} dB&#x27;)
+axes[2].axis(&#x27;off&#x27;)
+plt.tight_layout()
+plt.savefig(&#x27;Gen-M-Safa_comparison.png&#x27;, dpi=150)
+plt.show()
+
+# %%
+# Load M-PilAfkan.jpg
+img = np.array(Image.open(&#x27;M-PilAfkan.jpg&#x27;).convert(&#x27;L&#x27;), dtype=np.float64) / 255.0
+print(f&quot;M-PilAfkan.jpg - Shape: {img.shape}&quot;)
+
+# Pad image to make dimensions compatible
+blksz = (8, 8)
+stpsz = (2, 2)
+h, w = img.shape
+pad_h = (blksz[0] - h % stpsz[0]) % stpsz[0]
+pad_w = (blksz[1] - w % stpsz[1]) % stpsz[1]
+img_padded = np.pad(img, ((0, pad_h), (0, pad_w)), mode=&#x27;edge&#x27;)
+
+# Add Gaussian noise
+np.random.seed(12345)
+sigma = 0.1
+imgn = img_padded + np.random.normal(0.0, sigma, img_padded.shape)
+
+# Extract blocks
+blocks = array.extract_blocks(imgn, blksz, stpsz)
+blockmeans = np.mean(blocks, axis=(0, 1))
+blocks -= blockmeans
+blocks = blocks.reshape(np.prod(blksz), -1)
+print(f&quot;Number of blocks: {blocks.shape[1]}&quot;)
+
+# Load dictionary
+D = util.convdicts()[&#x27;G:8x8x64&#x27;].reshape(np.prod(blksz), -1)
+print(f&quot;Dictionary shape: {D.shape}&quot;)
+
+# Set solver options
+lmbda = 1e-1
+opt = bpdn.BPDN.Options({&#x27;Verbose&#x27;: False, &#x27;MaxMainIter&#x27;: 250,
+                         &#x27;RelStopTol&#x27;: 3e-3, &#x27;AuxVarObj&#x27;: False,
+                         &#x27;AutoRho&#x27;: {&#x27;Enabled&#x27;: False}, &#x27;rho&#x27;: 1e1*lmbda})
+
+# Solve
+print(&quot;Running BPDN solver...&quot;)
+b = bpdn.BPDN(D, blocks, lmbda, opt)
+X = b.solve()
+
+# Reconstruct denoised image
+reconstructed = np.dot(D, X).reshape(blksz + (-1,)) + blockmeans
+imgd = array.average_blocks(reconstructed, img_padded.shape, stpsz)
+imgd = imgd[:h, :w]  # Crop back to original size
+
+# Calculate PSNR
+psnr_noisy = sm.psnr(img, imgn[:h, :w])
+psnr_denoised = sm.psnr(img, imgd)
+
+print(f&quot;Noisy image PSNR: {psnr_noisy:.2f} dB&quot;)
+print(f&quot;Denoised image PSNR: {psnr_denoised:.2f} dB&quot;)
+print(f&quot;BPDN solve time: {b.timer.elapsed(&#x27;solve&#x27;):.2f} s&quot;)
+
+# Save denoised image
+imgd_uint8 = np.clip(imgd * 255, 0, 255).astype(np.uint8)
+Image.fromarray(imgd_uint8).save(&#x27;M-PilAfkan_denoised.png&#x27;)
+print(&quot;Saved: M-PilAfkan_denoised.png&quot;)
+
+# Display results
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+axes[0].imshow(img, cmap=&#x27;gray&#x27;)
+axes[0].set_title(&#x27;Original Image&#x27;)
+axes[0].axis(&#x27;off&#x27;)
+axes[1].imshow(imgn[:h, :w], cmap=&#x27;gray&#x27;)
+axes[1].set_title(f&#x27;Noisy Image (σ={sigma})\nPSNR: {psnr_noisy:.2f} dB&#x27;)
+axes[1].axis(&#x27;off&#x27;)
+axes[2].imshow(imgd, cmap=&#x27;gray&#x27;)
+axes[2].set_title(f&#x27;Denoised Image\nPSNR: {psnr_denoised:.2f} dB&#x27;)
+axes[2].axis(&#x27;off&#x27;)
+plt.tight_layout()
+plt.savefig(&#x27;M-PilAfkan_comparison.png&#x27;, dpi=150)
+plt.show()
+</code></pre></details><details class="source-file" ><summary><bdi>report.md</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/hw3-image-denoising/report.md" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Assignment: Image Denoising using Sparse Coding and OMP
+
+## Course: Sparse Optimization
+
+**Due Date: Two weeks from distribution**
+
+**Submission: One Jupyter notebook (.ipynb) with code, outputs, and answers in Markdown cells**
+
+---
+
+## Overview
+
+In this assignment, you will explore image denoising using sparse coding. You will work with the provided SPORCO example (color image denoising) as your reference, then adapt it to grayscale images and implement an OMP-based solver.
+
+---
+
+## Provided Materials
+
+1. **Reference code**: Complete example of RGB image denoising using BPDN
+2. **Two test images**: `sarbaz1.jpg` and `sarbaz2.jpg` (choose ONE to work with)
+3. **SPORCO library** with multiple grayscale dictionaries
+
+---
+
+## Learning Objectives
+
+- Understand sparse coding for image denoising
+- Visualize dictionary atoms and their coefficients
+- Investigate effects of block size and stride (overlap)
+- Implement OMP as an alternative sparse coding solver
+- Compare different denoising approaches
+
+---
+
+## Part 1: Exploring Dictionary Atoms (15 points)
+
+**Task:** Load two different grayscale dictionaries and visualize their atoms.
+
+```python
+from sporco import util
+
+# Load dictionaries
+D1 = util.convdicts()[&#x27;G:8x8x64&#x27;]   # shape: (8, 8, 64)
+D2 = util.convdicts()[&#x27;G:12x12x64&#x27;] # shape: (12, 12, 64)
+
+# Display all atoms (arranged in 8x8 grid for 8x8 dictionary)
+```
+
+**Questions to answer (in Markdown):**
+1. What patterns do you observe in the dictionary atoms (edges, textures, gradients, smooth regions)?
+2. How do the 8x8 atoms differ from 12x12 atoms? Which one has more &quot;structured&quot; patterns?
+3. Why might a dictionary need different types of atoms for natural images?
+
+**Deliverable:** Two figures showing dictionary atoms.
+
+---
+
+## Part 2: Single Block Analysis - Atoms and Coefficients (15 points)
+
+**Task:** Select ONE block from the noisy image and show:
+1. Which dictionary atoms are selected for representing that block
+2. Their corresponding coefficients (weights)
+
+**Implementation steps:**
+
+```python
+# Extract a single block from the noisy image (e.g., at position (100, 100))
+blksz = (8, 8)
+stpsz = (2, 2)  # for extraction, but we&#x27;ll take just one block
+
+# Extract all blocks
+blocks = array.extract_blocks(imgn, blksz, stpsz)
+blockmeans = np.mean(blocks, axis=(0,1))
+blocks -= blockmeans
+blocks = blocks.reshape(np.prod(blksz), -1)
+
+# Select a specific block (e.g., block index 500)
+single_block = blocks[:, 500]
+
+# Solve using BPDN or OMP to get coefficients
+X_single = b.solve()  # or your OMP solver
+coefficients = X_single[:, 500]  # coefficients for this block
+
+# Find indices of top 5 non-zero coefficients
+top_indices = np.argsort(np.abs(coefficients))[-5:][::-1]
+top_coeffs = coefficients[top_indices]
+
+# Display:
+# 1. The original block (reshape to 8x8)
+# 2. The top 5 selected dictionary atoms (reshaped to 8x8)
+# 3. Their coefficient values
+```
+
+**Questions to answer:**
+1. What do the selected atoms look like? Are they similar to the block content?
+2. How does the linear combination of these atoms reconstruct the block?
+3. Show the reconstruction error (difference between original block and reconstructed block).
+
+**Deliverable:** A figure showing: original block, top 5 atoms with their coefficients, and reconstructed block.
+
+---
+
+## Part 3: Block Size and Stride Effects (25 points)
+
+**Task:** Experiment with **4 different configurations** (reduced from 6) to understand the effects of block size and stride.
+
+| Config | Block Size | Stride | Overlap | Dictionary |
+|--------|-----------|--------|---------|------------|
+| A | (8,8) | (8,8) | 0% | G:8x8x64 |
+| B | (8,8) | (2,2) | 75% | G:8x8x64 |
+| C | (12,12) | (12,12) | 0% | G:12x12x64 |
+| D | (12,12) | (3,3) | 75% | G:12x12x64 |
+
+**For each configuration, you need to:**
+1. Denoise the image using the BPDN solver (from the original example)
+2. Record PSNR and SSIM values
+3. Visually inspect for blocking artifacts
+
+**Code template:**
+```python
+configs = [
+    {&#x27;blksz&#x27;: (8,8), &#x27;stpsz&#x27;: (8,8), &#x27;dict_key&#x27;: &#x27;G:8x8x64&#x27;, &#x27;name&#x27;: &#x27;8x8_no_overlap&#x27;},
+    {&#x27;blksz&#x27;: (8,8), &#x27;stpsz&#x27;: (2,2), &#x27;dict_key&#x27;: &#x27;G:8x8x64&#x27;, &#x27;name&#x27;: &#x27;8x8_overlap&#x27;},
+    {&#x27;blksz&#x27;: (12,12), &#x27;stpsz&#x27;: (12,12), &#x27;dict_key&#x27;: &#x27;G:12x12x64&#x27;, &#x27;name&#x27;: &#x27;12x12_no_overlap&#x27;},
+    {&#x27;blksz&#x27;: (12,12), &#x27;stpsz&#x27;: (3,3), &#x27;dict_key&#x27;: &#x27;G:12x12x64&#x27;, &#x27;name&#x27;: &#x27;12x12_overlap&#x27;},
+]
+
+results = []
+for cfg in configs:
+    # Run denoising
+    # Store PSNR, SSIM, and reconstructed image
+    pass
+```
+
+**Questions to answer:**
+1. Which configurations produce visible **blocking artifacts**? Why?
+2. How does increasing overlap (stride=2 vs stride=8) affect PSNR?
+3. Compare configurations A vs B (same block size, different stride). Trade-offs?
+4. Compare A vs C (same stride, different block size). Which works better and why?
+5. Describe the computational cost differences between these configurations.
+
+**Deliverable:** 
+- Table with PSNR/SSIM for all 4 configurations
+- Display denoised images side-by-side for visual comparison
+- Zoomed-in regions showing artifacts where present
+
+---
+
+## Part 4: Replacing BPDN with OMP (25 points)
+
+**Task:** Implement OMP and replace the BPDN solver. Compare performance.
+
+### OMP Implementation (provided to students):
+
+```python
+import numpy as np
+from numpy.linalg import pinv
+
+def omp(X, y, k, tol=1e-6):
+    &quot;&quot;&quot;
+    Orthogonal Matching Pursuit
+    
+    Parameters:
+    X: design matrix (n_features, n_atoms) - the dictionary
+    y: target vector (n_features,) - one image block
+    k: maximum sparsity (number of non-zero coefficients)
+    tol: residual tolerance for early stopping
+    
+    Returns:
+    w: coefficient vector (n_atoms,)
+    &quot;&quot;&quot;
+    n, p = X.shape
+    w = np.zeros(p)
+    residual = y.copy()
+    active = []
+    
+    for _ in range(k):
+        # Find most correlated atom
+        correlations = np.abs(X.T @ residual)
+        correlations[active] = -np.inf  # exclude already selected
+        new_idx = np.argmax(correlations)
+        active.append(new_idx)
+        
+        # Solve least squares on active set
+        X_active = X[:, active]
+        w_active = pinv(X_active) @ y
+        
+        # Update residual
+        residual = y - X_active @ w_active
+        
+        # Stop if residual is small
+        if np.linalg.norm(residual) &lt; tol:
+            break
+    
+    # Convert to full coefficient vector
+    w_sparse = np.zeros(p)
+    w_sparse[active] = w_active
+    return w_sparse
+```
+
+### OMP-Based Solver Class:
+
+```python
+class OMP_Denoise:
+    def __init__(self, D, blocks, sparsity):
+        &quot;&quot;&quot;
+        D: dictionary (n_features, n_atoms)
+        blocks: signals to code (n_features, n_blocks)
+        sparsity: maximum number of non-zero coefficients (k)
+        &quot;&quot;&quot;
+        self.D = D
+        self.blocks = blocks
+        self.sparsity = sparsity
+    
+    def solve(self):
+        &quot;&quot;&quot;Returns coefficient matrix X of shape (n_atoms, n_blocks)&quot;&quot;&quot;
+        n_atoms = self.D.shape[1]
+        n_blocks = self.blocks.shape[1]
+        X = np.zeros((n_atoms, n_blocks))
+        
+        for i in range(n_blocks):
+            if i % 500 == 0:  # progress indicator
+                print(f&quot;Processing block {i}/{n_blocks}&quot;)
+            X[:, i] = omp(self.D, self.blocks[:, i], self.sparsity)
+        
+        return X
+```
+
+### Experiments:
+
+Compare **three methods** using the best configuration from Part 3:
+
+1. **BPDN** (λ = 0.1) - from original example
+2. **OMP-sparse** (k = 5) - very sparse
+3. **OMP-medium** (k = 15) - moderately sparse  
+4. **OMP-dense** (k = 30) - less sparse
+
+**Record for each:**
+- Denoising PSNR
+- Computation time (use `time.time()` or `%timeit`)
+
+**Questions to answer:**
+1. How does PSNR change as k (sparsity) increases in OMP?
+2. What is the relationship between λ in BPDN and k in OMP?
+3. Which method is faster? Which gives better quality for your image?
+4. If you had to denoise a large batch of images, which method would you choose and why?
+
+**Deliverable:** 
+- Table comparing all 4 methods (PSNR, SSIM, time)
+- Your observation about the relationship between BPDN&#x27;s λ and OMP&#x27;s k
+
+---
+
+## Part 5: Comparison with Traditional Median Filter (10 points)
+
+**Task:** Compare sparse coding with a simple median filter.
+
+```python
+from scipy.signal import medfilt2d
+
+# Apply median filter with different window sizes
+denoised_med_3 = medfilt2d(noisy_image, kernel_size=3)
+denoised_med_5 = medfilt2d(noisy_image, kernel_size=5)
+denoised_med_7 = medfilt2d(noisy_image, kernel_size=7)
+```
+
+**Test with two noise levels:**
+- σ = 0.05 (low noise)
+- σ = 0.1 (medium noise - same as previous parts)
+
+**Compare:**
+- Best sparse coding result (from Part 3 or Part 4)
+- Best median filter result
+
+**Questions to answer:**
+1. Create a bar chart comparing PSNR for both noise levels across all methods
+2. For which noise level does sparse coding show the biggest improvement over median filtering?
+3. Look at the denoised images: where does median filtering fail (e.g., edges, textures)?
+4. Based on your results, would you always choose sparse coding over median filtering? Why or why not?
+
+---
+
+## Submission Requirements
+
+### Format:
+**Single Jupyter Notebook** with:
+1. Code cells that run sequentially (use `Cell → Run All` to verify)
+2. Markdown cells answering all questions
+3. All figures displayed inline
+4. Comments explaining important steps
+
+### Notebook Structure:
+
+```markdown
+# Image Denoising with Sparse Coding - Assignment
+
+## Student Name: [Your Name]
+## Image Used: sarbaz1.jpg (or sarbaz2.jpg)
+
+## Part 1: Dictionary Atoms
+[Code + Output + Answers]
+
+## Part 2: Single Block Analysis
+[Code + Output + Answers]
+
+## Part 3: Block Size and Stride Effects
+[Code + Output + Table + Answers]
+
+## Part 4: OMP Implementation
+[Code + Output + Table + Answers]
+
+## Part 5: Comparison with Median Filter
+[Code + Output + Chart + Answers]
+
+## Conclusion
+[Summary of key findings]
+```
+
+### Required Tables:
+
+**Part 3 Table:**
+| Configuration | PSNR (dB) | SSIM | Time (s) | Blocking Artifacts? |
+|---------------|-----------|------|----------|---------------------|
+| 8x8, stride 8 | | | | |
+| 8x8, stride 2 | | | | |
+| 12x12, stride 12 | | | | |
+| 12x12, stride 3 | | | | |
+
+**Part 4 Table:**
+| Method | PSNR (dB) | SSIM | Time (s) |
+|--------|-----------|------|----------|
+| BPDN (λ=0.1) | | | |
+| OMP (k=5) | | | |
+| OMP (k=15) | | | |
+| OMP (k=30) | | | |
+
+**Part 5 Table (σ=0.05):**
+| Method | PSNR (dB) |
+|--------|-----------|
+| Median 3x3 | |
+| Median 5x5 | |
+| Median 7x7 | |
+| Best Sparse | |
+
+**Part 5 Table (σ=0.1):** (similar)
+
+---
+
+## Important Notes
+
+1. **Fixed random seed**: Always use `np.random.seed(12345)` when adding noise
+2. **Choose ONE image** from the two provided
+3. **Part 4 may be slow** (OMP loops over blocks). For testing, you can use a subset of blocks, but report the estimated full-image time
+4. **Use mean aggregation** for all experiments (simpler than median)
+5. **Include all outputs** - your notebook should show the results when opened
+
+---
+
+## Grading Rubric (Total 100 points)
+
+| Section | Points | Criteria |
+|---------|--------|----------|
+| Part 1 | 15 | Correct atom visualization + thoughtful answers |
+| Part 2 | 15 | Single block analysis + atom/coefficient visualization |
+| Part 3 | 25 | All 4 configurations tested + artifact identification + complete table |
+| Part 4 | 25 | OMP works correctly + comparison with BPDN + relationship analysis |
+| Part 5 | 10 | Complete comparison + chart + practical conclusion |
+| Code Quality | 10 | Clean, commented, reproducible notebook |
+
+---
+
+## Hints and Tips
+
+1. **For Part 2**: The block index affects which atoms are selected. Try a few different blocks (e.g., smooth region, edge region, texture region) and compare.
+
+2. **For Part 3**: Blocking artifacts are most visible in smooth regions (sky, skin, background). Zoom in on these areas.
+
+3. **For Part 4**: If OMP is too slow:
+   ```python
+   # Run on first 500 blocks only for testing
+   n_blocks_test = min(500, blocks.shape[1])
+   blocks_test = blocks[:, :n_blocks_test]
+   X_test = omp_solver.solve()
+   # Then estimate full time: time_per_block × total_blocks
+   ```
+
+4. **For part timing**: Use `%%time` at the beginning of a cell to measure execution time.
+
+---
+
+## Good luck! 🍀
+
+**Remember:** The goal is to understand sparse coding, not just get the highest PSNR. Explain your observations clearly in Markdown cells.</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw1-naive-bayes/">تمرین ۱: Gaussian Naive Bayes ←</a><a href="../hw4-kernel-kmeans/">تمرین ۴: Kernel K-Means ←</a><a href="../mashhad-real-estate/">پروژهٔ داده‌های املاک مشهد ←</a><a href="../study-notes/">یادداشت‌های مرور SML ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

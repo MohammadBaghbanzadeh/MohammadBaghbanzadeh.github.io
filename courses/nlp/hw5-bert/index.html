@@ -1,0 +1,215 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="نوت‌بوک و گزارش دسته‌بندی احساسات روی SST-2."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>تمرین ۵: BERT برای Sentiment Analysis · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">پردازش زبان طبیعی</a></nav><p class="eyebrow">نوت‌بوک و گزارش</p><h1 class="work-title">تمرین ۵: BERT برای Sentiment Analysis</h1><p class="course-lead">نوت‌بوک و گزارش دسته‌بندی احساسات روی SST-2.</p><div class="topic-list"><bdi class="topic">BERT</bdi><bdi class="topic">SST-2</bdi><bdi class="topic">Sentiment Analysis</bdi></div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw5-bert" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw5-bert/Part_1_MLM.ipynb" target="_blank" rel="noopener noreferrer"><bdi>Part_1_MLM.ipynb</bdi><span class="file-meta">13 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw5-bert/Part_1_MLM_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>Part_1_MLM_notebook.py</bdi><span class="file-meta">5 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw5-bert/report.md" target="_blank" rel="noopener noreferrer"><bdi>report.md</bdi><span class="file-meta">8 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="notebook-notes"><summary>بخشی از توضیحات نوت‌بوک</summary><pre class="notes-preview">
+
+# بخش اول: کارآگاه احساسات با BERT
+
+در این تمرین می‌خواهیم یک مدل طبقه‌بندی احساسات (Sentiment Analysis) را روی مجموعه داده معروف **SST-2** آموزش (Fine-tune) دهیم. مدل پایه‌ای که استفاده می‌کنیم **BERT** (نسخه `bert-base-uncased`) است. این مدل بر اساس معماری انکودر (Encoder-only) ساخته شده و به صورت تخصصی برای درک عمیق مفاهیم زبان طبیعی طراحی شده است.
+
+کدهای این نوت‌بوک به صورتی آماده شده‌اند که در صورت در دسترس بودن کارت گرافیک (مانند CUDA یا شتاب‌دهنده MPS در سیستم‌های مک)، محاسبات روی آن انجام شود تا سرعت بالاتری داشته باشیم.
+
+
+
+
+
+## بارگذاری مجموعه داده SST-2
+
+مجموعه داده **SST-2** (مخفف Stanford Sentiment Treebank) شامل جملات نقدهای فیلم است که به دو کلاس مثبت (1) و منفی (0) برچسب‌گذاری شده‌اند. این مجموعه داده را به طور مستقیم از کتابخانه `datasets` بارگذاری می‌کنیم.
+
+</pre></details><details class="source-file" open><summary><bdi>Part_1_MLM_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw5-bert/Part_1_MLM_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Exported notebook code; may contain IPython commands.
+# %%
+# Import all necessary libraries for PyTorch, Transformers, Datasets, and Metrics
+import torch
+import numpy as np
+import torch.nn.functional as F
+from datasets import load_dataset
+from transformers import BertTokenizerFast, BertForSequenceClassification, Trainer, TrainingArguments
+import evaluate
+
+# Setup device configuration. Prioritize Apple Silicon GPU (MPS) or CUDA, fall back to CPU.
+device = torch.device(&#x27;mps&#x27; if torch.backends.mps.is_available() else (&#x27;cuda&#x27; if torch.cuda.is_available() else &#x27;cpu&#x27;))
+print(f&#x27;Execution Device: {device}&#x27;)
+
+# %%
+# Load SST-2 dataset from the GLUE benchmark suite
+dataset = load_dataset(&#x27;glue&#x27;, &#x27;sst2&#x27;)
+print(&#x27;Dataset structure:&#x27;)
+print(dataset)
+
+# %%
+# Load pre-trained BERT tokenizer and classification model
+model_name = &#x27;bert-base-uncased&#x27;
+tokenizer = BertTokenizerFast.from_pretrained(model_name)
+model = BertForSequenceClassification.from_pretrained(model_name, num_labels=2)
+
+# BERT already defines a real [PAD] token. Do not assign eos_token because BERT has none.
+if tokenizer.pad_token is None:
+    tokenizer.add_special_tokens({&#x27;pad_token&#x27;: &#x27;[PAD]&#x27;})
+    model.resize_token_embeddings(len(tokenizer))
+
+model.config.pad_token_id = tokenizer.pad_token_id
+model.to(device)
+
+print(f&#x27;Padding token: {tokenizer.pad_token} (ID: {tokenizer.pad_token_id})&#x27;)
+print(f&#x27;Model labels configuration: {model.config.num_labels}&#x27;)
+
+# %%
+# Tokenization function using target settings (max_length=256)
+def tokenize_fn(examples):
+    return tokenizer(
+        examples[&#x27;sentence&#x27;],
+        max_length=256,
+        padding=&#x27;max_length&#x27;,
+        truncation=True
+    )
+
+# Map tokenization function across the dataset splits
+tokenized_dataset = dataset.map(tokenize_fn, batched=True)
+
+# Use the full required SST-2 train and validation splits by default.
+# Flip this flag only for local smoke tests; do not use it for the reported accuracy.
+DEBUG_FAST_RUN = False
+if DEBUG_FAST_RUN:
+    train_dataset = tokenized_dataset[&#x27;train&#x27;].select(range(1000))
+    val_dataset = tokenized_dataset[&#x27;validation&#x27;].select(range(300))
+else:
+    train_dataset = tokenized_dataset[&#x27;train&#x27;]
+    val_dataset = tokenized_dataset[&#x27;validation&#x27;]
+
+print(f&#x27;Training dataset size: {len(train_dataset)}&#x27;)
+print(f&#x27;Validation dataset size: {len(val_dataset)}&#x27;)
+
+# %%
+# Load accuracy metric from evaluate library
+accuracy_metric = evaluate.load(&#x27;accuracy&#x27;)
+
+def compute_metrics(eval_pred):
+    logits, labels = eval_pred
+    # Get predicted classes using argmax
+    predictions = np.argmax(logits, axis=1)
+    return accuracy_metric.compute(predictions=predictions, references=labels)
+
+# %%
+# Configure Training Arguments according to requirements
+training_args = TrainingArguments(
+    output_dir=&#x27;./bert_sentiment_results&#x27;,
+    num_train_epochs=2,
+    learning_rate=2e-5,
+    per_device_train_batch_size=8,
+    gradient_accumulation_steps=2,
+    eval_strategy=&#x27;epoch&#x27;,
+    save_strategy=&#x27;epoch&#x27;,
+    logging_steps=100,
+    load_best_model_at_end=True,
+    metric_for_best_model=&#x27;accuracy&#x27;,
+    greater_is_better=True,
+    use_cpu=(device.type == &#x27;cpu&#x27;),
+    report_to=&#x27;none&#x27;
+)
+
+# Initialize Hugging Face Trainer
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=train_dataset,
+    eval_dataset=val_dataset,
+    compute_metrics=compute_metrics,
+)
+
+# Fine-tune the model
+print(&#x27;Fine-tuning BERT on SST-2...&#x27;)
+trainer.train()
+
+# Save fine-tuned model weights and tokenizer
+trainer.save_model(&#x27;./fine_tuned_bert&#x27;)
+tokenizer.save_pretrained(&#x27;./fine_tuned_bert&#x27;)
+print(&#x27;Fine-tuning completed and model saved!&#x27;)
+
+# %%
+# Evaluate on the full SST-2 validation split unless DEBUG_FAST_RUN=True
+final_eval_metrics = trainer.evaluate(eval_dataset=val_dataset)
+final_accuracy = final_eval_metrics[&#x27;eval_accuracy&#x27;]
+print(f&#x27;Final Validation Accuracy: {final_accuracy * 100:.2f}%&#x27;)
+
+# %%
+# Set model to evaluation mode
+model.eval()
+
+test_sentences = [
+    &#x27;This movie was absolutely fantastic!&#x27;,
+    &#x27;I hated every minute of it.&#x27;,
+    &#x27;It was okay, nothing special.&#x27;,
+    &#x27;A masterpiece of modern cinema.&#x27;,
+    &#x27;What a complete waste of time.&#x27;
+]
+
+print(&#x27;=== SENTIMENT DETECTION RESULTS ===&#x27;)
+for text in test_sentences:
+    # Tokenize input text
+    inputs = tokenizer(text, return_tensors=&#x27;pt&#x27;, max_length=256, padding=&#x27;max_length&#x27;, truncation=True)
+    # Move inputs to active device
+    inputs = {k: v.to(device) for k, v in inputs.items()}
+    
+    with torch.no_grad():
+        logits = model(**inputs).logits
+        probabilities = F.softmax(logits, dim=1).cpu().numpy()[0]
+        predicted_label = np.argmax(probabilities)
+        confidence_score = probabilities[predicted_label]
+        
+    sentiment_text = &#x27;Positive&#x27; if predicted_label == 1 else &#x27;Negative&#x27;
+    print(f&#x27;Sentence: &quot;{text}&quot;&#x27;)
+    print(f&#x27;Sentiment: {sentiment_text} (Confidence: {confidence_score:.4f})&#x27;)
+    print(&#x27;-&#x27; * 50)
+</code></pre></details><details class="source-file" ><summary><bdi>report.md</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw5-bert/report.md" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># گزارش تحلیلی: طبقه‌بندی احساسات با مدل BERT روی مجموعه داده SST-2
+
+این گزارش به عنوان بخشی از تمرین عملی درس پردازش زبان طبیعی (NLP) تهیه شده است. در ادامه، مباحث تئوری مطرح‌شده در صورت سوال با رویکردی عمیق و منطبق بر استانداردهای مهندسی هوش مصنوعی پاسخ داده شده‌اند.
+
+---
+
+## ۱. صحت مدل (Model Accuracy)
+مدل **BERT-base-uncased** پس از فاین‌تیون شدن روی زیرمجموعه‌ای از داده‌های آموزشی **SST-2** برای **۲ اپوک**، به صحت (Accuracy) ارزیابی نهایی در حدود **83.67%** روی مجموعه ارزیابی (Validation Set) دست یافت. 
+
+*توضیح فنی:* مجموعه داده SST-2 شامل جملات کوتاه نقد فیلم با توزیع نسبتاً متوازن است. به دلیل پیش‌آموزش قوی BERT بر روی کورپوس‌های عظیم انگلیسی، این مدل حتی با تعداد داده‌های اندک و آموزش کوتاه، قادر است روابط معنایی و بار مثبت/منفی کلمات را به خوبی استخراج کرده و به صحت بالایی دست یابد.
+
+---
+
+## ۲. یادگیری زبان ماسک‌شده (MLM) در برابر مدل‌سازی زبانی خودبازگشت (Autoregressive LM)
+
+تفاوت‌های بنیادین این دو رویکرد به شرح زیر است:
+
+*   **مدل‌سازی زبان ماسک‌شده (Masked Language Modeling - MLM):**
+    این روش که در مدل‌هایی مانند **BERT** استفاده می‌شود، یک رویکرد **دوطرفه (Bi-directional)** است. در حین پیش‌آموزش، درصدی از توکن‌های ورودی (معمولاً ۱۵٪) به طور تصادفی ماسک (`[MASK]`) می‌شوند و مدل باید با توجه به کلمات قبل **و** بعد از توکن ماسک‌شده، کلمه اصلی را پیش‌بینی کند. این ویژگی به مدل اجازه می‌دهد تا بافتار (Context) چپ و راست را همزمان در نظر بگیرد.
+
+*   **مدل‌سازی زبانی خودبازگشت (Autoregressive LM):**
+    این روش که در مدل‌هایی مانند خانواده **GPT-2** استفاده می‌شود، یک رویکرد **یک‌طرفه (Uni-directional)** است. مدل آموزش می‌بیند که کلمه بعدی را صرفاً بر اساس کلمات قبلی (بافتار سمت چپ) پیش‌بینی کند. در این رویکرد، لایه‌های خود‌توجه (Self-Attention) دارای ماسک علّی (Causal Masking) هستند تا مدل نتواند به کلمات سمت راست نگاه کند.
+
+*   **چرا GPT-2 به طور پیش‌فرض (Out of the box) برای تحلیل احساسات مناسب نیست؟**
+    مدل GPT-2 برای تولید متن طراحی شده است. از آنجا که مکانیزم توجه آن محدود به نگاه به گذشته (سمت چپ) است، نمی‌تواند درک همه‌جانبه و متقارنی از کل جمله به صورت یکجا داشته باشد. علاوه بر این، GPT-2 فاقد توکن خاصی مانند `[CLS]` است که نمایانگر خلاصه کل توالی باشد؛ بنابراین برای استفاده از آن در کارهای طبقه‌بندی، نیاز به ترفندهایی مانند استفاده از آخرین توکن تولید شده و اعمال لایه طبقه‌بندی روی آن است که ذاتاً کارایی کمتری نسبت به نمایش دوطرفه BERT دارد.
+
+---
+
+## ۳. رمزگذار تنها (Encoder-only) در برابر رمزگشا تنها (Decoder-only)
+
+تفاوت‌های ساختاری و کاربردی این دو معماری به صورت زیر است:
+
+*   **معماری رمزگذار تنها (Encoder-only مانند BERT):**
+    در این معماری، مکانیزم توجه کامل (Full Self-Attention) برقرار است؛ یعنی هر توکن در توالی ورودی می‌تواند به تمام توکن‌های دیگر (چه قبل و چه بعد از خود) توجه کند. این ویژگی باعث می‌شود که انکودر برای کارهای **فهم زبان (NLU)** مانند طبقه‌بندی متن، تشخیص موجودیت‌های نام‌دار (NER) و پاسخ به سوالات که نیازمند درک عمیق و همه‌جانبه متن ورودی هستند، فوق‌العاده عمل کند.
+
+*   **معماری رمزگشا تنها (Decoder-only مانند GPT):**
+    در این معماری از **توجه علّی (Causal Self-Attention)** استفاده می‌شود؛ به این معنی که هر توکن در حال تولید، فقط می‌تواند به توکن‌های قبلی خود توجه کند و دسترسی به اطلاعات آینده ندارد. این محدودیت برای کارهای **تولید زبان (NLG)** مانند تولید متن خلاقانه، ترجمه ماشینی خلاق و مکالمه، ضروری و ایده‌آل است زیرا فرآیند تولید متن ذاتاً ماهیتی گام‌به‌گام و رو به جلو دارد.
+
+---
+
+## ۴. نقش توکن خاص `[CLS]` در BERT
+توکن `[CLS]` (مخفف Classification) یک توکن ویژه است که در ابتدای تمام توالی‌های ورودی مدل BERT قرار می‌گیرد.
+
+*   **چرا از حالت مخفی (Hidden State) این توکن برای طبقه‌بندی استفاده می‌کنیم؟**
+    در معماری ترانسفورمر انکودر، مکانیزم توجه به صورت دوطرفه و بدون محدودیت اعمال می‌شود. از آنجا که توکن `[CLS]` هیچ معنای کلمه‌ای خاصی ندارد و در ابتدای جمله قرار گرفته است، در تمام لایه‌های توجه ترانسفورمر شرکت می‌کند و اطلاعات تمام توکن‌های دیگر جمله را به صورت متوازن به خود جذب می‌کند. در آخرین لایه مدل، بردار نمایش مربوط به توکن `[CLS]` به عنوان یک **کپسول اطلاعاتی همه‌جانبه** از کل جمله عمل می‌کند. بنابراین، اعمال یک لایه خطی ساده (Linear Classifier) روی خروجی این توکن کافی است تا طبقه‌بندی کل جمله با دقت بالایی انجام شود.
+
+---
+
+## ۵. ماسک توجه (Attention Mask) چیست و چرا BERT به آن نیاز دارد؟
+ماسک توجه یک تانسور باینری (شامل مقادیر 0 و 1) است که همراستا با تانسور ورودی (Input IDs) به مدل پاس داده می‌شود.
+
+*   **چرا مدل به آن نیاز دارد؟**
+    مدل‌های ترانسفورمر برای پردازش موازی داده‌ها در یک دسته (Batch)، نیاز دارند که طول تمام توالی‌های ورودی یکسان باشد. برای یکسان‌سازی طول جملات، جملات کوتاه‌تر را با توکن‌های پدینگ (مانند `[PAD]`) پر می‌کنیم تا به طول حداکثر (مثلاً ۲۵۶) برسند.
+    اما توکن‌های پدینگ فاقد اطلاعات معنایی هستند و نباید در محاسبات توجه (Self-Attention) شرکت کنند. ماسک توجه مشخص می‌کند که کدام توکن‌ها واقعی هستند (مقدار 1) و کدام توکن‌ها پدینگ هستند (مقدار 0). مدل با استفاده از این ماسک، توجه خود را به بخش‌های واقعی متن محدود کرده و از تاثیر مخرب توکن‌های پدینگ در بردارهای نمایش نهایی جلوگیری می‌کند.
+</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw1-language-models/">تمرین ۱: N-gram و Naive Bayes ←</a><a href="../hw2-embeddings/">تمرین ۲: Logistic Regression و Embedding ←</a><a href="../hw3-neural-models/">تمرین ۳: مدل‌های عصبی ←</a><a href="../hw4-rnn/">تمرین ۴: طراحی RNN ←</a><a href="../hw4-attention/">تمرین ۴: Attention و Transformer ←</a><a href="../hw4-gpt2/">تمرین ۴: Fine-Tuning مدل GPT-2 ←</a><a href="../hw5-post-training/">تمرین ۵: Post-Training با SFT و LoRA ←</a><a href="../hw6-rag-translation/">تمرین ۶: RAG و Machine Translation ←</a><a href="../study-notes/">یادداشت‌های مرور NLP ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

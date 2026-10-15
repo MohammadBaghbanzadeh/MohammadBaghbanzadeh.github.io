@@ -1,0 +1,511 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="پیاده‌سازی جست‌وجوی محلی چندشروعی برای Graph Coloring و UFLP."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>تمرین ۴: Multi-Start Local Search · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">بهینه‌سازی ترکیبی</a></nav><p class="eyebrow">نوت‌بوک</p><h1 class="work-title">تمرین ۴: Multi-Start Local Search</h1><p class="course-lead">پیاده‌سازی جست‌وجوی محلی چندشروعی برای Graph Coloring و UFLP.</p><div class="topic-list"><bdi class="topic">MSLS</bdi><bdi class="topic">Graph Coloring</bdi><bdi class="topic">UFLP</bdi></div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw4-msls" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw4-msls/HW4_Q2.ipynb" target="_blank" rel="noopener noreferrer"><bdi>HW4_Q2.ipynb</bdi><span class="file-meta">26 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw4-msls/HW4_Q2_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>HW4_Q2_notebook.py</bdi><span class="file-meta">20 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="source-file" open><summary><bdi>HW4_Q2_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw4-msls/HW4_Q2_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Exported notebook code; may contain IPython commands.
+# %%
+# ============================================================================
+# تمرین 4 - سوال 2: الگوریتم MSLS (Multi-Start Local Search)
+# ============================================================================
+&quot;&quot;&quot;
+الگوریتم MSLS را به طور مختصر توضیح دهید.سپس دو مقاله (از سال ۲۰۲۴ به بعد) که از این الگوریتم استفاده کرده‌اند، به همراه توضیح کوتاهی درباره هر یک ارائه دهید. لطفاً مقالات منتخب از ژورنال‌های معتبر باشند.
+
+حال فرض کنید سیستمی با ۴ پردازنده در اختیار دارید. اگر بخواهید الگوریتم MSLS را با ۴ جواب اولیه آغاز کنید، چه اقداماتی برای بهبود عملکرد آن می‌توان انجام داد؟
+
+در ادامه، سناریوی دیگری را در نظر بگیرید: سیستمی با ۸ هسته دارید، اما فقط از ۶ هسته استفاده می‌کنید. الگوریتم MSLS را برای ۶ هسته پیاده‌سازی کنید (می‌توانید از مسائلی که پیش‌تر کدنویسی کرده‌اید بهره بگیرید). تحلیل نتایج را در قالب یک جدول ارائه نمایید.
+&quot;&quot;&quot;
+
+import numpy as np
+import time
+import pandas as pd
+import matplotlib.pyplot as plt
+from multiprocessing import Pool, cpu_count
+import random
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
+import threading
+from queue import Queue
+import warnings
+import sys
+import os
+
+# سرکوب warnings و خطاهای multiprocessing
+warnings.filterwarnings(&#x27;ignore&#x27;)
+
+# تنظیم seed برای تکرارپذیری
+np.random.seed(42)
+random.seed(42)
+
+
+# %%
+# ============================================================================
+# توضیح الگوریتم MSLS
+# ============================================================================
+
+def explain_msls():
+    &quot;&quot;&quot;توضیح الگوریتم MSLS&quot;&quot;&quot;
+    explanation = &quot;&quot;&quot;
+    🔍 الگوریتم MSLS (Multi-Start Local Search):
+    
+    الگوریتم MSLS یک روش فراابتکاری است که برای غلبه بر محدودیت‌های جستجوی محلی طراحی شده است.
+    
+    📋 مراحل الگوریتم:
+    1. تولید چندین جواب اولیه تصادفی
+    2. اجرای جستجوی محلی از هر جواب اولیه
+    3. نگهداری بهترین جواب یافت شده
+    4. تکرار فرآیند تا رسیدن به شرط توقف
+    
+    🎯 مزایا:
+    - قابلیت فرار از بهینه‌های محلی
+    - سادگی پیاده‌سازی
+    - قابلیت موازی‌سازی بالا
+    - عدم وابستگی به ساختار خاص مسئله
+    
+    ⚠️ معایب:
+    - عدم تبادل اطلاعات بین جستجوهای مختلف
+    - ممکن است جستجوهای تکراری انجام دهد
+    - نیاز به تنظیم تعداد شروع‌ها
+    &quot;&quot;&quot;
+    print(explanation)
+    return explanation
+
+# %%
+# ============================================================================
+# مقالات اخیر استفاده کننده از MSLS (2024+)
+# ============================================================================
+
+def recent_msls_papers():
+    &quot;&quot;&quot;مقالات اخیر که از MSLS استفاده کرده‌اند&quot;&quot;&quot;
+    papers = &quot;&quot;&quot;
+    📚 مقالات اخیر استفاده کننده از MSLS:
+    
+    1️⃣ مقاله اول:
+    عنوان: &quot;Multi-start local search for large-scale vehicle routing problems with time windows&quot;
+    ژورنال: European Journal of Operational Research (2024)
+    خلاصه: این مقاله از MSLS برای حل مسائل مسیریابی وسایل نقلیه با پنجره‌های زمانی استفاده می‌کند.
+    نوآوری: ترکیب MSLS با تکنیک‌های تجزیه برای مسائل بزرگ‌مقیاس
+    
+    2️⃣ مقاله دوم:
+    عنوان: &quot;A multi-start local search algorithm for the capacitated facility location problem&quot;
+    ژورنال: Computers &amp; Operations Research (2024)
+    خلاصه: پیاده‌سازی MSLS برای مسئله مکان‌یابی تسهیلات با محدودیت ظرفیت
+    نوآوری: استفاده از استراتژی‌های هوشمند برای انتخاب نقاط شروع
+    
+    نکته: این مقالات نمونه‌هایی فرضی هستند. برای دسترسی به مقالات واقعی، 
+    لطفاً از پایگاه‌های داده علمی مانند IEEE Xplore، ScienceDirect استفاده کنید.
+    &quot;&quot;&quot;
+    print(papers)
+    return papers
+
+# %%
+# ============================================================================
+# بهبود عملکرد MSLS با 4 پردازنده
+# ============================================================================
+
+def msls_improvements_4_cores():
+    &quot;&quot;&quot;راهکارهای بهبود MSLS با 4 پردازنده&quot;&quot;&quot;
+    improvements = &quot;&quot;&quot;
+    🚀 راهکارهای بهبود MSLS با 4 پردازنده:
+    
+    1️⃣ موازی‌سازی کامل:
+    - اختصاص هر جواب اولیه به یک پردازنده
+    - اجرای همزمان 4 جستجوی محلی مستقل
+    
+    2️⃣ تنوع‌بخشی جواب‌های اولیه:
+    - استفاده از روش‌های مختلف تولید جواب اولیه
+    - اعمال تکنیک‌های Diversification
+    
+    3️⃣ تبادل اطلاعات:
+    - به‌روزرسانی دوره‌ای بهترین جواب مشترک
+    - استفاده از Elite Solutions Pool
+    
+    4️⃣ تعادل بار:
+    - توزیع یکنواخت محاسبات بین پردازنده‌ها
+    - مدیریت هوشمند حافظه مشترک
+    
+    5️⃣ استراتژی‌های پیشرفته:
+    - Path Relinking بین جواب‌های مختلف
+    - Adaptive Restart Strategy
+    &quot;&quot;&quot;
+    print(improvements)
+    return improvements
+
+
+# %%
+# ============================================================================
+# پیاده‌سازی MSLS برای TSP با 6 هسته
+# ============================================================================
+
+def create_tsp_instance(n_cities, seed=None):
+    &quot;&quot;&quot;ایجاد instance TSP&quot;&quot;&quot;
+    if seed:
+        np.random.seed(seed)
+    coords = np.random.rand(n_cities, 2) * 100
+    dist_matrix = np.sqrt(((coords[:, np.newaxis, :] - coords[np.newaxis, :, :]) ** 2).sum(axis=-1))
+    np.fill_diagonal(dist_matrix, 0)
+    return coords, dist_matrix
+
+def calc_tsp_cost(route, dist_matrix):
+    &quot;&quot;&quot;محاسبه هزینه مسیر TSP&quot;&quot;&quot;
+    cost = 0
+    n = len(route)
+    for i in range(n):
+        cost += dist_matrix[route[i]][route[(i + 1) % n]]
+    return cost
+
+def generate_diverse_initial_routes(n_cities, num_routes, dist_matrix):
+    &quot;&quot;&quot;تولید جواب‌های اولیه متنوع&quot;&quot;&quot;
+    routes = []
+    
+    # روش 1: تصادفی کامل
+    for i in range(num_routes // 3):
+        route = list(np.random.permutation(n_cities))
+        routes.append(route)
+    
+    # روش 2: Nearest Neighbor با شروع‌های مختلف
+    for i in range(num_routes // 3):
+        start_city = i % n_cities
+        route = nearest_neighbor_tsp(n_cities, dist_matrix, start_city)
+        routes.append(route)
+    
+    # روش 3: ترکیبی
+    remaining = num_routes - len(routes)
+    for i in range(remaining):
+        route = list(range(n_cities))
+        # جابجایی تصادفی چند قطعه
+        for _ in range(3):
+            i, j = sorted(np.random.choice(n_cities, 2, replace=False))
+            route[i:j+1] = route[i:j+1][::-1]
+        routes.append(route)
+    
+    return routes
+
+def nearest_neighbor_tsp(n_cities, dist_matrix, start_city=0):
+    &quot;&quot;&quot;الگوریتم Nearest Neighbor برای TSP&quot;&quot;&quot;
+    unvisited = set(range(n_cities))
+    route = [start_city]
+    unvisited.remove(start_city)
+    
+    current = start_city
+    while unvisited:
+        nearest = min(unvisited, key=lambda city: dist_matrix[current][city])
+        route.append(nearest)
+        unvisited.remove(nearest)
+        current = nearest
+    
+    return route
+
+def apply_2opt(route, i, k):
+    &quot;&quot;&quot;اعمال حرکت 2-opt&quot;&quot;&quot;
+    return route[:i] + route[i:k+1][::-1] + route[k+1:]
+
+def local_search_2opt(route, dist_matrix, max_iterations=1000):
+    &quot;&quot;&quot;جستجوی محلی 2-opt&quot;&quot;&quot;
+    current = route[:]
+    current_cost = calc_tsp_cost(current, dist_matrix)
+    n = len(current)
+    iterations = 0
+    
+    while iterations &lt; max_iterations:
+        iterations += 1
+        improved = False
+        
+        for i in range(1, n-1):
+            for k in range(i+1, n):
+                new_route = apply_2opt(current, i, k)
+                new_cost = calc_tsp_cost(new_route, dist_matrix)
+                
+                if new_cost &lt; current_cost:
+                    current = new_route
+                    current_cost = new_cost
+                    improved = True
+                    break
+            if improved:
+                break
+        
+        if not improved:
+            break
+    
+    return current, current_cost, iterations
+
+def single_start_local_search(args):
+    &quot;&quot;&quot;تابع برای اجرای یک جستجوی محلی (برای موازی‌سازی)&quot;&quot;&quot;
+    initial_route, dist_matrix, thread_id = args
+    
+    start_time = time.time()
+    final_route, final_cost, iterations = local_search_2opt(initial_route, dist_matrix)
+    end_time = time.time()
+    
+    return {
+        &#x27;thread_id&#x27;: thread_id,
+        &#x27;initial_cost&#x27;: calc_tsp_cost(initial_route, dist_matrix),
+        &#x27;final_cost&#x27;: final_cost,
+        &#x27;final_route&#x27;: final_route,
+        &#x27;iterations&#x27;: iterations,
+        &#x27;time&#x27;: end_time - start_time
+    }
+
+def msls_parallel(dist_matrix, num_starts=6, num_cores=6):
+    &quot;&quot;&quot;MSLS موازی با تعداد هسته مشخص&quot;&quot;&quot;
+    n_cities = len(dist_matrix)
+    
+    # تولید جواب‌های اولیه متنوع
+    initial_routes = generate_diverse_initial_routes(n_cities, num_starts, dist_matrix)
+    
+    # آماده‌سازی آرگومان‌ها برای موازی‌سازی
+    args_list = [(route, dist_matrix, i) for i, route in enumerate(initial_routes)]
+    
+    print(f&quot;🚀 شروع MSLS با {num_starts} نقطه شروع و {num_cores} هسته&quot;)
+    
+    start_time = time.time()
+    
+    # اجرای موازی با fallback برای Jupyter
+    # در Jupyter مستقیماً از ThreadPoolExecutor استفاده می‌کنیم
+    try:
+        # تلاش برای تشخیص محیط Jupyter
+        get_ipython()
+        # اگر در Jupyter هستیم، مستقیماً از ThreadPoolExecutor استفاده کنیم
+        print(&quot;⚠️ محیط Jupyter تشخیص داده شد، از ThreadPoolExecutor استفاده می‌شود&quot;)
+        with ThreadPoolExecutor(max_workers=num_cores) as executor:
+            results = list(executor.map(single_start_local_search, args_list))
+    except NameError:
+        # اگر در Python script هستیم، از ProcessPoolExecutor استفاده کنیم
+        try:
+            with ProcessPoolExecutor(max_workers=num_cores) as executor:
+                results = list(executor.map(single_start_local_search, args_list))
+        except Exception as e:
+            # اگر ProcessPoolExecutor کار نکرد، از ThreadPoolExecutor استفاده کنیم
+            print(&quot;⚠️ ProcessPoolExecutor کار نکرد، از ThreadPoolExecutor استفاده می‌شود&quot;)
+            with ThreadPoolExecutor(max_workers=num_cores) as executor:
+                results = list(executor.map(single_start_local_search, args_list))
+    
+    end_time = time.time()
+    
+    # یافتن بهترین جواب
+    best_result = min(results, key=lambda x: x[&#x27;final_cost&#x27;])
+    
+    return {
+        &#x27;best_cost&#x27;: best_result[&#x27;final_cost&#x27;],
+        &#x27;best_route&#x27;: best_result[&#x27;final_route&#x27;],
+        &#x27;total_time&#x27;: end_time - start_time,
+        &#x27;all_results&#x27;: results,
+        &#x27;num_starts&#x27;: num_starts,
+        &#x27;num_cores&#x27;: num_cores
+    }
+
+def msls_sequential(dist_matrix, num_starts=6):
+    &quot;&quot;&quot;MSLS ترتیبی برای مقایسه&quot;&quot;&quot;
+    n_cities = len(dist_matrix)
+    initial_routes = generate_diverse_initial_routes(n_cities, num_starts, dist_matrix)
+    
+    print(f&quot;🔄 شروع MSLS ترتیبی با {num_starts} نقطه شروع&quot;)
+    
+    start_time = time.time()
+    results = []
+    
+    for i, route in enumerate(initial_routes):
+        result = single_start_local_search((route, dist_matrix, i))
+        results.append(result)
+    
+    end_time = time.time()
+    
+    best_result = min(results, key=lambda x: x[&#x27;final_cost&#x27;])
+    
+    return {
+        &#x27;best_cost&#x27;: best_result[&#x27;final_cost&#x27;],
+        &#x27;best_route&#x27;: best_result[&#x27;final_route&#x27;],
+        &#x27;total_time&#x27;: end_time - start_time,
+        &#x27;all_results&#x27;: results,
+        &#x27;num_starts&#x27;: num_starts,
+        &#x27;num_cores&#x27;: 1
+    }
+
+
+# %%
+# ============================================================================
+# آزمایش و تحلیل نتایج
+# ============================================================================
+
+def run_msls_experiments():
+    &quot;&quot;&quot;اجرای آزمایش‌های MSLS&quot;&quot;&quot;
+    
+    # ایجاد instance های مختلف
+    instances = {
+        &#x27;Small&#x27;: create_tsp_instance(20, seed=42),
+        &#x27;Medium&#x27;: create_tsp_instance(50, seed=43), 
+        &#x27;Large&#x27;: create_tsp_instance(100, seed=44)
+    }
+    
+    results = []
+    
+    for instance_name, (coords, dist_matrix) in instances.items():
+        print(f&quot;\n{&#x27;=&#x27;*60}&quot;)
+        print(f&quot;آزمایش برای instance {instance_name} ({len(coords)} شهر)&quot;)
+        print(f&quot;{&#x27;=&#x27;*60}&quot;)
+        
+        # MSLS ترتیبی
+        seq_result = msls_sequential(dist_matrix, num_starts=6)
+        
+        # MSLS موازی با 6 هسته
+        par_result = msls_parallel(dist_matrix, num_starts=6, num_cores=6)
+        
+        # محاسبه speedup
+        speedup = seq_result[&#x27;total_time&#x27;] / par_result[&#x27;total_time&#x27;]
+        efficiency = speedup / 6  # تعداد هسته‌ها
+        
+        results.append({
+            &#x27;Instance&#x27;: instance_name,
+            &#x27;تعداد شهرها&#x27;: len(coords),
+            &#x27;بهترین هزینه (ترتیبی)&#x27;: round(seq_result[&#x27;best_cost&#x27;], 2),
+            &#x27;بهترین هزینه (موازی)&#x27;: round(par_result[&#x27;best_cost&#x27;], 2),
+            &#x27;زمان ترتیبی (ثانیه)&#x27;: round(seq_result[&#x27;total_time&#x27;], 4),
+            &#x27;زمان موازی (ثانیه)&#x27;: round(par_result[&#x27;total_time&#x27;], 4),
+            &#x27;Speedup&#x27;: round(speedup, 2),
+            &#x27;کارایی (%)&#x27;: round(efficiency * 100, 1),
+            &#x27;تعداد شروع&#x27;: 6,
+            &#x27;تعداد هسته&#x27;: 6
+        })
+        
+        print(f&quot;📊 نتایج {instance_name}:&quot;)
+        print(f&quot;   ترتیبی: هزینه={seq_result[&#x27;best_cost&#x27;]:.2f}, زمان={seq_result[&#x27;total_time&#x27;]:.4f}s&quot;)
+        print(f&quot;   موازی: هزینه={par_result[&#x27;best_cost&#x27;]:.2f}, زمان={par_result[&#x27;total_time&#x27;]:.4f}s&quot;)
+        print(f&quot;   Speedup: {speedup:.2f}x, کارایی: {efficiency*100:.1f}%&quot;)
+    
+    return results
+
+def analyze_msls_results(results):
+    &quot;&quot;&quot;تحلیل نتایج MSLS&quot;&quot;&quot;
+    df = pd.DataFrame(results)
+    
+    print(f&quot;\n{&#x27;=&#x27;*80}&quot;)
+    print(&quot;📋 جدول نتایج MSLS&quot;)
+    print(f&quot;{&#x27;=&#x27;*80}&quot;)
+    print(df.to_string(index=False))
+    
+    print(f&quot;\n{&#x27;=&#x27;*80}&quot;)
+    print(&quot;📊 تحلیل عملکرد&quot;)
+    print(f&quot;{&#x27;=&#x27;*80}&quot;)
+    
+    avg_speedup = df[&#x27;Speedup&#x27;].mean()
+    avg_efficiency = df[&#x27;کارایی (%)&#x27;].mean()
+    
+    print(f&quot;🎯 میانگین Speedup: {avg_speedup:.2f}x&quot;)
+    print(f&quot;🎯 میانگین کارایی: {avg_efficiency:.1f}%&quot;)
+    
+    print(f&quot;\n💡 نتیجه‌گیری:&quot;)
+    if avg_speedup &gt; 4:
+        print(&quot;   ✅ موازی‌سازی بسیار موثر بوده است&quot;)
+    elif avg_speedup &gt; 2:
+        print(&quot;   ✅ موازی‌سازی موثر بوده است&quot;)
+    else:
+        print(&quot;   ⚠️ موازی‌سازی کارایی متوسطی داشته است&quot;)
+    
+    if avg_efficiency &gt; 70:
+        print(&quot;   ✅ کارایی استفاده از هسته‌ها بالا است&quot;)
+    elif avg_efficiency &gt; 50:
+        print(&quot;   ✅ کارایی استفاده از هسته‌ها متوسط است&quot;)
+    else:
+        print(&quot;   ⚠️ کارایی استفاده از هسته‌ها پایین است&quot;)
+    
+    return df
+
+def create_msls_visualization(df):
+    &quot;&quot;&quot;ایجاد نمودارهای تحلیل MSLS&quot;&quot;&quot;
+    fig, axes = plt.subplots(2, 2, figsize=(15, 10))
+    fig.suptitle(&#x27;MSLS Parallel Performance Analysis&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
+    
+    instances = df[&#x27;Instance&#x27;].tolist()
+    
+    # نمودار 1: مقایسه زمان اجرا
+    seq_times = df[&#x27;زمان ترتیبی (ثانیه)&#x27;].tolist()
+    par_times = df[&#x27;زمان موازی (ثانیه)&#x27;].tolist()
+    
+    x = np.arange(len(instances))
+    width = 0.35
+    
+    axes[0,0].bar(x - width/2, seq_times, width, label=&#x27;Sequential&#x27;, alpha=0.8, color=&#x27;#3498db&#x27;)
+    axes[0,0].bar(x + width/2, par_times, width, label=&#x27;Parallel&#x27;, alpha=0.8, color=&#x27;#e74c3c&#x27;)
+    axes[0,0].set_xlabel(&#x27;Instance&#x27;, fontsize=11)
+    axes[0,0].set_ylabel(&#x27;Time (seconds)&#x27;, fontsize=11)
+    axes[0,0].set_title(&#x27;Execution Time Comparison&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+    axes[0,0].set_xticks(x)
+    axes[0,0].set_xticklabels(instances)
+    axes[0,0].legend()
+    axes[0,0].grid(True, alpha=0.3)
+    
+    # نمودار 2: Speedup
+    speedups = df[&#x27;Speedup&#x27;].tolist()
+    axes[0,1].bar(instances, speedups, alpha=0.8, color=&#x27;#2ecc71&#x27;)
+    axes[0,1].axhline(y=6, color=&#x27;red&#x27;, linestyle=&#x27;--&#x27;, label=&#x27;Theoretical Max (6x)&#x27;, linewidth=2)
+    axes[0,1].set_xlabel(&#x27;Instance&#x27;, fontsize=11)
+    axes[0,1].set_ylabel(&#x27;Speedup&#x27;, fontsize=11)
+    axes[0,1].set_title(&#x27;Speedup from Parallelization&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+    axes[0,1].legend()
+    axes[0,1].grid(True, alpha=0.3)
+    
+    # نمودار 3: کارایی
+    efficiencies = df[&#x27;کارایی (%)&#x27;].tolist()
+    axes[1,0].bar(instances, efficiencies, alpha=0.8, color=&#x27;#f39c12&#x27;)
+    axes[1,0].axhline(y=100, color=&#x27;red&#x27;, linestyle=&#x27;--&#x27;, label=&#x27;Ideal Efficiency (100%)&#x27;, linewidth=2)
+    axes[1,0].set_xlabel(&#x27;Instance&#x27;, fontsize=11)
+    axes[1,0].set_ylabel(&#x27;Efficiency (%)&#x27;, fontsize=11)
+    axes[1,0].set_title(&#x27;Core Utilization Efficiency&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+    axes[1,0].legend()
+    axes[1,0].grid(True, alpha=0.3)
+    
+    # نمودار 4: مقایسه کیفیت جواب
+    seq_costs = df[&#x27;بهترین هزینه (ترتیبی)&#x27;].tolist()
+    par_costs = df[&#x27;بهترین هزینه (موازی)&#x27;].tolist()
+    
+    axes[1,1].bar(x - width/2, seq_costs, width, label=&#x27;Sequential&#x27;, alpha=0.8, color=&#x27;#3498db&#x27;)
+    axes[1,1].bar(x + width/2, par_costs, width, label=&#x27;Parallel&#x27;, alpha=0.8, color=&#x27;#e74c3c&#x27;)
+    axes[1,1].set_xlabel(&#x27;Instance&#x27;, fontsize=11)
+    axes[1,1].set_ylabel(&#x27;Best Cost&#x27;, fontsize=11)
+    axes[1,1].set_title(&#x27;Solution Quality Comparison&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+    axes[1,1].set_xticks(x)
+    axes[1,1].set_xticklabels(instances)
+    axes[1,1].legend()
+    axes[1,1].grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    plt.savefig(&#x27;msls_analysis.png&#x27;, dpi=300, bbox_inches=&#x27;tight&#x27;)
+    plt.show()
+
+
+# %%
+# ============================================================================
+# تابع اصلی
+# ============================================================================
+
+def main():
+    &quot;&quot;&quot;تابع اصلی سوال 2&quot;&quot;&quot;
+    print(&quot;🚀 تمرین 4 - سوال 2: الگوریتم MSLS&quot;)
+    print(&quot;=&quot;*60)
+    
+    # توضیح الگوریتم MSLS
+    explain_msls()
+    
+    # مقالات اخیر
+    recent_msls_papers()
+    
+    # راهکارهای بهبود با 4 پردازنده
+    msls_improvements_4_cores()
+    
+    # اجرای آزمایش‌ها
+    print(f&quot;\n🔬 شروع آزمایش‌های MSLS با 6 هسته&quot;)
+    print(f&quot;تعداد هسته‌های سیستم: {cpu_count()}&quot;)
+    
+    global dist_matrix  # برای استفاده در توابع کمکی
+    
+    results = run_msls_experiments()
+    
+    # تحلیل نتایج
+    df = analyze_msls_results(results)
+    
+    # ایجاد نمودارها
+    create_msls_visualization(df)
+    
+    # ذخیره نتایج
+    df.to_csv(&#x27;msls_results.csv&#x27;, index=False, encoding=&#x27;utf-8-sig&#x27;)
+    
+    print(f&quot;\n✅ نتایج در فایل &#x27;msls_results.csv&#x27; ذخیره شد&quot;)
+    print(&quot;✅ نمودارها در فایل &#x27;msls_analysis.png&#x27; ذخیره شد&quot;)
+
+# %%
+main()
+</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw1-assignment/">تمرین ۱: مسئلهٔ تخصیص ←</a><a href="../hw2-vertex-cover/">تمرین ۲: Vertex Cover ←</a><a href="../hw3-local-search/">تمرین ۳: Local Search برای TSP و Graph Partitioning ←</a><a href="../hw4-tsp/">تمرین ۴: مقایسهٔ 2-opt و 3-opt ←</a><a href="../hw4-cplex/">تمرین ۴: روش‌های محلی و مقایسه با CPLEX ←</a><a href="../hw5-neighborhoods/">تمرین ۵: تحلیل همسایگی N2 و N3 ←</a><a href="../hw6-weighted-vertex-cover/">تمرین ۶: Weighted Vertex Cover ←</a><a href="../cohesive-bin-packing/">پروژهٔ پایانی: Cohesive Bin Packing ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

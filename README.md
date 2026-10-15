@@ -5,6 +5,8 @@
 ## بخش‌های سایت
 
 - [صفحهٔ اصلی](https://mohammadbaghbanzadeh.github.io/)
+- [درس‌ها و پروژه‌های دانشگاهی](https://mohammadbaghbanzadeh.github.io/courses/)
+- [آرشیو کدها در MasterCourses](https://github.com/MohammadBaghbanzadeh/MasterCourses)
 - [ارائهٔ گراف‌کاوی](https://mohammadbaghbanzadeh.github.io/GML/GPP.html)
 - [تحلیل سرشکن به روش پتانسیل](https://mohammadbaghbanzadeh.github.io/AmortizedAnalysis/PotentialMethod.html)
 - [ورود به بخش خصوصی](https://mohammadbaghbanzadeh.github.io/vault.html)

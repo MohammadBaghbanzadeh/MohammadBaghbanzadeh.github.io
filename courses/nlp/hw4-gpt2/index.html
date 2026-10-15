@@ -1,0 +1,187 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="نوت‌بوک آموزش مدل زبانی و مقایسهٔ راهبردهای تولید متن."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>تمرین ۴: Fine-Tuning مدل GPT-2 · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">پردازش زبان طبیعی</a></nav><p class="eyebrow">نوت‌بوک</p><h1 class="work-title">تمرین ۴: Fine-Tuning مدل GPT-2</h1><p class="course-lead">نوت‌بوک آموزش مدل زبانی و مقایسهٔ راهبردهای تولید متن.</p><div class="topic-list"><bdi class="topic">GPT-2</bdi><bdi class="topic">Fine-Tuning</bdi><bdi class="topic">Text Generation</bdi></div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw4-gpt2" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw4-gpt2/exercise_3.ipynb" target="_blank" rel="noopener noreferrer"><bdi>exercise_3.ipynb</bdi><span class="file-meta">12 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw4-gpt2/exercise_3_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>exercise_3_notebook.py</bdi><span class="file-meta">5 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="notebook-notes"><summary>بخشی از توضیحات نوت‌بوک</summary><pre class="notes-preview">
+
+# تمرین ۳ – تنظیم دقیق (Fine-Tuning) مدل GPT-2 روی جملات خلاقانه
+
+در این نوت‌بوک، مدل زبانی GPT-2 را روی مجموعه‌ای از ۵۰۰ جمله کوتاه و خلاقانه انگلیسی تنظیم دقیق می‌کنیم و سپس استراتژی‌های مختلف تولید متن را با هم مقایسه می‌کنیم.
+
+
+
+
+
+## ۱. نصب وابستگی‌ها
+
+</pre></details><details class="source-file" open><summary><bdi>exercise_3_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw4-gpt2/exercise_3_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Exported notebook code; may contain IPython commands.
+# %%
+# Uncomment and run once if packages are not installed
+!pip install transformers datasets torch accelerate
+
+# %%
+import os
+import torch
+from transformers import GPT2LMHeadModel, GPT2TokenizerFast
+
+# Force CPU to avoid MPS issues on Apple Silicon
+device = torch.device(&#x27;cpu&#x27;)
+
+# Path to the locally extracted model/tokenizer folders
+BASE_DIR = os.path.dirname(os.path.abspath(&#x27;__file__&#x27;))
+MODEL_PATH = os.path.join(BASE_DIR, &#x27;gpt2_full&#x27;, &#x27;gpt2_model&#x27;)
+TOKENIZER_PATH = os.path.join(BASE_DIR, &#x27;gpt2_full&#x27;, &#x27;gpt2_tokenizer&#x27;)
+
+
+model = GPT2LMHeadModel.from_pretrained(MODEL_PATH, local_files_only=True).to(device)
+tokenizer = GPT2TokenizerFast.from_pretrained(TOKENIZER_PATH, local_files_only=True)
+
+# GPT-2 has no pad token by default – use eos_token as pad
+tokenizer.pad_token = tokenizer.eos_token
+
+print(f&#x27;Model parameters: {model.num_parameters():,}&#x27;)
+print(f&#x27;Device: {device}&#x27;)
+print(&#x27;Model and tokenizer loaded successfully!&#x27;)
+
+# %%
+from datasets import Dataset
+
+# Read sentences from data.txt
+with open(&#x27;data.txt&#x27;, &#x27;r&#x27;, encoding=&#x27;utf-8&#x27;) as f:
+    lines = [line.strip() for line in f if line.strip()]
+
+print(f&#x27;Total sentences: {len(lines)}&#x27;)
+print(f&#x27;Sample: {lines[:3]}&#x27;)
+
+# Create a Hugging Face Dataset
+dataset = Dataset.from_dict({&#x27;text&#x27;: lines})
+dataset
+
+# %%
+# Tokenize the dataset
+def tokenize_function(examples):
+    tokenized = tokenizer(
+        examples[&#x27;text&#x27;],
+        truncation=True,
+        padding=&#x27;max_length&#x27;,
+        max_length=128
+    )
+    # For causal LM, labels = input_ids
+    tokenized[&#x27;labels&#x27;] = tokenized[&#x27;input_ids&#x27;].copy()
+    return tokenized
+
+tokenized_dataset = dataset.map(tokenize_function, batched=True, remove_columns=[&#x27;text&#x27;])
+tokenized_dataset.set_format(&#x27;torch&#x27;)
+
+# Split: 90% train, 10% validation
+split = tokenized_dataset.train_test_split(test_size=0.1, seed=42)
+train_dataset = split[&#x27;train&#x27;]
+eval_dataset = split[&#x27;test&#x27;]
+
+print(f&#x27;Train samples: {len(train_dataset)}&#x27;)
+print(f&#x27;Validation samples: {len(eval_dataset)}&#x27;)
+
+# %%
+from transformers import TrainingArguments, Trainer, DataCollatorForLanguageModeling
+
+training_args = TrainingArguments(
+    output_dir=&#x27;./gpt2_finetuned&#x27;,
+    num_train_epochs=2,
+    learning_rate=5e-5,
+    per_device_train_batch_size=8,
+    per_device_eval_batch_size=8,
+    gradient_accumulation_steps=2,
+    eval_strategy=&#x27;epoch&#x27;,
+    save_strategy=&#x27;epoch&#x27;,
+    logging_steps=10,
+    save_total_limit=1,
+    report_to=&#x27;none&#x27;,
+    use_cpu=True,
+)
+
+data_collator = DataCollatorForLanguageModeling(
+    tokenizer=tokenizer,
+    mlm=False  # GPT-2 is causal LM, not masked LM
+)
+
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=train_dataset,
+    eval_dataset=eval_dataset,
+    data_collator=data_collator,
+)
+
+print(&#x27;Starting fine-tuning... (this may take 1-3 hours on CPU)&#x27;)
+trainer.train()
+
+# %%
+# Evaluate on validation set
+eval_results = trainer.evaluate()
+print(f&quot;Validation Loss: {eval_results[&#x27;eval_loss&#x27;]:.4f}&quot;)
+print(f&quot;Perplexity: {2.718 ** eval_results[&#x27;eval_loss&#x27;]:.2f}&quot;)
+
+# %%
+# Save the fine-tuned model
+model.save_pretrained(&#x27;./gpt2_finetuned_final&#x27;)
+tokenizer.save_pretrained(&#x27;./gpt2_finetuned_final&#x27;)
+print(&#x27;Model saved to ./gpt2_finetuned_final&#x27;)
+
+# %%
+import torch
+
+prompt = &quot;The future of AI is&quot;
+input_ids = tokenizer.encode(prompt, return_tensors=&#x27;pt&#x27;).to(device)
+
+# Move model to eval mode
+model.eval()
+
+print(f&#x27;Prompt: &quot;{prompt}&quot;&#x27;)
+print(&#x27;=&#x27; * 60)
+
+# %%
+# --- Method 1: Greedy Decoding ---
+with torch.no_grad():
+    greedy_output = model.generate(
+        input_ids,
+        max_new_tokens=50,
+        do_sample=False,
+        pad_token_id=tokenizer.eos_token_id
+    )
+
+greedy_text = tokenizer.decode(greedy_output[0], skip_special_tokens=True)
+print(&#x27;🔹 Greedy Decoding:&#x27;)
+print(greedy_text)
+print()
+
+# %%
+# --- Method 2: Beam Search ---
+with torch.no_grad():
+    beam_output = model.generate(
+        input_ids,
+        max_new_tokens=50,
+        num_beams=5,
+        no_repeat_ngram_size=2,
+        early_stopping=True,
+        pad_token_id=tokenizer.eos_token_id
+    )
+
+beam_text = tokenizer.decode(beam_output[0], skip_special_tokens=True)
+print(&#x27;🔹 Beam Search (num_beams=5):&#x27;)
+print(beam_text)
+print()
+
+# %%
+# --- Method 3: Top-k &amp; Top-p Sampling (Creative) ---
+with torch.no_grad():
+    creative_output = model.generate(
+        input_ids,
+        max_new_tokens=50,
+        do_sample=True,
+        temperature=0.9,
+        top_k=50,
+        top_p=0.92,
+        pad_token_id=tokenizer.eos_token_id
+    )
+
+creative_text = tokenizer.decode(creative_output[0], skip_special_tokens=True)
+print(&#x27;🔹 Creative Sampling (temperature=0.9, top_k=50, top_p=0.92):&#x27;)
+print(creative_text)
+print()
+</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw1-language-models/">تمرین ۱: N-gram و Naive Bayes ←</a><a href="../hw2-embeddings/">تمرین ۲: Logistic Regression و Embedding ←</a><a href="../hw3-neural-models/">تمرین ۳: مدل‌های عصبی ←</a><a href="../hw4-rnn/">تمرین ۴: طراحی RNN ←</a><a href="../hw4-attention/">تمرین ۴: Attention و Transformer ←</a><a href="../hw5-bert/">تمرین ۵: BERT برای Sentiment Analysis ←</a><a href="../hw5-post-training/">تمرین ۵: Post-Training با SFT و LoRA ←</a><a href="../hw6-rag-translation/">تمرین ۶: RAG و Machine Translation ←</a><a href="../study-notes/">یادداشت‌های مرور NLP ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

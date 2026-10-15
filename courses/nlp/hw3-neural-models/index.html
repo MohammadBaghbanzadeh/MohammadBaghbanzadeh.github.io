@@ -1,0 +1,627 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="پاسخ‌های تمرین دربارهٔ مدل‌های عصبی پردازش زبان طبیعی."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>تمرین ۳: مدل‌های عصبی · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">پردازش زبان طبیعی</a></nav><p class="eyebrow">پاسخ مکتوب</p><h1 class="work-title">تمرین ۳: مدل‌های عصبی</h1><p class="course-lead">پاسخ‌های تمرین دربارهٔ مدل‌های عصبی پردازش زبان طبیعی.</p><div class="topic-list"><bdi class="topic">Neural Networks</bdi><bdi class="topic">NLP</bdi></div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw3-neural-models" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw3-neural-models/Q1/Q1.tex" target="_blank" rel="noopener noreferrer"><bdi>Q1/Q1.tex</bdi><span class="file-meta">8 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw3-neural-models/Q2/Q2.tex" target="_blank" rel="noopener noreferrer"><bdi>Q2/Q2.tex</bdi><span class="file-meta">6 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw3-neural-models/Q3/Q3.tex" target="_blank" rel="noopener noreferrer"><bdi>Q3/Q3.tex</bdi><span class="file-meta">6 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="source-file" ><summary><bdi>Q1/Q1.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw3-neural-models/Q1/Q1.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,shapes}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{XB Niloofar}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{\textbf{پاسخ سوال ۱} \\[0.4cm] \small معماری شبکه عصبی و الگوریتم \en{Backpropagation}}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{}
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{مفاهیم پایه: معماری شبکه عصبی (فصل \en{۶} کتاب)}
+
+بر اساس بخش‌های \textbf{\en{۶-۱}}، \textbf{\en{۶-۳}} و \textbf{\en{۶-۴}} کتاب، شبکه عصبی ارائه شده در سوال دارای معماری زیر است:
+
+\begin{itemize}
+    \item \textbf{لایه ورودی (\en{Input Layer})}: یک نورون \(x_1\)
+    \item \textbf{لایه پنهان (\en{Hidden Layer})}: دو نورون \(z_1\) و \(z_2\) با تابع فعال‌سازی \textbf{\en{ReLU}} (بخش \en{۶-۱}، معادله \en{۶-۶})
+    \item \textbf{لایه خروجی (\en{Output Layer})}: یک نورون با تابع فعال‌سازی \textbf{\en{Sigmoid}} (بخش \en{۶-۱}، معادله \en{۶-۳})
+\end{itemize}
+
+طبق شکل سوال، وزن‌ها و بایاس‌ها به صورت زیر هستند:
+
+\begin{align*}
+&amp;\text{:وزن‌های لایه پنهان} \quad w_{11} = 0.2,\; w_{12} = -0.1,\; w_{21} = 0.7,\; w_{22} = 0.7 \\
+&amp;\text{:بایاس‌های لایه پنهان} \quad b_{11} = 0.04,\; b_{12} = 0.01 \\
+&amp;\text{:بایاس لایه خروجی} \quad b_{21} = 0.08
+\end{align*}
+
+\separator
+\section{قسمت (الف): پیش‌بینی کلاس برای \(x_1 = 0.3\)}
+
+\subsection{محاسبه \en{Forward Pass}}
+
+ابتدا خروجی لایه پنهان را محاسبه می‌کنیم. برای هر نورون، ابتدا مجموع وزنی را محاسبه کرده سپس تابع \en{ReLU} را اعمال می‌کنیم:
+
+\[
+\text{ReLU}(z) = \max(0, z)
+\]
+
+\textbf{نورون \(z_1\):}
+\[
+z_{1,\text{net}} = w_{11} \cdot x_1 + b_{11} = 0.2 \times 0.3 + 0.04 = 0.06 + 0.04 = 0.10
+\]
+\[
+z_1 = \text{ReLU}(0.10) = 0.10
+\]
+
+\textbf{نورون \(z_2\):}
+\[
+z_{2,\text{net}} = w_{12} \cdot x_1 + b_{12} = (-0.1) \times 0.3 + 0.01 = -0.03 + 0.01 = -0.02
+\]
+\[
+z_2 = \text{ReLU}(-0.02) = 0
+\]
+
+سپس خروجی لایه نهایی (لایه خروجی) را با تابع سیگموئید محاسبه می‌کنیم. طبق شکل، وزن‌های اتصال از لایه پنهان به خروجی \(w_{21} = 0.7\) و \(w_{22} = 0.7\) و بایاس خروجی \(b_{21} = 0.08\) است:
+
+\[
+y_{\text{net}} = w_{21} \cdot z_1 + w_{22} \cdot z_2 + b_{21} = 0.7 \times 0.10 + 0.7 \times 0 + 0.08 = 0.07 + 0 + 0.08 = 0.15
+\]
+
+\[
+\hat{y} = \sigma(y_{\text{net}}) = \frac{1}{1 + e^{-0.15}}
+\]
+
+مقدار \(e^{-0.15} \approx 0.8607\)، بنابراین:
+
+\[
+\hat{y} \approx \frac{1}{1 + 0.8607} = \frac{1}{1.8607} \approx 0.5374
+\]
+
+\subsection{قاعده تصمیم‌گیری}
+
+با آستانه ۰.۵، اگر \(\hat{y} \ge 0.5\) کلاس ۱ و در غیر این صورت کلاس ۰ پیش‌بینی می‌شود. از آنجا که \(0.5374 &gt; 0.5\):
+
+\[
+\boxed{\text{کلاس پیش‌بینی‌شده: } 1}
+\]
+
+\separator
+\section{قسمت (ب): محاسبه \en{Backpropagation} برای \(w_{12}\) و \(b_{12}\)}
+
+برای محاسبه گرادیان‌ها، فرض می‌کنیم تابع هزینه از نوع \textbf{باینری کراس-آنتروپی} است (بخش \en{۶-۶-۱} کتاب، معادله \en{۶-۲۵}):
+
+\[
+L(\hat{y}, y) = -[y \log \hat{y} + (1-y) \log(1-\hat{y})]
+\]
+
+\subsection{گام ۱: محاسبه سیگنال خطا در لایه خروجی}
+
+مشتق تابع هزینه نسبت به خروجی شبکه (\(\hat{y}\)) برای یک نمونه با برچسب واقعی \(y\) به صورت زیر است:
+
+\[
+\delta^{(3)} = \frac{\partial L}{\partial y_{\text{net}}} = \hat{y} - y
+\]
+
+(این فرمول از مشتق‌گیری تابع کراس-آنتروپی و سیگموئید به دست می‌آید، همان‌طور که در بخش \en{۶-۶-۴} کتاب، معادله \en{۶-۴۳} نشان داده شده است.)
+
+در این سوال، برچسب واقعی \(y\) داده نشده است. معمولاً در مسائل طبقه‌بندی، فرض می‌شود نمونه متعلق به کلاس مثبت (\(y=1\)) است. با این فرض:
+
+\[
+\delta^{(3)} = \hat{y} - y = 0.5374 - 1 = -0.4626
+\]
+
+\subsection{گام ۲: انتشار خطا به لایه پنهان}
+
+سیگنال خطا برای نورون \(z_2\) در لایه پنهان به صورت زیر محاسبه می‌شود:
+
+\[
+\delta^{(2)}_2 = \delta^{(3)} \cdot w_{22} \cdot \text{ReLU}&#x27;(z_{2,\text{net}})
+\]
+
+که در آن \(\text{ReLU}&#x27;(z)\) مشتق تابع \en{ReLU} است (بخش \en{۶-۶-۴} کتاب، معادله \en{۶-۴۰}):
+
+\[
+\text{ReLU}&#x27;(z) = 
+\begin{cases} 
+1 &amp; \text{\en{if }} z &gt; 0 \\
+0 &amp; \text{\en{if }} z \le 0
+\end{cases}
+\]
+
+از آنجا که \(z_{2,\text{net}} = -0.02 \le 0\)، داریم \(\text{ReLU}&#x27;(-0.02) = 0\). بنابراین:
+
+\[
+\delta^{(2)}_2 = (-0.4626) \times 0.7 \times 0 = 0
+\]
+
+\subsection{گام ۳: محاسبه گرادیان نسبت به \(w_{12}\) و \(b_{12}\)}
+
+گرادیان تابع هزینه نسبت به وزن \(w_{12}\) و بایاس \(b_{12}\) به صورت زیر محاسبه می‌شود:
+
+\[
+\frac{\partial L}{\partial w_{12}} = \delta^{(2)}_2 \cdot x_1 = 0 \times 0.3 = 0
+\]
+
+\[
+\frac{\partial L}{\partial b_{12}} = \delta^{(2)}_2 \cdot 1 = 0 \times 1 = 0
+\]
+
+\subsection{نتیجه}
+
+از آنجا که \(z_{2,\text{net}} &lt; 0\)، نورون \(z_2\) در ناحیه صفر تابع \en{ReLU} قرار دارد و مشتق آن صفر است. بنابراین سیگنال خطا در این نورون خنثی شده و به نورون‌های قبلی منتقل نمی‌شود. در نتیجه:
+
+\[
+\boxed{\frac{\partial L}{\partial w_{12}} = 0 \quad \text{و} \quad \frac{\partial L}{\partial b_{12}} = 0}
+\]
+
+\separator
+\section{جمع‌بندی و پاسخ نهایی}
+
+\begin{center}
+\fbox{\parbox{0.9\linewidth}{\centering
+\textbf{پاسخ نهایی:}
+\begin{itemize}
+    \item \textbf{قسمت (الف):} با \(x_1 = 0.3\)، خروجی مدل \(\hat{y} \approx 0.5374 &gt; 0.5\) است. بنابراین شبکه \textbf{کلاس ۱} را پیش‌بینی می‌کند.
+    \item \textbf{قسمت (ب):} 
+    \[
+    \frac{\partial L}{\partial w_{12}} = 0, \qquad \frac{\partial L}{\partial b_{12}} = 0
+    \]
+    دلیل: چون \(z_{2,\text{net}} = -0.02 &lt; 0\)، مشتق \en{ReLU} صفر است و گرادیان به این وزن و بایاس نمی‌رسد.
+\end{itemize}
+}}
+\end{center}
+
+\thickseparator
+
+\section{نکات تکمیلی}
+
+\begin{itemize}
+    \item بایاس لایه خروجی \(b_{21} = 0.08\) در محاسبات لحاظ شده است.
+    \item اگر برچسب واقعی نمونه \(y=0\) بود، \(\delta^{(3)} = 0.5374 - 0 = 0.5374\) می‌شد که همچنان به دلیل صفر بودن مشتق \en{ReLU}، گرادیان‌ها صفر باقی می‌ماند.
+    \item این مثال نشان می‌دهد که چگونه نورون‌های خاموش (\en{dead neurons}) در شبکه‌های عمیق می‌توانند باعث قطع شدن جریان گرادیان شوند (بخش \en{۶-۶} کتاب).
+\end{itemize}
+
+\thickseparator
+
+\end{document}</code></pre></details><details class="source-file" ><summary><bdi>Q2/Q2.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw3-neural-models/Q2/Q2.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{XB Niloofar}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{\textbf{پاسخ سوال ۲} \\[0.4cm] \small شبکه عصبی برای تحلیل احساسات با \en{Embedding}}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{}
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{مفاهیم پایه: معماری شبکه عصبی با \en{Embedding} (فصل \en{۶} کتاب)}
+
+بر اساس بخش‌های \textbf{\en{۶-۱}}، \textbf{\en{۶-۳}}، \textbf{\en{۶-۴}} و \textbf{\en{۶-۵}} کتاب، شبکه عصبی ارائه شده در سوال دارای معماری زیر است:
+
+\begin{itemize}
+    \item \textbf{لایه \en{Embedding}}: تبدیل ایندکس کلمات به بردارهای با ابعاد \(d=2\)
+    \item \textbf{لایه پنهان (\en{Hidden Layer})}: دو نورون با تابع فعال‌سازی \textbf{\en{ReLU}}
+    \item \textbf{لایه خروجی (\en{Output Layer})}: یک نورون با تابع فعال‌سازی \textbf{\en{Sigmoid}}
+    \item \textbf{بایاس‌ها}: تمام بایاس‌ها صفر در نظر گرفته شده‌اند
+\end{itemize}
+
+\separator
+\section{داده‌های مسأله}
+
+\subsection{ماتریس \en{Embedding} (E)}
+\[
+E = 
+\begin{bmatrix}
+0.2 &amp; -0.1 \\
+0.5 &amp; 0.3 \\
+-0.4 &amp; 0.2 \\
+0.1 &amp; 0.0
+\end{bmatrix}
+\]
+به طوری که:
+\begin{itemize}
+    \item \en{index 0}: \( [0.2, -0.1] \)
+    \item \en{index 1}: \( [0.5, 0.3] \)
+    \item \en{index 2}: \( [-0.4, 0.2] \)
+    \item \en{index 3}: \( [0.1, 0.0] \)
+\end{itemize}
+
+\subsection{وزن‌های شبکه}
+
+\[
+W^{(1)} = 
+\begin{bmatrix}
+0.8 &amp; -0.2 \\
+0.1 &amp; 0.6
+\end{bmatrix}
+\quad,\quad
+W^{(2)} = 
+\begin{bmatrix}
+0.5 \\
+-0.3
+\end{bmatrix}
+\]
+
+\separator
+\section{فرض: انتخاب روش \en{Pooling} و ایندکس کلمات}
+
+برای ادامه حل، فرض می‌کنیم:
+
+\[
+\text{ایندکس کلمه اول} = 1 \quad,\quad \text{ایندکس کلمه دوم} = 2
+\]
+
+همچنین برای محاسبه \en{Embedding} سند، از روش \textbf{میانگین گیری (\en{Mean Pooling})} استفاده می‌کنیم (بخش \en{۶-۵} کتاب، معادله \en{۶-۲۱}).
+
+\separator
+\section{گام ۱: استخراج \en{Embedding} کلمات از ماتریس E}
+
+\begin{align*}
+e_{\text{word}_1} &amp;= E[1] = [0.5, 0.3] \\
+e_{\text{word}_2} &amp;= E[2] = [-0.4, 0.2]
+\end{align*}
+
+\separator
+\section{گام ۲: محاسبه \en{Embedding} سند با روش میانگین گیری}
+
+\[
+e_{\text{doc}} = \frac{1}{2} \left( e_{\text{word}_1} + e_{\text{word}_2} \right) = \frac{1}{2} \left( [0.5, 0.3] + [-0.4, 0.2] \right)
+\]
+
+\[
+e_{\text{doc}} = \frac{1}{2} \left( [0.5 - 0.4,\; 0.3 + 0.2] \right) = \frac{1}{2} [0.1, 0.5] = [0.05, 0.25]
+\]
+
+\separator
+\section{گام ۳: محاسبه \en{Forward Pass} شبکه}
+
+\subsection{محاسبه لایه پنهان \(h\)}
+
+\[
+h_{\text{net}} = W^{(1)} \cdot e_{\text{doc}}^T = 
+\begin{bmatrix}
+0.8 &amp; -0.2 \\
+0.1 &amp; 0.6
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+0.05 \\
+0.25
+\end{bmatrix}
+\]
+
+\begin{align*}
+h_{\text{net},1} &amp;= 0.8 \times 0.05 + (-0.2) \times 0.25 = 0.04 - 0.05 = -0.01 \\
+h_{\text{net},2} &amp;= 0.1 \times 0.05 + 0.6 \times 0.25 = 0.005 + 0.15 = 0.155
+\end{align*}
+
+اعمال تابع \en{ReLU} (بخش \en{۶-۱} کتاب، معادله \en{۶-۶}):
+
+\[
+\text{ReLU}(x) = 
+\begin{cases} 
+x &amp; if x &gt; 0 \\
+0 &amp; if x \le 0
+\end{cases}
+\]
+
+\[
+h_1 = \text{ReLU}(-0.01) = 0
+\]
+\[
+h_2 = \text{ReLU}(0.155) = 0.155
+\]
+
+\[
+h = [0, \; 0.155]
+\]
+
+\subsection{محاسبه لایه خروجی \(y\)}
+
+\[
+y_{\text{net}} = W^{(2)} \cdot h^T = 
+\begin{bmatrix}
+0.5 &amp; -0.3
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+0 \\
+0.155
+\end{bmatrix}
+= 0 \times 0.5 + 0.155 \times (-0.3) = -0.0465
+\]
+
+اعمال تابع \en{Sigmoid} (بخش \en{۶-۱} کتاب، معادله \en{۶-۳}):
+
+\[
+\hat{y} = \sigma(y_{\text{net}}) = \frac{1}{1 + e^{-(-0.0465)}} = \frac{1}{1 + e^{0.0465}}
+\]
+
+مقدار \(e^{0.0465} \approx 1.0476\)، بنابراین:
+
+\[
+\hat{y} \approx \frac{1}{1 + 1.0476} = \frac{1}{2.0476} \approx 0.4884
+\]
+
+\separator
+\section{گام ۴: محاسبه مقدار \en{Loss}}
+
+از آنجا که برچسب واقعی در سوال مشخص نشده، فرض می‌کنیم \(y = 1\) (کلاس مثبت). تابع هزینه از نوع \textbf{باینری کراس-آنتروپی} است (بخش \en{۶-۶-۱} کتاب، معادله \en{۶-۲۵}):
+
+\[
+L(\hat{y}, y) = -[y \log \hat{y} + (1-y) \log(1-\hat{y})]
+\]
+
+با \(y = 1\):
+
+\[
+L = -\log(\hat{y}) = -\log(0.4884)
+\]
+
+\[
+\log(0.4884) \approx -0.7169
+\]
+
+\[
+L \approx -(-0.7169) = 0.7169
+\]
+
+\separator
+\section{جمع‌بندی و پاسخ نهایی}
+
+\begin{center}
+\fbox{\parbox{0.9\linewidth}{\centering
+\textbf{پاسخ نهایی:}
+\begin{itemize}
+    \item \textbf{\en{Embedding} سند (با میانگین گیری):} \(e_{\text{doc}} = [0.05, 0.25]\)
+    \item \textbf{خروجی لایه پنهان:} \(h = [0, 0.155]\)
+    \item \textbf{خروجی نهایی مدل:} \(\hat{y} \approx 0.4884\)
+    \item \textbf{مقدار \en{Loss} (با فرض \(y=1\)):} \(L \approx 0.7169\)
+\end{itemize}
+}}
+\end{center}
+
+\thickseparator
+
+\end{document}</code></pre></details><details class="source-file" ><summary><bdi>Q3/Q3.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw3-neural-models/Q3/Q3.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{XB Niloofar}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{\textbf{پاسخ سوال ۳} \\[0.4cm] \small محاسبه گرادیان نسبت به بردارهای \en{Embedding}}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{}
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{مفاهیم پایه: \en{Backpropagation} تا لایه \en{Embedding}}
+
+بر اساس بخش‌های \textbf{\en{۶-۵}} و \textbf{\en{۶-۶}} کتاب، برای به‌روزرسانی بردارهای \en{Embedding} باید گرادیان تابع هزینه را نسبت به آن‌ها محاسبه کنیم. در این سوال، وزن‌های شبکه (\(W^{(1)}\) و \(W^{(2)}\)) ثابت فرض شده‌اند و فقط \en{Embedding}ها به‌روزرسانی می‌شوند.
+
+\separator
+\section{داده‌های مسأله (از سوال قبل)}
+
+\subsection{ماتریس \en{Embedding} (E)}
+\[
+E = 
+\begin{bmatrix}
+0.2 &amp; -0.1 \\
+0.5 &amp; 0.3 \\
+-0.4 &amp; 0.2 \\
+0.1 &amp; 0.0
+\end{bmatrix}
+\]
+
+\subsection{وزن‌های شبکه}
+\[
+W^{(1)} = 
+\begin{bmatrix}
+0.8 &amp; -0.2 \\
+0.1 &amp; 0.6
+\end{bmatrix}
+\quad,\quad
+W^{(2)} = 
+\begin{bmatrix}
+0.5 \\
+-0.3
+\end{bmatrix}
+\]
+
+\subsection{ایندکس کلمات و \en{Embedding} سند (از سوال قبل)}
+\begin{align*}
+\text{:کلمه ۱ (ایندکس ۱)} &amp;\quad e_1 = [0.5, 0.3] \\
+\text{:کلمه ۲ (ایندکس ۲)} &amp;\quad e_2 = [-0.4, 0.2] \\
+\text{:\en{Embedding} سند (میانگین)} &amp;\quad e_{\text{doc}} = [0.05, 0.25]
+\end{align*}
+
+\subsection{نتایج \en{Forward Pass} (از سوال قبل)}
+\begin{align*}
+h_{\text{net}} &amp;= [-0.01, 0.155] \\
+h &amp;= [0, 0.155] \\
+y_{\text{net}} &amp;= -0.0465 \\
+\hat{y} &amp;\approx 0.4884
+\end{align*}
+
+\separator
+\section{فرض برچسب واقعی}
+
+مانند سوال قبل، فرض می‌کنیم برچسب واقعی \(y = 1\) است.
+
+\separator
+\section{گام ۱: محاسبه سیگنال خطا در لایه خروجی}
+
+بر اساس بخش \textbf{\en{۶-۶-۴}} کتاب (معادله \en{۶-۴۳})، مشتق تابع هزینه نسبت به \(y_{\text{net}}\) برای تابع سیگموئید و کراس-آنتروپی به صورت زیر است:
+
+\[
+\delta^{(2)} = \frac{\partial L}{\partial y_{\text{net}}} = \hat{y} - y
+\]
+
+\[
+\delta^{(2)} = 0.4884 - 1 = -0.5116
+\]
+
+\separator
+\section{گام ۲: انتشار خطا به لایه پنهان}
+
+سیگنال خطا برای هر نورون لایه پنهان به صورت زیر محاسبه می‌شود:
+
+\[
+\delta^{(1)}_j = \delta^{(2)} \cdot W^{(2)}_j \cdot \text{ReLU}&#x27;(h_{\text{net},j})
+\]
+
+که در آن \(\text{ReLU}&#x27;(x)\) مشتق تابع \en{ReLU} است (بخش \en{۶-۶-۴} کتاب، معادله \en{۶-۴۰}):
+
+\[
+\text{ReLU}&#x27;(x) = 
+\begin{cases} 
+1 if  x &gt; 0 \\
+0 if  x \le 0
+\end{cases}
+\]
+
+\begin{align*}
+\text{برای } j=1: &amp;\quad h_{\text{net},1} = -0.01 \le 0 \quad \Rightarrow \quad \text{ReLU}&#x27;(h_{\text{net},1}) = 0 \\
+&amp;\quad \delta^{(1)}_1 = (-0.5116) \times 0.5 \times 0 = 0
+\end{align*}
+
+\begin{align*}
+\text{برای } j=2: &amp;\quad h_{\text{net},2} = 0.155 &gt; 0 \quad \Rightarrow \quad \text{ReLU}&#x27;(h_{\text{net},2}) = 1 \\
+&amp;\quad \delta^{(1)}_2 = (-0.5116) \times (-0.3) \times 1 = 0.15348
+\end{align*}
+
+\[
+\delta^{(1)} = [0, \; 0.15348]
+\]
+
+\separator
+\section{گام ۳: انتشار خطا به لایه ورودی (\en{Embedding} سند)}
+
+گرادیان تابع هزینه نسبت به \en{Embedding} سند (\(e_{\text{doc}}\)) به صورت زیر محاسبه می‌شود:
+
+\[
+\frac{\partial L}{\partial e_{\text{doc}}} = (\delta^{(1)})^T \cdot W^{(1)}
+\]
+
+\[
+\frac{\partial L}{\partial e_{\text{doc}}} = 
+\begin{bmatrix}
+0 &amp; 0.15348
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+0.8 &amp; -0.2 \\
+0.1 &amp; 0.6
+\end{bmatrix}
+\]
+
+\[
+\frac{\partial L}{\partial e_{\text{doc},1}} = 0 \times 0.8 + 0.15348 \times 0.1 = 0.015348
+\]
+
+\[
+\frac{\partial L}{\partial e_{\text{doc},2}} = 0 \times (-0.2) + 0.15348 \times 0.6 = 0.092088
+\]
+
+\[
+\frac{\partial L}{\partial e_{\text{doc}}} = [0.015348, \; 0.092088]
+\]
+
+\separator
+\section{گام ۴: انتشار خطا به \en{Embedding} هر کلمه}
+
+از آنجا که \(e_{\text{doc}}\) میانگین \en{Embedding} دو کلمه است:
+
+\[
+e_{\text{doc}} = \frac{1}{2}(e_1 + e_2)
+\]
+
+بنابراین با استفاده از قانون زنجیره:
+
+\[
+\frac{\partial L}{\partial e_1} = \frac{\partial L}{\partial e_{\text{doc}}} \cdot \frac{\partial e_{\text{doc}}}{\partial e_1} = \frac{\partial L}{\partial e_{\text{doc}}} \cdot \frac{1}{2}
+\]
+
+\[
+\frac{\partial L}{\partial e_2} = \frac{\partial L}{\partial e_{\text{doc}}} \cdot \frac{\partial e_{\text{doc}}}{\partial e_2} = \frac{\partial L}{\partial e_{\text{doc}}} \cdot \frac{1}{2}
+\]
+
+\begin{align*}
+\frac{\partial L}{\partial e_1} &amp;= \frac{1}{2} \times [0.015348, \; 0.092088] = [0.007674, \; 0.046044] \\[4pt]
+\frac{\partial L}{\partial e_2} &amp;= \frac{1}{2} \times [0.015348, \; 0.092088] = [0.007674, \; 0.046044]
+\end{align*}
+
+\separator
+\section{جمع‌بندی و پاسخ نهایی}
+
+\begin{center}
+\fbox{\parbox{0.9\linewidth}{\centering
+\textbf{پاسخ نهایی:}
+\begin{itemize}
+    \item \textbf{گرادیان نسبت به \en{Embedding} کلمه ۱ (ایندکس ۱):}
+    \[
+    \frac{\partial L}{\partial e_1} = [0.007674, \; 0.046044]
+    \]
+    \item \textbf{گرادیان نسبت به \en{Embedding} کلمه ۲ (ایندکس ۲):}
+    \[
+    \frac{\partial L}{\partial e_2} = [0.007674, \; 0.046044]
+    \]
+\end{itemize}
+\textbf{تفسیر:} از آنجا که روش \en{pooling} میانگین گیری بوده، گرادیان به دو کلمه به طور مساوی تقسیم شده است. همچنین به دلیل صفر بودن مشتق \en{ReLU} برای نورون اول لایه پنهان، گرادیان فقط از نورون دوم عبور کرده است.
+}}
+\end{center}
+
+\thickseparator
+
+\end{document}</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw1-language-models/">تمرین ۱: N-gram و Naive Bayes ←</a><a href="../hw2-embeddings/">تمرین ۲: Logistic Regression و Embedding ←</a><a href="../hw4-rnn/">تمرین ۴: طراحی RNN ←</a><a href="../hw4-attention/">تمرین ۴: Attention و Transformer ←</a><a href="../hw4-gpt2/">تمرین ۴: Fine-Tuning مدل GPT-2 ←</a><a href="../hw5-bert/">تمرین ۵: BERT برای Sentiment Analysis ←</a><a href="../hw5-post-training/">تمرین ۵: Post-Training با SFT و LoRA ←</a><a href="../hw6-rag-translation/">تمرین ۶: RAG و Machine Translation ←</a><a href="../study-notes/">یادداشت‌های مرور NLP ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

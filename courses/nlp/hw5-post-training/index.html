@@ -1,0 +1,222 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="آماده‌سازی Instruction Data و آموزش Adapter روی Qwen2.5-0.5B."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>تمرین ۵: Post-Training با SFT و LoRA · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">پردازش زبان طبیعی</a></nav><p class="eyebrow">نوت‌بوک</p><h1 class="work-title">تمرین ۵: Post-Training با SFT و LoRA</h1><p class="course-lead">آماده‌سازی Instruction Data و آموزش Adapter روی Qwen2.5-0.5B.</p><div class="topic-list"><bdi class="topic">SFT</bdi><bdi class="topic">LoRA</bdi><bdi class="topic">Qwen</bdi></div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw5-post-training" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw5-post-training/Part_2_Post_Training.ipynb" target="_blank" rel="noopener noreferrer"><bdi>Part_2_Post_Training.ipynb</bdi><span class="file-meta">16 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw5-post-training/Part_2_Post_Training_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>Part_2_Post_Training_notebook.py</bdi><span class="file-meta">6 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="notebook-notes"><summary>بخشی از توضیحات نوت‌بوک</summary><pre class="notes-preview">
+
+# بخش دوم: همسوسازی مدل زبانی با SFT و LoRA
+
+در این بخش، به سراغ مفاهیم **پس‌آموزش (Post-Training)** می‌رویم. مدل‌های زبانی بزرگ (LLM) پیش‌آموزش‌دیده در ابتدا صرفاً یاد گرفته‌اند کلمه بعدی را پیش‌بینی کنند؛ بنابراین توانایی دنبال کردن مستقیم دستورات کاربر (Instruction Following) را ندارند. برای حل این مشکل، از روش **تنظیم دستورالعمل نظارت شده (Supervised Fine-Tuning یا SFT)** استفاده می‌کنیم تا مدل یاد بگیرد مانند یک دستیار رفتار کند.
+
+با توجه به حجم بالای حافظه مورد نیاز برای آموزش کامل پارامترها، از روش کارآمد **LoRA (Low-Rank Adaptation)** استفاده می‌کنیم که با فریز کردن وزن‌های اصلی مدل و تعریف ماتریس‌های با رتبه پایین، حجم محاسبات را بسیار کاهش می‌دهد. در این تمرین، مدل سبک **Qwen2.5-0.5B** را با استفاده از کتابخانه‌های `peft` و `trl` روی داده‌های دانشجویی تنظیم می‌کنیم.
+
+
+
+
+
+## بارگذاری مجموعه داده
+
+مجموعه داده آموزشی دستورالعمل‌ها را که به صورت فایل JSON در مسیر پروژه وجود دارد، با استفاده از کتابخانه `datasets` لود می‌کنیم.
+
+</pre></details><details class="source-file" open><summary><bdi>Part_2_Post_Training_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw5-post-training/Part_2_Post_Training_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Exported notebook code; may contain IPython commands.
+# %%
+# Import necessary modules for SFT and LoRA fine-tuning
+import torch
+import random
+import numpy as np
+from datasets import load_dataset
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from peft import LoraConfig, get_peft_model
+from trl import SFTConfig, SFTTrainer
+
+# Reproducibility seed setup
+def set_seed(seed=42):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+set_seed(42)
+
+# Verify GPU/MPS availability for acceleration
+accelerator = &#x27;mps&#x27; if torch.backends.mps.is_available() else (&#x27;cuda&#x27; if torch.cuda.is_available() else &#x27;cpu&#x27;)
+print(f&#x27;Execution Device: {accelerator}&#x27;)
+
+# %%
+# Load local JSON lines instruction dataset
+dataset = load_dataset(&#x27;json&#x27;, data_files=&#x27;student_instruct_dataset.json&#x27;, split=&#x27;train&#x27;)
+print(f&#x27;Loaded dataset size: {len(dataset)} examples&#x27;)
+print(&#x27;Sample instance structure:&#x27;)
+print(dataset[0])
+
+# %%
+# Formatting function for SFT instruction template
+def format_prompts(example):
+    instruction = (example.get(&#x27;instruction&#x27;) or &#x27;&#x27;).strip()
+    context = (example.get(&#x27;context&#x27;) or &#x27;&#x27;).strip()
+    response = (example.get(&#x27;response&#x27;) or &#x27;&#x27;).strip()
+    
+    # Match the assignment template and include Context only when the row provides it.
+    if context:
+        formatted_text = f&#x27;Instruction: {instruction}\nContext: {context}\nResponse: {response}&#x27;
+    else:
+        formatted_text = f&#x27;Instruction: {instruction}\nResponse: {response}&#x27;
+        
+    return {&#x27;text&#x27;: formatted_text}
+
+# Apply the formatting function globally using dataset map
+formatted_dataset = dataset.map(format_prompts)
+print(&#x27;Formatted example output:&#x27;)
+print(formatted_dataset[&#x27;text&#x27;][0])
+
+# %%
+# Specify base model name
+model_id = &#x27;Qwen/Qwen2.5-0.5B&#x27;
+
+# Load tokenizer and causal LM model
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+
+# Optimization: Load in float16 for both CUDA and MPS to speed up training and save memory
+model_dtype = torch.float16 if (torch.cuda.is_available() or torch.backends.mps.is_available()) else torch.float32
+
+model = AutoModelForCausalLM.from_pretrained(
+    model_id,
+    device_map=&#x27;auto&#x27;,
+    torch_dtype=model_dtype
+)
+
+# Ensure tokenizer/model/generation configs agree on the pad token.
+if tokenizer.pad_token is None:
+    tokenizer.pad_token = tokenizer.eos_token
+model.config.pad_token_id = tokenizer.pad_token_id
+model.generation_config.pad_token_id = tokenizer.pad_token_id
+model.config.use_cache = False
+
+print(f&#x27;Model loaded with dtype: {model.dtype}&#x27;)
+print(f&#x27;Pad Token: {tokenizer.pad_token} (ID: {tokenizer.pad_token_id})&#x27;)
+
+# %%
+# Configure LoRA settings
+peft_config = LoraConfig(
+    r=8,
+    lora_alpha=16,
+    target_modules=&#x27;all-linear&#x27;,
+    lora_dropout=0.05,
+    bias=&#x27;none&#x27;,
+    task_type=&#x27;CAUSAL_LM&#x27;
+)
+
+# Wrap base model with LoRA configuration
+peft_model = get_peft_model(model, peft_config)
+peft_model.print_trainable_parameters()
+
+# %%
+# Define SFTConfig for supervised fine-tuning.
+# In the installed TRL version, max_length is the active name for the assignment&#x27;s max_seq_length=256 requirement.
+sft_config = SFTConfig(
+    output_dir=&#x27;./qwen_sft_output&#x27;,
+    dataset_text_field=&#x27;text&#x27;,
+    max_length=256,
+    num_train_epochs=2,
+    learning_rate=3e-4,
+    per_device_train_batch_size=4,
+    gradient_accumulation_steps=2,
+    logging_steps=10,
+    save_strategy=&#x27;no&#x27;,
+    report_to=&#x27;none&#x27;,
+    dataloader_pin_memory=False
+)
+
+# Initialize SFT Trainer
+trainer = SFTTrainer(
+    model=peft_model,
+    train_dataset=formatted_dataset,
+    args=sft_config,
+)
+
+# Start supervised training
+print(&#x27;Starting LLM instruction fine-tuning...&#x27;)
+trainer.train()
+print(&#x27;Fine-tuning successfully completed!&#x27;)
+
+# %%
+# Plot Qwen SFT Training Loss Curve
+import matplotlib.pyplot as plt
+
+history = trainer.state.log_history
+steps = [log[&#x27;step&#x27;] for log in history if &#x27;loss&#x27; in log]
+losses = [log[&#x27;loss&#x27;] for log in history if &#x27;loss&#x27; in log]
+
+if steps:
+    plt.figure(figsize=(8, 5))
+    plt.plot(steps, losses, marker=&#x27;o&#x27;, color=&#x27;#8884d8&#x27;, linewidth=2, label=&#x27;SFT Training Loss&#x27;)
+    plt.title(&#x27;Qwen SFT LoRA Training Loss Curve&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+    plt.xlabel(&#x27;Steps&#x27;, fontsize=10)
+    plt.ylabel(&#x27;Loss&#x27;, fontsize=10)
+    plt.legend(frameon=True)
+    plt.grid(True, linestyle=&#x27;--&#x27;, alpha=0.5)
+    plt.tight_layout()
+    plt.savefig(&#x27;qwen_sft_loss_curve.png&#x27;, dpi=300)
+    plt.show()
+else:
+    print(&quot;No training logs found to plot.&quot;)
+
+# %%
+# Save LoRA adapter weights (lightweight, only trains parameters)
+lora_output_dir = &#x27;./qwen_sft_output/lora_adapter&#x27;
+peft_model.save_pretrained(lora_output_dir)
+tokenizer.save_pretrained(lora_output_dir)
+print(f&#x27;LoRA adapter saved successfully to: {lora_output_dir}&#x27;)
+
+# %%
+# Put PEFT model in evaluation mode
+peft_model.eval()
+
+# Define the instruction prompt
+prompt = &#x27;Instruction: Write a two-sentence summary explaining why the sky is blue.\nResponse:&#x27;
+
+# Tokenize and generate output on the same device as the PEFT model
+inputs = tokenizer(prompt, return_tensors=&#x27;pt&#x27;).to(peft_model.device)
+
+with torch.no_grad():
+    outputs = peft_model.generate(
+        **inputs,
+        max_new_tokens=100,
+        do_sample=True,
+        temperature=0.7,
+        repetition_penalty=1.15,
+        pad_token_id=tokenizer.pad_token_id,
+        eos_token_id=tokenizer.eos_token_id,
+    )
+
+# Decode and display response
+full_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+generated_response = full_text.split(&#x27;Response:&#x27;, 1)[-1].strip()
+print(&#x27;=== MODEL GENERATED RESPONSE ===&#x27;)
+print(generated_response)
+
+# %%
+# Additional test prompts to verify instruction following capability
+test_prompts = [
+    &#x27;Instruction: What is the capital of France?\nResponse:&#x27;,
+    &#x27;Instruction: List three benefits of regular exercise.\nResponse:&#x27;,
+    &#x27;Instruction: Explain photosynthesis in one sentence.\nResponse:&#x27;
+]
+
+for i, prompt in enumerate(test_prompts, 1):
+    inputs = tokenizer(prompt, return_tensors=&#x27;pt&#x27;).to(peft_model.device)
+    
+    with torch.no_grad():
+        outputs = peft_model.generate(
+            **inputs,
+            max_new_tokens=80,
+            do_sample=True,
+            temperature=0.7,
+            repetition_penalty=1.15,
+            pad_token_id=tokenizer.pad_token_id,
+            eos_token_id=tokenizer.eos_token_id,
+        )
+    
+    full_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    response = full_text.split(&#x27;Response:&#x27;, 1)[-1].strip()
+    
+    print(f&#x27;\n=== Test Prompt {i} ===&#x27;)
+    print(f&#x27;Prompt: {prompt}&#x27;)
+    print(f&#x27;Generated: {response}&#x27;)
+</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw1-language-models/">تمرین ۱: N-gram و Naive Bayes ←</a><a href="../hw2-embeddings/">تمرین ۲: Logistic Regression و Embedding ←</a><a href="../hw3-neural-models/">تمرین ۳: مدل‌های عصبی ←</a><a href="../hw4-rnn/">تمرین ۴: طراحی RNN ←</a><a href="../hw4-attention/">تمرین ۴: Attention و Transformer ←</a><a href="../hw4-gpt2/">تمرین ۴: Fine-Tuning مدل GPT-2 ←</a><a href="../hw5-bert/">تمرین ۵: BERT برای Sentiment Analysis ←</a><a href="../hw6-rag-translation/">تمرین ۶: RAG و Machine Translation ←</a><a href="../study-notes/">یادداشت‌های مرور NLP ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

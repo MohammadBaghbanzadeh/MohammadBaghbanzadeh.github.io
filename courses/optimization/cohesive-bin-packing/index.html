@@ -1,0 +1,2508 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="مدل‌سازی، پیاده‌سازی الگوریتم، آزمایش‌های محاسباتی و گزارش پروژه."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>پروژهٔ پایانی: Cohesive Bin Packing · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">بهینه‌سازی ترکیبی</a></nav><p class="eyebrow">پروژهٔ پایانی</p><h1 class="work-title">پروژهٔ پایانی: Cohesive Bin Packing</h1><p class="course-lead">مدل‌سازی، پیاده‌سازی الگوریتم، آزمایش‌های محاسباتی و گزارش پروژه.</p><div class="topic-list"><bdi class="topic">Bin Packing</bdi><bdi class="topic">ILP</bdi><bdi class="topic">Robustness</bdi></div><div class="work-note">جدول‌های موجود، خروجی‌های ذخیره‌شدهٔ پروژه‌اند و در ساخت سایت دوباره اجرا نشده‌اند.</div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/BinPacking_Cohesive.ipynb" target="_blank" rel="noopener noreferrer"><bdi>BinPacking_Cohesive.ipynb</bdi><span class="file-meta">9 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/BinPacking_Cohesive_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>BinPacking_Cohesive_notebook.py</bdi><span class="file-meta">3 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/BinPacking_Cohesive.py" target="_blank" rel="noopener noreferrer"><bdi>BinPacking_Cohesive.py</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/ILP_Combinatorial_Model.tex" target="_blank" rel="noopener noreferrer"><bdi>ILP_Combinatorial_Model.tex</bdi><span class="file-meta">5 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/README.md" target="_blank" rel="noopener noreferrer"><bdi>README.md</bdi><span class="file-meta">2 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/build_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>build_notebook.py</bdi><span class="file-meta">7 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/cohesive_bin_packing.py" target="_blank" rel="noopener noreferrer"><bdi>cohesive_bin_packing.py</bdi><span class="file-meta">18 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/generate_report_artifacts.py" target="_blank" rel="noopener noreferrer"><bdi>generate_report_artifacts.py</bdi><span class="file-meta">10 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/hard/n%3D180_C%3D300_pairs%3D30_hard.txt" target="_blank" rel="noopener noreferrer"><bdi>instances/hard/n=180_C=300_pairs=30_hard.txt</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/hard_large/hard_n%3D300_C%3D500_pairs%3D50.txt" target="_blank" rel="noopener noreferrer"><bdi>instances/hard_large/hard_n=300_C=500_pairs=50.txt</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/hard_large/hard_n%3D500_C%3D500_pairs%3D80.txt" target="_blank" rel="noopener noreferrer"><bdi>instances/hard_large/hard_n=500_C=500_pairs=80.txt</bdi><span class="file-meta">2 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/hard_medium/hard_n%3D100_C%3D200_pairs%3D20.txt" target="_blank" rel="noopener noreferrer"><bdi>instances/hard_medium/hard_n=100_C=200_pairs=20.txt</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/hard_medium/hard_n%3D150_C%3D200_pairs%3D30.txt" target="_blank" rel="noopener noreferrer"><bdi>instances/hard_medium/hard_n=150_C=200_pairs=30.txt</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/hard_medium/hard_n%3D50_C%3D200_pairs%3D10.txt" target="_blank" rel="noopener noreferrer"><bdi>instances/hard_medium/hard_n=50_C=200_pairs=10.txt</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/hard_small/hard_n%3D10_C%3D100_pairs%3D2.txt" target="_blank" rel="noopener noreferrer"><bdi>instances/hard_small/hard_n=10_C=100_pairs=2.txt</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/hard_small/hard_n%3D20_C%3D100_pairs%3D5.txt" target="_blank" rel="noopener noreferrer"><bdi>instances/hard_small/hard_n=20_C=100_pairs=5.txt</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/hard_small/hard_n%3D30_C%3D100_pairs%3D8.txt" target="_blank" rel="noopener noreferrer"><bdi>instances/hard_small/hard_n=30_C=100_pairs=8.txt</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/large/n%3D1000_C%3D1000_pairs%3D200.txt" target="_blank" rel="noopener noreferrer"><bdi>instances/large/n=1000_C=1000_pairs=200.txt</bdi><span class="file-meta">5 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/large/n%3D300_C%3D500_pairs%3D80.txt" target="_blank" rel="noopener noreferrer"><bdi>instances/large/n=300_C=500_pairs=80.txt</bdi><span class="file-meta">2 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/large/n%3D500_C%3D500_pairs%3D120.txt" target="_blank" rel="noopener noreferrer"><bdi>instances/large/n=500_C=500_pairs=120.txt</bdi><span class="file-meta">3 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/medium/n%3D100_C%3D200_pairs%3D30.txt" target="_blank" rel="noopener noreferrer"><bdi>instances/medium/n=100_C=200_pairs=30.txt</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/medium/n%3D150_C%3D200_pairs%3D45.txt" target="_blank" rel="noopener noreferrer"><bdi>instances/medium/n=150_C=200_pairs=45.txt</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/medium/n%3D50_C%3D200_pairs%3D15.txt" target="_blank" rel="noopener noreferrer"><bdi>instances/medium/n=50_C=200_pairs=15.txt</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/small/n%3D10_C%3D100_pairs%3D3.txt" target="_blank" rel="noopener noreferrer"><bdi>instances/small/n=10_C=100_pairs=3.txt</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/small/n%3D20_C%3D100_pairs%3D7.txt" target="_blank" rel="noopener noreferrer"><bdi>instances/small/n=20_C=100_pairs=7.txt</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/small/n%3D30_C%3D100_pairs%3D10.txt" target="_blank" rel="noopener noreferrer"><bdi>instances/small/n=30_C=100_pairs=10.txt</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/report/main.tex" target="_blank" rel="noopener noreferrer"><bdi>report/main.tex</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/report/references.bib" target="_blank" rel="noopener noreferrer"><bdi>report/references.bib</bdi><span class="file-meta">3 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/report/sections/abstract.tex" target="_blank" rel="noopener noreferrer"><bdi>report/sections/abstract.tex</bdi><span class="file-meta">2 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/report/sections/algorithm.tex" target="_blank" rel="noopener noreferrer"><bdi>report/sections/algorithm.tex</bdi><span class="file-meta">6 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/report/sections/applications.tex" target="_blank" rel="noopener noreferrer"><bdi>report/sections/applications.tex</bdi><span class="file-meta">4 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/report/sections/conclusion.tex" target="_blank" rel="noopener noreferrer"><bdi>report/sections/conclusion.tex</bdi><span class="file-meta">2 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/report/sections/introduction.tex" target="_blank" rel="noopener noreferrer"><bdi>report/sections/introduction.tex</bdi><span class="file-meta">3 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/report/sections/problem_model.tex" target="_blank" rel="noopener noreferrer"><bdi>report/sections/problem_model.tex</bdi><span class="file-meta">7 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/report/sections/results.tex" target="_blank" rel="noopener noreferrer"><bdi>report/sections/results.tex</bdi><span class="file-meta">8 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/requirements.txt" target="_blank" rel="noopener noreferrer"><bdi>requirements.txt</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/results/hard_results_table.tex" target="_blank" rel="noopener noreferrer"><bdi>results/hard_results_table.tex</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/results/histories.json" target="_blank" rel="noopener noreferrer"><bdi>results/histories.json</bdi><span class="file-meta">2 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/results/results_final.csv" target="_blank" rel="noopener noreferrer"><bdi>results/results_final.csv</bdi><span class="file-meta">2 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/results/results_table.tex" target="_blank" rel="noopener noreferrer"><bdi>results/results_table.tex</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/results/robustness.csv" target="_blank" rel="noopener noreferrer"><bdi>results/robustness.csv</bdi><span class="file-meta">12 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/results/robustness_summary.csv" target="_blank" rel="noopener noreferrer"><bdi>results/robustness_summary.csv</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/results/robustness_table.tex" target="_blank" rel="noopener noreferrer"><bdi>results/robustness_table.tex</bdi><span class="file-meta">1 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/run_experiments_final.py" target="_blank" rel="noopener noreferrer"><bdi>run_experiments_final.py</bdi><span class="file-meta">7 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/run_robustness.py" target="_blank" rel="noopener noreferrer"><bdi>run_robustness.py</bdi><span class="file-meta">4 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/tests/test_cohesive_bin_packing.py" target="_blank" rel="noopener noreferrer"><bdi>tests/test_cohesive_bin_packing.py</bdi><span class="file-meta">3 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="notebook-notes"><summary>بخشی از توضیحات نوت‌بوک</summary><pre class="notes-preview"># مسئله بسته‌بندی با اقلام چسبنده
+## نوت‌بوک بازتولیدپذیر پروژه نهایی
+
+این نوت‌بوک یک رابط آموزشی روی پیاده‌سازی واحد `cohesive_bin_packing.py` است. تمام اعداد گزارش و اسلایدها توسط اسکریپت‌های `run_experiments_final.py`، `run_robustness.py` و `generate_report_artifacts.py` از همین API تولید می‌شوند.
+
+**مراحل:** خواندن داده ← انقباض مؤلفه‌ها ← ILP دقیق ← FFD و Tabu ← اعتبارسنجی ← نتایج آماری.
+
+## ۱. داده و انقباض گراف
+
+هر مؤلفه همبند گراف چسبندگی به یک اَبَرقلم تبدیل می‌شود. این تبدیل دقیق است: جواب‌های مسئله منقبض‌شده و مسئله اصلی تناظر یک‌به‌یک دارند.</pre></details><details class="source-file" open><summary><bdi>BinPacking_Cohesive_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/BinPacking_Cohesive_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Exported notebook code; may contain IPython commands.
+# %%
+from pathlib import Path
+import pandas as pd
+import matplotlib.pyplot as plt
+from IPython.display import display, Image
+
+from cohesive_bin_packing import (
+    load_instance, contract_instance, lower_bound,
+    first_fit_decreasing, solve_exact_ilp, tabu_search,
+    expand_solution, validate_item_solution,
+)
+
+ROOT = Path.cwd()
+assert (ROOT / &#x27;cohesive_bin_packing.py&#x27;).exists(), &#x27;Notebook must run from the project root&#x27;
+print(&#x27;Project root:&#x27;, ROOT)
+
+# %%
+instance = load_instance(ROOT / &#x27;instances/small/n=30_C=100_pairs=10.txt&#x27;)
+contracted = contract_instance(instance)
+print(&#x27;n =&#x27;, instance[&#x27;n&#x27;], &#x27;| capacity =&#x27;, instance[&#x27;C&#x27;], &#x27;| edges =&#x27;, len(instance[&#x27;pairs&#x27;]))
+print(&#x27;connected components =&#x27;, len(contracted.components))
+print(&#x27;component weights =&#x27;, contracted.weights)
+print(&#x27;lower bound =&#x27;, lower_bound(contracted.weights, contracted.capacity))
+
+# %%
+exact = solve_exact_ilp(instance, time_limit=120)
+exact
+
+# %%
+bound = lower_bound(contracted.weights, contracted.capacity)
+ffd_bins = first_fit_decreasing(contracted.weights, contracted.capacity)
+result = tabu_search(instance, max_iter=500, tabu_tenure=7, seed=42,
+                     initial=&#x27;ffd&#x27;, target=exact[&#x27;num_bins&#x27;] or bound)
+item_bins = expand_solution(result.bins, result.components)
+valid, errors = validate_item_solution(instance, item_bins)
+print(&#x27;FFD bins:&#x27;, len(ffd_bins))
+print(&#x27;Tabu bins:&#x27;, result.num_bins, &#x27;| exact:&#x27;, exact[&#x27;num_bins&#x27;])
+print(&#x27;valid:&#x27;, valid, &#x27;| validation errors:&#x27;, errors)
+print(&#x27;iterations:&#x27;, result.iterations, &#x27;| time:&#x27;, result.solve_time)
+
+# %%
+hard = load_instance(ROOT / &#x27;instances/hard_large/hard_n=300_C=500_pairs=50.txt&#x27;)
+hard_contracted = contract_instance(hard)
+hard_lb = lower_bound(hard_contracted.weights, hard_contracted.capacity)
+hard_ffd = first_fit_decreasing(hard_contracted.weights, hard_contracted.capacity)
+hard_result = tabu_search(hard, max_iter=1500, tabu_tenure=16, seed=42, target=hard_lb)
+print(&#x27;LB:&#x27;, hard_lb, &#x27;| FFD:&#x27;, len(hard_ffd), &#x27;| Tabu:&#x27;, hard_result.num_bins)
+print(&#x27;improvement:&#x27;, len(hard_ffd) - hard_result.num_bins, &#x27;bin | valid:&#x27;, hard_result.valid)
+plt.step(range(len(hard_result.history)), hard_result.history, where=&#x27;post&#x27;)
+plt.axhline(hard_lb, color=&#x27;red&#x27;, linestyle=&#x27;--&#x27;, label=&#x27;Lower bound&#x27;)
+plt.xlabel(&#x27;Iteration&#x27;); plt.ylabel(&#x27;Current bins&#x27;); plt.legend(); plt.show()
+
+# %%
+results = pd.read_csv(ROOT / &#x27;results/results_final.csv&#x27;)
+columns = [&#x27;instance&#x27;, &#x27;n&#x27;, &#x27;instance_type&#x27;, &#x27;ffd_bins&#x27;, &#x27;tabu_bins&#x27;,
+           &#x27;reference_value&#x27;, &#x27;reference_type&#x27;, &#x27;gap_to_reference_pct&#x27;, &#x27;valid&#x27;]
+display(results[columns])
+assert len(results) == 17 and results[&#x27;valid&#x27;].all()
+
+# %%
+robustness = pd.read_csv(ROOT / &#x27;results/robustness_summary.csv&#x27;)
+display(robustness[[&#x27;instance&#x27;, &#x27;runs&#x27;, &#x27;initial_mean&#x27;, &#x27;initial_std&#x27;,
+                    &#x27;final_mean&#x27;, &#x27;final_std&#x27;, &#x27;best&#x27;, &#x27;mean_time_sec&#x27;]])
+assert (robustness[&#x27;runs&#x27;] == 30).all()
+
+# %%
+display(Image(filename=str(ROOT / &#x27;report/figures/fig1_convergence.png&#x27;), width=800))
+display(Image(filename=str(ROOT / &#x27;report/figures/fig4_boxplot.png&#x27;), width=800))
+
+# %%
+import subprocess, sys
+completed = subprocess.run(
+    [sys.executable, &#x27;-m&#x27;, &#x27;unittest&#x27;, &#x27;discover&#x27;, &#x27;-s&#x27;, &#x27;tests&#x27;, &#x27;-v&#x27;],
+    cwd=ROOT, text=True, capture_output=True, check=True,
+)
+print(completed.stderr)
+print(&#x27;All automated tests passed.&#x27;)
+</code></pre></details><details class="source-file" ><summary><bdi>BinPacking_Cohesive.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/BinPacking_Cohesive.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>#!/usr/bin/env python3
+&quot;&quot;&quot;Educational entry point for the cohesive-bin-packing project.
+
+The production implementation lives in :mod:`cohesive_bin_packing`.  Keeping
+this file as a thin entry point prevents the notebook, scripts, and report from
+silently using divergent algorithm versions.
+&quot;&quot;&quot;
+
+from pathlib import Path
+
+from cohesive_bin_packing import (
+    contract_instance,
+    first_fit_decreasing,
+    load_instance,
+    lower_bound,
+    solve_exact_ilp,
+    tabu_search,
+)
+
+
+def demo() -&gt; None:
+    root = Path(__file__).resolve().parent
+    path = root / &quot;instances&quot; / &quot;small&quot; / &quot;n=30_C=100_pairs=10.txt&quot;
+    instance = load_instance(path)
+    contracted = contract_instance(instance)
+    bound = lower_bound(contracted.weights, contracted.capacity)
+    ffd = first_fit_decreasing(contracted.weights, contracted.capacity)
+    exact = solve_exact_ilp(instance, time_limit=120)
+    result = tabu_search(instance, max_iter=500, tabu_tenure=7, target=exact[&quot;num_bins&quot;] or bound)
+
+    print(f&quot;Instance: {path.name}&quot;)
+    print(f&quot;Original items: {instance[&#x27;n&#x27;]} | contracted components: {len(contracted.components)}&quot;)
+    print(f&quot;Lower bound: {bound} | FFD: {len(ffd)}&quot;)
+    print(f&quot;Exact ILP: {exact[&#x27;num_bins&#x27;]} ({exact[&#x27;status&#x27;]})&quot;)
+    print(f&quot;Tabu: {result.num_bins} | valid={result.valid} | time={result.solve_time:.6f}s&quot;)
+
+
+if __name__ == &quot;__main__&quot;:
+    demo()
+</code></pre></details><details class="source-file" ><summary><bdi>ILP_Combinatorial_Model.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/ILP_Combinatorial_Model.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\documentclass[12pt,a4paper]{article}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{fontspec}
+\usepackage{xepersian}
+\settextfont{Arial}
+\begin{document}
+
+\section*{تطابق مدل ILP + گراف انقباض با فرمالیسم مدل‌های ترکیبیاتی}
+
+فرمالیسم ۴-تایی (که معمولاً شامل فضای نمونه‌ها، فضای جواب‌های موجه، تابع هدف و جهت بهینه‌سازی است) یک تعریف انتزاعی و تئوریک (Theoretical) از مسائل بهینه‌سازی ترکیبیاتی است. اما ترکیب یک گراف انقباض (Contraction Graph) با یک مدل برنامه‌ریزی خطی عدد صحیح (ILP)، در واقع نمایش جبری و عملیاتی (Algebraic/Operational) دقیقاً همان فرمالیسم است.
+
+با توجه به منطق مقاله‌ی (Doron-Arad et al. 2020) و مفاهیم پایه‌ای بهینه‌سازی، این دو به دلایل زیر کاملاً بر هم منطبق هستند و مدل ILP پیاده‌سازی شده در این پروژه یک مدل ترکیبیاتی کامل محسوب می‌شود:
+
+\subsection*{۱. گراف انقباض = بازتعریف هوشمندانه‌ی فضای نمونه‌ها (Instance Space)}
+در مسائل ترکیبیاتی پیچیده (مثل مقاله مذکور که با تضادهای گروهی Clique-graph conflicts سروکار دارد، و یا این پروژه که دارای محدودیت‌های Cohesive یا Must-link است)، گنجاندن تمام محدودیت‌ها در فرمول‌های ریاضی باعث انفجار فضای حالت می‌شود. استفاده از گراف انقباض (پیدا کردن مولفه‌های همبند و تبدیل آن‌ها به یک ابرگره یا Super-node)، در واقع یک پیش‌پردازش ساختاری است که فضای مسئله را به یک فضای معادل اما کوچک‌تر و خوش‌رفتارتر نگاشت می‌کند. در اینجا بخشی از محدودیت‌های قطعی در ساختار داده حل شده‌اند تا مدل نهایی تمیزتر شود.
+
+\subsection*{۲. محدودیت‌های ILP = تعریف صریح فضای موجه (Feasible Space / Polytope)}
+در فرمالیسم ۴-تایی، به یک مجموعه از جواب‌های موجه ($F$) نیاز است. در ILP، این فضای موجه به کمک معادلات و نامعادلات خطی ساخته می‌شود (مثل اینکه هر مولفه منقبض‌شده فقط در یک سطل قرار گیرد و ظرفیت سطل نقض نشود).
+اگر به مقاله (Theorem 3.11) رجوع کنیم، نویسندگان برای اثبات وجود یک جواب موجه برای آیتم‌های کوچک، دقیقاً یک فضای موجه یا پلی‌توپ (Polytope) را با استفاده از محدودیت‌های ریاضی و متغیرهای تصمیم تعریف می‌کنند. محدودیت‌های ILP دقیقاً همین کار را می‌کنند: آن‌ها مرزهای هندسی فضای شدنی (Feasible Space) را به زبان جبر خطی می‌سازند.
+
+\subsection*{۳. تابع هدف ILP = تابع هدف در فرمالیسم (Objective Function)}
+متغیرهایی مثل $y$ در ILP و کمینه‌سازی جمع آن‌ها، دقیقاً همان تابع نگاشتی است که به هر نقطه از فضای موجه، یک هزینه (Cost) اختصاص می‌دهد و سالور به دنبال مینیمم کردن آن در مرزهای همان Polytope است.
+
+\subsection*{نتیجه‌گیری}
+فرمالیسم ۴-تایی، زبان نظریه مجموعه‌ها برای تعریف مسئله است، در حالی که ILP به همراه گراف انقباض، زبان جبر خطی و گراف برای مدل‌سازی دقیقاً همان مسئله است. گراف انقباض متولی مدیریت قیود ساختاری (Structural Constraints) است تا مدل کوچک شود، و متغیرهای باینری و محدودیت‌های ILP دقیقاً مرزهای فضای شدنی (Feasible Space) را می‌سازند و تابع هدف روی آن‌ها بهینه‌سازی می‌شود (مشابه رویکرد تعریف Polytope در مقالاتی مثل Doron-Arad et al). در نتیجه، این یک نمایش کاملاً استاندارد و فرمال از یک مدل بهینه‌سازی ترکیبیاتی است.
+
+\end{document}
+</code></pre></details><details class="source-file" ><summary><bdi>README.md</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/README.md" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Cohesive Bin Packing
+
+Final project for Combinatorial Optimization: exact and heuristic solution of one-dimensional bin packing with hard must-link constraints.
+
+## Reproducible workflow
+
+Python 3.12 is recommended.
+
+```bash
+python3 -m pip install -r requirements.txt
+python3 -m unittest discover -s tests -v
+python3 run_experiments_final.py
+python3 run_robustness.py
+python3 generate_report_artifacts.py
+python3 build_notebook.py
+jupyter nbconvert --to notebook --execute --inplace BinPacking_Cohesive.ipynb
+latexmk -cd -xelatex report/main.tex
+latexmk -cd -xelatex PresentationSlides/Final_Presentation/main_presentation.tex
+```
+
+## Single source of truth
+
+- `cohesive_bin_packing.py`: contraction, exact ILP, FFD, randomized initialization, Tabu Search, and validation.
+- `run_experiments_final.py`: all 17 main experiments and generated LaTeX tables.
+- `run_robustness.py`: 30 independent randomized starts per medium instance.
+- `generate_report_artifacts.py`: all report/presentation charts from CSV data.
+- `tests/test_cohesive_bin_packing.py`: automated correctness tests.
+
+## Interpretation of reported gaps
+
+For instances with at most 30 original items, the reference is a CBC-proven ILP optimum. For larger instances, the reference is a valid lower bound. Reaching that lower bound proves optimality; a positive gap to the lower bound is not necessarily the true optimality gap.
+
+The `hard_*` instances are synthetic difficult mixtures inspired by bin-packing literature; they are not official Falkenauer benchmark instances.
+</code></pre></details><details class="source-file" ><summary><bdi>build_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/build_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>&quot;&quot;&quot;Build the submitted notebook from the production API and execute it separately.&quot;&quot;&quot;
+
+from pathlib import Path
+import nbformat as nbf
+
+root = Path(__file__).resolve().parent
+nb = nbf.v4.new_notebook()
+nb[&quot;metadata&quot;][&quot;kernelspec&quot;] = {&quot;display_name&quot;: &quot;Python 3&quot;, &quot;language&quot;: &quot;python&quot;, &quot;name&quot;: &quot;python3&quot;}
+nb[&quot;metadata&quot;][&quot;language_info&quot;] = {&quot;name&quot;: &quot;python&quot;, &quot;version&quot;: &quot;3&quot;}
+
+cells = []
+cells.append(nbf.v4.new_markdown_cell(&quot;&quot;&quot;# مسئله بسته‌بندی با اقلام چسبنده
+## نوت‌بوک بازتولیدپذیر پروژه نهایی
+
+این نوت‌بوک یک رابط آموزشی روی پیاده‌سازی واحد `cohesive_bin_packing.py` است. تمام اعداد گزارش و اسلایدها توسط اسکریپت‌های `run_experiments_final.py`، `run_robustness.py` و `generate_report_artifacts.py` از همین API تولید می‌شوند.
+
+**مراحل:** خواندن داده ← انقباض مؤلفه‌ها ← ILP دقیق ← FFD و Tabu ← اعتبارسنجی ← نتایج آماری.&quot;&quot;&quot;))
+
+cells.append(nbf.v4.new_code_cell(&quot;&quot;&quot;from pathlib import Path
+import pandas as pd
+import matplotlib.pyplot as plt
+from IPython.display import display, Image
+
+from cohesive_bin_packing import (
+    load_instance, contract_instance, lower_bound,
+    first_fit_decreasing, solve_exact_ilp, tabu_search,
+    expand_solution, validate_item_solution,
+)
+
+ROOT = Path.cwd()
+assert (ROOT / &#x27;cohesive_bin_packing.py&#x27;).exists(), &#x27;Notebook must run from the project root&#x27;
+print(&#x27;Project root:&#x27;, ROOT)&quot;&quot;&quot;))
+
+cells.append(nbf.v4.new_markdown_cell(&quot;&quot;&quot;## ۱. داده و انقباض گراف
+
+هر مؤلفه همبند گراف چسبندگی به یک اَبَرقلم تبدیل می‌شود. این تبدیل دقیق است: جواب‌های مسئله منقبض‌شده و مسئله اصلی تناظر یک‌به‌یک دارند.&quot;&quot;&quot;))
+
+cells.append(nbf.v4.new_code_cell(&quot;&quot;&quot;instance = load_instance(ROOT / &#x27;instances/small/n=30_C=100_pairs=10.txt&#x27;)
+contracted = contract_instance(instance)
+print(&#x27;n =&#x27;, instance[&#x27;n&#x27;], &#x27;| capacity =&#x27;, instance[&#x27;C&#x27;], &#x27;| edges =&#x27;, len(instance[&#x27;pairs&#x27;]))
+print(&#x27;connected components =&#x27;, len(contracted.components))
+print(&#x27;component weights =&#x27;, contracted.weights)
+print(&#x27;lower bound =&#x27;, lower_bound(contracted.weights, contracted.capacity))&quot;&quot;&quot;))
+
+cells.append(nbf.v4.new_markdown_cell(r&quot;&quot;&quot;## ۲. مدل دقیق component-level
+
+پس از contraction، متغیر $x_{cj}$ قرارگیری مؤلفه $c$ در سطل $j$ و متغیر $y_j$ استفاده از سطل را نشان می‌دهد:
+
+$$\min \sum_j y_j$$
+$$\sum_j x_{cj}=1\quad\forall c$$
+$$\sum_c W_c x_{cj}\le C y_j\quad\forall j$$
+
+فقط خروجی CBC با وضعیت `Optimal` به‌عنوان optimum پذیرفته می‌شود.&quot;&quot;&quot;))
+
+cells.append(nbf.v4.new_code_cell(&quot;&quot;&quot;exact = solve_exact_ilp(instance, time_limit=120)
+exact&quot;&quot;&quot;))
+
+cells.append(nbf.v4.new_markdown_cell(&quot;&quot;&quot;## ۳. الگوریتم پیشنهادی
+
+جواب اولیه با FFD یا Randomized First Fit ساخته می‌شود. جستجوی تابو از `MOVE`، `SWAP`، `MERGE` و `EJECT`، delta ثابت، tabu مبتنی بر شناسه مؤلفه، aspiration و tenure پویا استفاده می‌کند.&quot;&quot;&quot;))
+
+cells.append(nbf.v4.new_code_cell(&quot;&quot;&quot;bound = lower_bound(contracted.weights, contracted.capacity)
+ffd_bins = first_fit_decreasing(contracted.weights, contracted.capacity)
+result = tabu_search(instance, max_iter=500, tabu_tenure=7, seed=42,
+                     initial=&#x27;ffd&#x27;, target=exact[&#x27;num_bins&#x27;] or bound)
+item_bins = expand_solution(result.bins, result.components)
+valid, errors = validate_item_solution(instance, item_bins)
+print(&#x27;FFD bins:&#x27;, len(ffd_bins))
+print(&#x27;Tabu bins:&#x27;, result.num_bins, &#x27;| exact:&#x27;, exact[&#x27;num_bins&#x27;])
+print(&#x27;valid:&#x27;, valid, &#x27;| validation errors:&#x27;, errors)
+print(&#x27;iterations:&#x27;, result.iterations, &#x27;| time:&#x27;, result.solve_time)&quot;&quot;&quot;))
+
+cells.append(nbf.v4.new_markdown_cell(&quot;&quot;&quot;## ۴. نمونه‌ای که Tabu واقعاً FFD را بهبود می‌دهد
+
+نمونه‌های دشوار مصنوعی benchmark رسمی Falkenauer نیستند؛ آن‌ها فقط از مخلوط وزن‌های بزرگ، متوسط و کوچک الهام گرفته‌اند.&quot;&quot;&quot;))
+
+cells.append(nbf.v4.new_code_cell(&quot;&quot;&quot;hard = load_instance(ROOT / &#x27;instances/hard_large/hard_n=300_C=500_pairs=50.txt&#x27;)
+hard_contracted = contract_instance(hard)
+hard_lb = lower_bound(hard_contracted.weights, hard_contracted.capacity)
+hard_ffd = first_fit_decreasing(hard_contracted.weights, hard_contracted.capacity)
+hard_result = tabu_search(hard, max_iter=1500, tabu_tenure=16, seed=42, target=hard_lb)
+print(&#x27;LB:&#x27;, hard_lb, &#x27;| FFD:&#x27;, len(hard_ffd), &#x27;| Tabu:&#x27;, hard_result.num_bins)
+print(&#x27;improvement:&#x27;, len(hard_ffd) - hard_result.num_bins, &#x27;bin | valid:&#x27;, hard_result.valid)
+plt.step(range(len(hard_result.history)), hard_result.history, where=&#x27;post&#x27;)
+plt.axhline(hard_lb, color=&#x27;red&#x27;, linestyle=&#x27;--&#x27;, label=&#x27;Lower bound&#x27;)
+plt.xlabel(&#x27;Iteration&#x27;); plt.ylabel(&#x27;Current bins&#x27;); plt.legend(); plt.show()&quot;&quot;&quot;))
+
+cells.append(nbf.v4.new_markdown_cell(&quot;&quot;&quot;## ۵. جدول کامل ۱۷ نمونه
+
+ستون `reference_type` مشخص می‌کند مقدار مرجع optimum مدل دقیق است یا فقط lower bound.&quot;&quot;&quot;))
+
+cells.append(nbf.v4.new_code_cell(&quot;&quot;&quot;results = pd.read_csv(ROOT / &#x27;results/results_final.csv&#x27;)
+columns = [&#x27;instance&#x27;, &#x27;n&#x27;, &#x27;instance_type&#x27;, &#x27;ffd_bins&#x27;, &#x27;tabu_bins&#x27;,
+           &#x27;reference_value&#x27;, &#x27;reference_type&#x27;, &#x27;gap_to_reference_pct&#x27;, &#x27;valid&#x27;]
+display(results[columns])
+assert len(results) == 17 and results[&#x27;valid&#x27;].all()&quot;&quot;&quot;))
+
+cells.append(nbf.v4.new_markdown_cell(&quot;&quot;&quot;## ۶. تحلیل پایداری با ۳۰ شروع تصادفی
+
+برای شش نمونه متوسط، جواب اولیه و جواب نهایی در ۳۰ seed مستقل ثبت شده‌اند.&quot;&quot;&quot;))
+
+cells.append(nbf.v4.new_code_cell(&quot;&quot;&quot;robustness = pd.read_csv(ROOT / &#x27;results/robustness_summary.csv&#x27;)
+display(robustness[[&#x27;instance&#x27;, &#x27;runs&#x27;, &#x27;initial_mean&#x27;, &#x27;initial_std&#x27;,
+                    &#x27;final_mean&#x27;, &#x27;final_std&#x27;, &#x27;best&#x27;, &#x27;mean_time_sec&#x27;]])
+assert (robustness[&#x27;runs&#x27;] == 30).all()&quot;&quot;&quot;))
+
+cells.append(nbf.v4.new_markdown_cell(&quot;&quot;&quot;## ۷. شکل‌های تولیدشده از داده واقعی&quot;&quot;&quot;))
+cells.append(nbf.v4.new_code_cell(&quot;&quot;&quot;display(Image(filename=str(ROOT / &#x27;report/figures/fig1_convergence.png&#x27;), width=800))
+display(Image(filename=str(ROOT / &#x27;report/figures/fig4_boxplot.png&#x27;), width=800))&quot;&quot;&quot;))
+
+cells.append(nbf.v4.new_markdown_cell(&quot;&quot;&quot;## ۸. آزمون‌های خودکار و بازتولید
+
+فرمان‌های زیر بدون تغییر فایل‌های منبع اجرا می‌شوند. برای بازتولید کامل:
+
+```bash
+python3 run_experiments_final.py
+python3 run_robustness.py
+python3 generate_report_artifacts.py
+python3 -m unittest discover -s tests -v
+```&quot;&quot;&quot;))
+
+cells.append(nbf.v4.new_code_cell(&quot;&quot;&quot;import subprocess, sys
+completed = subprocess.run(
+    [sys.executable, &#x27;-m&#x27;, &#x27;unittest&#x27;, &#x27;discover&#x27;, &#x27;-s&#x27;, &#x27;tests&#x27;, &#x27;-v&#x27;],
+    cwd=ROOT, text=True, capture_output=True, check=True,
+)
+print(completed.stderr)
+print(&#x27;All automated tests passed.&#x27;)&quot;&quot;&quot;))
+
+nb[&quot;cells&quot;] = cells
+nbf.write(nb, root / &quot;BinPacking_Cohesive.ipynb&quot;)
+print(&quot;Notebook source rebuilt.&quot;)
+</code></pre></details><details class="source-file" ><summary><bdi>cohesive_bin_packing.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/cohesive_bin_packing.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>&quot;&quot;&quot;Core algorithms for cohesive one-dimensional bin packing.
+
+Hard must-link constraints are contracted into connected components.  The
+resulting instance is exactly a classical one-dimensional bin-packing problem
+on component weights; every function in this module works on that contracted
+representation and maps solutions back to original items when needed.
+&quot;&quot;&quot;
+
+from __future__ import annotations
+
+import math
+import random
+import time
+from collections.abc import Iterable, Sequence
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, TypedDict, cast
+
+import networkx as nx
+from pulp import (
+    LpBinary,
+    LpMinimize,
+    LpProblem,
+    LpStatusOptimal,
+    LpVariable,
+    PULP_CBC_CMD,
+    lpSum,
+    value,
+)
+
+Move = tuple[Any, ...]
+
+
+class Instance(TypedDict):
+    n: int
+    C: int
+    weights: list[int]
+    pairs: list[tuple[int, int]]
+
+
+@dataclass(frozen=True)
+class ContractedInstance:
+    capacity: int
+    components: tuple[tuple[int, ...], ...]
+    weights: tuple[int, ...]
+
+
+@dataclass
+class SearchResult:
+    num_bins: int | None
+    bins: list[list[int]] | None
+    components: tuple[tuple[int, ...], ...]
+    component_weights: tuple[int, ...]
+    history: list[int]
+    solve_time: float
+    initial_bins: int | None
+    iterations: int
+    seed: int | None
+    valid: bool
+
+
+def load_instance(filepath: str | Path) -&gt; Instance:
+    data: dict[str, Any] = {}
+    with Path(filepath).open(&quot;r&quot;, encoding=&quot;utf-8&quot;) as handle:
+        for raw_line in handle:
+            line = raw_line.strip()
+            if not line:
+                continue
+            key, raw_value = line.split(&quot;=&quot;, 1)
+            if key in {&quot;n&quot;, &quot;C&quot;}:
+                data[key] = int(raw_value)
+            elif key == &quot;weights&quot;:
+                data[key] = [int(v) for v in raw_value.split(&quot;,&quot;) if v]
+            elif key == &quot;pairs&quot;:
+                data[key] = [tuple(map(int, pair.split(&quot;-&quot;))) for pair in raw_value.split(&quot;,&quot;) if pair]
+
+    required = {&quot;n&quot;, &quot;C&quot;, &quot;weights&quot;, &quot;pairs&quot;}
+    missing = required.difference(data)
+    if missing:
+        raise ValueError(f&quot;Missing fields in {filepath}: {sorted(missing)}&quot;)
+    if data[&quot;n&quot;] != len(data[&quot;weights&quot;]):
+        raise ValueError(f&quot;Filename/data instance has n={data[&#x27;n&#x27;]} but {len(data[&#x27;weights&#x27;])} weights&quot;)
+    if data[&quot;C&quot;] &lt;= 0 or any(weight &lt;= 0 for weight in data[&quot;weights&quot;]):
+        raise ValueError(&quot;Capacity and item weights must be positive&quot;)
+    for i, j in data[&quot;pairs&quot;]:
+        if not (0 &lt;= i &lt; data[&quot;n&quot;] and 0 &lt;= j &lt; data[&quot;n&quot;] and i != j):
+            raise ValueError(f&quot;Invalid cohesion edge {(i, j)}&quot;)
+    return cast(Instance, cast(object, data))
+
+
+def contract_instance(instance: Instance) -&gt; ContractedInstance:
+    graph = nx.Graph()
+    graph.add_nodes_from(range(instance[&quot;n&quot;]))
+    graph.add_edges_from(instance[&quot;pairs&quot;])
+    components = tuple(
+        sorted((tuple(sorted(component)) for component in nx.connected_components(graph)), key=lambda c: c[0])
+    )
+    weights = tuple(sum(instance[&quot;weights&quot;][item] for item in component) for component in components)
+    return ContractedInstance(instance[&quot;C&quot;], components, weights)
+
+
+def is_feasible_contracted(contracted: ContractedInstance) -&gt; bool:
+    return all(weight &lt;= contracted.capacity for weight in contracted.weights)
+
+
+def lower_bound(component_weights: Sequence[int], capacity: int) -&gt; int:
+    &quot;&quot;&quot;A valid lower bound combining volume and items heavier than C/2.&quot;&quot;&quot;
+    if capacity &lt;= 0:
+        raise ValueError(&quot;Capacity must be positive&quot;)
+    volume = math.ceil(sum(component_weights) / capacity)
+    large_items = sum(weight &gt; capacity / 2 for weight in component_weights)
+    return max(volume, large_items)
+
+
+def first_fit_decreasing(component_weights: Sequence[int], capacity: int) -&gt; list[list[int]]:
+    order = sorted(range(len(component_weights)), key=lambda cid: (-component_weights[cid], cid))
+    bins: list[list[int]] = []
+    loads: list[int] = []
+    for cid in order:
+        weight = component_weights[cid]
+        for bin_index, load in enumerate(loads):
+            if load + weight &lt;= capacity:
+                bins[bin_index].append(cid)
+                loads[bin_index] += weight
+                break
+        else:
+            bins.append([cid])
+            loads.append(weight)
+    return bins
+
+
+def randomized_first_fit(
+    component_weights: Sequence[int], capacity: int, seed: int
+) -&gt; list[list[int]]:
+    rng = random.Random(seed)
+    order = list(range(len(component_weights)))
+    rng.shuffle(order)
+    bins: list[list[int]] = []
+    loads: list[int] = []
+    for cid in order:
+        weight = component_weights[cid]
+        feasible_bins = [index for index, load in enumerate(loads) if load + weight &lt;= capacity]
+        if feasible_bins:
+            destination = rng.choice(feasible_bins)
+            bins[destination].append(cid)
+            loads[destination] += weight
+        else:
+            bins.append([cid])
+            loads.append(weight)
+    return bins
+
+
+def bin_loads(bins: Sequence[Sequence[int]], component_weights: Sequence[int]) -&gt; list[int]:
+    return [sum(component_weights[cid] for cid in bin_) for bin_ in bins]
+
+
+def validate_component_solution(
+    bins: Sequence[Sequence[int]], component_weights: Sequence[int], capacity: int
+) -&gt; tuple[bool, list[str]]:
+    errors: list[str] = []
+    flattened = [cid for bin_ in bins for cid in bin_]
+    expected = list(range(len(component_weights)))
+    if sorted(flattened) != expected:
+        errors.append(&quot;Every component must occur exactly once&quot;)
+    for index, load in enumerate(bin_loads(bins, component_weights)):
+        if load &gt; capacity:
+            errors.append(f&quot;Bin {index} exceeds capacity: {load}&gt;{capacity}&quot;)
+    return not errors, errors
+
+
+def expand_solution(
+    bins: Sequence[Sequence[int]], components: Sequence[Sequence[int]]
+) -&gt; list[list[int]]:
+    return [[item for cid in bin_ for item in components[cid]] for bin_ in bins]
+
+
+def validate_item_solution(instance: Instance, item_bins: Sequence[Sequence[int]]) -&gt; tuple[bool, list[str]]:
+    errors: list[str] = []
+    item_to_bin: dict[int, int] = {}
+    for bin_index, bin_ in enumerate(item_bins):
+        load = sum(instance[&quot;weights&quot;][item] for item in bin_)
+        if load &gt; instance[&quot;C&quot;]:
+            errors.append(f&quot;Bin {bin_index} exceeds capacity: {load}&gt;{instance[&#x27;C&#x27;]}&quot;)
+        for item in bin_:
+            if item in item_to_bin:
+                errors.append(f&quot;Item {item} occurs more than once&quot;)
+            item_to_bin[item] = bin_index
+    if set(item_to_bin) != set(range(instance[&quot;n&quot;])):
+        errors.append(&quot;Every original item must occur exactly once&quot;)
+    for i, j in instance[&quot;pairs&quot;]:
+        if item_to_bin.get(i) != item_to_bin.get(j):
+            errors.append(f&quot;Cohesion edge {(i, j)} is violated&quot;)
+    return not errors, errors
+
+
+def generate_neighborhood(
+    bins: Sequence[Sequence[int]], component_weights: Sequence[int], capacity: int, include_eject: bool = True
+) -&gt; list[Move]:
+    moves: list[Move] = []
+    loads = bin_loads(bins, component_weights)
+    number_of_bins = len(bins)
+
+    for source, source_bin in enumerate(bins):
+        for cid in source_bin:
+            weight = component_weights[cid]
+            for destination in range(number_of_bins):
+                if source != destination and loads[destination] + weight &lt;= capacity:
+                    moves.append((&quot;move&quot;, cid, source, destination))
+            if include_eject and len(source_bin) &gt; 1:
+                moves.append((&quot;eject&quot;, cid, source))
+
+    for first_bin in range(number_of_bins):
+        for second_bin in range(first_bin + 1, number_of_bins):
+            for first_cid in bins[first_bin]:
+                first_weight = component_weights[first_cid]
+                for second_cid in bins[second_bin]:
+                    second_weight = component_weights[second_cid]
+                    if (
+                        loads[first_bin] - first_weight + second_weight &lt;= capacity
+                        and loads[second_bin] - second_weight + first_weight &lt;= capacity
+                    ):
+                        moves.append((&quot;swap&quot;, first_cid, first_bin, second_cid, second_bin))
+            if loads[first_bin] + loads[second_bin] &lt;= capacity:
+                moves.append((&quot;merge&quot;, first_bin, second_bin))
+    return moves
+
+
+def move_components(move: Move, bins: Sequence[Sequence[int]]) -&gt; tuple[int, ...]:
+    if move[0] in {&quot;move&quot;, &quot;eject&quot;}:
+        return (move[1],)
+    if move[0] == &quot;swap&quot;:
+        return (move[1], move[3])
+    if move[0] == &quot;merge&quot;:
+        return tuple(bins[move[2]])
+    raise ValueError(f&quot;Unknown move: {move}&quot;)
+
+
+def calculate_delta(
+    bins: Sequence[Sequence[int]], loads: Sequence[int], component_weights: Sequence[int], move: Move
+) -&gt; tuple[int, int]:
+    &quot;&quot;&quot;Return (change in bin count, change in sum of squared loads) in O(1).&quot;&quot;&quot;
+    kind = move[0]
+    if kind == &quot;move&quot;:
+        _, cid, source, destination = move
+        weight = component_weights[cid]
+        delta_bins = -1 if len(bins[source]) == 1 else 0
+        delta_sq = (
+            (loads[source] - weight) ** 2
+            + (loads[destination] + weight) ** 2
+            - loads[source] ** 2
+            - loads[destination] ** 2
+        )
+        return delta_bins, delta_sq
+    if kind == &quot;eject&quot;:
+        _, cid, source = move
+        weight = component_weights[cid]
+        return 1, (loads[source] - weight) ** 2 + weight**2 - loads[source] ** 2
+    if kind == &quot;swap&quot;:
+        _, first_cid, first_bin, second_cid, second_bin = move
+        first_weight = component_weights[first_cid]
+        second_weight = component_weights[second_cid]
+        new_first = loads[first_bin] - first_weight + second_weight
+        new_second = loads[second_bin] - second_weight + first_weight
+        return 0, new_first**2 + new_second**2 - loads[first_bin] ** 2 - loads[second_bin] ** 2
+    if kind == &quot;merge&quot;:
+        _, first_bin, second_bin = move
+        return -1, (loads[first_bin] + loads[second_bin]) ** 2 - loads[first_bin] ** 2 - loads[second_bin] ** 2
+    raise ValueError(f&quot;Unknown move: {move}&quot;)
+
+
+def apply_move(bins: Sequence[Sequence[int]], move: Move) -&gt; list[list[int]]:
+    new_bins = [list(bin_) for bin_ in bins]
+    kind = move[0]
+    if kind == &quot;move&quot;:
+        _, cid, source, destination = move
+        new_bins[source].remove(cid)
+        new_bins[destination].append(cid)
+    elif kind == &quot;eject&quot;:
+        _, cid, source = move
+        new_bins[source].remove(cid)
+        new_bins.append([cid])
+    elif kind == &quot;swap&quot;:
+        _, first_cid, first_bin, second_cid, second_bin = move
+        new_bins[first_bin].remove(first_cid)
+        new_bins[second_bin].remove(second_cid)
+        new_bins[first_bin].append(second_cid)
+        new_bins[second_bin].append(first_cid)
+    elif kind == &quot;merge&quot;:
+        _, first_bin, second_bin = move
+        new_bins[first_bin].extend(new_bins[second_bin])
+        new_bins[second_bin].clear()
+    else:
+        raise ValueError(f&quot;Unknown move: {move}&quot;)
+    return [bin_ for bin_ in new_bins if bin_]
+
+
+def tabu_search(
+    instance: Instance,
+    *,
+    max_iter: int = 1000,
+    tabu_tenure: int = 12,
+    seed: int = 42,
+    initial: str = &quot;ffd&quot;,
+    stagnation_limit: int | None = None,
+    target: int | None = None,
+) -&gt; SearchResult:
+    contracted = contract_instance(instance)
+    started = time.perf_counter()
+    if not is_feasible_contracted(contracted):
+        return SearchResult(None, None, contracted.components, contracted.weights, [], 0.0, None, 0, seed, False)
+
+    if initial == &quot;ffd&quot;:
+        bins = first_fit_decreasing(contracted.weights, contracted.capacity)
+    elif initial == &quot;random&quot;:
+        bins = randomized_first_fit(contracted.weights, contracted.capacity, seed)
+    else:
+        raise ValueError(&quot;initial must be &#x27;ffd&#x27; or &#x27;random&#x27;&quot;)
+
+    rng = random.Random(seed)
+    best_bins = [list(bin_) for bin_ in bins]
+    best_cost = len(best_bins)
+    initial_cost = best_cost
+    history = [best_cost]
+    tabu_until: dict[int, int] = {}
+    no_improvement = 0
+    stagnation_limit = stagnation_limit or max(75, max_iter // 8)
+    iterations = 0
+
+    if target is not None and best_cost &lt;= target:
+        valid, _ = validate_component_solution(best_bins, contracted.weights, contracted.capacity)
+        return SearchResult(
+            best_cost,
+            best_bins,
+            contracted.components,
+            contracted.weights,
+            history,
+            round(time.perf_counter() - started, 6),
+            initial_cost,
+            0,
+            seed,
+            valid,
+        )
+
+    for iteration in range(max_iter):
+        iterations = iteration + 1
+        loads = bin_loads(bins, contracted.weights)
+        neighborhood = generate_neighborhood(bins, contracted.weights, contracted.capacity, include_eject=True)
+        if not neighborhood:
+            break
+
+        current_cost = len(bins)
+        admissible: list[tuple[tuple[int, int, float], Move]] = []
+        eject_candidates: list[tuple[tuple[int, int, float], Move]] = []
+        for move in neighborhood:
+            delta_bins, delta_sq = calculate_delta(bins, loads, contracted.weights, move)
+            moved = move_components(move, bins)
+            is_tabu = any(tabu_until.get(cid, -1) &gt;= iteration for cid in moved)
+            aspiration = current_cost + delta_bins &lt; best_cost
+            if is_tabu and not aspiration:
+                continue
+            tie_break = rng.random()
+            candidate = ((delta_bins, -delta_sq, tie_break), move)
+            if move[0] == &quot;eject&quot;:
+                eject_candidates.append(candidate)
+            else:
+                admissible.append(candidate)
+
+        # Intensify normally.  After sustained stagnation, force one admissible
+        # EJECT move (at most best+1 bins) to diversify before continuing.
+        force_eject = no_improvement &gt; 0 and no_improvement % max(20, stagnation_limit // 3) == 0
+        pool = eject_candidates if force_eject and eject_candidates and current_cost &lt;= best_cost else admissible
+        if not pool:
+            pool = eject_candidates
+        if not pool:
+            break
+
+        _, selected = min(pool, key=lambda candidate: candidate[0])
+        moved = move_components(selected, bins)
+        bins = apply_move(bins, selected)
+        tenure = rng.randint(max(3, tabu_tenure - 2), tabu_tenure + 2)
+        for cid in moved:
+            tabu_until[cid] = iteration + tenure
+
+        current_cost = len(bins)
+        history.append(current_cost)
+        if current_cost &lt; best_cost:
+            best_cost = current_cost
+            best_bins = [list(bin_) for bin_ in bins]
+            no_improvement = 0
+            if target is not None and best_cost &lt;= target:
+                break
+        else:
+            no_improvement += 1
+        if no_improvement &gt;= stagnation_limit:
+            break
+
+    valid, _ = validate_component_solution(best_bins, contracted.weights, contracted.capacity)
+    item_valid, _ = validate_item_solution(instance, expand_solution(best_bins, contracted.components))
+    return SearchResult(
+        best_cost,
+        best_bins,
+        contracted.components,
+        contracted.weights,
+        history,
+        round(time.perf_counter() - started, 6),
+        initial_cost,
+        iterations,
+        seed,
+        valid and item_valid,
+    )
+
+
+def multi_start_tabu_search(
+    instance: Instance,
+    *,
+    seeds: Iterable[int],
+    max_iter: int = 1000,
+    tabu_tenure: int = 12,
+    target: int | None = None,
+) -&gt; tuple[SearchResult, list[SearchResult]]:
+    results = [
+        tabu_search(
+            instance,
+            max_iter=max_iter,
+            tabu_tenure=tabu_tenure,
+            seed=seed,
+            initial=&quot;random&quot;,
+            target=target,
+        )
+        for seed in seeds
+    ]
+    feasible_results = [result for result in results if result.num_bins is not None and result.valid]
+    if not feasible_results:
+        raise ValueError(&quot;No feasible result was produced&quot;)
+    best = min(feasible_results, key=lambda result: (result.num_bins, result.solve_time))
+    return best, results
+
+
+def solve_exact_ilp(instance: Instance, *, time_limit: int = 120, msg: bool = False) -&gt; dict[str, Any]:
+    &quot;&quot;&quot;Solve the exact component-level formulation and accept only optimal CBC output.&quot;&quot;&quot;
+    contracted = contract_instance(instance)
+    if not is_feasible_contracted(contracted):
+        return {&quot;status&quot;: &quot;Infeasible&quot;, &quot;status_code&quot;: -1, &quot;optimal&quot;: False, &quot;num_bins&quot;: None, &quot;solve_time&quot;: 0.0}
+
+    number_of_components = len(contracted.weights)
+    candidate_bins = range(number_of_components)
+    problem = LpProblem(&quot;CohesiveBinPackingContracted&quot;, LpMinimize)
+    x = {
+        (cid, bin_index): LpVariable(f&quot;x_{cid}_{bin_index}&quot;, cat=LpBinary)
+        for cid in range(number_of_components)
+        for bin_index in candidate_bins
+    }
+    y = {bin_index: LpVariable(f&quot;y_{bin_index}&quot;, cat=LpBinary) for bin_index in candidate_bins}
+    problem += lpSum(y[bin_index] for bin_index in candidate_bins)
+    for cid in range(number_of_components):
+        problem += lpSum(x[cid, bin_index] for bin_index in candidate_bins) == 1
+    for bin_index in candidate_bins:
+        problem += (
+            lpSum(contracted.weights[cid] * x[cid, bin_index] for cid in range(number_of_components))
+            &lt;= contracted.capacity * y[bin_index]
+        )
+    for bin_index in range(number_of_components - 1):
+        problem += y[bin_index] &gt;= y[bin_index + 1]
+
+    started = time.perf_counter()
+    status_code = problem.solve(PULP_CBC_CMD(msg=msg, timeLimit=time_limit, gapRel=0.0))
+    elapsed = round(time.perf_counter() - started, 6)
+    optimal = status_code == LpStatusOptimal
+    objective = cast(float | None, value(problem.objective)) if optimal else None
+    return {
+        &quot;status&quot;: &quot;Optimal&quot; if optimal else &quot;Not optimal&quot;,
+        &quot;status_code&quot;: status_code,
+        &quot;optimal&quot;: optimal,
+        &quot;num_bins&quot;: int(round(objective)) if objective is not None else None,
+        &quot;solve_time&quot;: elapsed,
+    }
+</code></pre></details><details class="source-file" ><summary><bdi>generate_report_artifacts.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/generate_report_artifacts.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># pyright: reportMissingTypeArgument=false, reportArgumentType=false, reportAttributeAccessIssue=false
+&quot;&quot;&quot;Generate every report figure and the robustness LaTeX table from CSV data.&quot;&quot;&quot;
+
+from __future__ import annotations
+
+import csv
+from pathlib import Path
+
+import matplotlib
+matplotlib.use(&quot;Agg&quot;)
+import matplotlib.pyplot as plt
+import numpy as np
+
+from cohesive_bin_packing import (
+    bin_loads,
+    contract_instance,
+    first_fit_decreasing,
+    load_instance,
+    lower_bound,
+    tabu_search,
+)
+
+ROOT = Path(__file__).resolve().parent
+RESULTS = ROOT / &quot;results&quot;
+FIGURES = ROOT / &quot;report&quot; / &quot;figures&quot;
+SLIDE_FIGURES = ROOT / &quot;PresentationSlides&quot; / &quot;Final_Presentation&quot; / &quot;figures&quot;
+FIGURES.mkdir(parents=True, exist_ok=True)
+SLIDE_FIGURES.mkdir(parents=True, exist_ok=True)
+
+plt.rcParams.update({&quot;figure.dpi&quot;: 140, &quot;savefig.dpi&quot;: 300, &quot;font.size&quot;: 10, &quot;axes.grid&quot;: True, &quot;grid.alpha&quot;: 0.25})
+
+
+def read_csv(path: Path) -&gt; list[dict]:
+    with path.open(encoding=&quot;utf-8&quot;) as handle:
+        return list(csv.DictReader(handle))
+
+
+def save(fig: plt.Figure, name: str) -&gt; None:
+    for directory in (FIGURES, SLIDE_FIGURES):
+        fig.savefig(directory / f&quot;{name}.pdf&quot;, bbox_inches=&quot;tight&quot;)
+        fig.savefig(directory / f&quot;{name}.png&quot;, bbox_inches=&quot;tight&quot;)
+    plt.close(fig)
+
+
+def best_so_far(history: list[int]) -&gt; list[int]:
+    best = history[0]
+    result = []
+    for value in history:
+        best = min(best, value)
+        result.append(best)
+    return result
+
+
+def convergence_figure() -&gt; None:
+    cases = [
+        (&quot;Standard n=150&quot;, ROOT / &quot;instances/medium/n=150_C=200_pairs=45.txt&quot;, 7, 27),
+        (&quot;Synthetic-hard n=100&quot;, ROOT / &quot;instances/hard_medium/hard_n=100_C=200_pairs=20.txt&quot;, 8, 33),
+        (&quot;Synthetic-hard n=150&quot;, ROOT / &quot;instances/hard_medium/hard_n=150_C=200_pairs=30.txt&quot;, 3, 49),
+    ]
+    fig, ax = plt.subplots(figsize=(8, 4.8))
+    for label, path, seed, target in cases:
+        result = tabu_search(load_instance(path), max_iter=1200, tabu_tenure=14, seed=seed, initial=&quot;random&quot;, target=target)
+        ax.step(range(len(result.history)), best_so_far(result.history), where=&quot;post&quot;, linewidth=2, label=label)
+    ax.set_xlabel(&quot;Iteration&quot;)
+    ax.set_ylabel(&quot;Best number of bins&quot;)
+    ax.set_title(&quot;Tabu-search convergence from randomized starts&quot;)
+    ax.legend()
+    save(fig, &quot;fig1_convergence&quot;)
+
+
+def time_figure(rows: list[dict]) -&gt; None:
+    small = sorted((row for row in rows if row[&quot;group&quot;] == &quot;small&quot;), key=lambda row: int(row[&quot;n&quot;]))
+    x = np.arange(len(small))
+    ilp = [max(float(row[&quot;exact_time_sec&quot;]), 1e-6) for row in small]
+    tabu = [max(float(row[&quot;tabu_time_sec&quot;]), 1e-6) for row in small]
+    fig, ax = plt.subplots(figsize=(7, 4.5))
+    width = 0.35
+    ax.bar(x - width / 2, ilp, width, label=&quot;Exact ILP&quot;)
+    ax.bar(x + width / 2, tabu, width, label=&quot;FFD + Tabu&quot;)
+    ax.set_yscale(&quot;log&quot;)
+    ax.set_xticks(x, [f&quot;n={row[&#x27;n&#x27;]}&quot; for row in small])
+    ax.set_ylabel(&quot;Wall-clock time (s, log scale)&quot;)
+    ax.set_title(&quot;Exact ILP and heuristic running times&quot;)
+    ax.legend()
+    save(fig, &quot;fig2_time_comparison&quot;)
+
+
+def gap_figure(rows: list[dict]) -&gt; None:
+    fig, ax = plt.subplots(figsize=(7.5, 4.5))
+    for kind, marker, label in ((&quot;standard&quot;, &quot;o&quot;, &quot;Standard&quot;), (&quot;synthetic-hard&quot;, &quot;s&quot;, &quot;Synthetic-hard&quot;)):
+        subset = sorted((row for row in rows if row[&quot;instance_type&quot;] == kind), key=lambda row: int(row[&quot;n&quot;]))
+        ax.plot(
+            [int(row[&quot;n&quot;]) for row in subset],
+            [float(row[&quot;gap_to_reference_pct&quot;]) for row in subset],
+            marker=marker,
+            linewidth=2,
+            label=label,
+        )
+    ax.set_xlabel(&quot;Number of original items (n)&quot;)
+    ax.set_ylabel(&quot;Gap to stated reference (%)&quot;)
+    ax.set_title(&quot;Solution gap by instance size&quot;)
+    ax.legend()
+    save(fig, &quot;fig3_gap_vs_size&quot;)
+
+
+def boxplot_figure(robust_rows: list[dict]) -&gt; None:
+    names = []
+    values = []
+    for group in (&quot;medium&quot;, &quot;hard_medium&quot;):
+        ns = sorted({int(row[&quot;n&quot;]) for row in robust_rows if row[&quot;group&quot;] == group})
+        for n in ns:
+            subset = [int(row[&quot;tabu_bins&quot;]) for row in robust_rows if row[&quot;group&quot;] == group and int(row[&quot;n&quot;]) == n]
+            names.append((&quot;Std&quot; if group == &quot;medium&quot; else &quot;Hard&quot;) + f&quot;\nn={n}&quot;)
+            values.append(subset)
+    fig, ax = plt.subplots(figsize=(9, 4.8))
+    plot = ax.boxplot(values, tick_labels=names, patch_artist=True, showmeans=True)
+    for index, box in enumerate(plot[&quot;boxes&quot;]):
+        box.set_facecolor(&quot;#4C72B0&quot; if index &lt; 3 else &quot;#C44E52&quot;)
+        box.set_alpha(0.7)
+    ax.set_ylabel(&quot;Final number of bins&quot;)
+    ax.set_title(&quot;Distribution over 30 independent randomized starts&quot;)
+    save(fig, &quot;fig4_boxplot&quot;)
+
+
+def packing_figure() -&gt; None:
+    instance = load_instance(ROOT / &quot;instances/small/n=30_C=100_pairs=10.txt&quot;)
+    contracted = contract_instance(instance)
+    bins = first_fit_decreasing(contracted.weights, contracted.capacity)
+    loads = bin_loads(bins, contracted.weights)
+    fig, ax = plt.subplots(figsize=(8, 4.5))
+    bottoms = np.zeros(len(bins))
+    palette = plt.cm.tab20(np.linspace(0, 1, max(len(contracted.weights), 2)))
+    for bin_index, bin_ in enumerate(bins):
+        for cid in bin_:
+            weight = contracted.weights[cid]
+            ax.bar(bin_index, weight, bottom=bottoms[bin_index], color=palette[cid], edgecolor=&quot;white&quot;)
+            bottoms[bin_index] += weight
+    ax.axhline(contracted.capacity, color=&quot;black&quot;, linestyle=&quot;--&quot;, linewidth=1.2, label=&quot;Capacity&quot;)
+    ax.set_xticks(range(len(bins)), [f&quot;B{i + 1}\nload={load}&quot; for i, load in enumerate(loads)])
+    ax.set_ylabel(&quot;Load&quot;)
+    ax.set_title(&quot;Validated component packing for the n=30 instance&quot;)
+    ax.legend()
+    save(fig, &quot;fig5_bin_visualization&quot;)
+
+
+def hard_improvement_figure() -&gt; None:
+    cases = [
+        (&quot;Hard n=150&quot;, ROOT / &quot;instances/hard_medium/hard_n=150_C=200_pairs=30.txt&quot;, 42),
+        (&quot;Hard n=300&quot;, ROOT / &quot;instances/hard_large/hard_n=300_C=500_pairs=50.txt&quot;, 42),
+        (&quot;Hard n=500&quot;, ROOT / &quot;instances/hard_large/hard_n=500_C=500_pairs=80.txt&quot;, 42),
+    ]
+    labels, ffd_values, tabu_values, lbs = [], [], [], []
+    for label, path, seed in cases:
+        instance = load_instance(path)
+        contracted = contract_instance(instance)
+        labels.append(label)
+        ffd_values.append(len(first_fit_decreasing(contracted.weights, contracted.capacity)))
+        lbs.append(lower_bound(contracted.weights, contracted.capacity))
+        tabu_values.append(tabu_search(instance, max_iter=1500, tabu_tenure=16, seed=seed, target=lbs[-1]).num_bins)
+    x = np.arange(len(labels))
+    fig, ax = plt.subplots(figsize=(7.5, 4.6))
+    width = 0.25
+    ax.bar(x - width, ffd_values, width, label=&quot;FFD&quot;)
+    ax.bar(x, tabu_values, width, label=&quot;FFD + Tabu&quot;)
+    ax.bar(x + width, lbs, width, label=&quot;Lower bound&quot;)
+    ax.set_xticks(x, labels)
+    ax.set_ylabel(&quot;Number of bins&quot;)
+    ax.set_title(&quot;Improvement on synthetic-hard instances&quot;)
+    ax.legend()
+    save(fig, &quot;fig6_pathological&quot;)
+
+
+def random_comparison_figures(summary_rows: list[dict]) -&gt; None:
+    labels = [(&quot;Std&quot; if row[&quot;group&quot;] == &quot;medium&quot; else &quot;Hard&quot;) + f&quot; n={row[&#x27;n&#x27;]}&quot; for row in summary_rows]
+    initial = np.array([float(row[&quot;initial_mean&quot;]) for row in summary_rows])
+    final = np.array([float(row[&quot;final_mean&quot;]) for row in summary_rows])
+    lb = np.array([float(row[&quot;lower_bound&quot;]) for row in summary_rows])
+    x = np.arange(len(labels))
+
+    fig, ax = plt.subplots(figsize=(10, 4.8))
+    width = 0.35
+    ax.bar(x - width / 2, 100 * (initial - lb) / lb, width, label=&quot;Random initial&quot;)
+    ax.bar(x + width / 2, 100 * (final - lb) / lb, width, label=&quot;After Tabu&quot;)
+    ax.set_xticks(x, labels, rotation=20)
+    ax.set_ylabel(&quot;Gap to lower bound (%)&quot;)
+    ax.set_title(&quot;Random-start gap before and after Tabu search (30 runs)&quot;)
+    ax.legend()
+    save(fig, &quot;gap_comparison_random_vs_ffd&quot;)
+
+    fig, ax = plt.subplots(figsize=(10, 4.8))
+    ax.bar(x, initial - final, color=[&quot;#4C72B0&quot; if row[&quot;group&quot;] == &quot;medium&quot; else &quot;#C44E52&quot; for row in summary_rows])
+    ax.set_xticks(x, labels, rotation=20)
+    ax.set_ylabel(&quot;Mean bins removed&quot;)
+    ax.set_title(&quot;Mean improvement produced by Tabu search&quot;)
+    save(fig, &quot;tabu_improvement_on_random&quot;)
+
+    convergence_figure()
+    # Keep the historical filename used by the report, with real convergence data.
+    source = FIGURES / &quot;fig1_convergence.png&quot;
+    for directory in (FIGURES, SLIDE_FIGURES):
+        (directory / &quot;random_vs_ffd_convergence.png&quot;).write_bytes(source.read_bytes())
+    source_pdf = FIGURES / &quot;fig1_convergence.pdf&quot;
+    for directory in (FIGURES, SLIDE_FIGURES):
+        (directory / &quot;random_vs_ffd_convergence.pdf&quot;).write_bytes(source_pdf.read_bytes())
+
+
+def write_robustness_table(summary_rows: list[dict]) -&gt; None:
+    lines = [
+        r&quot;\begin{table}[htbp]&quot;,
+        r&quot;\centering&quot;,
+        r&quot;\scriptsize&quot;,
+        r&quot;\begin{tabular}{lrrrrrr}&quot;,
+        r&quot;\toprule&quot;,
+        r&quot;نمونه &amp; اجرا &amp; میانگین اولیه &amp; میانگین نهایی &amp; انحراف معیار نهایی &amp; بهترین &amp; زمان میانگین (s) \\&quot;,
+        r&quot;\midrule&quot;,
+    ]
+    for row in summary_rows:
+        short = (&quot;Std&quot; if row[&quot;group&quot;] == &quot;medium&quot; else &quot;Hard&quot;) + f&quot; n={row[&#x27;n&#x27;]}&quot;
+        lines.append(
+            f&quot;\\lr{{{short}}} &amp; {row[&#x27;runs&#x27;]} &amp; {float(row[&#x27;initial_mean&#x27;]):.2f} &amp; &quot;
+            f&quot;{float(row[&#x27;final_mean&#x27;]):.2f} &amp; {float(row[&#x27;final_std&#x27;]):.2f} &amp; {row[&#x27;best&#x27;]} &amp; &quot;
+            f&quot;{float(row[&#x27;mean_time_sec&#x27;]):.4f} \\\\&quot;
+        )
+    lines.extend(
+        [
+            r&quot;\bottomrule&quot;,
+            r&quot;\end{tabular}&quot;,
+            r&quot;\caption{تحلیل پایداری در ۳۰ شروع تصادفی مستقل؛ اعداد مستقیماً از فایل \lr{robustness.csv} تولید شده‌اند.}&quot;,
+            r&quot;\label{tab:robustness}&quot;,
+            r&quot;\end{table}&quot;,
+            &quot;&quot;,
+        ]
+    )
+    (RESULTS / &quot;robustness_table.tex&quot;).write_text(&quot;\n&quot;.join(lines), encoding=&quot;utf-8&quot;)
+
+
+def main() -&gt; None:
+    rows = read_csv(RESULTS / &quot;results_final.csv&quot;)
+    robust_rows = read_csv(RESULTS / &quot;robustness.csv&quot;)
+    summary_rows = read_csv(RESULTS / &quot;robustness_summary.csv&quot;)
+    time_figure(rows)
+    gap_figure(rows)
+    boxplot_figure(robust_rows)
+    packing_figure()
+    hard_improvement_figure()
+    random_comparison_figures(summary_rows)
+    write_robustness_table(summary_rows)
+    print(&quot;Generated report and slide artifacts from validated CSV files.&quot;)
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre></details><details class="source-file" ><summary><bdi>instances/hard/n=180_C=300_pairs=30_hard.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/hard/n%3D180_C%3D300_pairs%3D30_hard.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>n=180
+C=300
+weights=105,88,85,108,93,92,92,89,108,88,106,108,113,102,87,103,98,86,85,87,91,92,101,104,85,102,91,107,105,107,102,98,92,99,103,93,110,112,85,109,110,90,107,98,95,93,89,91,115,109,95,88,87,97,88,96,112,96,104,93,110,86,108,99,102,88,114,97,87,102,94,111,105,104,113,112,96,103,91,107,87,86,106,92,109,94,87,112,92,112,88,97,93,99,105,111,96,90,96,96,91,106,93,107,114,106,105,87,104,105,90,102,108,92,90,99,97,93,114,105,57,50,50,42,41,54,40,52,50,60,48,49,43,44,60,54,50,41,52,48,69,44,44,45,43,46,57,51,48,54,58,50,58,40,51,46,42,50,55,46,40,47,47,65,42,47,61,49,42,56,52,45,54,50,48,53,40,62,63,43
+pairs=120-121,122-123,124-125,126-127,128-129,130-131,132-133,134-135,136-137,138-139,140-141,142-143,144-145,146-147,148-149,150-151,152-153,154-155,156-157,158-159,160-161,162-163,164-165,166-167,168-169,170-171,172-173,174-175,176-177,178-179
+</code></pre></details><details class="source-file" ><summary><bdi>instances/hard_large/hard_n=300_C=500_pairs=50.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/hard_large/hard_n%3D300_C%3D500_pairs%3D50.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>n=300
+C=500
+weights=136,145,56,31,67,161,161,160,145,244,141,242,139,62,129,233,242,270,138,237,272,145,57,241,230,42,244,162,271,139,141,91,153,130,263,164,162,156,59,35,66,26,144,154,134,270,26,141,268,28,169,36,83,275,95,258,250,242,247,145,255,265,246,29,28,49,245,160,251,232,155,167,260,274,252,240,68,129,228,165,159,246,267,232,146,137,148,257,150,254,240,248,251,233,257,228,52,248,126,61,151,236,136,255,51,228,159,155,237,132,268,88,63,168,100,229,48,91,151,138,85,275,243,260,162,144,171,26,229,152,86,165,226,228,240,234,173,246,41,270,82,85,66,274,270,150,255,89,58,273,233,126,244,133,94,163,59,28,272,260,99,49,225,138,242,91,84,93,268,26,271,161,71,270,78,164,139,171,241,93,64,34,261,234,173,247,257,265,32,226,265,244,40,158,262,159,272,82,168,143,156,267,249,174,135,259,70,275,251,135,228,37,245,250,231,37,137,38,235,128,246,226,273,40,148,50,140,128,95,32,147,260,265,76,139,150,92,84,272,82,262,78,225,69,39,259,237,272,128,58,67,56,241,258,52,238,260,25,158,251,47,232,61,150,247,248,172,261,79,156,53,158,130,248,40,93,161,98,41,98,259,156,259,152,128,93,159,68,263,238,81,242,94,135,76,89,82,229,144,228
+pairs=81-298,239-255,207-293,108-265,39-49,163-211,33-63,56-63,0-73,71-261,102-220,119-217,204-235,275-285,97-114,7-297,174-216,50-159,122-281,2-242,229-259,227-292,115-186,165-203,57-252,65-241,171-199,154-290,232-272,69-197,36-287,79-187,145-278,172-299,237-271,137-244,36-153,40-41,61-184,182-295,5-54,180-257,45-59,177-255,11-76,68-83,29-38,84-195,140-234,241-288
+</code></pre></details><details class="source-file" ><summary><bdi>instances/hard_large/hard_n=500_C=500_pairs=80.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/hard_large/hard_n%3D500_C%3D500_pairs%3D80.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>n=500
+C=500
+weights=264,235,75,260,33,50,70,243,152,142,171,158,69,248,61,39,99,250,148,252,98,69,94,148,74,241,247,34,272,158,252,240,33,85,261,142,157,240,163,270,81,58,268,145,75,94,68,260,265,66,259,268,163,35,247,173,33,151,79,63,161,230,256,51,129,137,79,68,242,274,33,238,95,58,232,147,248,79,262,54,72,69,250,240,230,142,78,251,231,170,135,252,168,259,126,26,128,251,88,141,73,55,171,159,153,80,140,131,258,44,93,246,70,142,266,53,65,271,162,274,242,257,49,234,96,139,27,32,154,274,49,74,79,267,43,29,148,91,71,237,87,135,170,51,49,248,77,71,259,48,235,129,126,265,255,143,86,237,126,127,149,56,269,266,46,143,256,168,256,58,236,145,259,170,67,172,138,133,67,156,131,157,255,148,237,269,258,91,174,228,75,246,43,256,172,142,150,138,145,133,58,170,256,250,95,261,229,99,92,264,156,269,236,78,93,56,47,236,173,225,262,269,61,265,230,66,63,238,246,164,250,236,69,245,261,63,234,64,230,86,174,84,255,225,69,252,170,165,44,144,159,144,166,270,44,259,275,160,234,139,226,125,150,239,175,153,241,83,259,150,133,256,170,84,272,80,247,173,234,137,96,233,173,71,275,72,254,232,250,157,231,169,130,27,166,44,274,255,70,42,55,164,151,270,50,271,70,158,260,236,151,268,98,141,238,158,255,129,259,230,275,130,233,41,249,154,51,61,130,55,75,267,150,32,33,29,273,35,240,90,38,52,243,143,169,174,244,275,100,260,155,161,139,66,265,258,126,242,241,165,125,246,256,87,135,152,158,255,257,225,264,133,36,268,168,138,30,244,255,260,270,241,235,138,254,244,164,45,128,268,99,54,67,52,161,261,261,250,126,139,268,271,142,272,133,157,63,130,50,28,161,238,241,154,236,172,269,140,169,237,58,273,147,62,250,60,135,275,167,257,174,58,275,275,157,253,246,167,262,237,125,168,167,158,94,50,239,237,95,58,64,142,29,234,274,274,147,261,273,275,146,130,83,49,258,233,233,225,241,164,266,66,272,68,257,78,166,263,174,130,255,251,33,235,234,54,86,236,263,232,275,252,234,154,170,87,244,170,273,86
+pairs=80-110,240-391,22-207,31-149,65-409,90-410,71-441,44-76,291-478,141-386,106-439,114-330,120-384,10-312,314-476,197-407,73-295,79-156,350-422,164-370,7-469,340-375,144-195,4-300,103-153,285-485,105-399,15-407,40-296,206-414,262-448,156-440,202-259,3-219,122-260,74-452,105-162,96-327,364-465,366-463,238-245,76-431,158-273,88-341,264-377,237-257,418-458,0-84,32-172,72-499,304-461,29-205,51-292,221-365,37-451,320-494,128-138,136-427,27-432,159-263,85-133,200-304,222-381,195-471,127-435,52-109,86-493,299-386,6-69,104-343,273-363,17-246,152-430,116-338,14-256,254-470,34-329,73-171,108-383,78-434
+</code></pre></details><details class="source-file" ><summary><bdi>instances/hard_medium/hard_n=100_C=200_pairs=20.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/hard_medium/hard_n%3D100_C%3D200_pairs%3D20.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>n=100
+C=200
+weights=56,12,65,25,106,108,12,104,67,106,19,62,69,108,55,39,22,38,98,97,101,22,66,59,103,95,15,100,101,97,103,90,22,34,66,101,54,50,64,54,65,108,67,18,101,20,105,98,102,101,53,36,51,35,100,17,96,99,37,61,57,97,59,91,110,30,100,25,50,53,55,52,24,90,20,25,13,36,104,52,36,97,64,14,66,10,35,67,19,62,96,92,91,62,97,94,104,93,31,104
+pairs=37-53,43-62,65-88,34-47,25-26,25-84,8-61,5-6,59-89,40-79,19-74,71-90,7-22,6-60,43-63,3-48,11-95,18-69,77-86,4-87
+</code></pre></details><details class="source-file" ><summary><bdi>instances/hard_medium/hard_n=150_C=200_pairs=30.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/hard_medium/hard_n%3D150_C%3D200_pairs%3D30.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>n=150
+C=200
+weights=14,15,109,23,60,94,62,105,57,109,52,100,18,50,106,99,61,39,103,32,54,90,39,110,11,50,18,17,97,24,98,11,10,17,99,22,70,64,31,95,50,108,67,91,106,38,11,99,110,97,26,37,66,67,57,64,69,22,53,99,65,16,30,38,70,53,101,105,57,99,90,90,103,99,24,92,108,97,97,24,103,65,104,53,30,99,90,101,28,90,13,62,97,65,32,94,55,105,65,10,33,51,65,104,13,60,92,50,52,98,17,99,98,69,103,64,105,40,101,51,18,90,11,109,33,52,70,52,99,62,94,40,34,51,99,110,60,70,101,22,18,23,64,110,31,104,97,109,53,14
+pairs=66-124,95-134,6-89,25-146,54-97,44-91,7-136,28-72,106-144,33-39,45-100,10-100,13-66,56-109,26-117,99-125,84-106,40-74,26-46,55-130,32-125,34-74,140-146,0-137,93-147,7-104,15-52,46-137,90-132,3-52
+</code></pre></details><details class="source-file" ><summary><bdi>instances/hard_medium/hard_n=50_C=200_pairs=10.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/hard_medium/hard_n%3D50_C%3D200_pairs%3D10.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>n=50
+C=200
+weights=70,98,109,30,104,28,61,16,93,97,37,22,55,29,99,98,70,58,69,60,54,10,98,93,50,12,92,110,67,70,106,97,37,101,24,102,55,100,102,53,52,98,104,66,38,22,13,18,99,39
+pairs=18-26,3-28,3-15,16-25,29-45,17-47,10-46,6-13,19-21,12-40
+</code></pre></details><details class="source-file" ><summary><bdi>instances/hard_small/hard_n=10_C=100_pairs=2.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/hard_small/hard_n%3D10_C%3D100_pairs%3D2.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>n=10
+C=100
+weights=52,28,52,34,20,52,10,33,10,53
+pairs=3-6,2-3
+</code></pre></details><details class="source-file" ><summary><bdi>instances/hard_small/hard_n=20_C=100_pairs=5.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/hard_small/hard_n%3D20_C%3D100_pairs%3D5.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>n=20
+C=100
+weights=5,53,51,30,55,35,29,12,52,19,9,32,50,10,25,55,16,49,47,32
+pairs=2-14,11-18,4-6,7-8,10-16
+</code></pre></details><details class="source-file" ><summary><bdi>instances/hard_small/hard_n=30_C=100_pairs=8.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/hard_small/hard_n%3D30_C%3D100_pairs%3D8.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>n=30
+C=100
+weights=49,13,47,48,55,49,27,9,33,27,55,48,19,9,29,47,35,55,55,13,13,5,26,31,25,7,28,55,18,47
+pairs=1-19,7-15,16-22,4-21,11-19,9-16,10-26,11-25
+</code></pre></details><details class="source-file" ><summary><bdi>instances/large/n=1000_C=1000_pairs=200.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/large/n%3D1000_C%3D1000_pairs%3D200.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>n=1000
+C=1000
+weights=238,314,192,137,71,96,4,174,258,238,310,42,172,284,316,21,195,87,232,217,81,87,122,27,57,68,260,303,33,197,53,150,105,115,216,45,137,108,204,144,175,23,103,3,211,29,194,252,72,13,122,218,58,306,2,63,297,102,104,170,5,43,69,277,9,257,44,294,255,276,102,216,36,204,99,328,48,297,75,89,312,22,28,139,285,311,77,138,295,18,63,207,122,83,313,259,23,188,268,303,290,45,178,57,300,188,232,108,206,102,295,10,195,312,169,1,222,58,110,114,228,139,167,46,158,323,146,53,265,29,14,196,287,220,255,178,128,290,34,218,332,119,50,206,262,191,287,190,72,149,88,133,16,26,89,135,85,62,311,76,7,25,32,231,107,200,151,314,8,182,146,73,247,288,143,71,45,285,152,61,34,216,232,73,288,197,302,87,141,306,312,254,179,51,25,142,271,66,89,323,44,84,114,7,104,91,243,234,303,287,280,199,43,89,281,247,304,135,275,35,15,298,300,224,279,159,269,270,276,329,34,330,294,278,154,33,115,71,53,52,252,233,31,251,327,28,309,15,192,125,235,119,191,294,320,254,125,19,319,306,44,314,25,210,209,302,36,42,97,18,312,93,44,34,16,182,320,241,281,275,244,14,39,171,44,165,5,238,230,303,77,198,245,71,55,179,119,232,67,99,114,56,57,27,62,39,331,43,191,54,13,240,321,268,103,190,325,42,121,3,132,266,102,8,225,130,313,12,53,266,214,30,129,244,162,310,113,328,31,141,68,154,20,96,181,207,4,155,49,16,163,225,127,214,310,165,252,289,178,205,221,107,41,142,155,237,239,313,292,234,226,198,96,169,206,31,167,48,88,163,279,14,97,109,187,71,321,44,173,229,311,307,198,109,278,172,39,10,283,216,241,117,166,264,258,51,238,2,146,274,106,37,115,6,162,22,47,77,169,84,50,261,207,333,203,200,301,260,70,261,183,184,139,104,165,198,291,94,314,92,293,88,5,157,11,143,246,268,219,48,140,146,74,265,232,246,119,92,170,76,178,308,27,280,143,177,14,297,96,276,50,233,69,175,108,279,69,217,111,264,104,292,217,6,285,26,182,255,191,32,191,205,238,224,324,98,285,51,86,301,44,182,134,127,241,270,96,272,7,277,172,115,89,15,29,301,298,103,174,146,67,170,153,203,19,40,208,126,233,238,22,161,89,74,295,103,327,268,298,196,257,78,195,17,204,72,147,214,247,93,326,316,49,263,256,267,134,130,192,314,178,275,8,102,31,332,271,238,160,53,106,8,102,238,64,131,159,152,116,6,92,326,213,140,190,327,179,166,287,83,284,15,69,108,46,25,108,10,133,225,184,181,286,39,49,210,219,91,31,125,294,80,261,294,216,187,99,328,179,264,265,210,18,83,280,161,142,235,149,148,224,273,217,54,30,184,115,212,133,187,232,192,34,209,261,94,33,332,61,330,166,217,254,10,159,223,41,200,133,100,300,242,87,312,16,124,150,5,266,61,304,296,3,103,226,313,53,195,260,141,96,38,270,269,158,74,216,94,102,157,243,146,244,259,330,161,260,238,30,303,273,325,245,46,42,209,173,38,245,84,301,273,313,77,332,251,212,275,255,60,296,261,7,146,225,299,41,292,136,286,87,142,4,169,262,227,266,191,166,90,83,163,164,170,245,42,167,146,49,289,131,154,31,312,202,243,36,157,212,120,232,151,193,232,262,22,108,85,61,294,36,41,48,148,5,247,149,28,229,88,82,45,137,50,62,82,129,323,191,134,115,103,101,253,289,276,100,209,138,239,126,207,46,131,137,78,95,11,311,307,196,69,234,256,63,308,55,316,199,202,280,171,69,114,173,121,184,280,321,44,56,44,1,186,289,238,189,331,113,230,279,4,321,232,132,299,175,81,189,33,151,106,137,314,83,208,63,14,122,290,78,9,93,313,37,321,207,66,215,144,302,246,38,213,77,144,56,332,260,78,73,245,272,134,4,189,51,291,297,331,145,332,61,1,118,246,287,85,268,181,142,102,85,173,10,121,43,99,5,205,4,247,11,27,98,154,330,156,279,37,224,282,108,263,105,48,49,42,111,164,20,236,95,294,141,304,184,51,282,137,132,74,30,21,187,41,74,169,9,135,291,122,91,14,297,28,219,3,331,179,38,68,100,73,290,235,273,237,163,307,230,303,254,115,101,241,139,227,32,242,294,107,73,230,82,242,58,218,192,96,172,239,319,49,18,70,34,189,36,132
+pairs=458-705,644-671,379-736,555-982,11-191,338-707,392-649,840-936,83-742,97-553,244-707,489-726,9-60,23-720,180-424,3-978,264-878,484-881,177-453,283-554,101-666,100-773,43-906,277-726,300-752,933-976,65-414,145-345,395-974,374-757,480-973,335-806,392-518,147-416,220-685,150-283,279-975,139-701,301-564,830-903,700-701,664-927,182-503,605-666,564-839,240-605,64-591,272-447,483-694,300-554,117-249,552-575,1-730,5-578,917-946,185-236,669-885,660-753,456-563,91-849,504-831,483-864,14-391,152-705,720-991,109-896,594-948,678-932,93-280,657-713,124-829,473-823,379-882,128-333,163-213,75-288,777-786,61-306,116-902,631-632,806-988,458-832,186-523,389-853,319-530,427-627,519-994,134-159,698-759,177-398,492-614,516-602,450-880,119-699,282-616,518-630,31-110,63-279,558-858,255-361,140-567,348-843,523-859,249-426,242-840,221-363,543-639,385-723,56-656,54-820,307-638,588-988,478-719,15-555,217-395,119-396,303-681,564-962,136-576,82-848,78-143,110-951,205-585,195-845,103-988,202-946,166-216,412-820,61-977,203-915,53-839,514-559,281-876,374-946,582-744,517-594,348-362,11-351,800-923,92-403,58-603,314-381,870-992,183-702,215-301,463-500,553-560,461-578,194-995,18-334,106-286,272-324,360-491,516-737,507-783,150-495,406-858,270-616,523-995,372-828,355-450,164-858,186-420,568-610,257-452,369-842,77-994,273-321,477-511,32-136,529-539,337-638,90-98,299-437,462-811,174-480,275-747,367-492,313-774,132-733,106-263,135-657,451-736,175-318,530-927,358-719,410-773,222-643,241-355,501-835,651-905,467-748,218-908,584-974,32-244,109-161,369-716,545-958,45-556,424-820
+</code></pre></details><details class="source-file" ><summary><bdi>instances/large/n=300_C=500_pairs=80.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/large/n%3D300_C%3D500_pairs%3D80.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>n=300
+C=500
+weights=83,39,102,13,19,138,25,94,150,15,130,55,10,23,112,108,18,62,24,142,109,16,145,32,58,162,161,150,16,148,150,102,13,57,12,143,35,75,108,37,139,31,147,79,144,47,27,149,147,164,49,96,25,141,17,145,16,159,53,128,137,110,81,120,150,117,93,77,64,47,63,21,148,77,135,127,88,115,74,156,19,31,132,108,43,88,39,126,108,11,20,143,147,81,88,90,153,128,149,117,18,24,70,122,17,16,80,166,148,115,73,99,89,6,119,91,44,157,30,127,16,56,74,34,64,102,101,128,21,43,115,103,141,72,36,111,141,72,107,92,98,60,39,22,46,39,60,60,4,125,151,47,68,73,2,38,108,137,95,157,145,82,33,132,159,14,117,144,101,102,103,101,27,124,163,103,16,49,18,54,113,42,29,88,154,14,27,1,146,39,138,26,94,158,7,19,54,158,97,39,163,65,89,155,94,122,32,30,125,120,123,124,80,22,37,27,88,68,123,42,133,6,53,136,93,38,140,7,136,77,165,24,67,133,94,43,92,58,137,139,129,85,163,58,157,50,62,103,59,52,133,127,92,8,8,72,121,67,50,155,89,115,90,94,21,57,27,59,121,51,87,53,124,160,157,1,123,89,165,22,31,100,52,123,46,112,163,86,23,102,119,103,22,41,44,33,8,39,152,120
+pairs=164-281,28-133,220-224,193-208,63-227,17-79,111-194,173-288,135-196,158-236,192-245,48-230,119-206,171-237,249-290,0-15,170-237,154-257,210-266,49-93,97-251,30-132,119-237,23-204,22-159,76-140,10-44,79-99,117-133,96-259,211-299,64-212,121-179,28-125,110-270,151-187,29-167,31-120,5-257,179-187,117-297,219-251,110-139,136-195,102-264,19-227,160-187,85-232,14-91,69-234,198-222,92-102,130-174,23-264,133-152,133-231,30-115,90-176,82-214,185-235,83-236,183-195,212-274,45-143,134-141,130-184,180-259,246-281,207-214,155-293,183-240,128-185,64-253,181-257,46-228,13-71,150-275,39-254,154-175,75-179
+</code></pre></details><details class="source-file" ><summary><bdi>instances/large/n=500_C=500_pairs=120.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/large/n%3D500_C%3D500_pairs%3D120.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>n=500
+C=500
+weights=59,95,97,33,50,12,22,36,64,130,54,103,165,8,118,125,117,100,127,147,50,104,23,125,60,6,69,134,105,122,98,30,67,25,17,99,159,97,28,15,87,61,23,128,133,54,149,37,156,17,139,10,126,50,38,149,117,150,114,74,143,92,110,35,41,154,25,137,81,92,165,127,129,160,51,80,39,92,136,73,131,19,130,140,57,89,63,4,76,88,57,69,9,109,66,97,77,107,45,102,30,43,7,52,42,77,30,4,98,88,44,146,112,60,36,105,145,115,105,107,21,151,18,74,25,9,22,28,134,135,93,40,130,125,39,155,17,49,5,36,88,99,147,31,77,90,84,94,1,166,128,54,16,159,9,149,45,46,87,111,114,31,22,52,155,58,128,122,40,98,32,28,149,116,166,33,113,132,24,121,145,101,93,117,58,14,51,13,115,29,28,55,2,154,157,6,94,111,136,24,154,129,146,52,129,59,83,135,99,134,166,51,2,75,157,76,21,83,104,58,162,76,21,141,108,95,83,133,78,161,92,76,28,51,125,95,97,150,80,53,75,102,157,99,135,92,155,150,93,110,51,126,136,130,21,69,42,18,128,70,108,30,160,71,75,71,130,69,71,162,106,63,93,63,64,130,118,64,60,153,135,51,95,128,28,29,100,22,44,146,110,12,36,6,157,49,68,23,25,119,118,73,145,24,33,156,92,17,82,10,22,36,94,20,60,10,154,82,57,76,92,84,17,134,30,157,90,112,41,41,66,100,39,111,17,26,137,57,22,76,46,87,51,28,14,15,143,46,44,144,164,84,76,63,129,123,29,145,22,36,34,58,84,56,105,45,44,35,113,16,115,150,158,74,107,112,149,96,145,126,94,136,48,80,69,122,33,71,128,163,130,137,132,75,56,146,135,101,35,126,166,122,32,75,101,9,9,96,130,76,89,97,8,160,37,4,21,48,115,149,33,109,145,162,149,28,96,129,11,154,95,92,28,82,27,123,44,166,61,123,94,148,89,96,110,96,161,10,37,81,16,9,60,131,93,124,94,122,144,45,78,36,166,69,6,113,74,150,67,117,76,75,104,128,115,162,23,128,113,88,35,149,28,93,154,117,93,121,147,99,53,140,134,152,45,38,130,9,23,141
+pairs=198-325,61-385,258-368,18-329,269-462,218-226,45-276,104-370,236-367,121-326,40-299,82-427,122-226,300-396,336-487,260-490,80-155,81-469,118-301,39-84,248-284,91-233,120-188,162-218,41-91,56-339,258-307,82-156,115-222,117-404,55-190,72-334,11-238,440-484,117-282,200-385,37-455,82-482,284-450,389-432,201-400,277-425,208-299,273-304,130-331,33-209,297-318,302-355,234-288,208-245,163-272,327-382,82-345,43-395,201-366,234-244,137-438,211-332,406-462,10-176,100-339,213-251,196-398,60-292,326-421,278-319,433-489,184-264,66-422,408-453,463-495,6-274,237-253,207-401,101-364,269-461,99-189,59-478,66-177,127-217,2-387,384-447,14-472,15-355,115-471,134-403,293-464,134-408,232-435,49-231,83-221,410-489,47-492,125-322,248-474,42-323,15-265,87-267,373-470,191-381,40-456,234-383,321-331,32-163,16-29,83-432,229-356,63-76,337-409,148-259,219-461,72-249,321-431,82-362,142-441,75-197,168-464,90-453,145-184,139-167
+</code></pre></details><details class="source-file" ><summary><bdi>instances/medium/n=100_C=200_pairs=30.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/medium/n%3D100_C%3D200_pairs%3D30.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>n=100
+C=200
+weights=33,46,4,60,32,7,21,15,48,61,32,49,14,32,2,28,53,36,24,50,21,10,18,57,17,17,1,1,27,28,22,22,38,41,26,27,24,26,50,39,3,47,54,22,19,34,9,43,39,1,44,9,40,46,40,62,41,24,62,61,23,8,33,3,46,52,3,54,47,49,2,58,6,24,26,16,32,60,45,66,46,33,60,14,48,38,5,56,12,27,44,66,47,19,44,36,12,40,41,40
+pairs=23-96,31-38,65-95,6-62,51-73,21-34,8-18,14-69,30-69,44-83,63-84,7-87,44-96,30-97,17-65,11-88,12-32,42-72,17-58,7-51,16-42,77-99,38-79,12-88,11-13,9-75,17-27,37-99,11-53,44-67
+</code></pre></details><details class="source-file" ><summary><bdi>instances/medium/n=150_C=200_pairs=45.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/medium/n%3D150_C%3D200_pairs%3D45.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>n=150
+C=200
+weights=11,63,34,5,1,19,61,48,41,3,35,63,26,53,13,25,34,12,55,43,12,47,53,33,57,13,26,38,13,6,26,47,63,25,66,65,4,47,32,56,39,46,16,12,65,26,15,35,40,26,49,62,29,18,27,2,25,22,3,43,40,48,49,50,38,17,63,7,24,55,51,13,57,32,12,58,58,49,10,55,61,39,53,11,25,35,58,63,23,3,3,16,33,47,25,33,65,58,43,33,53,54,63,35,61,62,63,19,49,64,40,60,42,47,21,49,35,41,51,63,21,38,1,58,8,24,4,15,48,47,64,8,25,20,35,2,55,63,10,61,30,13,48,47,19,32,41,19,5,13
+pairs=2-88,21-128,49-52,76-125,18-46,92-127,84-143,24-34,33-37,109-141,27-116,7-37,3-145,40-42,66-71,68-99,64-131,52-95,59-90,108-112,114-146,4-141,30-49,7-14,21-65,35-112,69-113,77-103,94-122,31-69,32-148,3-52,65-86,125-131,15-117,47-72,21-149,15-43,74-136,45-83,51-53,34-56,25-100,43-79,102-111
+</code></pre></details><details class="source-file" ><summary><bdi>instances/medium/n=50_C=200_pairs=15.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/medium/n%3D50_C%3D200_pairs%3D15.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>n=50
+C=200
+weights=31,39,14,51,62,20,12,9,3,52,38,8,29,47,36,23,14,34,28,4,34,35,25,22,40,38,48,12,44,50,65,32,23,32,61,36,12,39,1,38,40,66,25,53,55,37,56,58,21,30
+pairs=10-26,3-42,18-42,17-29,1-27,18-43,9-44,25-27,24-27,5-43,8-28,24-46,35-36,12-28,26-30
+</code></pre></details><details class="source-file" ><summary><bdi>instances/small/n=10_C=100_pairs=3.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/small/n%3D10_C%3D100_pairs%3D3.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>n=10
+C=100
+weights=9,5,17,8,32,29,31,25,14,7
+pairs=6-9,0-9,7-8
+</code></pre></details><details class="source-file" ><summary><bdi>instances/small/n=20_C=100_pairs=7.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/small/n%3D20_C%3D100_pairs%3D7.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>n=20
+C=100
+weights=4,6,6,24,11,20,17,14,3,11,28,26,33,24,29,33,18,3,2,24
+pairs=2-16,0-13,15-16,3-8,3-19,3-7,0-16
+</code></pre></details><details class="source-file" ><summary><bdi>instances/small/n=30_C=100_pairs=10.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/instances/small/n%3D30_C%3D100_pairs%3D10.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>n=30
+C=100
+weights=16,9,24,31,5,1,31,17,15,13,31,31,26,10,15,10,25,1,5,11,3,20,2,18,31,25,28,26,29,9
+pairs=9-19,10-11,10-23,13-23,0-5,21-24,3-5,19-26,1-8,17-27
+</code></pre></details><details class="source-file" ><summary><bdi>report/main.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/report/main.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\documentclass[a4paper,12pt]{article}
+
+% --- Essential Packages ---
+\usepackage{geometry}
+\geometry{top=3cm, bottom=3cm, left=2.5cm, right=2.5cm}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[section]{placeins}
+\usepackage{booktabs} % T5.2: booktabs
+\usepackage[ruled,linesnumbered]{algorithm2e} % T5.2: algorithm2e
+\usepackage{pgfplots} % T5.2: pgfplots
+\pgfplotsset{compat=1.18}
+\usepackage{hyperref}
+\usepackage{cite}
+
+% --- Persian Support (MUST be the last package) ---
+\usepackage{xepersian} % T5.2: xepersian
+\settextfont{XB Niloofar}
+\setlatintextfont{Times New Roman}
+\setdigitfont{XB Niloofar}
+\renewcommand{\thesection}{\lr{\arabic{section}}}
+\renewcommand{\thesubsection}{\lr{\arabic{section}.\arabic{subsection}}}
+
+\title{گزارش پروژه نهایی: مسئله بسته‌بندی در سطل‌ها با اقلام چسبنده}
+\author{محمد باغبان‌زاده\\شماره دانشجویی: شناسهٔ دانشجو}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+% فایل‌های بخش‌های مختلف در اینجا فراخوانی خواهند شد
+\input{sections/abstract}
+\input{sections/introduction}
+\input{sections/problem_model}
+\input{sections/applications}
+\input{sections/algorithm}
+\input{sections/results}
+\input{sections/conclusion}
+
+\bibliographystyle{ieeetr}
+\bibliography{references}
+
+\end{document}
+</code></pre></details><details class="source-file" ><summary><bdi>report/references.bib</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/report/references.bib" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>@article{A1_Bacci2017,
+  title={On the benchmark instances for the Bin Packing with Conflicts},
+  author={Bacci, Tiziano and Nicoloso, Sara},
+  journal={arXiv preprint arXiv:1706.03526},
+  year={2017}
+}
+
+@article{A4_Albers2025,
+  title={On the 2D Demand Bin Packing Problem: Hardness and Approximation Algorithms},
+  author={Albers, S. and G{\&#x27;a}lvez, W. and {\&quot;O}zdemir, {\&quot;O}.B.},
+  journal={arXiv preprint arXiv:2508.13347},
+  year={2025}
+}
+
+@article{B1_Divakaran2019,
+  title={A Fast Scalable Heuristic for Bin Packing},
+  author={Divakaran, Srikrishnan},
+  journal={arXiv preprint arXiv:1904.12467},
+  year={2019}
+}
+
+@article{B4_Fang2024,
+  title={A new approach for bin packing problem using knowledge reuse and improved heuristic},
+  author={Fang, Jie and Chen, Xubing and Rao, Yunqing and Peng, Yili and Yan, Kuan},
+  journal={Scientific Reports},
+  volume={14},
+  pages={31708},
+  year={2024},
+  doi={10.1038/s41598-024-81749-5}
+}
+
+@article{C1_Shan2022,
+  title={KubeAdaptor: A Docking Framework for Workflow Containerization on Kubernetes},
+  author={Shan, Chenggang and Wang, Guan and Xia, Yuanqing and Zhan, Yufeng and Zhang, Jinhui},
+  journal={arXiv preprint arXiv:2207.01222},
+  year={2022}
+}
+
+@article{C4_Yang2025,
+  title={A Survey on Task Scheduling in Carbon-Aware Container Orchestration},
+  author={Yang, Jialin and Saad, Zainab and Wu, Jiajun and Niu, Xiaoguang and Leung, Henry and Drew, Steve},
+  journal={arXiv preprint arXiv:2508.05949},
+  year={2025}
+}
+
+@article{D1_Tanir2016,
+  title={One-dimensional Cutting Stock Problem with Divisible Items},
+  author={Tanir, Deniz and Ugurlu, Onur and Guler, Asli and Nuriyev, Urfat},
+  journal={arXiv preprint arXiv:1606.01419},
+  year={2016}
+}
+
+@article{B3_Zhang2021,
+  title={Attend2Pack: Bin Packing through Deep Reinforcement Learning with Attention},
+  author={Zhang, Jingwei and Zi, Bin and Ge, Xiaoyu},
+  journal={arXiv preprint arXiv:2107.04333},
+  year={2021}
+}
+
+@article{A2_DoronArad2020,
+  title={An APTAS for Bin Packing with Clique-graph Conflicts},
+  author={Doron-Arad, Ilan and Kulik, Ariel and Shachnai, Hadas},
+  journal={arXiv preprint arXiv:2011.04273},
+  year={2020}
+}
+
+@article{Christensen2017,
+  title={Approximation and online algorithms for multidimensional bin packing: A survey},
+  author={Christensen, Henrik I and Khan, Arindam and Pokutta, Sebastian and Tetali, Prasad},
+  journal={Computer Science Review},
+  volume={24},
+  pages={63--96},
+  year={2017},
+  publisher={Elsevier}
+}
+
+@article{Battiti1994,
+  title={The reactive tabu search},
+  author={Battiti, Roberto and Tecchiolli, Giampietro},
+  journal={ORSA journal on computing},
+  volume={6},
+  number={2},
+  pages={126--140},
+  year={1994},
+  publisher={INFORMS}
+}
+
+@book{GareyJohnson1979,
+  title={Computers and Intractability: A Guide to the Theory of {NP}-Completeness},
+  author={Garey, Michael R. and Johnson, David S.},
+  publisher={W. H. Freeman},
+  address={San Francisco},
+  year={1979}
+}
+
+@article{Falkenauer1996,
+  title={A hybrid grouping genetic algorithm for bin packing},
+  author={Falkenauer, Emanuel},
+  journal={Journal of heuristics},
+  volume={2},
+  number={1},
+  pages={5--30},
+  year={1996},
+  publisher={Springer}
+}
+</code></pre></details><details class="source-file" ><summary><bdi>report/sections/abstract.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/report/sections/abstract.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\begin{abstract}
+این پروژه مسئله بسته‌بندی یک‌بعدی در سطل‌ها با قیود چسبندگی سخت
+(\lr{must-link}) را بررسی می‌کند. ابتدا یک مدل برنامه‌ریزی خطی عدد صحیح ارائه
+می‌شود. سپس با انقباض مؤلفه‌های همبند گراف چسبندگی، مسئله به‌طور دقیق به یک
+مسئله کلاسیک \lr{Bin Packing} روی اَبَراقلام تبدیل می‌شود. برای حل نمونه‌های
+بزرگ، الگوریتم \lr{First Fit Decreasing} با جستجوی تابو ترکیب شده است. جستجو
+از چهار عملگر \lr{MOVE، SWAP، MERGE} و \lr{EJECT}، ارزیابی دلتای ثابت، حافظه
+تابو مبتنی بر شناسه مؤلفه، معیار تنفس و دوره تصدی پویا استفاده می‌کند.
+
+پیاده‌سازی واحد پروژه روی ۱۷ نمونه متنی در سه مقیاس و دو خانواده داده اجرا و
+تمام جواب‌ها با آزمون مستقل ظرفیت، پوشش اقلام و قیود چسبندگی اعتبارسنجی شدند.
+در نمونه‌های دارای حداکثر ۳۰ قلم، جواب دقیق \lr{ILP} محاسبه شد و روش پیشنهادی
+در هر شش نمونه به مقدار بهینه رسید. در تمام نمونه‌های استاندارد، جواب با کران
+پایین معتبر برابر بود. در نمونه‌های مصنوعی دشوار ۳۰۰ و ۵۰۰ قلمی، جستجوی تابو
+جواب \lr{FFD} را یک سطل بهبود داد و به کران پایین رسید؛ در نمونه دشوار ۱۵۰
+قلمی فاصله نسبت به کران پایین ۲٫۰۴ درصد باقی ماند. همچنین ۳۰ شروع تصادفی مستقل
+برای هر نمونه متوسط نشان داد که جستجوی تابو میانگین تعداد سطل‌ها را کاهش می‌دهد؛
+برای نمونه دشوار ۱۰۰ قلمی، میانگین از ۳۶٫۲۰ به ۳۳٫۴۳ سطل رسید.
+\end{abstract}
+</code></pre></details><details class="source-file" ><summary><bdi>report/sections/algorithm.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/report/sections/algorithm.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\section{الگوریتم پیشنهادی}
+
+\subsection{معماری حل}
+قیود چسبندگی سخت یک رابطه هم‌مکانی انتقالی ایجاد می‌کنند. بنابراین ابتدا گراف
+$G=(I,E)$ ساخته و مؤلفه‌های همبند آن در زمان $O(|I|+|E|)$ استخراج می‌شوند.
+هر مؤلفه به یک اَبَرقلم با وزن مجموع اعضا تبدیل می‌شود. اگر وزن یک مؤلفه از
+ظرفیت $C$ بیشتر باشد، نمونه ناموجه است؛ در غیر این صورت مسئله منقبض‌شده دقیقاً
+یک \lr{BPP} کلاسیک است و هر جواب آن به یک جواب معتبر برای اقلام اصلی بسط
+می‌یابد.
+
+\subsection{جواب اولیه}
+دو روش مقداردهی اولیه در پیاده‌سازی واحد پروژه وجود دارد:
+\begin{itemize}
+  \item \textbf{\lr{FFD}:} مؤلفه‌ها به ترتیب نزولی وزن در نخستین سطل ممکن قرار
+  می‌گیرند. این روش در آزمایش اصلی استفاده شده است.
+  \item \textbf{\lr{Randomized First Fit}:} ترتیب مؤلفه‌ها و انتخاب مقصد ممکن
+  با یک \lr{seed} مشخص تصادفی می‌شود. این روش برای ۳۰ اجرای مستقل تحلیل
+  پایداری استفاده شده است.
+\end{itemize}
+هر دو سازنده فقط جواب موجه تولید می‌کنند.
+
+\subsection{ساختار همسایگی}
+تمام حرکات روی مؤلفه‌ها، نه اقلام منفرد، انجام می‌شوند:
+\begin{itemize}
+  \item \textbf{\lr{MOVE}:} انتقال یک مؤلفه به سطل موجود، مشروط به ظرفیت؛
+  \item \textbf{\lr{SWAP}:} مبادله دو مؤلفه از دو سطل متفاوت؛
+  \item \textbf{\lr{MERGE}:} ادغام دو سطل در صورت کافی بودن ظرفیت؛
+  \item \textbf{\lr{EJECT}:} انتقال یک مؤلفه از سطل چندعضوی به سطل جدید برای
+  تنوع‌بخشی جستجو.
+\end{itemize}
+حرکت \lr{EJECT} موقتاً یک سطل اضافه می‌کند؛ ازاین‌رو در جستجوی عادی انتخاب
+نمی‌شود. پس از یک دوره رکود، اگر جواب جاری بیش از یک سطل از بهترین جواب فاصله
+نداشته باشد، یک \lr{EJECT} مجاز به‌صورت کنترل‌شده اجرا می‌شود تا ساختار محلی
+شکسته شود.
+
+\subsection{تابع ارزیابی، حافظه و توقف}
+معیار اصلی کمینه‌سازی تعداد سطل‌هاست. در تساوی معیار اصلی، حرکت با بیشترین
+افزایش در
+$\sum_b L_b^2$
+انتخاب می‌شود؛ این معیار ثانویه سطل‌های پرتر و سطل‌های نزدیک به تخلیه را ترجیح
+می‌دهد. تابع \texttt{calculate\_delta} تغییر تعداد سطل‌ها و تغییر مجموع مربعات
+بار را بدون ساخت جواب کامل و در $O(1)$ محاسبه می‌کند. تنها حرکت منتخب با یک
+کپی خطی از ساختار سطل‌ها اعمال می‌شود.
+
+حافظه تابو به‌جای ذخیره tuple حرکت، شناسه مؤلفه‌های جابه‌جا‌شده را نگه می‌دارد؛
+بنابراین حرکت معکوس فوری نیز ممنوع می‌شود. برای پارامتر پایه $T$، دوره تصدی هر
+حرکت به‌صورت تصادفی از بازه
+$[\max(3,T-2),T+2]$
+انتخاب می‌شود. اگر حرکت تابو جوابی بهتر از بهترین جواب تاریخی تولید کند، معیار
+تنفس محدودیت را لغو می‌کند. الگوریتم با رسیدن به مقدار مرجع معتبر، رسیدن به
+حداکثر تکرار یا عبور از حد رکود متوقف می‌شود.
+
+\subsection{شبه‌کد}
+\begin{algorithm}[htbp]
+\caption{جستجوی تابو برای بسته‌بندی با قیود چسبندگی}\label{alg:tabu}
+\KwIn{اقلام $I$، وزن‌ها $w$، ظرفیت $C$، یال‌ها $E$، پارامترهای $MaxIter,T$}
+\KwOut{بهترین بسته‌بندی معتبر $B^*$}
+$Components \gets ConnectedComponents(I,E)$\;
+\If{$\exists c: W_c&gt;C$}{\Return \lr{Infeasible}}
+$B \gets FFD(Components)$; $B^*\gets B$; $TabuUntil\gets\emptyset$\;
+\For{$t=1$ \KwTo $MaxIter$}{
+  $N(B)\gets MOVE\cup SWAP\cup MERGE\cup EJECT$\;
+  \ForEach{$m\in N(B)$}{
+    $(\Delta_{bins},\Delta_{sq})\gets CalculateDelta(m)$\;
+    حرکت‌های تابو را، مگر در صورت برقراری معیار تنفس، حذف کن\;
+  }
+  \eIf{رکود دوره‌ای و \lr{EJECT} مجاز وجود دارد}{
+    $m^*\gets$ بهترین \lr{EJECT} مجاز\;
+  }{
+    $m^*\gets\arg\min_m(\Delta_{bins},-\Delta_{sq})$\;
+  }
+  $B\gets ApplyMove(B,m^*)$\;
+  $TabuUntil[c]\gets t+Uniform(\max(3,T-2),T+2)$ برای مؤلفه‌های حرکت\;
+  \If{$|B|&lt;|B^*|$}{$B^*\gets B$}
+  \If{شرط توقف برقرار است}{\textbf{break}}
+}
+اعتبار ظرفیت، پوشش مؤلفه‌ها و قیود چسبندگی را بررسی کن\;
+\Return $B^*$\;
+\end{algorithm}
+
+\subsection{پیچیدگی و پیاده‌سازی}
+اگر $m$ تعداد مؤلفه‌ها و $b\le m$ تعداد سطل‌ها باشد، تولید حرکت‌های
+\lr{MOVE} از مرتبه $O(mb)$، \lr{SWAP} از مرتبه $O(m^2)$، \lr{MERGE} از
+مرتبه $O(b^2)$ و \lr{EJECT} از مرتبه $O(m)$ است. بنابراین هر تکرار در بدترین
+حالت $O(m^2)$ و کل جستجو $O(MaxIter\,m^2)$ زمان دارد. چون همسایگی به‌صورت
+صریح ساخته می‌شود، حافظه بدترین‌حالت نیز $O(m^2)$ است. اعمال حرکت منتخب
+$O(m)$ زمان می‌برد، اما تنها یک‌بار در هر تکرار انجام می‌شود.
+
+برای جلوگیری از اختلاف نسخه‌ها، مدل دقیق، الگوریتم ابتکاری، اعتبارسنجی و تمام
+آزمایش‌ها از ماژول واحد \texttt{cohesive\_bin\_packing.py} فراخوانی می‌شوند.
+پنج آزمون خودکار نیز contraction، تشخیص ناموجه بودن، صحت دلتا، اعتبار جواب و
+تطابق یک نمونه واقعی با جواب دقیق را بررسی می‌کنند.
+</code></pre></details><details class="source-file" ><summary><bdi>report/sections/applications.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/report/sections/applications.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\section{کاربردها و حدود انطباق مدل}
+
+مدل این گزارش یک مدل انتزاعی با سه فرض محدودکننده است: ظرفیت هر سطل یک‌بعدی و یکسان است، روابط چسبندگی قیود سخت و از پیش معلوم‌اند، و تابع هدف فقط تعداد سطل‌ها را کمینه می‌کند. ازاین‌رو، موارد زیر زمینه‌های قابل دفاع برای استفاده از این انتزاع‌اند، نه شواهدی بر انطباق دقیق همه جزئیات عملی با مدل.
+
+\subsection{برش یک‌بعدی مواد (\lr{Cutting Stock})}\label{subsec:lr_cutting_stock}
+مسئله برش یک‌بعدی در صنایعی مانند فولاد، کاغذ، شیشه، مبلمان و نساجی رخ می‌دهد و از نظر تخصیص طول‌های موردنیاز به مواد اولیه با ظرفیت محدود، با بسته‌بندی یک‌بعدی ارتباط ساختاری دارد. تنیر و همکاران گونه‌ای صنعتی را بررسی می‌کنند که در آن اقلام می‌توانند تقسیم و سپس با جوش‌کاری دوباره متصل شوند و هدف، هم‌زمان شامل ضایعات و تعداد جوش‌ها است \cite{D1_Tanir2016}. این گونه با مسئله حاضر یکسان نیست: تقسیم‌پذیری و تابع هدف چندمعیاره در مدل ما وجود ندارد و آن مقاله نیز قید \lr{must-link} این گزارش را معرفی نمی‌کند. تنها اگر در یک کاربرد برش، چند قطعه الزاماً از یک شاخه ماده اولیه بریده شوند و سایر جزئیات نادیده گرفته شوند، می‌توان آن گروه را به‌صورت یک مؤلفه چسبندگی مدل کرد.
+
+\subsection{زمان‌بندی کانتینرها و گردش‌کارها (\lr{Cloud Orchestration})}\label{subsec:lr_cloud_orchestration}
+در سامانه‌های کانتینری، نگاشت وظایف به منابع پردازشی و رعایت ترتیب اجرای گردش‌کار از مسائل اصلی زمان‌بندی است. چارچوب \lr{KubeAdaptor} برای اجرای گردش‌کار روی کوبرنتیز، سازگاری ترتیب زمان‌بندی، مصرف منابع و اشتراک داده از طریق حجم‌های پویا را بررسی می‌کند \cite{C1_Shan2022}. مرور زمان‌بندی کربن‌آگاه نیز نشان می‌دهد که زمان‌بندی کانتینرها می‌تواند اهدافی مانند بهره‌وری منابع، زمان پاسخ، انرژی و انتشار کربن داشته باشد \cite{C4_Yang2025}.
+
+هیچ‌یک از این دو منبع، مسئله خود را دقیقاً به‌صورت \lr{BPP} یک‌بعدی با قیود هم‌مکانی سخت فرمول‌بندی نمی‌کند. نگاشت به مدل حاضر فقط تحت یک ساده‌سازی مشخص معتبر است: هر وظیفه یک تقاضای اسکالر دارد، نودها ظرفیت یکسان دارند، هر گروه تعیین‌شده باید روی یک نود واحد اجرا شود، و هدف کمینه‌کردن تعداد نودهای فعال است. در سامانه واقعی، ظرفیت‌های چندبعدی پردازنده و حافظه، ناهمگنی نودها، زمان، تقدم وظایف، دسترس‌پذیری و اهداف انرژی می‌توانند این هم‌ارزی را از بین ببرند. بنابراین این حوزه یک انگیزه مدل‌سازی مشروط است، نه شاهدی برای ادعای تطابق دقیق یا کاهش تضمین‌شده تأخیر و کربن به‌وسیله مدل حاضر.
+</code></pre></details><details class="source-file" ><summary><bdi>report/sections/conclusion.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/report/sections/conclusion.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\section{نتیجه‌گیری و مسیرهای آینده}
+این پروژه یک زنجیره کامل و بازتولیدپذیر برای بسته‌بندی با قیود چسبندگی سخت
+ارائه کرد. انقباض مؤلفه‌های همبند، قیود \lr{must-link} را بدون استفاده از تابع
+جریمه اعمال می‌کند و مسئله را دقیقاً به \lr{BPP} روی اَبَراقلام تبدیل می‌سازد.
+مدل دقیق component-level برای نمونه‌های کوچک و ترکیب \lr{FFD+Tabu} برای
+نمونه‌های بزرگ در یک ماژول مشترک پیاده‌سازی شدند.
+
+تمام ۱۷ جواب اصلی از نظر ظرفیت، پوشش اقلام و چسبندگی معتبر بودند. روش ابتکاری
+در شش نمونه کوچک به جواب بهینه \lr{ILP} و در همه نمونه‌های استاندارد به کران
+پایین رسید. در دو نمونه مصنوعی دشوار بزرگ، جستجوی تابو یک سطل از جواب \lr{FFD}
+حذف کرد و به کران پایین رسید. تحلیل ۳۰ شروع تصادفی نیز نشان داد بهبود مشاهده‌شده
+فقط حاصل یک نقطه شروع خاص نیست؛ برای نمونه دشوار ۱۰۰ قلمی، میانگین تعداد سطل‌ها
+از ۳۶٫۲۰ به ۳۳٫۴۳ کاهش یافت.
+
+بااین‌حال، داده‌های دشوار این پروژه benchmark رسمی نیستند و برای نمونه دشوار
+۱۵۰ قلمی فاصله ۲٫۰۴ درصدی نسبت به کران پایین باقی ماند. ادامه طبیعی پژوهش شامل
+ارزیابی روی مجموعه‌های استاندارد عمومی، استفاده از کران‌های پایین قوی‌تر،
+مقایسه با \lr{Best Fit Decreasing} و روش‌های state-of-the-art، مطالعه حذف هر
+عملگر (\lr{ablation study})، اجرای موازی multi-start و تعمیم مدل به ظرفیت‌های
+چندبعدی مانند CPU و RAM است.
+</code></pre></details><details class="source-file" ><summary><bdi>report/sections/introduction.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/report/sections/introduction.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\section{مقدمه}
+مسئله بسته‌بندی در سطل‌ها (\lr{Bin Packing Problem} یا به اختصار \lr{BPP}) مسئله‌ای کلاسیک در بهینه‌سازی ترکیبیاتی است: مجموعه‌ای از اقلام با وزن‌های مثبت داده می‌شود و باید همه آن‌ها را، بدون تجاوز از ظرفیت ثابت هر سطل، در کمترین تعداد سطل قرار داد.
+
+در این گزارش گونه‌ای از مسئله بررسی می‌شود که علاوه بر قید ظرفیت، قیود هم‌مکانی سخت یا \lr{must-link} دارد. هر رابطه چسبندگی میان دو قلم الزام می‌کند که آن دو در یک سطل قرار گیرند. چون هم‌مکانی یک رابطه تراگذری است، تمام اقلام واقع در یک مؤلفه همبند گراف چسبندگی ناگزیر در یک سطل مشترک قرار می‌گیرند. این تعریف باید از ترجیح نرم برای نزدیک‌بودن اقلام، و نیز از قیود ناسازگاری که هم‌مکانی را منع می‌کنند، تفکیک شود.
+
+زمان‌بندی گردش‌کارهای کانتینری و تخصیص منابع در کوبرنتیز نمونه‌ای از زمینه‌هایی است که در آن نگاشت وظایف به منابع و سازوکارهای اشتراک داده مطرح‌اند \cite{C1_Shan2022}؛ همچنین ادبیات زمان‌بندی کانتینرها اهداف گوناگونی مانند بهره‌وری منابع، زمان پاسخ و ملاحظات کربنی را بررسی می‌کند \cite{C4_Yang2025}. با این حال، این منابع مدل یک‌بعدیِ دقیق این گزارش یا الزام هم‌مکانی ناشی از ترافیک شبکه را اثبات نمی‌کنند. مدل حاضر تنها در ساده‌سازی‌ای قابل استفاده است که منابع همگن و تک‌ظرفیتی باشند، گروه‌های هم‌مکانی از پیش و به‌صورت سخت تعیین شده باشند، و هدف کمینه‌کردن تعداد منابع فعال باشد.
+
+از دید محاسباتی، contraction هر مؤلفه چسبندگی به یک قلم با وزن مجموع، نمونه را دقیقاً به یک \lr{BPP} کلاسیک تبدیل می‌کند. بنابراین این گونه در بدترین حالت قویاً \lr{NP-hard} است، زیرا حالت $E=\emptyset$ همان \lr{BPP} کلاسیک است \cite{GareyJohnson1979}؛ اما در مدل تعریف‌شده الزاماً از \lr{BPP} سخت‌تر نیست، چون پس از یک پیش‌پردازش چندجمله‌ای همان مسئله روی اقلام تجمیع‌شده حل می‌شود. در ادامه، این هم‌ارزی مبنای مدل‌سازی و طراحی الگوریتم قرار می‌گیرد؛ کیفیت جواب‌های الگوریتمی نیز باید با کران یا جواب بهینه سنجیده شود و صرف اجرای محاسباتی، اثبات بهینگی محسوب نمی‌شود.
+</code></pre></details><details class="source-file" ><summary><bdi>report/sections/problem_model.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/report/sections/problem_model.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\section{مدل‌سازی و تعریف مسئله}
+
+\subsection{مدل برنامه‌ریزی خطی عدد صحیح (\lr{ILP})}\label{subsec:lr_ilp}
+فرض کنید $I=\{1,\ldots,n\}$ مجموعه اقلام، $w_i&gt;0$ وزن قلم $i$، و $C&gt;0$ ظرفیت هر سطل باشد. گراف بدون جهت $G=(I,E)$ روابط چسبندگی را نمایش می‌دهد؛ یال $\{i,k\}\in E$ یعنی دو قلم باید در یک سطل قرار گیرند. چون هر جواب موجه حداکثر از $n$ سطل استفاده می‌کند، مجموعه سطل‌های نامزد را $J=\{1,\ldots,n\}$ می‌گیریم. متغیر $x_{ij}$ نشان می‌دهد قلم $i$ در سطل $j$ قرار دارد و $y_j$ استفاده‌شدن سطل $j$ را نشان می‌دهد:
+\begin{align}
+    \min \quad &amp; \sum_{j\in J} y_j \label{eq:obj} \\
+    \text{s.t.}\quad
+    &amp; \sum_{j\in J} x_{ij}=1 &amp;&amp; \forall i\in I, \label{eq:assign} \\
+    &amp; \sum_{i\in I} w_i x_{ij}\leq C y_j &amp;&amp; \forall j\in J, \label{eq:capacity} \\
+    &amp; x_{ij}=x_{kj} &amp;&amp; \forall \{i,k\}\in E,\ \forall j\in J, \label{eq:cohesion} \\
+    &amp; x_{ij}\in\{0,1\} &amp;&amp; \forall i\in I,\ \forall j\in J, \label{eq:x_binary} \\
+    &amp; y_j\in\{0,1\} &amp;&amp; \forall j\in J. \label{eq:y_binary}
+\end{align}
+قید \eqref{eq:assign} هر قلم را دقیقاً یک‌بار تخصیص می‌دهد. قید \eqref{eq:capacity} هم ظرفیت را اعمال می‌کند و هم، به علت مثبت‌بودن وزن‌ها، اجازه نمی‌دهد قلمی در سطل با $y_j=0$ قرار گیرد. برای هر یال، قیود \eqref{eq:cohesion} بردار تخصیص دو رأس را برابر می‌کنند؛ در نتیجه برابری در امتداد هر مسیر منتشر می‌شود و همه رأس‌های یک مؤلفه همبند دقیقاً در یک سطل قرار می‌گیرند. بنابراین لازم نیست برای تمام جفت‌رأس‌های هر مؤلفه قید جداگانه افزوده شود.
+
+\subsection{انقباض مؤلفه‌ها و هم‌ارزی دقیق با \lr{BPP}}\label{subsec:lr_component_based}
+مؤلفه‌های همبند $G$ را با $\mathcal{C}$ نشان می‌دهیم و برای هر $c\in\mathcal{C}$ یک اَبَرقلم با وزن
+\[
+    W_c=\sum_{i\in c} w_i
+\]
+می‌سازیم. این انقباض فقط یک تقریب یا ابتکار نیست، بلکه تبدیل دقیق مسئله است:
+\begin{itemize}
+    \item در هر بسته‌بندی موجه مسئله اصلی، قیود \lr{must-link} تمام اقلام $c$ را در یک سطل قرار می‌دهند؛ پس جایگزینی آن‌ها با اَبَرقلمی به وزن $W_c$ ظرفیت و تعداد سطل‌ها را تغییر نمی‌دهد.
+    \item برعکس، از هر بسته‌بندی موجه اَبَراقلام می‌توان با قرار دادن همه اقلام $i\in c$ در سطل اَبَرقلم $c$، یک بسته‌بندی موجه مسئله اصلی با همان تعداد سطل ساخت.
+\end{itemize}
+پس مجموعه جواب‌ها، پس از نادیده‌گرفتن تمایز داخلی هر مؤلفه، متناظر است و مقدار بهینه دقیقاً حفظ می‌شود. اگر برای مؤلفه‌ای $W_c&gt;C$ باشد، نمونه ناموجه است؛ در غیر این صورت مسئله حاصل دقیقاً \lr{BPP} کلاسیک روی $|\mathcal{C}|$ قلم است. مؤلفه‌ها و وزن‌هایشان را می‌توان در زمان $O(|I|+|E|)$ محاسبه کرد.
+
+\subsection{پیچیدگی و تقلیل}\label{subsec:lr_np_hardness}
+نسخه تصمیم مسئله می‌پرسد آیا بسته‌بندی موجهی در حداکثر $K$ سطل وجود دارد. این مسئله در \lr{NP} است، زیرا با داشتن تخصیص اقلام می‌توان یکتایی تخصیص، ظرفیت‌ها، قیود یال‌ها و تعداد سطل‌ها را در زمان چندجمله‌ای بررسی کرد.
+
+برای اثبات سختی قوی، یک نمونه دلخواه از نسخه تصمیم \lr{BPP} با اعداد صحیح، شامل $(I,(w_i)_{i\in I},C,K)$، را در نظر می‌گیریم. همان اقلام، وزن‌ها، ظرفیت و $K$ را نگه می‌داریم و فقط $E=\emptyset$ قرار می‌دهیم. نوشتن نمونه خروجی در زمانی خطی نسبت به طول ورودی انجام می‌شود و هیچ مقدار عددی تغییر یا بزرگ نمی‌شود. چون با $E=\emptyset$ هیچ قید چسبندگی وجود ندارد، پاسخ نمونه ساخته‌شده «بله» است اگر و تنها اگر پاسخ نمونه اصلی \lr{BPP} «بله» باشد. بنابراین این یک تقلیل چندجمله‌ایِ حفظ‌کننده اعداد است. از آنجا که \lr{BPP} از طریق \lr{3-Partition} قویاً \lr{NP-hard} است \cite{GareyJohnson1979}، مسئله حاضر نیز در بدترین حالت قویاً \lr{NP-hard} است؛ و با عضویت فوق در \lr{NP}، نسخه تصمیم آن قویاً \lr{NP-complete} است.
+
+این نتیجه نباید چنین تفسیر شود که افزودن این نوع قید همواره مسئله را از \lr{BPP} سخت‌تر می‌کند. در واقع دو تبدیل چندجمله‌ای داریم: \lr{BPP} با انتخاب $E=\emptyset$ حالت خاص مسئله حاضر است، و هر نمونه مسئله حاضر با انقباض مؤلفه‌ها به یک \lr{BPP} کلاسیکِ هم‌ارز تبدیل می‌شود. بنابراین، برای همین تعریفِ صرفاً \lr{must-link}، تفاوت اصلی در پیش‌پردازش و اندازه اقلام تجمیع‌شده است، نه ایجاد یک کلاس بسته‌بندی ذاتاً سخت‌تر.
+
+\subsection{مسائل مرتبط و کران‌های پایه}\label{subsec:32}
+\begin{itemize}
+    \item در \lr{Bin Packing with Conflicts}، یال‌ها هم‌مکانی را منع می‌کنند؛ ازاین‌رو contraction مؤلفه‌ها که در اینجا معتبر است، برای قیود تعارض معتبر نیست \cite{A1_Bacci2017,A2_DoronArad2020}.
+    \item \lr{Cutting Stock} یک خانواده نزدیک از مسائل تخصیص تقاضا به مواد اولیه با ظرفیت محدود است، اما تقسیم‌پذیری اقلام، الگوهای برش و تابع هدف آن می‌تواند با مدل حاضر متفاوت باشد \cite{D1_Tanir2016}.
+\end{itemize}
+
+پس از contraction، دو کران پایین ابتدایی مستقیماً از \lr{BPP} کلاسیک به دست می‌آیند. اگر
+\[
+    L_{\mathrm{cap}}=\left\lceil\frac{\sum_{c\in\mathcal{C}}W_c}{C}\right\rceil
+    \quad\text{و}\quad
+    L_{&gt;1/2}=\left|\{c\in\mathcal{C}:W_c&gt;C/2\}\right|,
+\]
+آنگاه $\max\{L_{\mathrm{cap}},L_{&gt;1/2}\}$ کران پایین معتبر است: اولی از مجموع ظرفیت لازم و دومی از این واقعیت ناشی می‌شود که دو اَبَرقلم با وزن بیش از $C/2$ در یک سطل جا نمی‌شوند. این کران‌ها لزوماً مقدار بهینه را تعیین نمی‌کنند و برابر دانستن آن‌ها با یک آزادسازی خطی قوی‌تر، بدون ارائه فرمول‌بندی و اثبات جداگانه، موجه نیست.
+</code></pre></details><details class="source-file" ><summary><bdi>report/sections/results.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/report/sections/results.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\section{نتایج محاسباتی و تحلیل}
+
+\subsection{محیط و پروتکل آزمایش}
+پیاده‌سازی با \lr{Python 3} انجام شد. \lr{NetworkX} برای انقباض گراف،
+\lr{PuLP} و \lr{CBC} برای مدل دقیق، و \lr{NumPy} و \lr{Matplotlib} برای تحلیل
+به‌کار رفتند. آزمایش‌ها روی \lr{macOS} با پردازنده \lr{Apple Silicon M4} و
+۱۶ گیگابایت حافظه اجرا شدند. برای بازتولید محیط، وابستگی‌ها در فایل
+\texttt{requirements.txt} ثبت شده‌اند.
+
+۱۷ نمونه متنی در شش گروه بررسی شدند: ۹ نمونه استاندارد با توزیع یکنواخت و ۸
+نمونه مصنوعی دشوار با مخلوطی از اقلام نزدیک نصف ظرفیت، متوسط و کوچک. گروه دوم
+فقط از ایده نمونه‌های دشوار ادبیات الهام گرفته است و benchmark رسمی
+\lr{Falkenauer} محسوب نمی‌شود. تمام فایل‌ها شامل $n$، ظرفیت، وزن‌ها و یال‌های
+چسبندگی‌اند و نام فایل با محتوای آن سازگار است.
+
+برای هر جواب ابتکاری سه شرط به‌صورت برنامه‌ای بررسی شد: هر مؤلفه دقیقاً یک بار
+ظاهر شود، ظرفیت هیچ سطلی نقض نشود و پس از بسط مؤلفه‌ها تمام یال‌های چسبندگی
+رعایت شوند. هر ۱۷ جواب این اعتبارسنجی را گذراندند.
+
+\subsection{مقدار مرجع و تعریف شکاف}
+برای نمونه‌های دارای $n\le30$، مدل دقیق component-level با \lr{CBC} و حد زمان
+۱۲۰ ثانیه اجرا شد و فقط وضعیت \lr{Optimal} پذیرفته شد. برای نمونه‌های بزرگ‌تر
+از کران پایین معتبر
+\begin{equation}
+LB=\max\left\{\left\lceil\frac{\sum_c W_c}{C}\right\rceil,
+\left|\{c:W_c&gt;C/2\}\right|\right\}
+\end{equation}
+استفاده شد. شکاف گزارش‌شده برابر فاصله جواب تا مقدار مرجع است. اگر جواب به
+$LB$ برسد، بهینگی آن ثابت می‌شود؛ ولی شکاف مثبت نسبت به $LB$ لزوماً برابر
+شکاف واقعی تا جواب بهینه نیست. نوع مرجع در همه جدول‌ها صریحاً مشخص شده است.
+
+\subsection{نتایج اصلی}
+\input{../results/results_table.tex}
+\input{../results/hard_results_table.tex}
+
+در هر شش نمونه کوچک استاندارد و دشوار، جواب \lr{FFD+Tabu} با جواب بهینه مدل
+دقیق برابر شد. هر ۹ نمونه استاندارد نیز به کران پایین رسیدند. این نتیجه بیش از
+آنکه نشانه دشواری جستجو باشد، نشان می‌دهد \lr{FFD} برای این مجموعه یکنواخت
+نقطه شروع بسیار قوی‌ای است؛ در نتیجه الگوریتم با تشخیص رسیدن به مرجع معتبر
+بلافاصله متوقف می‌شود.
+
+در نمونه مصنوعی دشوار ۱۵۰ قلمی، جواب ۵۰ سطل و کران پایین ۴۹ است؛ بنابراین
+فاصله نسبت به مرجع ۲٫۰۴ درصد باقی ماند. در مقابل، روی نمونه‌های دشوار ۳۰۰ و
+۵۰۰ قلمی، \lr{FFD} به‌ترتیب ۱۰۰ و ۱۶۷ سطل ساخت و جستجوی تابو هر دو را یک سطل
+بهبود داد و به کران‌های پایین ۹۹ و ۱۶۶ رسید. شکل~\ref{fig:hard-improvement}
+این تفاوت را نشان می‌دهد.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.78\textwidth]{figures/fig6_pathological.pdf}
+\caption{مقایسه \lr{FFD}، جواب نهایی تابو و کران پایین روی سه نمونه مصنوعی دشوار.}
+\label{fig:hard-improvement}
+\end{figure}
+
+\subsection{تحلیل پایداری با ۳۰ شروع مستقل}
+برای هر نمونه متوسط استاندارد و دشوار، الگوریتم ۳۰ بار با شروع تصادفی و seedهای
+۱ تا ۳۰ اجرا شد. جدول~\ref{tab:robustness} هم میانگین جواب اولیه و هم جواب
+نهایی را گزارش می‌کند؛ بنابراین اثر خود جستجوی تابو از کیفیت \lr{FFD} تفکیک
+می‌شود.
+
+\input{../results/robustness_table.tex}
+
+در نمونه استاندارد ۱۵۰ قلمی، میانگین تعداد سطل از ۲۸٫۲۰ به ۲۷ کاهش یافت. در
+نمونه‌های دشوار ۵۰، ۱۰۰ و ۱۵۰ قلمی، کاهش میانگین به‌ترتیب از ۱۸٫۳۳ به ۱۷، از
+۳۶٫۲۰ به ۳۳٫۴۳ و از ۵۳٫۵۳ به ۵۰ بود. انحراف معیار نهایی نمونه دشوار ۱۰۰ قلمی
+۰٫۵۰ است؛ این مورد نشان می‌دهد نقطه شروع هنوز بر کیفیت نهایی اثر محدود دارد.
+سایر نمونه‌ها در ۳۰ اجرا به یک مقدار نهایی مشترک رسیدند.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{figures/fig4_boxplot.pdf}
+\caption{توزیع جواب نهایی در ۳۰ شروع تصادفی مستقل.}
+\label{fig:boxplot}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{figures/gap_comparison_random_vs_ffd.png}
+\caption{فاصله میانگین شروع تصادفی و جواب پس از تابو نسبت به کران پایین.}
+\label{fig:random-gap}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{figures/tabu_improvement_on_random.png}
+\caption{میانگین تعداد سطل حذف‌شده توسط جستجوی تابو در ۳۰ اجرا.}
+\label{fig:mean-improvement}
+\end{figure}
+
+\subsection{همگرایی، زمان و ساختار جواب}
+شکل~\ref{fig:convergence} بهترین جواب مشاهده‌شده را در طول جستجو برای سه شروع
+تصادفی نشان می‌دهد. شکل~\ref{fig:time} زمان wall-clock مدل دقیق و روش ابتکاری
+را برای نمونه‌های کوچک روی مقیاس لگاریتمی مقایسه می‌کند. زمان‌های بسیار کوچک
+ابتکاری شامل contraction، ساخت جواب اولیه و اعتبارسنجی‌اند و در صورت رسیدن
+جواب اولیه به مقدار مرجع، حلقه جستجو اجرا نمی‌شود.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/fig1_convergence.pdf}
+\caption{روند بهترین جواب در جستجوی تابو از شروع‌های تصادفی واقعی.}
+\label{fig:convergence}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.75\textwidth]{figures/fig2_time_comparison.pdf}
+\caption{مقایسه زمان مدل دقیق و روش ابتکاری در نمونه‌های کوچک؛ محور عمودی لگاریتمی است.}
+\label{fig:time}
+\end{figure}
+
+شکل~\ref{fig:gap-size} فاصله تا مرجع را بر حسب اندازه و
+شکل~\ref{fig:packing} یک جواب component-level اعتبارسنجی‌شده را نمایش می‌دهد.
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}{0.48\textwidth}
+\centering
+\includegraphics[width=\linewidth]{figures/fig3_gap_vs_size.pdf}
+\caption{فاصله جواب تا مرجع اعلام‌شده.}
+\label{fig:gap-size}
+\end{minipage}\hfill
+\begin{minipage}{0.48\textwidth}
+\centering
+\includegraphics[width=\linewidth]{figures/fig5_bin_visualization.pdf}
+\caption{چیدمان مؤلفه‌ها در نمونه ۳۰ قلمی.}
+\label{fig:packing}
+\end{minipage}
+\end{figure}
+
+\subsection{تهدیدهای اعتبار}
+نمونه‌ها مصنوعی و تعداد آن‌ها محدود است؛ بنابراین نتایج قابل تعمیم مستقیم به
+همه benchmarkهای \lr{BPP} نیست. همچنین کران پایین استفاده‌شده برای نمونه‌های
+بزرگ ساده است و در حالت فاصله مثبت، مقدار بهینه ناشناخته می‌ماند. زمان‌های
+اجرا فقط روی یک سامانه اندازه‌گیری شده‌اند. بااین‌حال، ثبت seedها، انتشار تمام
+فایل‌های داده، تولید خودکار جدول‌ها و شکل‌ها و اعتبارسنجی مستقل جواب‌ها امکان
+بازتولید و بررسی نتایج حاضر را فراهم می‌کند.
+</code></pre></details><details class="source-file" ><summary><bdi>requirements.txt</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/requirements.txt" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>matplotlib&gt;=3.8,&lt;4
+networkx&gt;=3.2,&lt;4
+numpy&gt;=1.26,&lt;3
+pandas&gt;=2.1,&lt;3
+PuLP&gt;=2.8,&lt;4
+scipy&gt;=1.12,&lt;2
+tqdm&gt;=4.66,&lt;5
+arabic-reshaper&gt;=3.0,&lt;4
+python-bidi&gt;=0.4,&lt;1
+</code></pre></details><details class="source-file" ><summary><bdi>results/hard_results_table.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/results/hard_results_table.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\begin{table}[htbp]
+\centering
+\scriptsize
+\begin{tabular}{r l r r r r l r r}
+\toprule
+ردیف &amp; نمونه &amp; $n$ &amp; \lr{FFD} &amp; \lr{Tabu} &amp; مقدار مرجع &amp; مرجع &amp; شکاف (\%) &amp; زمان (s) \\
+\midrule
+1 &amp; \lr{hard\_n=10\_C=100\_pairs=2.txt} &amp; 10 &amp; 4 &amp; 4 &amp; 4 &amp; \lr{ILP} &amp; 0.00 &amp; 0.0001 \\
+2 &amp; \lr{hard\_n=20\_C=100\_pairs=5.txt} &amp; 20 &amp; 8 &amp; 8 &amp; 8 &amp; \lr{ILP} &amp; 0.00 &amp; 0.0000 \\
+3 &amp; \lr{hard\_n=30\_C=100\_pairs=8.txt} &amp; 30 &amp; 11 &amp; 11 &amp; 11 &amp; \lr{ILP} &amp; 0.00 &amp; 0.0000 \\
+4 &amp; \lr{hard\_n=50\_C=200\_pairs=10.txt} &amp; 50 &amp; 17 &amp; 17 &amp; 17 &amp; کران پایین &amp; 0.00 &amp; 0.0000 \\
+5 &amp; \lr{hard\_n=100\_C=200\_pairs=20.txt} &amp; 100 &amp; 33 &amp; 33 &amp; 33 &amp; کران پایین &amp; 0.00 &amp; 0.0001 \\
+6 &amp; \lr{hard\_n=150\_C=200\_pairs=30.txt} &amp; 150 &amp; 50 &amp; 50 &amp; 49 &amp; کران پایین &amp; 2.04 &amp; 0.1152 \\
+7 &amp; \lr{hard\_n=300\_C=500\_pairs=50.txt} &amp; 300 &amp; 100 &amp; 99 &amp; 99 &amp; کران پایین &amp; 0.00 &amp; 0.0130 \\
+8 &amp; \lr{hard\_n=500\_C=500\_pairs=80.txt} &amp; 500 &amp; 167 &amp; 166 &amp; 166 &amp; کران پایین &amp; 0.00 &amp; 0.3166 \\
+\bottomrule
+\end{tabular}
+\caption{نتایج نمونه‌های مصنوعی دشوار؛ نوع مقدار مرجع در ستون «مرجع» مشخص شده است.}
+\label{tab:hard-results}
+\end{table}
+</code></pre></details><details class="source-file" ><summary><bdi>results/histories.json</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/results/histories.json" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>{
+  &quot;n=10_C=100_pairs=3.txt&quot;: [
+    2
+  ],
+  &quot;n=20_C=100_pairs=7.txt&quot;: [
+    4
+  ],
+  &quot;n=30_C=100_pairs=10.txt&quot;: [
+    6
+  ],
+  &quot;n=50_C=200_pairs=15.txt&quot;: [
+    9
+  ],
+  &quot;n=100_C=200_pairs=30.txt&quot;: [
+    17
+  ],
+  &quot;n=150_C=200_pairs=45.txt&quot;: [
+    27
+  ],
+  &quot;n=300_C=500_pairs=80.txt&quot;: [
+    51
+  ],
+  &quot;n=500_C=500_pairs=120.txt&quot;: [
+    85
+  ],
+  &quot;n=1000_C=1000_pairs=200.txt&quot;: [
+    162
+  ],
+  &quot;hard_n=10_C=100_pairs=2.txt&quot;: [
+    4
+  ],
+  &quot;hard_n=20_C=100_pairs=5.txt&quot;: [
+    8
+  ],
+  &quot;hard_n=30_C=100_pairs=8.txt&quot;: [
+    11
+  ],
+  &quot;hard_n=50_C=200_pairs=10.txt&quot;: [
+    17
+  ],
+  &quot;hard_n=100_C=200_pairs=20.txt&quot;: [
+    33
+  ],
+  &quot;hard_n=150_C=200_pairs=30.txt&quot;: [
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    51,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    51,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50,
+    50
+  ],
+  &quot;hard_n=300_C=500_pairs=50.txt&quot;: [
+    100,
+    100,
+    100,
+    100,
+    99
+  ],
+  &quot;hard_n=500_C=500_pairs=80.txt&quot;: [
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    167,
+    166
+  ]
+}</code></pre></details><details class="source-file" ><summary><bdi>results/results_final.csv</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/results/results_final.csv" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>instance,group,instance_type,n,capacity,cohesion_edges,components,lower_bound,exact_bins,exact_status,exact_time_sec,reference_value,reference_type,ffd_bins,tabu_bins,improvement_bins,gap_to_reference_pct,tabu_time_sec,iterations,valid
+n=10_C=100_pairs=3.txt,small,standard,10,100,3,7,2,2,Optimal,0.086525,2,ILP optimum,2,2,0,0.0,3.4e-05,0,True
+n=20_C=100_pairs=7.txt,small,standard,20,100,7,13,4,4,Optimal,0.027754,4,ILP optimum,4,4,0,0.0,3e-05,0,True
+n=30_C=100_pairs=10.txt,small,standard,30,100,10,20,6,6,Optimal,0.42239,6,ILP optimum,6,6,0,0.0,3.5e-05,0,True
+n=50_C=200_pairs=15.txt,medium,standard,50,200,15,35,9,,Not run (n&gt;30),,9,lower bound,9,9,0,0.0,2.7e-05,0,True
+n=100_C=200_pairs=30.txt,medium,standard,100,200,30,70,17,,Not run (n&gt;30),,17,lower bound,17,17,0,0.0,4.3e-05,0,True
+n=150_C=200_pairs=45.txt,medium,standard,150,200,45,105,27,,Not run (n&gt;30),,27,lower bound,27,27,0,0.0,7.5e-05,0,True
+n=300_C=500_pairs=80.txt,large,standard,300,500,80,220,51,,Not run (n&gt;30),,51,lower bound,51,51,0,0.0,0.000204,0,True
+n=500_C=500_pairs=120.txt,large,standard,500,500,120,380,85,,Not run (n&gt;30),,85,lower bound,85,85,0,0.0,0.000583,0,True
+n=1000_C=1000_pairs=200.txt,large,standard,1000,1000,200,800,162,,Not run (n&gt;30),,162,lower bound,162,162,0,0.0,0.001668,0,True
+hard_n=10_C=100_pairs=2.txt,hard_small,synthetic-hard,10,100,2,8,4,4,Optimal,0.04509,4,ILP optimum,4,4,0,0.0,9.1e-05,0,True
+hard_n=20_C=100_pairs=5.txt,hard_small,synthetic-hard,20,100,5,15,7,8,Optimal,18.897662,8,ILP optimum,8,8,0,0.0,3.3e-05,0,True
+hard_n=30_C=100_pairs=8.txt,hard_small,synthetic-hard,30,100,8,22,10,11,Optimal,120.035405,11,ILP optimum,11,11,0,0.0,3.8e-05,0,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,synthetic-hard,50,200,10,40,17,,Not run (n&gt;30),,17,lower bound,17,17,0,0.0,3.3e-05,0,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,synthetic-hard,100,200,20,80,33,,Not run (n&gt;30),,33,lower bound,33,33,0,0.0,6e-05,0,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,synthetic-hard,150,200,30,120,49,,Not run (n&gt;30),,49,lower bound,50,50,0,2.04,0.115243,150,True
+hard_n=300_C=500_pairs=50.txt,hard_large,synthetic-hard,300,500,50,250,99,,Not run (n&gt;30),,99,lower bound,100,99,1,0.0,0.013039,4,True
+hard_n=500_C=500_pairs=80.txt,hard_large,synthetic-hard,500,500,80,420,166,,Not run (n&gt;30),,166,lower bound,167,166,1,0.0,0.316624,35,True
+</code></pre></details><details class="source-file" ><summary><bdi>results/results_table.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/results/results_table.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\begin{table}[htbp]
+\centering
+\scriptsize
+\begin{tabular}{r l r r r r l r r}
+\toprule
+ردیف &amp; نمونه &amp; $n$ &amp; \lr{FFD} &amp; \lr{Tabu} &amp; مقدار مرجع &amp; مرجع &amp; شکاف (\%) &amp; زمان (s) \\
+\midrule
+1 &amp; \lr{n=10\_C=100\_pairs=3.txt} &amp; 10 &amp; 2 &amp; 2 &amp; 2 &amp; \lr{ILP} &amp; 0.00 &amp; 0.0000 \\
+2 &amp; \lr{n=20\_C=100\_pairs=7.txt} &amp; 20 &amp; 4 &amp; 4 &amp; 4 &amp; \lr{ILP} &amp; 0.00 &amp; 0.0000 \\
+3 &amp; \lr{n=30\_C=100\_pairs=10.txt} &amp; 30 &amp; 6 &amp; 6 &amp; 6 &amp; \lr{ILP} &amp; 0.00 &amp; 0.0000 \\
+4 &amp; \lr{n=50\_C=200\_pairs=15.txt} &amp; 50 &amp; 9 &amp; 9 &amp; 9 &amp; کران پایین &amp; 0.00 &amp; 0.0000 \\
+5 &amp; \lr{n=100\_C=200\_pairs=30.txt} &amp; 100 &amp; 17 &amp; 17 &amp; 17 &amp; کران پایین &amp; 0.00 &amp; 0.0000 \\
+6 &amp; \lr{n=150\_C=200\_pairs=45.txt} &amp; 150 &amp; 27 &amp; 27 &amp; 27 &amp; کران پایین &amp; 0.00 &amp; 0.0001 \\
+7 &amp; \lr{n=300\_C=500\_pairs=80.txt} &amp; 300 &amp; 51 &amp; 51 &amp; 51 &amp; کران پایین &amp; 0.00 &amp; 0.0002 \\
+8 &amp; \lr{n=500\_C=500\_pairs=120.txt} &amp; 500 &amp; 85 &amp; 85 &amp; 85 &amp; کران پایین &amp; 0.00 &amp; 0.0006 \\
+9 &amp; \lr{n=1000\_C=1000\_pairs=200.txt} &amp; 1000 &amp; 162 &amp; 162 &amp; 162 &amp; کران پایین &amp; 0.00 &amp; 0.0017 \\
+\bottomrule
+\end{tabular}
+\caption{نتایج نمونه‌های استاندارد؛ نوع مقدار مرجع در ستون «مرجع» مشخص شده است.}
+\label{tab:standard-results}
+\end{table}
+</code></pre></details><details class="source-file" ><summary><bdi>results/robustness.csv</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/results/robustness.csv" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>instance,group,n,seed,lower_bound,random_initial_bins,tabu_bins,improvement_bins,time_sec,iterations,valid
+n=50_C=200_pairs=15.txt,medium,50,1,9,10,9,1,0.00067,3,True
+n=50_C=200_pairs=15.txt,medium,50,2,9,9,9,0,3.3e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,3,9,9,9,0,3.2e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,4,9,9,9,0,3.1e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,5,9,9,9,0,3.1e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,6,9,9,9,0,3.2e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,7,9,9,9,0,3e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,8,9,9,9,0,3e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,9,9,9,9,0,3.1e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,10,9,9,9,0,2.8e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,11,9,9,9,0,2.8e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,12,9,10,9,1,0.000415,2,True
+n=50_C=200_pairs=15.txt,medium,50,13,9,9,9,0,3.4e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,14,9,9,9,0,3.1e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,15,9,9,9,0,3e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,16,9,9,9,0,3e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,17,9,9,9,0,3.1e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,18,9,9,9,0,3e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,19,9,9,9,0,2.9e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,20,9,9,9,0,2.8e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,21,9,9,9,0,2.9e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,22,9,9,9,0,3e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,23,9,9,9,0,3e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,24,9,9,9,0,3.1e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,25,9,9,9,0,3.1e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,26,9,9,9,0,3.1e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,27,9,9,9,0,2.8e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,28,9,9,9,0,3e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,29,9,9,9,0,3e-05,0,True
+n=50_C=200_pairs=15.txt,medium,50,30,9,9,9,0,3e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,1,17,17,17,0,6.3e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,2,17,17,17,0,5.4e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,3,17,17,17,0,5e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,4,17,17,17,0,4.9e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,5,17,17,17,0,4.9e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,6,17,17,17,0,5.4e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,7,17,17,17,0,5.2e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,8,17,17,17,0,5.3e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,9,17,17,17,0,5.4e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,10,17,17,17,0,5.4e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,11,17,17,17,0,6e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,12,17,17,17,0,5.6e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,13,17,17,17,0,5.7e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,14,17,17,17,0,5.3e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,15,17,17,17,0,4.7e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,16,17,17,17,0,4.8e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,17,17,17,17,0,5.3e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,18,17,17,17,0,5.3e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,19,17,17,17,0,6.6e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,20,17,17,17,0,5.4e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,21,17,17,17,0,6.4e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,22,17,17,17,0,5.6e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,23,17,18,17,1,0.001235,2,True
+n=100_C=200_pairs=30.txt,medium,100,24,17,17,17,0,5.7e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,25,17,18,17,1,0.001164,2,True
+n=100_C=200_pairs=30.txt,medium,100,26,17,17,17,0,5.4e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,27,17,17,17,0,5.3e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,28,17,17,17,0,5.3e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,29,17,17,17,0,5.4e-05,0,True
+n=100_C=200_pairs=30.txt,medium,100,30,17,17,17,0,5.5e-05,0,True
+n=150_C=200_pairs=45.txt,medium,150,1,27,28,27,1,0.009586,11,True
+n=150_C=200_pairs=45.txt,medium,150,2,27,28,27,1,0.012805,12,True
+n=150_C=200_pairs=45.txt,medium,150,3,27,29,27,2,0.016867,19,True
+n=150_C=200_pairs=45.txt,medium,150,4,27,29,27,2,0.013329,14,True
+n=150_C=200_pairs=45.txt,medium,150,5,27,28,27,1,0.012436,15,True
+n=150_C=200_pairs=45.txt,medium,150,6,27,28,27,1,0.015267,19,True
+n=150_C=200_pairs=45.txt,medium,150,7,27,29,27,2,0.01233,14,True
+n=150_C=200_pairs=45.txt,medium,150,8,27,28,27,1,0.009004,11,True
+n=150_C=200_pairs=45.txt,medium,150,9,27,29,27,2,0.016094,18,True
+n=150_C=200_pairs=45.txt,medium,150,10,27,28,27,1,0.011297,15,True
+n=150_C=200_pairs=45.txt,medium,150,11,27,28,27,1,0.012891,15,True
+n=150_C=200_pairs=45.txt,medium,150,12,27,28,27,1,0.01227,14,True
+n=150_C=200_pairs=45.txt,medium,150,13,27,28,27,1,0.01475,17,True
+n=150_C=200_pairs=45.txt,medium,150,14,27,28,27,1,0.020555,21,True
+n=150_C=200_pairs=45.txt,medium,150,15,27,29,27,2,0.017009,19,True
+n=150_C=200_pairs=45.txt,medium,150,16,27,28,27,1,0.010134,12,True
+n=150_C=200_pairs=45.txt,medium,150,17,27,28,27,1,0.009741,11,True
+n=150_C=200_pairs=45.txt,medium,150,18,27,28,27,1,0.012537,14,True
+n=150_C=200_pairs=45.txt,medium,150,19,27,28,27,1,0.012486,15,True
+n=150_C=200_pairs=45.txt,medium,150,20,27,28,27,1,0.007678,9,True
+n=150_C=200_pairs=45.txt,medium,150,21,27,28,27,1,0.011539,13,True
+n=150_C=200_pairs=45.txt,medium,150,22,27,29,27,2,0.018601,21,True
+n=150_C=200_pairs=45.txt,medium,150,23,27,28,27,1,0.012737,15,True
+n=150_C=200_pairs=45.txt,medium,150,24,27,28,27,1,0.014781,17,True
+n=150_C=200_pairs=45.txt,medium,150,25,27,28,27,1,0.011965,15,True
+n=150_C=200_pairs=45.txt,medium,150,26,27,28,27,1,0.010393,14,True
+n=150_C=200_pairs=45.txt,medium,150,27,27,28,27,1,0.015018,17,True
+n=150_C=200_pairs=45.txt,medium,150,28,27,28,27,1,0.012239,15,True
+n=150_C=200_pairs=45.txt,medium,150,29,27,28,27,1,0.010967,13,True
+n=150_C=200_pairs=45.txt,medium,150,30,27,28,27,1,0.011516,13,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,1,17,18,17,1,0.001594,7,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,2,17,18,17,1,0.001346,6,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,3,17,18,17,1,0.000649,3,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,4,17,18,17,1,0.001316,6,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,5,17,18,17,1,0.001419,6,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,6,17,18,17,1,0.002251,10,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,7,17,19,17,2,0.001723,7,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,8,17,18,17,1,0.000955,4,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,9,17,18,17,1,0.001179,5,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,10,17,18,17,1,0.001128,5,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,11,17,20,17,3,0.001947,8,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,12,17,19,17,2,0.001847,7,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,13,17,18,17,1,0.000967,4,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,14,17,18,17,1,0.000671,3,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,15,17,18,17,1,0.000979,5,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,16,17,18,17,1,0.001389,6,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,17,17,18,17,1,0.001555,7,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,18,17,18,17,1,0.000661,3,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,19,17,18,17,1,0.001284,6,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,20,17,18,17,1,0.001595,7,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,21,17,19,17,2,0.001824,8,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,22,17,18,17,1,0.000906,4,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,23,17,18,17,1,0.001069,5,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,24,17,20,17,3,0.002384,10,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,25,17,18,17,1,0.001381,6,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,26,17,18,17,1,0.001091,5,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,27,17,18,17,1,0.001566,7,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,28,17,18,17,1,0.001354,6,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,29,17,20,17,3,0.002281,9,True
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,30,17,19,17,2,0.001918,8,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,1,33,37,33,4,0.01707,32,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,2,33,36,33,3,0.025161,54,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,3,33,36,34,2,0.070563,166,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,4,33,36,34,2,0.069637,159,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,5,33,36,33,3,0.024989,53,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,6,33,36,34,2,0.07349,163,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,7,33,36,33,3,0.049128,116,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,8,33,36,33,3,0.017439,32,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,9,33,37,34,3,0.073464,165,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,10,33,37,33,4,0.021547,43,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,11,33,36,33,3,0.026474,55,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,12,33,36,33,3,0.015804,30,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,13,33,36,34,2,0.07283,166,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,14,33,36,33,3,0.022313,44,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,15,33,36,34,2,0.076799,182,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,16,33,35,34,1,0.068066,155,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,17,33,37,34,3,0.081084,177,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,18,33,37,33,4,0.022301,40,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,19,33,36,33,3,0.01907,37,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,20,33,36,33,3,0.0146,28,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,21,33,36,33,3,0.020492,42,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,22,33,36,33,3,0.029613,63,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,23,33,35,34,1,0.070252,161,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,24,33,36,33,3,0.042913,94,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,25,33,39,33,6,0.048227,107,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,26,33,36,34,2,0.068114,160,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,27,33,36,34,2,0.071423,162,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,28,33,36,34,2,0.069924,160,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,29,33,36,34,2,0.072549,162,True
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,30,33,36,33,3,0.020579,39,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,1,49,54,50,4,0.167359,196,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,2,49,53,50,3,0.155345,181,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,3,49,53,50,3,0.167894,196,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,4,49,52,50,2,0.157118,191,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,5,49,56,50,6,0.177374,200,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,6,49,54,50,4,0.174472,203,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,7,49,54,50,4,0.156258,181,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,8,49,54,50,4,0.163711,187,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,9,49,54,50,4,0.171441,197,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,10,49,54,50,4,0.165548,189,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,11,49,53,50,3,0.167574,192,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,12,49,54,50,4,0.162927,190,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,13,49,53,50,3,0.161215,188,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,14,49,53,50,3,0.150599,180,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,15,49,54,50,4,0.170637,197,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,16,49,53,50,3,0.176635,209,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,17,49,54,50,4,0.174975,200,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,18,49,54,50,4,0.170049,196,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,19,49,53,50,3,0.166347,195,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,20,49,53,50,3,0.163312,190,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,21,49,53,50,3,0.202216,238,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,22,49,54,50,4,0.21536,251,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,23,49,53,50,3,0.16992,198,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,24,49,54,50,4,0.180747,206,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,25,49,54,50,4,0.177165,211,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,26,49,52,50,2,0.146101,174,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,27,49,53,50,3,0.162662,192,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,28,49,54,50,4,0.173173,195,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,29,49,53,50,3,0.179741,207,True
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,30,49,54,50,4,0.181494,212,True
+</code></pre></details><details class="source-file" ><summary><bdi>results/robustness_summary.csv</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/results/robustness_summary.csv" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>instance,group,n,runs,lower_bound,initial_mean,initial_std,final_mean,final_std,best,worst,mean_improvement_bins,mean_time_sec,std_time_sec
+n=50_C=200_pairs=15.txt,medium,50,30,9,9.067,0.254,9.0,0.0,9,9,0.067,6.4e-05,0.000134
+n=100_C=200_pairs=30.txt,medium,100,30,17,17.067,0.254,17.0,0.0,17,17,0.067,0.000131,0.000291
+n=150_C=200_pairs=45.txt,medium,150,30,27,28.2,0.407,27.0,0.0,27,27,1.2,0.012961,0.002883
+hard_n=50_C=200_pairs=10.txt,hard_medium,50,30,17,18.333,0.661,17.0,0.0,17,17,1.333,0.001408,0.000472
+hard_n=100_C=200_pairs=20.txt,hard_medium,100,30,33,36.2,0.714,33.433,0.504,33,34,2.767,0.045864,0.024845
+hard_n=150_C=200_pairs=30.txt,hard_medium,150,30,49,53.533,0.776,50.0,0.0,50,50,3.533,0.170312,0.01374
+</code></pre></details><details class="source-file" ><summary><bdi>results/robustness_table.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/results/robustness_table.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\begin{table}[htbp]
+\centering
+\scriptsize
+\begin{tabular}{lrrrrrr}
+\toprule
+نمونه &amp; اجرا &amp; میانگین اولیه &amp; میانگین نهایی &amp; انحراف معیار نهایی &amp; بهترین &amp; زمان میانگین (s) \\
+\midrule
+\lr{Std n=50} &amp; 30 &amp; 9.07 &amp; 9.00 &amp; 0.00 &amp; 9 &amp; 0.0001 \\
+\lr{Std n=100} &amp; 30 &amp; 17.07 &amp; 17.00 &amp; 0.00 &amp; 17 &amp; 0.0001 \\
+\lr{Std n=150} &amp; 30 &amp; 28.20 &amp; 27.00 &amp; 0.00 &amp; 27 &amp; 0.0130 \\
+\lr{Hard n=50} &amp; 30 &amp; 18.33 &amp; 17.00 &amp; 0.00 &amp; 17 &amp; 0.0014 \\
+\lr{Hard n=100} &amp; 30 &amp; 36.20 &amp; 33.43 &amp; 0.50 &amp; 33 &amp; 0.0459 \\
+\lr{Hard n=150} &amp; 30 &amp; 53.53 &amp; 50.00 &amp; 0.00 &amp; 50 &amp; 0.1703 \\
+\bottomrule
+\end{tabular}
+\caption{تحلیل پایداری در ۳۰ شروع تصادفی مستقل؛ اعداد مستقیماً از فایل \lr{robustness.csv} تولید شده‌اند.}
+\label{tab:robustness}
+\end{table}
+</code></pre></details><details class="source-file" ><summary><bdi>run_experiments_final.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/run_experiments_final.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># pyright: reportMissingTypeArgument=false, reportArgumentType=false, reportOperatorIssue=false
+&quot;&quot;&quot;Reproducible experiment pipeline for the final report.
+
+Every reported number is generated from ``cohesive_bin_packing.py``.  The
+script evaluates all standard and synthetic-hard text instances, validates
+every heuristic solution, solves n&lt;=30 instances exactly, and writes both CSV
+and LaTeX tables.
+&quot;&quot;&quot;
+
+from __future__ import annotations
+
+import csv
+import json
+from pathlib import Path
+
+from cohesive_bin_packing import (
+    contract_instance,
+    first_fit_decreasing,
+    load_instance,
+    lower_bound,
+    solve_exact_ilp,
+    tabu_search,
+)
+
+ROOT = Path(__file__).resolve().parent
+INSTANCES_DIR = ROOT / &quot;instances&quot;
+RESULTS_DIR = ROOT / &quot;results&quot;
+RESULTS_DIR.mkdir(exist_ok=True)
+
+GROUPS = (
+    (&quot;small&quot;, &quot;standard&quot;, 500, 7),
+    (&quot;medium&quot;, &quot;standard&quot;, 1000, 12),
+    (&quot;large&quot;, &quot;standard&quot;, 1500, 15),
+    (&quot;hard_small&quot;, &quot;synthetic-hard&quot;, 800, 10),
+    (&quot;hard_medium&quot;, &quot;synthetic-hard&quot;, 1200, 14),
+    (&quot;hard_large&quot;, &quot;synthetic-hard&quot;, 1500, 16),
+)
+
+FIELDNAMES = [
+    &quot;instance&quot;,
+    &quot;group&quot;,
+    &quot;instance_type&quot;,
+    &quot;n&quot;,
+    &quot;capacity&quot;,
+    &quot;cohesion_edges&quot;,
+    &quot;components&quot;,
+    &quot;lower_bound&quot;,
+    &quot;exact_bins&quot;,
+    &quot;exact_status&quot;,
+    &quot;exact_time_sec&quot;,
+    &quot;reference_value&quot;,
+    &quot;reference_type&quot;,
+    &quot;ffd_bins&quot;,
+    &quot;tabu_bins&quot;,
+    &quot;improvement_bins&quot;,
+    &quot;gap_to_reference_pct&quot;,
+    &quot;tabu_time_sec&quot;,
+    &quot;iterations&quot;,
+    &quot;valid&quot;,
+]
+
+
+def latex_escape(text: str) -&gt; str:
+    return text.replace(&quot;_&quot;, r&quot;\_&quot;)
+
+
+def fmt(value: object, digits: int = 3) -&gt; str:
+    if value in {None, &quot;&quot;}:
+        return &quot;--&quot;
+    if isinstance(value, float):
+        return f&quot;{value:.{digits}f}&quot;
+    return str(value)
+
+
+def run_all() -&gt; tuple[list[dict], dict[str, list[int]]]:
+    rows: list[dict] = []
+    histories: dict[str, list[int]] = {}
+
+    for group, instance_type, max_iter, tenure in GROUPS:
+        for path in sorted((INSTANCES_DIR / group).glob(&quot;*.txt&quot;), key=lambda p: load_instance(p)[&quot;n&quot;]):
+            instance = load_instance(path)
+            contracted = contract_instance(instance)
+            bound = lower_bound(contracted.weights, contracted.capacity)
+            ffd_bins = len(first_fit_decreasing(contracted.weights, contracted.capacity))
+
+            exact = {
+                &quot;num_bins&quot;: None,
+                &quot;status&quot;: &quot;Not run (n&gt;30)&quot;,
+                &quot;solve_time&quot;: None,
+                &quot;optimal&quot;: False,
+            }
+            if instance[&quot;n&quot;] &lt;= 30:
+                exact = solve_exact_ilp(instance, time_limit=120)
+
+            reference_value = exact[&quot;num_bins&quot;] if exact[&quot;optimal&quot;] else bound
+            reference_type = &quot;ILP optimum&quot; if exact[&quot;optimal&quot;] else &quot;lower bound&quot;
+            search = tabu_search(
+                instance,
+                max_iter=max_iter,
+                tabu_tenure=tenure,
+                seed=42,
+                initial=&quot;ffd&quot;,
+                target=reference_value,
+            )
+            if search.num_bins is None:
+                raise RuntimeError(f&quot;No feasible solution for {path}&quot;)
+            gap = 100.0 * (search.num_bins - reference_value) / max(reference_value, 1)
+            row = {
+                &quot;instance&quot;: path.name,
+                &quot;group&quot;: group,
+                &quot;instance_type&quot;: instance_type,
+                &quot;n&quot;: instance[&quot;n&quot;],
+                &quot;capacity&quot;: instance[&quot;C&quot;],
+                &quot;cohesion_edges&quot;: len(instance[&quot;pairs&quot;]),
+                &quot;components&quot;: len(contracted.components),
+                &quot;lower_bound&quot;: bound,
+                &quot;exact_bins&quot;: exact[&quot;num_bins&quot;] if exact[&quot;optimal&quot;] else &quot;&quot;,
+                &quot;exact_status&quot;: exact[&quot;status&quot;],
+                &quot;exact_time_sec&quot;: exact[&quot;solve_time&quot;] if exact[&quot;optimal&quot;] else &quot;&quot;,
+                &quot;reference_value&quot;: reference_value,
+                &quot;reference_type&quot;: reference_type,
+                &quot;ffd_bins&quot;: ffd_bins,
+                &quot;tabu_bins&quot;: search.num_bins,
+                &quot;improvement_bins&quot;: ffd_bins - search.num_bins,
+                &quot;gap_to_reference_pct&quot;: round(gap, 2),
+                &quot;tabu_time_sec&quot;: search.solve_time,
+                &quot;iterations&quot;: search.iterations,
+                &quot;valid&quot;: search.valid,
+            }
+            if not row[&quot;valid&quot;]:
+                raise RuntimeError(f&quot;Invalid heuristic solution for {path}&quot;)
+            rows.append(row)
+            histories[path.name] = search.history
+            print(
+                f&quot;{group:12s} n={instance[&#x27;n&#x27;]:4d} LB={bound:3d} FFD={ffd_bins:3d} &quot;
+                f&quot;Tabu={search.num_bins:3d} ref={reference_value:3d} &quot;
+                f&quot;gap={gap:5.2f}% time={search.solve_time:.4f}s&quot;
+            )
+    return rows, histories
+
+
+def write_csv(rows: list[dict]) -&gt; None:
+    with (RESULTS_DIR / &quot;results_final.csv&quot;).open(&quot;w&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as handle:
+        writer = csv.DictWriter(handle, fieldnames=FIELDNAMES)
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def write_latex_table(rows: list[dict], *, hard: bool) -&gt; None:
+    selected = [row for row in rows if (row[&quot;instance_type&quot;] == &quot;synthetic-hard&quot;) == hard]
+    selected.sort(key=lambda row: row[&quot;n&quot;])
+    output = RESULTS_DIR / (&quot;hard_results_table.tex&quot; if hard else &quot;results_table.tex&quot;)
+    caption = (
+        &quot;نتایج نمونه‌های مصنوعی دشوار؛ نوع مقدار مرجع در ستون «مرجع» مشخص شده است.&quot;
+        if hard
+        else &quot;نتایج نمونه‌های استاندارد؛ نوع مقدار مرجع در ستون «مرجع» مشخص شده است.&quot;
+    )
+    label = &quot;tab:hard-results&quot; if hard else &quot;tab:standard-results&quot;
+    lines = [
+        r&quot;\begin{table}[htbp]&quot;,
+        r&quot;\centering&quot;,
+        r&quot;\scriptsize&quot;,
+        r&quot;\begin{tabular}{r l r r r r l r r}&quot;,
+        r&quot;\toprule&quot;,
+        r&quot;ردیف &amp; نمونه &amp; $n$ &amp; \lr{FFD} &amp; \lr{Tabu} &amp; مقدار مرجع &amp; مرجع &amp; شکاف (\%) &amp; زمان (s) \\&quot;,
+        r&quot;\midrule&quot;,
+    ]
+    for index, row in enumerate(selected, 1):
+        reference_type = r&quot;\lr{ILP}&quot; if row[&quot;reference_type&quot;] == &quot;ILP optimum&quot; else &quot;کران پایین&quot;
+        lines.append(
+            f&quot;{index} &amp; \\lr{{{latex_escape(row[&#x27;instance&#x27;])}}} &amp; {row[&#x27;n&#x27;]} &amp; {row[&#x27;ffd_bins&#x27;]} &amp; &quot;
+            f&quot;{row[&#x27;tabu_bins&#x27;]} &amp; {row[&#x27;reference_value&#x27;]} &amp; {reference_type} &amp; &quot;
+            f&quot;{row[&#x27;gap_to_reference_pct&#x27;]:.2f} &amp; {row[&#x27;tabu_time_sec&#x27;]:.4f} \\\\&quot;
+        )
+    lines.extend(
+        [
+            r&quot;\bottomrule&quot;,
+            r&quot;\end{tabular}&quot;,
+            f&quot;\\caption{{{caption}}}&quot;,
+            f&quot;\\label{{{label}}}&quot;,
+            r&quot;\end{table}&quot;,
+            &quot;&quot;,
+        ]
+    )
+    output.write_text(&quot;\n&quot;.join(lines), encoding=&quot;utf-8&quot;)
+
+
+def main() -&gt; None:
+    rows, histories = run_all()
+    write_csv(rows)
+    write_latex_table(rows, hard=False)
+    write_latex_table(rows, hard=True)
+    (RESULTS_DIR / &quot;histories.json&quot;).write_text(
+        json.dumps(histories, ensure_ascii=False, indent=2), encoding=&quot;utf-8&quot;
+    )
+    print(f&quot;\nWrote {len(rows)} validated rows to {RESULTS_DIR / &#x27;results_final.csv&#x27;}&quot;)
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre></details><details class="source-file" ><summary><bdi>run_robustness.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/run_robustness.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># pyright: reportMissingTypeArgument=false, reportArgumentType=false
+&quot;&quot;&quot;Thirty-run robustness and FFD-vs-random experiment.
+
+The script uses the same production implementation as the main experiment and
+records both the randomized initial solution and the final Tabu solution.
+&quot;&quot;&quot;
+
+from __future__ import annotations
+
+import csv
+from pathlib import Path
+
+import numpy as np
+
+from cohesive_bin_packing import contract_instance, load_instance, lower_bound, tabu_search
+
+ROOT = Path(__file__).resolve().parent
+INSTANCES_DIR = ROOT / &quot;instances&quot;
+RESULTS_DIR = ROOT / &quot;results&quot;
+RESULTS_DIR.mkdir(exist_ok=True)
+N_RUNS = 30
+
+GROUPS = (
+    (&quot;medium&quot;, 1000, 12),
+    (&quot;hard_medium&quot;, 1200, 14),
+)
+
+
+def main() -&gt; None:
+    rows: list[dict] = []
+    summaries: list[dict] = []
+
+    for group, max_iter, tenure in GROUPS:
+        paths = sorted((INSTANCES_DIR / group).glob(&quot;*.txt&quot;), key=lambda p: load_instance(p)[&quot;n&quot;])
+        for path in paths:
+            instance = load_instance(path)
+            contracted = contract_instance(instance)
+            bound = lower_bound(contracted.weights, contracted.capacity)
+            instance_rows: list[dict] = []
+            for seed in range(1, N_RUNS + 1):
+                result = tabu_search(
+                    instance,
+                    max_iter=max_iter,
+                    tabu_tenure=tenure,
+                    seed=seed,
+                    initial=&quot;random&quot;,
+                    target=bound,
+                )
+                if result.num_bins is None or result.initial_bins is None or not result.valid:
+                    raise RuntimeError(f&quot;Invalid result for {path}, seed={seed}&quot;)
+                row = {
+                    &quot;instance&quot;: path.name,
+                    &quot;group&quot;: group,
+                    &quot;n&quot;: instance[&quot;n&quot;],
+                    &quot;seed&quot;: seed,
+                    &quot;lower_bound&quot;: bound,
+                    &quot;random_initial_bins&quot;: result.initial_bins,
+                    &quot;tabu_bins&quot;: result.num_bins,
+                    &quot;improvement_bins&quot;: result.initial_bins - result.num_bins,
+                    &quot;time_sec&quot;: result.solve_time,
+                    &quot;iterations&quot;: result.iterations,
+                    &quot;valid&quot;: result.valid,
+                }
+                rows.append(row)
+                instance_rows.append(row)
+
+            initial = np.array([row[&quot;random_initial_bins&quot;] for row in instance_rows], dtype=float)
+            final = np.array([row[&quot;tabu_bins&quot;] for row in instance_rows], dtype=float)
+            times = np.array([row[&quot;time_sec&quot;] for row in instance_rows], dtype=float)
+            summaries.append(
+                {
+                    &quot;instance&quot;: path.name,
+                    &quot;group&quot;: group,
+                    &quot;n&quot;: instance[&quot;n&quot;],
+                    &quot;runs&quot;: N_RUNS,
+                    &quot;lower_bound&quot;: bound,
+                    &quot;initial_mean&quot;: round(float(initial.mean()), 3),
+                    &quot;initial_std&quot;: round(float(initial.std(ddof=1)), 3),
+                    &quot;final_mean&quot;: round(float(final.mean()), 3),
+                    &quot;final_std&quot;: round(float(final.std(ddof=1)), 3),
+                    &quot;best&quot;: int(final.min()),
+                    &quot;worst&quot;: int(final.max()),
+                    &quot;mean_improvement_bins&quot;: round(float((initial - final).mean()), 3),
+                    &quot;mean_time_sec&quot;: round(float(times.mean()), 6),
+                    &quot;std_time_sec&quot;: round(float(times.std(ddof=1)), 6),
+                }
+            )
+            summary = summaries[-1]
+            print(
+                f&quot;{group:11s} n={instance[&#x27;n&#x27;]:3d}: random={summary[&#x27;initial_mean&#x27;]:.2f}±{summary[&#x27;initial_std&#x27;]:.2f} &quot;
+                f&quot;-&gt; tabu={summary[&#x27;final_mean&#x27;]:.2f}±{summary[&#x27;final_std&#x27;]:.2f}, &quot;
+                f&quot;best={summary[&#x27;best&#x27;]}, mean time={summary[&#x27;mean_time_sec&#x27;]:.4f}s&quot;
+            )
+
+    with (RESULTS_DIR / &quot;robustness.csv&quot;).open(&quot;w&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+    with (RESULTS_DIR / &quot;robustness_summary.csv&quot;).open(&quot;w&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(summaries[0]))
+        writer.writeheader()
+        writer.writerows(summaries)
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre></details><details class="source-file" ><summary><bdi>tests/test_cohesive_bin_packing.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/cohesive-bin-packing/tests/test_cohesive_bin_packing.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>import unittest
+from pathlib import Path
+from typing import override
+
+from cohesive_bin_packing import (
+    apply_move,
+    bin_loads,
+    calculate_delta,
+    contract_instance,
+    expand_solution,
+    first_fit_decreasing,
+    generate_neighborhood,
+    load_instance,
+    Instance,
+    lower_bound,
+    solve_exact_ilp,
+    tabu_search,
+    validate_component_solution,
+    validate_item_solution,
+)
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+class CohesiveBinPackingTests(unittest.TestCase):
+    instance: Instance = {&quot;n&quot;: 0, &quot;C&quot;: 1, &quot;weights&quot;: [], &quot;pairs&quot;: []}
+
+    @override
+    def setUp(self) -&gt; None:
+        self.instance = {
+            &quot;n&quot;: 6,
+            &quot;C&quot;: 10,
+            &quot;weights&quot;: [2, 3, 4, 1, 5, 5],
+            &quot;pairs&quot;: [(0, 1), (2, 3)],
+        }
+
+    def test_contraction_is_exact_and_transitive(self):
+        contracted = contract_instance(self.instance)
+        self.assertEqual(contracted.components, ((0, 1), (2, 3), (4,), (5,)))
+        self.assertEqual(contracted.weights, (5, 5, 5, 5))
+
+    def test_lower_bound_and_ffd(self):
+        contracted = contract_instance(self.instance)
+        self.assertEqual(lower_bound(contracted.weights, contracted.capacity), 2)
+        bins = first_fit_decreasing(contracted.weights, contracted.capacity)
+        self.assertEqual(len(bins), 2)
+        self.assertTrue(validate_component_solution(bins, contracted.weights, contracted.capacity)[0])
+        self.assertTrue(validate_item_solution(self.instance, expand_solution(bins, contracted.components))[0])
+
+    def test_delta_matches_applied_move(self):
+        weights = (4, 3, 3, 2)
+        capacity = 7
+        bins = [[0, 1], [2, 3]]
+        loads = bin_loads(bins, weights)
+        for move in generate_neighborhood(bins, weights, capacity, include_eject=True):
+            before_count = len(bins)
+            before_sq = sum(load * load for load in loads)
+            after = apply_move(bins, move)
+            after_loads = bin_loads(after, weights)
+            expected = (len(after) - before_count, sum(load * load for load in after_loads) - before_sq)
+            self.assertEqual(calculate_delta(bins, loads, weights, move), expected, move)
+
+    def test_infeasible_component_is_rejected(self):
+        instance: Instance = {&quot;n&quot;: 2, &quot;C&quot;: 5, &quot;weights&quot;: [3, 3], &quot;pairs&quot;: [(0, 1)]}
+        result = tabu_search(instance)
+        self.assertIsNone(result.num_bins)
+        self.assertFalse(result.valid)
+
+    def test_small_real_instance_matches_exact_optimum(self):
+        instance = load_instance(ROOT / &quot;instances/small/n=30_C=100_pairs=10.txt&quot;)
+        exact = solve_exact_ilp(instance, time_limit=30)
+        heuristic = tabu_search(instance, max_iter=500, tabu_tenure=7, target=6)
+        self.assertTrue(exact[&quot;optimal&quot;])
+        self.assertEqual(exact[&quot;num_bins&quot;], 6)
+        self.assertEqual(heuristic.num_bins, exact[&quot;num_bins&quot;])
+        self.assertTrue(heuristic.valid)
+
+
+if __name__ == &quot;__main__&quot;:
+    _ = unittest.main()
+</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw1-assignment/">تمرین ۱: مسئلهٔ تخصیص ←</a><a href="../hw2-vertex-cover/">تمرین ۲: Vertex Cover ←</a><a href="../hw3-local-search/">تمرین ۳: Local Search برای TSP و Graph Partitioning ←</a><a href="../hw4-tsp/">تمرین ۴: مقایسهٔ 2-opt و 3-opt ←</a><a href="../hw4-msls/">تمرین ۴: Multi-Start Local Search ←</a><a href="../hw4-cplex/">تمرین ۴: روش‌های محلی و مقایسه با CPLEX ←</a><a href="../hw5-neighborhoods/">تمرین ۵: تحلیل همسایگی N2 و N3 ←</a><a href="../hw6-weighted-vertex-cover/">تمرین ۶: Weighted Vertex Cover ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

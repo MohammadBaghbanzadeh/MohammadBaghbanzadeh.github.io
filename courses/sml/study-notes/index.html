@@ -1,0 +1,3117 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="یادداشت‌ها و ترجمه‌های مطالعه دربارهٔ مباحث یادگیری ماشین آماری؛ برگرفته از منابع درس."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>یادداشت‌های مرور SML · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">یادگیری ماشین آماری</a></nav><p class="eyebrow">یادداشت مطالعه</p><h1 class="work-title">یادداشت‌های مرور SML</h1><p class="course-lead">یادداشت‌ها و ترجمه‌های مطالعه دربارهٔ مباحث یادگیری ماشین آماری؛ برگرفته از منابع درس.</p><div class="topic-list"><bdi class="topic">Bayes</bdi><bdi class="topic">Kernel Methods</bdi><bdi class="topic">PCA</bdi></div><div class="work-note">جزوهٔ اصلی درس متعلق به دکتر محمود امین‌طوسی و گروه علوم کامپیوتر فردوسی است؛ لینک منبع اصلی در صفحهٔ درس آمده است. این بخش پژوهش یا نتایج جدید معرفی نمی‌کند.</div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Bayesian%20Decision%20Theory%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer"><bdi>Bayesian Decision Theory — Statistical Machine Learning/translation.tex</bdi><span class="file-meta">30 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Feature%20Maps_%20Bridging%20to%20Kernel%20Methods%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer"><bdi>Feature Maps_ Bridging to Kernel Methods — Statistical Machine Learning/translation.tex</bdi><span class="file-meta">10 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Gaussian%20Mixture%20Model%2C%20Part%202%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer"><bdi>Gaussian Mixture Model, Part 2 — Statistical Machine Learning/translation.tex</bdi><span class="file-meta">14 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Kernel%20Regression_%20From%20Linear%20to%20Nonlinear%20Modeling%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer"><bdi>Kernel Regression_ From Linear to Nonlinear Modeling — Statistical Machine Learning/translation.tex</bdi><span class="file-meta">15 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Linear%20models%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer"><bdi>Linear models — Statistical Machine Learning/translation.tex</bdi><span class="file-meta">25 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Mahalanobis%20Distance%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer"><bdi>Mahalanobis Distance — Statistical Machine Learning/translation.tex</bdi><span class="file-meta">17 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Maximum%20Likelihood%20Estimation%20%28MLE%29%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer"><bdi>Maximum Likelihood Estimation (MLE) — Statistical Machine Learning/translation.tex</bdi><span class="file-meta">12 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Naive%20Bayes%20Classification%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer"><bdi>Naive Bayes Classification — Statistical Machine Learning/translation.tex</bdi><span class="file-meta">12 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Principal%20Component%20Analysis%2C%20Part%202%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer"><bdi>Principal Component Analysis, Part 2 — Statistical Machine Learning/translation.tex</bdi><span class="file-meta">12 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/The%20Kernel%20Method%20%28Kernel%20Trick%29%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer"><bdi>The Kernel Method (Kernel Trick) — Statistical Machine Learning/translation.tex</bdi><span class="file-meta">14 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Understanding%20the%20Covariance%20Matrix%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer"><bdi>Understanding the Covariance Matrix — Statistical Machine Learning/translation.tex</bdi><span class="file-meta">10 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Chapter9.md" target="_blank" rel="noopener noreferrer"><bdi>Chapter9.md</bdi><span class="file-meta">7 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="source-file" ><summary><bdi>Bayesian Decision Theory — Statistical Machine Learning/translation.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Bayesian%20Decision%20Theory%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xepersian}
+\settextfont{XB Niloofar}
+
+\geometry{a4paper, margin=1in}
+
+\title{\lr{Bayesian Decision Theory} \\ (تئوری تصمیم‌گیری بیز)}
+\author{}
+\date{}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_15_1.png}
+  \caption{توزیع‌های نرمال گوسی با ماتریس‌های کوواریانس برابر و قطری}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_20_1.png}
+  \caption{تغییر مرز تصمیم در اثر تغییر نسبت احتمالات پیشین کلاس‌ها}
+\end{figure}
+
+
+
+
+
+
+\begin{document}
+
+\maketitle
+
+\section*{فهرست مطالب}
+\begin{itemize}
+    \item مقدمه
+    \item مفاهیم کلیدی
+    \item فرمول بیز
+    \item قاعده تصمیم‌گیری
+    \item تعمیم به بیش از دو کلاس
+    \item \lr{Discriminant Functions} (توابع تشخیص‌دهنده)
+    \item \lr{Normal Density} (چگالی نرمال)
+    \item \lr{Multivariate Normal Density} (چگالی نرمال چندمتغیره)
+    \item تعاریف رسمی
+    \item ویژگی‌های \lr{Covariance Matrix} (ماتریس کوواریانس)
+    \item \lr{Discriminant Functions} برای \lr{Normal Density}
+    \item خلاصه
+\end{itemize}
+
+\newpage
+
+\section*{مقدمه}
+\begin{itemize}
+    \item \lr{Bayesian Decision Theory} یک رویکرد آماری برای \lr{pattern classification} (دسته‌بندی الگو) است.
+    \item این تئوری موازنه بین تصمیمات دسته‌بندی را با استفاده از احتمالات و هزینه‌ها کمّی می‌کند.
+    \item فرض می‌کند تمام احتمالات مربوطه شناخته شده هستند.
+\end{itemize}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_2_1.jpeg}
+  \caption{نمودار جریان تصمیم‌گیری بیزی و هزینه طبقه‌بندی}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_4_1.png}
+  \caption{توابع چگالی احتمال کلاس‌شرطی برای دو کلاس ماهی خاویار و سالمون}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_6_1.png}
+  \caption{تعمیم به طبقه‌بندی با بیش از دو کلاس و توابع متمایزکننده}
+\end{figure}
+
+
+
+
+
+
+
+
+مثال: دسته‌بندی ماهی (ماهی خاردار در مقابل ماهی سالمون) بر اساس ویژگی‌هایی مانند روشنایی.
+
+\section*{مفاهیم کلیدی}
+\begin{itemize}
+    \item \lr{State of Nature} ($\omega$): نشان‌دهنده طبقه واقعی است (به عنوان مثال، ماهی خاردار یا ماهی سالمون).
+    \item \lr{Prior Probability} ($P(\omega_j)$): احتمال یک طبقه قبل از مشاهده هرگونه داده.
+    \item \lr{Class-Conditional Probability Density} ($p(x|\omega_j)$): احتمال مشاهده ویژگی $x$ به شرط طبقه $\omega_j$.
+    \item \lr{Posterior Probability} ($P(\omega_j|x)$): احتمال طبقه $\omega_j$ پس از مشاهده ویژگی $x$.
+\end{itemize}
+
+\section*{فرمول بیز}
+قضیه بیز (\lr{Bayes&#x27; Theorem}):
+\[
+\text{\lr{Posterior}} = \frac{\text{\lr{Likelihood}} \times \text{\lr{Prior}}}{\text{\lr{Evidence}}}
+\]
+یا به صورت ریاضی:
+\[
+P(\omega_j|x) = \frac{p(x|\omega_j)P(\omega_j)}{p(x)}
+\]
+که در آن \lr{Evidence} ($p(x)$) یک ثابت نرمال‌سازی است که اغلب در دسته‌بندی نادیده گرفته می‌شود و به صورت زیر محاسبه می‌شود:
+\[
+p(x) = \sum_{j=1}^{c} p(x|\omega_j)P(\omega_j)
+\]
+
+احتمال $P(\omega_j)$ به احتمال \lr{a posteriori} (یا احتمال \lr{posterior}) $P(\omega_j|x)$ تبدیل می‌شود — یعنی احتمال اینکه حالت طبیعت $\omega_j$ باشد، با فرض اینکه مقدار ویژگی $x$ اندازه‌گیری شده است. ما $p(x|\omega_j)$ را \lr{likelihood} مربوط به $\omega_j$ نسبت به $x$ می‌نامیم (اصطلاحی که برای نشان دادن این انتخاب شده است که در شرایط یکسان، طبقه‌ای که برای آن $p(x|\omega_j)$ بزرگ است، احتمال بیشتری دارد که طبقه واقعی باشد).
+
+توجه داشته باشید که حاصل‌ضرب \lr{likelihood} و \lr{prior probability} است که در تعیین \lr{posterior probability} بیشترین اهمیت را دارد؛ فاکتور \lr{evidence} یعنی $p(x)$ را می‌توان صرفاً به عنوان یک فاکتور مقیاس‌دهی در نظر گرفت که تضمین می‌کند مجموع احتمالات پسین برابر با یک می‌شود، همانطور که تمام احتمالات خوب باید باشند. تغییرات $P(\omega_j|x)$ با $x$ در شکل ۲.۲ برای حالت $P(\omega_1) = \frac{2}{3}$ و $P(\omega_2) = \frac{1}{3}$ نشان داده شده است.
+
+شکل ۲.۱: توابع چگالی احتمال شرطی کلاس فرضی، چگالی احتمال اندازه‌گیری یک مقدار ویژگی خاص $x$ را به شرط قرار داشتن الگو در طبقه $\omega_i$ نشان می‌دهند. اگر $x$ نشان‌دهنده طول ماهی باشد، این دو منحنی ممکن است تفاوت طول جمعیت دو نوع ماهی را توصیف کنند. توابع چگالی نرمال‌سازی شده‌اند و بنابراین مساحت زیر هر منحنی ۱.۰ است.
+
+\section*{قاعده تصمیم‌گیری}
+دسته‌بندی با کمترین نرخ خطا (\lr{Minimum Error Rate Classification}):
+\begin{itemize}
+    \item تصمیم بگیر $\omega_1$ اگر $P(\omega_1|x) &gt; P(\omega_2|x)$ است؛ در غیر این صورت تصمیم بگیر $\omega_2$.
+    \item معادل است با: تصمیم بگیر $\omega_1$ اگر $p(x|\omega_1)P(\omega_1) &gt; p(x|\omega_2)P(\omega_2)$ است.
+\end{itemize}
+احتمال خطا به صورت زیر تعریف می‌شود:
+\[
+P(\text{error}|x) = \min[P(\omega_1|x), P(\omega_2|x)]
+\]
+
+شکل ۲.۲: احتمالات پسین برای پیشین‌های خاص $P(\omega_1) = \frac{2}{3}$ و $P(\omega_2) = \frac{1}{3}$ برای چگالی‌های احتمال شرطی کلاس نشان داده شده در شکل ۲.۱. بنابراین، در این حالت، با فرض اینکه یک الگو دارای مقدار ویژگی $x=14$ اندازه‌گیری شود، احتمال قرار داشتن آن در طبقه $\omega_2$ تقریباً $0.08$ و احتمال قرار داشتن آن در $\omega_1$ تقریباً $0.92$ است. در هر $x$، مجموع احتمالات پسین برابر با $1.0$ است.
+
+برخی بینش‌های اضافی را می‌توان با بررسی چند حالت خاص به دست آورد:
+\begin{enumerate}
+    \item \textbf{حالت ۱:} اگر برای برخی از $x$ها داشته باشیم $p(x|\omega_1) = p(x|\omega_2)$، در این صورت آن مشاهده خاص هیچ اطلاعاتی درباره حالت طبیعت به ما نمی‌دهد. در این حالت، تصمیم‌گیری کاملاً به احتمالات پیشین $P(\omega_1)$ و $P(\omega_2)$ بستگی دارد.
+    \item \textbf{حالت ۲:} اگر $P(\omega_1) = P(\omega_2)$ باشد، در این صورت حالت‌های طبیعت به یک اندازه محتمل هستند. در این حالت، تصمیم‌گیری کاملاً بر اساس درست‌نمایی‌ها (\lr{likelihoods}) $p(x|\omega_j)$ انجام می‌شود.
+    \item \textbf{حالت کلی:} به طور کلی، هم احتمالات پیشین و هم درست‌نمایی‌ها در اتخاذ تصمیم مهم هستند. قاعده تصمیم‌گیری بیز (\lr{Bayes decision rule}) این فاکتورها را ترکیب می‌کند تا به حداقل احتمال خطا دست یابد.
+\end{enumerate}
+
+\section*{تعمیم به بیش از دو کلاس}
+قاعده تصمیم‌گیری بیز برای کمینه‌سازی ریسک، خواستار انتخاب عملی است که ریسک شرطی را کمینه کند. برای کمینه‌سازی میانگین احتمال خطا، باید کلاسی ($\omega_i$) را انتخاب کنیم که احتمال پسین $P(\omega_i|x)$ را بیشینه می‌کند. به عبارت دیگر، برای حداقل نرخ خطا:
+\[
+\text{تصمیم بگیر } \omega_i \text{ اگر } P(\omega_i|x) &gt; P(\omega_j|x) \text{ برای همه } j \neq i.
+\]
+
+این قاعده به طور طبیعی به کلاس‌های متعدد ($c &gt; 2$) تعمیم می‌یابد. برای هر کلاس $\omega_i$، احتمال پسین $P(\omega_i|x)$ را محاسبه کرده و بردار ویژگی $x$ را به کلاسی با بیشترین احتمال پسین اختصاص می‌دهیم. این کار تضمین می‌کند که احتمال خطا کمینه شود.
+
+\section*{توابع تشخیص‌دهنده (\lr{Discriminant Functions})}
+تابع تشخیص‌دهنده ($g_i(x)$) برای اختصاص دادن یک بردار ویژگی $x$ به کلاس $\omega_i$ استفاده می‌شود.
+برای حداقل نرخ خطا:
+\[
+g_i(x) = P(\omega_i|x)
+\]
+همچنین می‌تواند به صورت زیر بیان شود:
+\[
+g_i(x) = p(x|\omega_i)P(\omega_i)
+\]
+یا به فرم لگاریتمی:
+\[
+g_i(x) = \ln p(x|\omega_i) + \ln P(\omega_i)
+\]
+
+شکل ۲.۵: ساختار عملکردی یک دسته‌بندی‌کننده الگوی آماری عمومی که شامل ورودی‌ها و $c$ تابع تشخیص‌دهنده $g_i(x)$ است. در مرحله بعد مشخص می‌شود که کدام یک از مقادیر تشخیص‌دهنده حداکثر است و الگوی ورودی را بر این اساس دسته‌بندی می‌کند. فلش‌ها جهت جریان اطلاعات را نشان می‌دهند، اگرچه اغلب زمانی که جهت جریان واضح است، فلش‌ها حذف می‌شوند.
+
+شکل ۲.۶: در این دسته‌بندی‌کننده دو طبقه دو بعدی، چگالی‌های احتمال گاوسی هستند (با بیضی‌های $1/e$ نشان داده شده‌اند)، مرز تصمیم‌گیری شامل دو هذلولی است و بنابراین ناحیه تصمیم‌گیری $R_1$ به سادگی همبند نیست.
+
+\section*{چگالی نرمال (\lr{Normal Density})}
+چگالی نرمال تک‌متغیره (\lr{Univariate Normal Density}) به صورت زیر است:
+\[
+p(x) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left[ -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2 \right]
+\]
+که در آن مقدار مورد انتظار $x$ (یک میانگین، در اینجا روی فضای ویژگی گرفته شده است) برابر است با:
+\[
+\mu = E[x] = \int_{-\infty}^{\infty} x p(x) dx
+\]
+و انحراف مربع مورد انتظار یا واریانس برابر است با:
+\[
+\sigma^2 = E[(x-\mu)^2] = \int_{-\infty}^{\infty} (x-\mu)^2 p(x) dx
+\]
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_7_1.png}
+  \caption{ساختار عمومی یک سیستم طبقه‌بند آماری الگو}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_8_1.png}
+  \caption{توزیع نرمال یک‌متغیره و انحراف معیارهای آن}
+\end{figure}
+
+
+
+
+
+
+چگالی نرمال تک‌متغیره به طور کامل با دو پارامتر مشخص می‌شود: میانگین $\mu$ و واریانس $\sigma^2$. برای سادگی، اغلب $p(x)$ را با نوشتن $p(x) \sim N(\mu, \sigma^2)$ خلاصه می‌کنیم تا بگوییم $x$ به طور نرمال با میانگین $\mu$ و واریانس $\sigma^2$ توزیع شده است. نمونه‌های حاصل از توزیع‌های نرمال تمایل دارند در اطراف میانگین خوشه شوند، با پراکندگی مربوط به انحراف معیار $\sigma$ (شکل ۲.۷ را ببینید).
+
+شکل ۲.۷: یک توزیع نرمال تک‌متغیره تقریباً $95\%$ از مساحت خود را در محدوده $|x-\mu| \le 2\sigma$ دارد، همانطور که نشان داده شده است. اوج توزیع دارای مقدار $p(\mu) = \frac{1}{\sqrt{2\pi}\sigma}$ است.
+
+\section*{چگالی نرمال چندمتغیره (\lr{Multivariate Normal Density})}
+بردار میانگین ($\mu$) و ماتریس کوواریانس ($\Sigma$) توزیع را توصیف می‌کنند:
+\[
+p(x) = \frac{1}{(2\pi)^{d/2}|\Sigma|^{1/2}} \exp\left[ -\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu) \right]
+\]
+
+\subsection*{تعاریف رسمی}
+به طور رسمی، داریم:
+\[
+\mu = E[x] = \int x p(x) dx
+\]
+و
+\[
+\Sigma = E[(x-\mu)(x-\mu)^T]
+\]
+که در آن مقدار مورد انتظار یک بردار یا یک ماتریس با گرفتن مقادیر مورد انتظار مولفه‌های آن به دست می‌آید. به عبارت دیگر، اگر $x_i$ مولفه $i$-ام $x$ باشد، $\mu_i$ مولفه $i$-ام $\mu$ و $\sigma_{ij}$ مولفه $ij$-ام $\Sigma$ باشد، آنگاه:
+\[
+\mu_i = E[x_i]
+\]
+و
+\[
+\sigma_{ij} = E[(x_i - \mu_i)(x_j - \mu_j)]
+\]
+
+\section*{ویژگی‌های ماتریس کوواریانس (\lr{Covariance Matrix})}
+\begin{itemize}
+    \item ماتریس کوواریانس همیشه متقارن و نیمه معین مثبت است.
+    \item ما توجه خود را به حالتی محدود می‌کنیم که $\Sigma$ معین مثبت باشد، به طوری که دترمینان $\Sigma$ کاملاً مثبت باشد.
+    \item عناصر روی قطر $\sigma_{ii}$ واریانس‌های $x_i$ مربوطه هستند (یعنی $\sigma_i^2$).
+    \item عناصر خارج از قطر $\sigma_{ij}$ کوواریانس‌های $x_i$ و $x_j$ هستند.
+\end{itemize}
+
+مثال: برای ویژگی‌های طول و وزن یک جمعیت از ماهی‌ها، انتظار یک کوواریانس مثبت را داریم.
+
+\begin{itemize}
+    \item اگر $x_i$ و $x_j$ به صورت آماری مستقل باشند، آنگاه $\sigma_{ij} = 0$.
+    \item اگر تمام عناصر خارج از قطر صفر باشند، $\Sigma$ به حاصل‌ضرب چگالی‌های نرمال تک‌متغیره برای مولفه‌های $x$ کاهش می‌یابد.
+\end{itemize}
+
+چگالی نرمال چندمتغیره به طور کامل با $d + \frac{d(d+1)}{2}$ پارامتر مشخص می‌شود:
+\begin{itemize}
+    \item $d$ عنصر بردار میانگین $\mu$.
+    \item $\frac{d(d+1)}{2}$ عنصر مستقل ماتریس کوواریانس $\Sigma$.
+\end{itemize}
+
+نمونه‌های گرفته شده از یک جمعیت نرمال تمایل دارند در یک خوشه واحد قرار گیرند (شکل ۲.۹ را ببینید):
+\begin{itemize}
+    \item مرکز خوشه توسط بردار میانگین $\mu$ تعیین می‌شود.
+    \item شکل خوشه توسط ماتریس کوواریانس $\Sigma$ تعیین می‌شود.
+    \item مکان هندسی نقاط با چگالی ثابت، بیضی‌گون‌های با ابعاد بالا (\lr{hyperellipsoids}) هستند که توسط فرم درجه دوم زیر تعریف می‌شوند:
+    \[
+    (x-\mu)^T\Sigma^{-1}(x-\mu) = \text{constant}
+    \]
+    \item محورهای اصلی این بیضی‌گون‌های با ابعاد بالا توسط بردارهای ویژه $\Sigma$ (که با $\Phi$ نشان داده می‌شوند) داده می‌شوند.
+    \item مقادیر ویژه (که با $\Lambda$ نشان داده می‌شوند) طول این محورها را تعیین می‌کنند.
+    \item مقدار $r^2 = (x-\mu)^T\Sigma^{-1}(x-\mu)$ فاصله ماهالانوبیس مربع (\lr{squared Mahalanobis distance}) از $x$ تا $\mu$ نامیده می‌شود. بنابراین:
+    \[
+    r^2 = (x-\mu)^T\Sigma^{-1}(x-\mu)
+    \]
+    \item خطوط تراز چگالی ثابت، بیضی‌گون‌های با ابعاد بالا با فاصله ماهالانوبیس ثابت تا $\mu$ هستند.
+    \item حجم این بیضی‌گون‌های با ابعاد بالا، پراکندگی نمونه‌ها در اطراف میانگین را اندازه‌گیری می‌کند.
+\end{itemize}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_10_1.png}
+  \caption{توزیع نرمال دوبعدی و بردارهای میانگین و ماتریس کوواریانس}
+\end{figure}
+
+
+
+
+شکل ۲.۹: نمونه‌های گرفته شده از یک توزیع گاوسی دو بعدی در ابری به مرکز بردار میانگین $\mu$ قرار دارند. بیضی‌های قرمز خطوط چگالی احتمال برابر از توزیع گاوسی را نشان می‌دهند.
+
+\section*{توابع تشخیص‌دهنده برای چگالی نرمال}
+
+\subsection*{حالت ۱: ماتریس‌های کوواریانس برابر ($\Sigma_i = \sigma^2 I$)}
+تابع تشخیص‌دهنده خطی است:
+\[
+g_i(x) = w_i^T x + w_{i0}
+\]
+
+\subsubsection*{چگونه؟}
+بیایید شکل ساده‌شده درست‌نمایی لگاریتمی $g_i(x)$ را برای حالتی که ماتریس‌های کوواریانس برابر و همسانگرد هستند ($\Sigma_i = \sigma^2 I$) استخراج کنیم. ما با چگالی نرمال چندمتغیره داده شده شروع می‌کنیم و نشان می‌دهیم که چگونه به فرم بیان شده کاهش می‌یابد.
+
+تابع چگالی احتمال (\lr{PDF}) برای کلاس $\omega_i$ به صورت زیر است:
+\[
+p(x|\omega_i) = \frac{1}{(2\pi)^{d/2}|\Sigma_i|^{1/2}} \exp\left[ -\frac{1}{2}(x-\mu_i)^T\Sigma_i^{-1}(x-\mu_i) \right]
+\]
+که در آن:
+\begin{itemize}
+    \item $\Sigma_i = \sigma^2 I$ (کوواریانس همسانگرد، برابر در سراسر کلاس‌ها).
+    \item $|\Sigma_i| = (\sigma^2)^d$ (دترمینان $\Sigma_i$).
+    \item $\Sigma_i^{-1} = \frac{1}{\sigma^2} I$ (معکوس ماتریس قطری).
+\end{itemize}
+
+با جایگذاری $\Sigma_i = \sigma^2 I$ در \lr{PDF}:
+\[
+p(x|\omega_i) = \frac{1}{(2\pi)^{d/2}(\sigma^2)^{d/2}} \exp\left[ -\frac{1}{2}(x-\mu_i)^T \left( \frac{1}{\sigma^2} I \right)(x-\mu_i) \right]
+\]
+
+ساده‌سازی نما:
+\[
+(x-\mu_i)^T \left( \frac{1}{\sigma^2} I \right)(x-\mu_i) = \frac{1}{\sigma^2} (x-\mu_i)^T(x-\mu_i) = \frac{\|x-\mu_i\|^2}{\sigma^2}
+\]
+که در آن $\|x-\mu_i\|^2$ فاصله اقلیدسی مربع است.
+
+بنابراین، \lr{PDF} به صورت زیر در می‌آید:
+\[
+p(x|\omega_i) = \frac{1}{(2\pi\sigma^2)^{d/2}} \exp\left[ -\frac{\|x-\mu_i\|^2}{2\sigma^2} \right]
+\]
+
+اعمال قاعده بیز برای احتمال پسین (\lr{Posterior Probability}):
+احتمال پسین $P(\omega_i|x)$ به صورت زیر است:
+\[
+P(\omega_i|x) = \frac{p(x|\omega_i)P(\omega_i)}{p(x)}
+\]
+که در آن $p(x) = \sum_j p(x|\omega_j)P(\omega_j)$ شواهد (\lr{evidence}) است (که در توابع تشخیص‌دهنده نادیده گرفته می‌شود).
+
+لگاریتم پسین (تابع تشخیص‌دهنده $g_i(x)$) به صورت زیر است:
+\[
+g_i(x) = \ln p(x|\omega_i) + \ln P(\omega_i)
+\]
+
+گرفتن لگاریتم از \lr{PDF} و محاسبه $\ln p(x|\omega_i)$:
+\[
+\ln p(x|\omega_i) = \ln\left( \frac{1}{(2\pi\sigma^2)^{d/2}} \right) - \frac{\|x-\mu_i\|^2}{2\sigma^2}
+\]
+
+ساده‌سازی جمله اول:
+\[
+\ln((2\pi\sigma^2)^{-d/2}) = -\frac{d}{2} \ln(2\pi\sigma^2)
+\]
+بنابراین:
+\[
+\ln p(x|\omega_i) = -\frac{d}{2} \ln(2\pi\sigma^2) - \frac{\|x-\mu_i\|^2}{2\sigma^2}
+\]
+
+ترکیب با پیشین و نادیده گرفتن مقادیر ثابت:
+تابع تشخیص‌دهنده به صورت زیر در می‌آید:
+\[
+g_i(x) = \ln p(x|\omega_i) + \ln P(\omega_i) = -\frac{\|x-\mu_i\|^2}{2\sigma^2} - \frac{d}{2} \ln(2\pi\sigma^2) + \ln P(\omega_i)
+\]
+
+از آنجا که $-\frac{d}{2} \ln(2\pi\sigma^2)$ برای همه کلاس‌های $\omega_i$ ثابت است، تاثیری در تصمیم دسته‌بندی ندارد (ما $g_i(x)$ را در سراسر $i$ مقایسه می‌کنیم و جمله ثابت حذف می‌شود). بنابراین، ما آن را حذف کرده و می‌نویسیم:
+\[
+g_i(x) = -\frac{\|x-\mu_i\|^2}{2\sigma^2} + \ln P(\omega_i)
+\]
+
+مرزهای تصمیم‌گیری ابرصفحه (\lr{hyperplanes}) هستند.
+
+اگر احتمالات پیشین برابر نباشند، فاصله مربع $\|x-\mu_i\|^2$ توسط واریانس $\sigma^2$ نرمال‌سازی شده و با اضافه کردن $\ln P(\omega_i)$ جبران می‌شود. این بدان معنی است که اگر $x$ به طور مساوی به دو بردار میانگین متفاوت نزدیک باشد، تصمیم بهینه از طبقه‌ای که احتمال پیشین بیشتری دارد حمایت خواهد کرد.
+
+نیازی به محاسبه صریح فاصله‌ها نیست. بسط فرم درجه دوم $(x-\mu_i)^T(x-\mu_i)$ به دست می‌دهد:
+\[
+g_i(x) = -\frac{1}{2\sigma^2} [x^T x - 2\mu_i^T x + \mu_i^T \mu_i] + \ln P(\omega_i)
+\]
+
+جمله درجه دوم $x^T x$ برای همه $i$ها یکسان است، بنابراین می‌توان آن را به عنوان یک ثابت جمعی نادیده گرفت. این کار تابع تشخیص‌دهنده را به صورت زیر ساده می‌کند:
+\[
+g_i(x) = w_i^T x + w_{i0}
+\]
+که در آن:
+\[
+w_i = \frac{\mu_i}{\sigma^2}
+\]
+و
+\[
+w_{i0} = -\frac{\mu_i^T \mu_i}{2\sigma^2} + \ln P(\omega_i)
+\]
+در اینجا، $w_{i0}$ آستانه یا بایاس (\lr{threshold or bias}) در جهت $i$-ام نامیده می‌شود.
+
+دسته‌بندی‌کننده‌ای که از توابع تشخیص‌دهنده خطی استفاده می‌کند، یک ماشین خطی (\lr{linear machine}) نامیده می‌شود. سطوح تصمیم‌گیری برای یک ماشین خطی، بخش‌هایی از ابرصفحه‌ها هستند که توسط معادلات خطی $g_i(x) = g_j(x)$ برای دو طبقه با بیشترین احتمال پسین تعریف می‌شوند.
+
+برای مورد ما، این معادله را می‌توان به صورت زیر نوشت:
+\[
+w^T(x - x_0) = 0
+\]
+که در آن:
+\[
+w = \mu_i - \mu_j
+\]
+و
+\[
+x_0 = \frac{1}{2}(\mu_i + \mu_j) - \frac{\sigma^2}{\|\mu_i - \mu_j\|^2} \ln \frac{P(\omega_i)}{P(\omega_j)} (\mu_i - \mu_j)
+\]
+
+این معادله یک ابرصفحه را تعریف می‌کند که از نقطه $x_0$ عبور می‌کند و بر بردار $w$ عمود است. از آنجا که $w = \mu_i - \mu_j$، ابرصفحه جداکننده $R_i$ و $R_j$ بر خط اتصال میانگین‌ها عمود است. اگر $P(\omega_i) = P(\omega_j)$ باشد، ابرصفحه عمودمنصف خط بین میانگین‌ها است. اگر احتمالات پیشین نابرابر باشند، نقطه $x_0$ از میانگین محتمل‌تر دور می‌شود.
+
+شکل ۲.۱۰: اگر کوواریانس‌های دو توزیع برابر و متناسب با ماتریس همانی باشند، توزیع‌ها در $d$ بعد کروی هستند و مرز یک ابرصفحه تعمیم‌یافته از $d-1$ بعد است که عمود بر خط جداکننده میانگین‌ها قرار دارد.
+
+معادله $w^T(x - x_0) = 0$ نشان‌دهنده یک ابرصفحه در فضای $d$-بعدی است. نحوه تفسیر و تجسم آن به صورت زیر است:
+
+\subsubsection*{تفسیر}
+\begin{enumerate}
+    \item $w$: یک بردار نرمال برای ابرصفحه (جهت ابرصفحه را تعریف می‌کند).
+    \item $x_0$: یک نقطه ثابت روی ابرصفحه.
+    \item $x$: یک نقطه متغیر روی ابرصفحه.
+\end{enumerate}
+معادله بیان می‌کند که بردار $x - x_0$ بر $w$ عمود است، به این معنی که تمام نقاط $x$ روی ابرصفحه این شرط را برآورده می‌کنند.
+
+\subsubsection*{تجسم در دو بعد (2D)}
+در فضای دو بعدی ($d=2$)، معادله به یک خط کاهش می‌یابد:
+\begin{enumerate}
+    \item $w = [w_1, w_2]^T$: بردار نرمال خط.
+    \item $x_0 = [x_0, y_0]^T$: یک نقطه ثابت روی خط.
+    \item $x = [x, y]^T$: یک نقطه متغیر روی خط.
+\end{enumerate}
+معادله به صورت زیر در می‌آید:
+\[
+w_1(x - x_0) + w_2(y - y_0) = 0
+\]
+این معادله یک خط در دو بعد است.
+
+\subsubsection*{رسم ابرصفحه (خط در 2D)}
+نحوه رسم آن به این صورت است:
+\begin{enumerate}
+    \item نقطه $x_0$ را رسم کنید: این یک نقطه ثابت روی خط است.
+    \item بردار نرمال $w$ را رسم کنید: این بردار بر خط عمود است.
+    \item خط را رسم کنید: خط از $x_0$ عبور می‌کند و بر $w$ عمود است.
+\end{enumerate}
+
+\subsubsection*{مثال}
+بیایید از مقادیر زیر استفاده کنیم:
+\begin{itemize}
+    \item $w = [2, 1]^T$ (بردار نرمال).
+    \item $x_0 = [1, 1]^T$ (یک نقطه روی خط).
+\end{itemize}
+معادله به صورت زیر در می‌آید: $2(x-1) + 1(y-1) = 0$. ساده‌سازی کنید:
+\[
+2x-2+y-1=0 \implies 2x+y-3=0
+\]
+
+\subsection*{ابرصفحه و مرز تصمیم‌گیری (\lr{Hyperplane and Decision Boundary})}
+معادله $w^T(x-x_0) = 0$ یک ابرصفحه را تعریف می‌کند که از نقطه $x_0$ عبور می‌کند و بر بردار $w$ عمود است. از آنجا که $w = \mu_i - \mu_j$، ابرصفحه جداکننده $R_i$ و $R_j$ بر خط اتصال میانگین‌ها عمود است.
+
+اگر $P(\omega_i) = P(\omega_j)$ باشد، جمله دوم ناپدید می‌شود و نقطه $x_0$ در نیمه راه بین میانگین‌ها قرار دارد. در این حالت، ابرصفحه عمودمنصف خط بین میانگین‌ها است (شکل ۲.۱۱ را ببینید).
+
+اگر احتمالات پیشین نابرابر باشند، نقطه $x_0$ از میانگین محتمل‌تر دور می‌شود.
+
+توجه داشته باشید که اگر واریانس $\sigma^2$ نسبت به فاصله مربع $\|\mu_i - \mu_j\|^2$ کوچک باشد، موقعیت مرز تصمیم‌گیری نسبت به مقادیر دقیق احتمالات پیشین نسبتاً غیرحساس است.
+
+\subsection*{دسته‌بندی‌کننده با حداقل فاصله (\lr{Minimum Distance Classifier})}
+اگر احتمالات پیشین $P(\omega_i)$ برای همه $c$ کلاس یکسان باشد، جمله $\ln P(\omega_i)$ به یک ثابت جمعی بی‌اهمیت تبدیل می‌شود و می‌توان از آن صرف‌نظر کرد.
+
+در این حالت، قاعده تصمیم‌گیری بهینه به صورت زیر ساده می‌شود:
+\begin{itemize}
+    \item فاصله اقلیدسی $\|x - \mu_i\|$ را از $x$ تا هر یک از $c$ بردار میانگین اندازه‌گیری کنید.
+    \item $x$ را به نزدیک‌ترین میانگین اختصاص دهید.
+\end{itemize}
+
+چنین دسته‌بندی‌کننده‌ای، دسته‌بندی‌کننده با حداقل فاصله (\lr{minimum distance classifier}) نامیده می‌شود.
+
+اگر هر بردار میانگین به عنوان یک نمونه اولیه یا الگوی ایده‌آل برای الگوهای کلاس خود در نظر گرفته شود، این اساساً یک روش تطبیق الگو (\lr{template-matching}) است (شکل ۲.۱۰ را ببینید). این تکنیک شبیه به الگوریتم نزدیک‌ترین همسایه (\lr{nearest-neighbor algorithm}) است.
+
+شکل ۲.۱۱: با تغییر پیشین‌ها، مرز تصمیم‌گیری تغییر می‌کند؛ برای پیشین‌های بسیار متفاوت، مرز بین میانگین‌های این توزیع‌های گاوسی کروی ۱، ۲ و ۳ بعدی قرار نخواهد گرفت.
+
+\subsection*{حالت ۲: ماتریس‌های کوواریانس برابر اما دلخواه ($\Sigma_i = \Sigma$)}
+تابع تشخیص‌دهنده همچنان خطی است:
+\[
+g_i(x) = -\frac{1}{2}(x-\mu_i)^T \Sigma^{-1} (x-\mu_i) + \ln P(\omega_i)
+\]
+مرزهای تصمیم‌گیری ابرصفحه هستند، اما لزوماً بر خط بین میانگین‌ها عمود نیستند.
+
+\subsection*{حالت ۳: ماتریس‌های کوواریانس دلخواه ($\Sigma_i \neq \Sigma_j$)}
+تابع تشخیص‌دهنده درجه دوم است:
+\[
+g_i(x) = x^T W_i x + w_i^T x + w_{i0}
+\]
+که در آن:
+\begin{itemize}
+    \item $W_i = -\frac{1}{2}\Sigma_i^{-1}$
+    \item $w_i = \Sigma_i^{-1}\mu_i$
+    \item $w_{i0} = -\frac{1}{2}\mu_i^T \Sigma_i^{-1}\mu_i - \frac{1}{2}\ln|\Sigma_i| + \ln P(\omega_i)$
+\end{itemize}
+
+\section*{خلاصه}
+\begin{itemize}
+    \item \lr{Bayesian Decision Theory} چارچوبی را برای دسته‌بندی بهینه تحت عدم قطعیت فراهم می‌کند.
+    \item مولفه‌های کلیدی:
+    \begin{itemize}
+        \item احتمالات پیشین (\lr{Prior probabilities}).
+        \item درست‌نمایی‌ها (\lr{Likelihoods}) (چگالی‌های شرطی کلاس).
+        \item احتمالات پسین (\lr{Posterior probabilities}).
+    \end{itemize}
+    \item قواعد تصمیم‌گیری، نرخ‌های خطا یا زیان مورد انتظار را کمینه می‌کنند.
+    \item توزیع‌های نرمال به دلیل تحلیل‌پذیری ریاضی آنها معمولاً استفاده می‌شوند.
+\end{itemize}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_5_1.png}
+  \caption{احتمالات پسین مربوطه با در نظر گرفتن مقادیر احتمال پیشین}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_18_1.png}
+  \caption{مرز تصمیم خطی (ابرصفحه) برای کوواریانس‌های برابر}
+\end{figure}
+
+
+
+
+
+
+\end{document}
+</code></pre></details><details class="source-file" ><summary><bdi>Feature Maps_ Bridging to Kernel Methods — Statistical Machine Learning/translation.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Feature%20Maps_%20Bridging%20to%20Kernel%20Methods%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xepersian}
+\settextfont{XB Niloofar}
+
+\geometry{a4paper, margin=1in}
+
+\title{\lr{Feature Maps: Bridging to Kernel Methods} \\ (نگاشت‌های ویژگی: پلی به سمت روش‌های هسته)}
+\author{}
+\date{}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_2_1.png}
+  \caption{نگاشت داده‌های غیرخطی در فضای اولیه به فضای ویژگی با بعد بالاتر برای تفکیک خطی}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_3_1.png}
+  \caption{حل مسئله خوشه‌بندی غیرخطی دو حلقه با نگاشت به فضای ویژگی با بعد بالاتر}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_4_1.png}
+  \caption{استفاده از نگاشت‌های ویژگی غیرخطی برای مسئله رگرسیون}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_5_1.png}
+  \caption{برازش تابع چندجمله‌ای غیرخطی بر روی داده‌های رگرسیون شبیه‌سازی‌شده}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_6_1.png}
+  \caption{نمایش عملکرد نامناسب رگرسیون خطی ساده بر روی داده‌های ذاتا غیرخطی}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_8_1.png}
+  \caption{پراکندگی داده‌ها پس از اعمال نگاشت ویژگی به فضای ویژگی دوبعدی غیرخطی}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{document}
+
+\maketitle
+
+\section*{فهرست مطالب}
+\begin{enumerate}
+    \item مقدمه‌ای بر نگاشت‌های ویژگی (\lr{Feature Maps})
+    \item دسته‌بندی: مسئله دو حلقه
+    \item خوشه‌بندی: مسئله دو حلقه
+    \item مثال رگرسیون: استفاده از نگاشت‌های ویژگی برای داده‌های غیرخطی
+\end{enumerate}
+
+\newpage
+
+\section*{۱. مقدمه‌ای بر نگاشت‌های ویژگی}
+یک \lr{feature map} داده‌های ورودی را به فضایی با ابعاد بالاتر انتقال می‌دهد:
+\[
+\phi: \mathbb{R}^p \to \mathbb{R}^d \quad \text{که در آن} \quad d \gg p
+\]
+
+انگیزه کلیدی: قادر ساختن مدل‌های خطی برای حل مسائل غیرخطی از طریق:
+\begin{itemize}
+    \item نگاشت صریح برای دسته‌بندی/خوشه‌بندی
+    \item انبساط پایه برای رگرسیون
+\end{itemize}
+
+\section*{۲. دسته‌بندی: مسئله دو حلقه}
+\subsection*{فضای دوبعدی اصلی (شکست مدل خطی)}
+نگاشت $\phi(x,y) = [x, y, x^2 + y^2]$ کلاس‌ها را با تبدیل فاصله شعاعی به یک ویژگی خطی، به صورت خطی تفکیک‌پذیر می‌کند.
+
+\section*{۳. خوشه‌بندی: مسئله دو حلقه}
+خوشه‌بندی با استفاده از نگاشت‌های ویژگی در مسئله دو حلقه انجام می‌شود تا داده‌ها در فضای منتقل‌شده تفکیک‌پذیر شوند.
+
+\section*{۴. مثال رگرسیون: استفاده از نگاشت‌های ویژگی برای داده‌های غیرخطی}
+\textbf{هدف:} نشان دادن اینکه چگونه نگاشت ویژگی‌ها به یک فضای با ابعاد بالاتر می‌تواند به یک مدل خطی اجازه دهد تا روی داده‌های غیرخطی برازش شود.
+
+\textbf{انگیزه:} مدل‌های رگرسیون خطی استاندارد فرض می‌کنند که یک رابطه خطی بین ویژگی‌ها (متغیرهای مستقل) و هدف (متغیر وابسته) وجود دارد. وقتی رابطه زمینه‌ای غیرخطی باشد چه اتفاقی می‌افتد؟ یک مدل خطی ساده عملکرد ضعیفی خواهد داشت.
+
+سناریویی را در نظر بگیرید که در آن داده‌ها از یک منحنی پیروی می‌کنند، به عنوان مثال، یک رابطه درجه دوم. یک خط مستقیم (حاصل از رگرسیون خطی) این منحنی را به طور موثر ثبت نمی‌کند.
+
+\textbf{ایده راه حل:} ما می‌توانیم ویژگی‌های اصلی را به فضای با ابعاد بالاتر منتقل کنیم که در آن رابطه خطی می‌شود. این انتقال یک نگاشت ویژگی (\lr{feature map}) نامیده می‌شود که با $\Phi$ نشان داده می‌شود. بیایید این موضوع را با یک مثال نشان دهیم.
+
+\subsection*{تولید داده‌های غیرخطی}
+ما داده‌های مصنوعی ایجاد می‌کنیم که در آنها $y$ به طور درجه دوم به $x$ وابسته است، به علاوه مقداری نویز تصادفی برای واقعی‌تر کردن آن. داده‌ها به وضوح از یک منحنی پیروی می‌کنند، نه یک خط مستقیم.
+
+\subsection*{تلاش برای رگرسیون خطی ساده (فضای اصلی)}
+بیایید ببینیم یک مدل رگرسیون خطی استاندارد چگونه روی این داده‌ها بدون هیچ‌گونه تبدیل ویژگی عمل می‌کند.
+
+مدل خطی تمام تلاش خود را می‌کند تا یک خط مستقیم را روی داده‌های منحنی برازش دهد، اما به وضوح برازش ضعیفی است. امتیاز $R^2$ احتمالاً کم خواهد بود، که نشان می‌دهد مدل مقدار زیادی از واریانس داده‌ها را توضیح نمی‌دهد.
+\[
+\text{Linear Regression Score } (R^2): 0.4260
+\]
+
+\subsection*{اعمال یک نگاشت ویژگی (ویژگی‌های چندجمله‌ای)}
+اکنون، بیایید یک نگاشت ویژگی اعمال کنیم. از آنجا که می‌دانیم رابطه زمینه‌ای درجه دوم است ($y \approx a x^2 + b x + c$)، یک نگاشت ویژگی مناسب $\Phi$ ویژگی تک ما یعنی $x$ را به دو ویژگی تبدیل می‌کند: $x$ و $x^2$. بنابراین، $\Phi(x) = [x, x^2]$.
+
+توجه داشته باشید که داده‌های ما اکنون در یک فضای ویژگی دو‌بعدی $[x, x^2]$ نمایش داده می‌شوند.
+
+مدل خطی اصلی:
+\[
+\hat{y} = w^T x = \sum_{i=1}^{p} w_i x_i
+\]
+
+یک تبدیل $\phi$ که ویژگی‌ها را به ابعاد بالاتر نگاشت می‌کند:
+\[
+\phi: \mathbb{R}^p \to \mathbb{R}^d \quad (d \gg p)
+\]
+
+مدل جدید به صورت زیر در می‌آید:
+\[
+\hat{y} = w^T \phi(x)
+\]
+برای $p=1$ و درجه $=2$:
+\[
+[1, x_1] \to [1, x_1, x_1^2] \quad \text{توسط} \quad \phi
+\]
+
+\subsection*{رگرسیون خطی در فضای ویژگی با ابعاد بالاتر}
+اکنون، ما یک مدل رگرسیون خطی را آموزش می‌دهیم، اما از ویژگی‌های تبدیل‌شده استفاده می‌کنیم. مدل وزن‌هایی را برای هر دو $x$ و $x^2$ یاد می‌گیرد، به طوری که به طور موثر مدلی به فرم زیر را برازش می‌دهد:
+\[
+y = w_1 x + w_2 x^2 + b
+\]
+که در آن $w_1$ و $w_2$ وزن‌ها (ضرایب) و $b$ عرض از مبدأ (بایاس) هستند. این یک مدل خطی نسبت به ویژگی‌های جدید $x$ و $x^2$ است.
+\begin{itemize}
+    \item امتیاز رگرسیون چندجمله‌ای: $\text{Polynomial Regression Score } (R^2): 0.8525$
+    \item ضرایب ($w_1$, $w_2$): $[0.93366893, 0.56456263]$
+    \item عرض از مبدأ ($b$): $[1.78134581]$
+\end{itemize}
+
+\subsection*{نتیجه‌گیری}
+با نگاشت ویژگی تک اصلی $x$ به فضای با ابعاد بالاتر $[x, x^2]$، ما به یک مدل رگرسیون خطی استاندارد امکان دادیم تا رابطه غیرخطی (درجه دوم) موجود در داده‌ها را به طور کامل ثبت کند. برازش حاصل بسیار بهتر است، همانطور که به صورت بصری و با امتیاز به وضوح بالاتر $R^2$ نشان داده شده است.
+
+این مثال قدرت نگاشت‌های ویژگی را نشان می‌دهد: تبدیل داده‌ها به فضایی که در آن مدل‌های خطی می‌توانند موثر واقع شوند، حتی اگر رابطه اصلی غیرخطی بوده باشد.
+
+\textbf{انتقال به ترفند هسته (\lr{Transition to Kernel Trick}):} در حالی که این نگاشت ویژگی صریح برای داده‌های با ابعاد کم و تبدیل‌های ساده به خوبی کار می‌کند، محاسبه و ذخیره‌سازی این ویژگی‌های با ابعاد بالاتر می‌تواند از نظر محاسباتی پرهزینه یا حتی غیرممکن باشد، اگر داده‌های اصلی یا فضای ویژگی هدف ابعاد بسیار بالایی داشته باشند (مثلاً با استفاده از ویژگی‌های چندجمله‌ای با درجه بسیار بالا یا نگاشت‌های پیچیده دیگر). ترفند هسته (\lr{Kernel Trick}) یک میانبر ریاضی برای دستیابی به همان نتیجه کار در فضای ویژگی با ابعاد بالا بدون محاسبه صریح مختصات داده‌ها در آن فضا فراهم می‌کند. این روش به الگوریتم‌هایی که فقط به ضرب داخلی بین نقاط داده وابسته هستند (مانند ماشین‌های بردار پشتیبان - \lr{Support Vector Machines}) اجازه می‌دهد تا به طور ضمنی در فضای ویژگی با ابعاد بالا کار کنند و نگاشت‌های پیچیده را از نظر محاسباتی قابل مدیریت می‌سازد. این مثال رگرسیون به ایجاد این شهود کمک می‌کند که چرا چنین نگاشت‌های ضمنی مطلوب هستند.
+
+\end{document}
+</code></pre></details><details class="source-file" ><summary><bdi>Gaussian Mixture Model, Part 2 — Statistical Machine Learning/translation.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Gaussian%20Mixture%20Model%2C%20Part%202%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xepersian}
+\settextfont{XB Niloofar}
+
+\geometry{a4paper, margin=1in}
+
+\title{\lr{Gaussian Mixture Model, Part 2} \\ (مدل مخلوط گاوسی، بخش ۲)}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{فهرست مطالب}
+\begin{itemize}
+    \item مروری بر الگوریتم \lr{K-means}
+    \item مراحل الگوریتم \lr{K-means}
+    \item الگوریتم \lr{K-means}
+    \item خوشه‌بندی \lr{Expectation-Maximization} (امید ریاضی-بیشینه‌سازی)
+    \item الگوریتم \lr{Expectation-Maximization} برای \lr{Gaussian Mixture Models}
+    \item الگوریتم خوشه‌بندی \lr{Expectation-Maximization}
+\end{itemize}
+
+\newpage
+
+\section*{مروری بر الگوریتم \lr{K-means}}
+تابع امتیازدهی مجموع خطاهای مربعات (\lr{sum of squared errors} یا \lr{SSE}) به صورت زیر تعریف می‌شود:
+\[
+\text{\lr{SSE}}(C) = \sum_{i=1}^{k} \sum_{x_j \in C_i} \|x_j - \mu_i\|^2
+\]
+هدف، یافتن خوشه‌بندی است که امتیاز \lr{SSE} را کمینه کند:
+\[
+C^* = \arg\min_{C} \{ \text{\lr{SSE}}(C) \}
+\]
+
+الگوریتم \lr{K-means} از یک رویکرد حریصانه تکرارشونده برای یافتن خوشه‌بندی استفاده می‌کند که هدف \lr{SSE} را کمینه سازد. به همین دلیل، می‌تواند به جای یک خوشه‌بندی بهینه سراسری، به یک بهینه محلی (\lr{local optimum}) همگرا شود.
+
+\section*{مراحل الگوریتم \lr{K-means}}
+\lr{K-means} میانگین‌های خوشه‌ها را با تولید تصادفی $k$ نقطه در فضای داده مقداردهی اولیه می‌کند. هر تکرار شامل دو مرحله است:
+\begin{enumerate}
+    \item \textbf{تخصیص خوشه (\lr{Cluster Assignment}):} هر نقطه $x_j \in D$ به نزدیک‌ترین میانگین تخصیص داده می‌شود و خوشه‌بندی را با خوشه‌های $C_i$ شامل نقاط نزدیک به $\mu_i$ القا می‌کند:
+    \[
+    i^* = \arg\min_{i=1}^{k} \{ \|x_j - \mu_i\|^2 \}
+    \]
+    \item \textbf{به‌روزرسانی مرکز ثقل (\lr{Centroid Update}):} مقادیر میانگین جدید برای هر خوشه از نقاط موجود در $C_i$ محاسبه می‌شود.
+\end{enumerate}
+این مراحل تا زمان همگرایی به یک نقطه ثابت یا مینیمم محلی تکرار می‌شوند.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_2_1.png}
+  \caption{مراحل گام‌به‌گام تخصیص نقاط و به‌روزرسانی میانگین‌ها در الگوریتم خوشه‌بندی K-means}
+\end{figure}
+
+
+
+
+\section*{خوشه‌بندی \lr{Expectation-Maximization}}
+فرض کنید $X_a$ نشان‌دهنده متغیر تصادفی مربوط به ویژگی $a$-ام باشد. فرض کنید $X = (X_1, X_2, \dots, X_d)$ نشان‌دهنده بردار متغیر تصادفی در میان $d$ ویژگی باشد، که $x_j$ یک نمونه داده از $X$ است.
+
+ما فرض می‌کنیم هر خوشه $C_i$ با یک توزیع نرمال چندمتغیره (\lr{multivariate normal distribution}) توصیف می‌شود:
+\[
+f_i(x) = f(x|\mu_i, \Sigma_i) = \frac{1}{(2\pi)^{d/2} |\Sigma_i|^{1/2}} \exp \left\{ -\frac{(x - \mu_i)^T \Sigma_i^{-1} (x - \mu_i)}{2} \right\}
+\]
+که در آن $\mu_i \in \mathbb{R}^d$ میانگین خوشه و $\Sigma_i \in \mathbb{R}^{d \times d}$ ماتریس کوواریانس (\lr{covariance matrix}) است.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_7_1.png}
+  \caption{برازش یک مدل مخلوط گوسی دوبعدی با استفاده از کوواریانس‌های نامحدود (Full Covariance)}
+\end{figure}
+
+
+
+
+تابع چگالی احتمال $X$ به عنوان یک مدل مخلوط گاوسی (\lr{Gaussian mixture model}) روی تمام خوشه‌ها به صورت زیر داده می‌شود:
+\[
+f(x) = \sum_{i=1}^{k} f_i(x) P(C_i) = \sum_{i=1}^{k} f(x|\mu_i, \Sigma_i) P(C_i)
+\]
+که در آن احتمالات پیشین $P(C_i)$ پارامترهای مخلوط (\lr{mixture parameters}) نامیده می‌شوند که باید شرط زیر را برآورده کنند:
+\[
+\sum_{i=1}^{k} P(C_i) = 1
+\]
+
+\subsection*{تخمین بیشینه درست‌نمایی (\lr{Maximum Likelihood Estimation})}
+ما مجموعه تمام پارامترهای مدل را به طور فشرده به صورت زیر می‌نویسیم:
+\[
+\theta = \{ \mu_1, \Sigma_1, P(C_1), \dots, \mu_k, \Sigma_k, P(C_k) \}
+\]
+با توجه به مجموعه داده $D$، درست‌نمایی $\theta$ برابر است با:
+\[
+P(D|\theta) = \prod_{j=1}^{n} f(x_j)
+\]
+
+روش \lr{MLE} پارامترهای $\theta$ را برای بیشینه‌سازی درست‌نمایی انتخاب می‌کند:
+\[
+\theta^* = \arg\max_{\theta} \{ \ln P(D|\theta) \}
+\]
+که در آن تابع لگاریتم درست‌نمایی (\lr{log-likelihood function}) عبارت است از:
+\[
+\ln P(D|\theta) = \sum_{j=1}^{n} \ln f(x_j) = \sum_{j=1}^{n} \ln \left( \sum_{i=1}^{k} f(x_j|\mu_i, \Sigma_i) P(C_i) \right)
+\]
+
+\subsection*{بیشینه‌سازی لگاریتم درست‌نمایی با \lr{Expectation-Maximization (EM)}}
+بیشینه‌سازی مستقیم لگاریتم درست‌نمایی روی $\theta$ به دلیل وجود جمع در داخل لگاریتم دشوار است:
+\[
+\ln P(D|\theta) = \sum_{j=1}^{n} \ln \left( \sum_{i=1}^{k} f(x_j|\mu_i, \Sigma_i) P(C_i) \right)
+\]
+
+اگر تابع درست‌نمایی فقط شامل یک تک گاوسی بود، مشتق‌گیری مستقیم ساده بود. با این حال، در یک مدل مخلوط گاوسی، حضور چندین گاوسی در داخل جمع، مشتق‌گیری را پیچیده می‌کند. از آنجا که هر نقطه داده $x_j$ به طور قطعی به یک خوشه تعلق ندارد بلکه در عوض احتمال تعلق به چندین خوشه را دارد، حل پارامترها به صورت تحلیلی دشوار است.
+
+\subsubsection*{الگوریتم \lr{EM} چگونه کمک می‌کند؟}
+الگوریتم \lr{Expectation-Maximization} یک رویکرد ساختاریافته برای بیشینه‌سازی غیرمستقیم درست‌نمایی با معرفی متغیرهای پنهان (\lr{latent variables}) — یعنی تخصیص‌های خوشه $w_{ij} = P(C_i|x_j)$ — ارائه می‌دهد. مرحله امید ریاضی (\lr{Expectation step}) این احتمالات را محاسبه می‌کند و به طور موثر عضویت‌های پنهان را تخمین می‌زند، در حالی که مرحله بیشینه‌سازی (\lr{Maximization step}) پارامترها را با استفاده از این وزن‌ها به‌روزرسانی می‌کند.
+
+با تکرار بین این مراحل، \lr{EM} از پیچیدگی مشتق‌گیری مستقیم عبارت لگاریتم مجموع تودرتو جلوگیری می‌کند و تخمین پارامترها را امکان‌پذیر می‌سازد.
+
+\section*{\lr{Expectation-Maximization} برای مدل‌های مخلوط گاوسی}
+
+\subsection*{حالت یک‌بعدی: خوشه‌بندی نرمال تک‌متغیره}
+فرض کنید $D$ شامل یک ویژگی واحد $X$ باشد، که در آن هر نقطه $x_j \in \mathbb{R}$ یک نمونه تصادفی از $X$ است.
+مدل مخلوط از توزیع‌های نرمال تک‌متغیره (\lr{univariate normal distributions}) برای هر خوشه استفاده می‌کند:
+\[
+fi(x) = f(x|\mu_i, \sigma_i^2) = \frac{1}{\sqrt{2\pi}\sigma_i} \exp \left\{ -\frac{(x - \mu_i)^2}{2\sigma_i^2} \right\}
+\]
+که در آن پارامترهای خوشه شامل $\mu_i$ (میانگین)، $\sigma_i^2$ (واریانس) و $P(C_i)$ (احتمال پیشین) هستند.
+
+\subsubsection*{مقداردهی اولیه (\lr{Initialization})}
+هر خوشه $C_i$ (برای $i = 1, 2, \dots, k$) به طور تصادفی با پارامترهای $\mu_i$، $\sigma_i^2$ و $P(C_i)$ مقداردهی اولیه می‌شود.
+
+\subsubsection*{مرحله امید ریاضی (\lr{Expectation Step})}
+با داشتن میانگین $\mu_i$، واریانس $\sigma_i^2$ و احتمال پیشین $P(C_i)$ برای هر خوشه، احتمال پسین خوشه با استفاده از قضیه بیز محاسبه می‌شود:
+\[
+w_{ij} = P(C_i|x_j) = \frac{f(x_j|\mu_i, \sigma_i^2) \cdot P(C_i)}{\sum_{a=1}^{k} f(x_j|\mu_a, \sigma_a^2) \cdot P(C_a)}
+\]
+
+\subsubsection*{مرحله بیشینه‌سازی (\lr{Maximization Step})}
+با استفاده از $w_{ij}$، پارامترهای به‌روزرسانی شده خوشه به صورت زیر محاسبه می‌شوند:
+\begin{itemize}
+    \item \textbf{به‌روزرسانی میانگین} (میانگین وزنی نقاط):
+    \[
+    \mu_i = \frac{\sum_{j=1}^{n} w_{ij} \cdot x_j}{\sum_{j=1}^{n} w_{ij}}
+    \]
+    \item \textbf{به‌روزرسانی واریانس} (واریانس وزنی نقاط):
+    \[
+    \sigma_i^2 = \frac{\sum_{j=1}^{n} w_{ij} (x_j - \mu_i)^2}{\sum_{j=1}^{n} w_{ij}}
+    \]
+    \item \textbf{به‌روزرسانی احتمال پیشین} (کسری از وزن‌ها که به خوشه کمک می‌کنند):
+    \[
+    P(C_i) = \frac{\sum_{j=1}^{n} w_{ij}}{n}
+    \]
+\end{itemize}
+
+\subsection*{حالت چندمتغیره: مدل مخلوط گاوسی با کوواریانس کامل}
+در حالت چندمتغیره، هر خوشه $C_i$ با یک توزیع نرمال چندمتغیره مدل‌سازی می‌شود که فراتر از حالت یک‌بعدی گسترش می‌یابد:
+\[
+f_i(x) = f(x|\mu_i, \Sigma_i) = \frac{1}{(2\pi)^{d/2} |\Sigma_i|^{1/2}} \exp \left\{ -\frac{(x - \mu_i)^T \Sigma_i^{-1} (x - \mu_i)}{2} \right\}
+\]
+که در آن $\mu_i \in \mathbb{R}^d$ میانگین خوشه و $\Sigma_i \in \mathbb{R}^{d \times d}$ ماتریس کوواریانس است.
+
+\subsubsection*{مرحله امید ریاضی (چندمتغیره)}
+مشابه حالت تک‌متغیره، احتمال پسین خوشه با استفاده از قضیه بیز محاسبه می‌شود:
+\[
+w_{ij} = P(C_i|x_j) = \frac{f_i(x_j) \cdot P(C_i)}{\sum_{a=1}^{k} f_a(x_j) \cdot P(C_a)}
+\]
+
+\subsubsection*{مرحله بیشینه‌سازی (چندمتغیره)}
+\begin{itemize}
+    \item \textbf{به‌روزرسانی میانگین} (میانگین وزنی نقاط):
+    \[
+    \mu_i = \frac{\sum_{j=1}^{n} P(C_i|x_j) \cdot x_j}{\sum_{j=1}^{n} P(C_i|x_j)}
+    \]
+    \item \textbf{به‌روزرسانی کوواریانس} (ماتریس کوواریانس وزنی در میان ابعاد):
+    \[
+    \Sigma_i = \frac{\sum_{j=1}^{n} P(C_i|x_j)(x_j - \mu_i)(x_j - \mu_i)^T}{\sum_{j=1}^{n} P(C_i|x_j)}
+    \]
+    \item \textbf{به‌روزرسانی احتمال پیشین} (کسری از کل مشارکت در خوشه):
+    \[
+    P(C_i) = \frac{\sum_{j=1}^{n} P(C_i|x_j)}{n}
+    \]
+\end{itemize}
+
+\section*{\lr{K-Means} به عنوان حالت خاصی از \lr{Expectation-Maximization (EM)}}
+الگوریتم \lr{K-means} را می‌توان به عنوان یک نسخه ساده‌شده از الگوریتم \lr{EM} در نظر گرفت، که در آن تخصیص‌های خوشه به جای احتمالی، قطعی هستند. به طور خاص، در کی-مینز، هر نقطه داده $x_j$ منحصراً بر اساس حداقل فاصله مربعات تا مرکز خوشه، به یک خوشه تعلق دارد:
+\[
+P(x_j|C_i) = \begin{cases} 1 &amp; \text{if } C_i = \arg\min_{C_a} \{ \|x_j - \mu_a\|^2 \} \\ 0 &amp; \text{otherwise} \end{cases}
+\]
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_9_1.png}
+  \caption{مراحل الگوریتم امید ریاضی - بیشینه‌سازی (EM) در خوشه‌بندی توزیع‌های مخلوط گوسی}
+\end{figure}
+
+
+
+
+احتمال پسین تخصیص خوشه با استفاده از قضیه بیز محاسبه می‌شود:
+\[
+P(C_i|x_j) = \frac{P(x_j|C_i)P(C_i)}{\sum_{a=1}^{k} P(x_j|C_a)P(C_a)}
+\]
+
+از آنجا که کی-مینز به طور قطعی هر نقطه را به دقیقاً یک خوشه اختصاص می‌دهد، این به حالت‌های زیر ساده می‌شود:
+\begin{itemize}
+    \item اگر $P(x_j|C_i) = 0$ باشد، آنگاه $P(C_i|x_j) = 0$.
+    \item اگر $P(x_j|C_i) = 1$ باشد، آنگاه برای همه $a \neq i$ داریم $P(x_j|C_a) = 0$، بنابراین:
+    \[
+    P(C_i|x_j) = \frac{1 \cdot P(C_i)}{1 \cdot P(C_i)} = 1
+    \]
+\end{itemize}
+
+بنابراین، در کی-مینز، عضویت خوشه باینری است:
+\[
+P(C_i|x_j) = \begin{cases} 1 &amp; \text{if } x_j \in C_i, \text{ i.e., if } C_i = \arg\min_{C_a} \{ \|x_j - \mu_a\|^2 \} \\ 0 &amp; \text{otherwise} \end{cases}
+\]
+
+بر خلاف \lr{EM} که ماتریس‌های کوواریانس را برای مدل‌سازی توزیع‌های خوشه در نظر می‌گیرد، کی-مینز فقط مرکز خوشه‌ها $\mu_i$ و نسبت‌های خوشه $P(C_i)$ را تخمین می‌زند.
+
+\section*{خلاصه}
+\begin{itemize}
+    \item \lr{Gaussian Mixture Model} چارچوبی قوی برای خوشه‌بندی نرم ارائه می‌دهد.
+    \item الگوریتم \lr{EM} به طور موثر پارامترها را با تکرار بین مراحل امید ریاضی و بیشینه‌سازی تخمین می‌زند.
+    \item الگوریتم \lr{K-means} یک مورد خاص و سخت (\lr{hard case}) از الگوریتم \lr{EM} است.
+\end{itemize}
+
+\end{document}
+</code></pre></details><details class="source-file" ><summary><bdi>Kernel Regression_ From Linear to Nonlinear Modeling — Statistical Machine Learning/translation.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Kernel%20Regression_%20From%20Linear%20to%20Nonlinear%20Modeling%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xepersian}
+\settextfont{XB Niloofar}
+
+\geometry{a4paper, margin=1in}
+
+\title{\lr{Kernel Regression: From Linear to Nonlinear Modeling} \\ (رگرسیون هسته: از مدل‌سازی خطی به غیرخطی)}
+\author{}
+\date{}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_7_1.png}
+  \caption{نتایج برازش رگرسیون غیرخطی با استفاده از هسته گوسی}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_8_1.png}
+  \caption{تاثیر تغییرات منظم‌سازی و سطح نویز بر روی هموارسازی رگرسیون هسته}
+\end{figure}
+
+
+
+
+
+
+\begin{document}
+
+\maketitle
+
+\section*{فهرست مطالب}
+\begin{enumerate}
+    \item پایه‌ی رگرسیون خطی (\lr{Linear Regression})
+    \item رگرسیون هسته (\lr{Kernel Regression}): ایده اصلی
+    \item آموزش: حل برای $\alpha$
+    \item پیش‌بینی روی داده‌های جدید
+    \item ارتباط با شبه‌معکوس (\lr{Pseudoinverse})
+    \item تاثیرات منظم‌سازی (\lr{regularization}) و سطوح نویز بر رگرسیون هسته
+    \item دیدگاه نخستین (\lr{Primal}) در مقابل دوگان (\lr{Dual})
+    \item نکات کلیدی
+\end{enumerate}
+
+\newpage
+
+\section*{۱. پایه‌ی رگرسیون خطی}
+هدف رگرسیون پیش‌بینی یک خروجی پیوسته $y$ از ویژگی‌های ورودی $x=(x_1, x_2, \dots, x_d)^T$ با استفاده از یک تابع یادگرفته‌شده $f$ است:
+\[
+y = f(x) + \varepsilon
+\]
+که در آن $\varepsilon$ نشان‌دهنده نویز تصادفی است.
+
+در رگرسیون خطی (\lr{linear regression})، ما فرض می‌کنیم $f$ خطی است:
+\[
+f(x) = w^T x
+\]
+(جمله بایاس را می‌توان با افزودن یک مقدار ثابت $1$ به $x$ در $w$ ادغام کرد.)
+
+پارامترهای $w$ مجموع خطاهای مربعات (\lr{sum of squared errors}) را کمینه می‌کنند:
+\[
+\min_{w} \sum_{i=1}^{n} (y_i - w^T x_i)^2
+\]
+
+\section*{۲. رگرسیون هسته: ایده اصلی}
+
+\subsection*{چرا هسته‌ها؟}
+داده‌های دنیای واقعی اغلب دارای الگوهای غیرخطی هستند که مدل‌های خطی نمی‌توانند آنها را ثبت کنند. راه حل: نگاشت هر ورودی $x$ به یک فضای ویژگی با ابعاد بالاتر $\phi(x)$ است که در آن رابطه خطی می‌شود:
+\[
+f(x) = w^T \phi(x)
+\]
+
+\textbf{چالش:} محاسبه صریح $\phi(x)$ ممکن است از نظر محاسباتی بسیار سنگین یا حتی دارای ابعاد نامتناهی باشد.
+
+\textbf{ترفند هسته (\lr{Kernel Trick}):} استفاده از یک تابع هسته که ضرب‌های داخلی را در فضای ویژگی بدون ساخت صریح $\phi(x)$ محاسبه می‌کند:
+\[
+K(x_i, x_j) = \langle \phi(x_i), \phi(x_j) \rangle
+\]
+
+\subsection*{فرمولاسیون دوگان (\lr{Dual Formulation})}
+با استفاده از ترفند هسته، تابع رگرسیون به مجموع وزنی شباهت‌های هسته با هر نقطه آموزشی تبدیل می‌شود:
+\[
+\hat{y}(x) = \sum_{i=1}^{n} \alpha_i K(x, x_i)
+\]
+که در آن:
+\begin{itemize}
+    \item $\alpha_i$ وزن‌های یادگرفته‌شده از داده‌ها هستند.
+    \item $K(x, x_i)$ شباهت بین نقطه تست $x$ و نقطه آموزشی $x_i$ را اندازه‌گیری می‌کند.
+\end{itemize}
+
+\textbf{تفسیر:} پیش‌بینی یک میانگین وزن‌دهی‌شده بر اساس شباهت خروجی‌های آموزشی است، که در آن وزن‌های $\alpha_i$ یاد گرفته می‌شوند و میانگین‌های ساده نیستند.
+
+\section*{۳. آموزش: حل برای $\alpha$}
+
+\subsection*{مسئله بهینه‌سازی}
+ما $\alpha$ را با برازش داده‌های آموزشی یاد می‌گیریم:
+\[
+\min_{\alpha} \sum_{j=1}^{n} \left( y_j - \sum_{i=1}^{n} \alpha_i K(x_j, x_i) \right)^2
+\]
+
+\subsection*{فرمولاسیون ماتریسی}
+تعریف کنید:
+\begin{itemize}
+    \item ماتریس هسته (\lr{Kernel matrix}) (اندازه $n \times n$): $K_{ij} = K(x_i, x_j)$
+    \item بردار وزن: $\alpha = [\alpha_1, \dots, \alpha_n]^T$
+    \item بردار خروجی: $y = [y_1, \dots, y_n]^T$
+\end{itemize}
+برای تمام نقاط آموزشی، پیش‌بینی‌ها عبارتند از: $\hat{y} = K \alpha$. مجموع خطاهای مربعات به صورت زیر در می‌آید: $\|y - K \alpha\|^2$.
+
+\subsection*{راه حل}
+گرفتن مشتق و قرار دادن آن برابر صفر:
+\[
+\frac{\partial}{\partial \alpha} \|y - K \alpha\|^2 = -2 K^T(y - K \alpha) = 0
+\]
+از آنجا که $K$ متقارن است ($K^T = K$):
+\[
+K(y - K \alpha) = 0 \implies K y = K^2 \alpha
+\]
+اگر $K$ وارون‌پذیر باشد (هسته معین مثبت با نقاط متمایز)، در $K^{-1}$ ضرب می‌کنیم:
+\[
+y = K \alpha \implies \alpha = K^{-1} y
+\]
+
+\textbf{بینش کلیدی:} وزن‌های $\alpha$ به گونه‌ای انتخاب می‌شوند که پیش‌بینی‌های آموزشی کاملاً با خروجی‌های آموزشی مطابقت داشته باشند ($\hat{y}_{\text{train}} = y$). این درون‌یابی دقیق (\lr{exact interpolation}) است.
+
+\section*{۴. پیش‌بینی روی داده‌های جدید}
+
+\subsection*{تک نقطه تست}
+برای یک نقطه تست جدید $x_{\text{test}}$ (که در مجموعه آموزشی نیست):
+\begin{itemize}
+    \item \textbf{مرحله ۱:} محاسبه شباهت‌های هسته بین $x_{\text{test}}$ و تمام نقاط آموزشی:
+    \[
+    k_{\text{test}} = [K(x_{\text{test}}, x_1), K(x_{\text{test}}, x_2), \dots, K(x_{\text{test}}, x_n)]^T \quad (\text{اندازه } n \times 1)
+    \]
+    \item \textbf{مرحله ۲:} انجام پیش‌بینی با استفاده از همان فرمول:
+    \[
+    \hat{y}_{\text{test}} = \sum_{i=1}^{n} \alpha_i K(x_{\text{test}}, x_i) = k_{\text{test}}^T \alpha
+    \]
+\end{itemize}
+
+\subsection*{نقاط تست متعدد}
+برای $m$ نقطه تست $\{x^{(1)}_{\text{test}}, \dots, x^{(m)}_{\text{test}}\}$:
+ماتریس $K_{\text{test}}$ را با اندازه $m \times n$ تعریف کنید:
+\[
+[K_{\text{test}}]_{pj} = K(x^{(p)}_{\text{test}}, x_j)
+\]
+سپس پیش‌بینی‌ها:
+\[
+\hat{y}_{\text{test}} = K_{\text{test}} \alpha
+\]
+
+\subsection*{خلاصه آموزش در مقابل تست}
+مهم: ویژگی درون‌یابی $\hat{y}_{\text{train}} = y$ فقط برای داده‌های آموزشی برقرار است. برای نقاط تست، پیش‌بینی‌ها بر اساس شباهت به نقاط آموزشی تعیین می‌شوند، نه مطابقت دقیق.
+\begin{itemize}
+    \item \textbf{آموزش:} ورودی $K_{n \times n}$، پیش‌بینی $\hat{y}_{\text{train}} = K \alpha$، برابر با مقدار واقعی؟ بله (برازش دقیق)
+    \item \textbf{تست:} ورودی $k_{\text{test}}$ با اندازه $n \times 1$، پیش‌بینی $\hat{y}_{\text{test}} = k_{\text{test}}^T \alpha$، برابر با مقدار واقعی؟ خیر (تعمیم)
+\end{itemize}
+
+\section*{۵. ارتباط با شبه‌معکوس}
+به یاد آورید که شبه‌معکوس $X^+$ معادله $X w = y$ را به طور بهینه حل می‌کند. برای رگرسیون هسته، ما $K \alpha = y$ را حل می‌کنیم، بنابراین:
+\[
+\alpha = K^+ y
+\]
+وقتی $K$ وارون‌پذیر باشد، $K^+ = K^{-1}$. وقتی $K$ منفرد یا بدحالت باشد، از منظم‌سازی (\lr{regularization}) استفاده می‌کنیم.
+
+\subsection*{منظم‌سازی (رگرسیون ستیغی هسته - \lr{Kernel Ridge Regression})}
+در عمل، با داده‌های نویزدار، درون‌یابی دقیق منجر به بیش‌برازش (\lr{overfitting}) می‌شود. یک جریمه ستیغی $\lambda \|f\|^2$ اضافه کنید:
+\[
+\min_{\alpha} \|y - K \alpha\|^2 + \lambda \alpha^T K \alpha
+\]
+راه حل به صورت زیر در می‌آید:
+\[
+\alpha = (K + \lambda I)^{-1} y
+\]
+
+این تخمین‌گر رگرسیون ستیغی هسته است. اصطلاح منظم‌سازی:
+\begin{itemize}
+    \item پایداری عددی (\lr{numerical stability}) را بهبود می‌بخشد (وارون‌پذیری $K + \lambda I$ را تضمین می‌کند).
+    \item با کوچک کردن وزن‌ها از بیش‌برازش جلوگیری می‌کند.
+    \item همواری تابع پیش‌بینی را کنترل می‌کند.
+\end{itemize}
+
+\section*{۶. تاثیر منظم‌سازی و سطح نویز در رگرسیون هسته}
+\begin{itemize}
+    \item \textbf{نویز $\sigma = 0$ (بدون نویز):}
+    \begin{itemize}
+        \item $\lambda = 0$: برازش کامل ($\text{MSE} \approx 0$) - مدل دقیقاً درون‌یابی می‌کند.
+        \item $\lambda &gt; 0$: انحراف جزئی ایجاد می‌شود، اما همچنان برازش خوبی است.
+    \end{itemize}
+    \item \textbf{نویز $\sigma = 0.1$ (نویز کم):}
+    \begin{itemize}
+        \item $\lambda = 0$: ممکن است تا حدی بیش‌برازش رخ دهد و الگوهای نویز را ثبت کند.
+        \item $\lambda = 10^{-6}$: تعادلی بین برازش و همواری برقرار می‌کند.
+        \item $\lambda = 0.1$: ممکن است کم‌برازش (\lr{underfit}) رخ دهد (بسیار هموار).
+    \end{itemize}
+    \item \textbf{بینش‌های کلیدی:}
+    \begin{itemize}
+        \item نویز بیشتر $\to$ نیاز به منظم‌سازی قوی‌تر ($\lambda$ بزرگتر).
+        \item بدون نویز $\to$ $\lambda=0$ درون‌یابی دقیق می‌دهد.
+        \item منظم‌سازی بیش از حد $\to$ کم‌برازش (انحراف یا \lr{bias}).
+        \item منظم‌سازی بسیار کم $\to$ بیش‌برازش (واریانس).
+    \end{itemize}
+\end{itemize}
+
+\section*{۷. دیدگاه نخستین (\lr{Primal}) در مقابل دوگان (\lr{Dual})}
+
+\subsection*{دو شکل راه حل}
+در رگرسیون خطی استاندارد با ویژگی‌های $X$، بردار وزن را می‌توان به دو روش معادل بیان کرد:
+\begin{itemize}
+    \item \textbf{فرم نخستین (\lr{Primal Form}) (فضای ویژگی):}
+    \[
+    w = (X^T X)^{-1} X^T y
+    \]
+    \item \textbf{فرم دوگان (\lr{Dual Form}) (فضای نمونه):}
+    \[
+    w = X^T (X X^T)^{-1} y
+    \]
+\end{itemize}
+هر دو در صورتی که $X$ دارای رتبه ستونی کامل باشد، پیش‌بینی‌های یکسانی را ارائه می‌دهند.
+
+\subsection*{چرا فرم دوگان برای هسته‌ها اهمیت دارد}
+فرم دوگان نشان می‌دهد که $w$ یک ترکیب خطی از نمونه‌های آموزشی است:
+\[
+w = \sum_{i=1}^{n} \alpha_i x_i \quad \text{که در آن} \quad \alpha = (X X^T)^{-1} y
+\]
+وقتی به فضای ویژگی $\phi(x)$ نگاشت می‌کنیم، این به صورت زیر در می‌آید:
+\[
+w = \sum_{i=1}^{n} \alpha_i \phi(x_i) \quad \text{با} \quad \alpha = K^{-1} y
+\]
+که در آن $K_{ij} = \phi(x_i)^T \phi(x_j) = K(x_i, x_j)$ است.
+
+\textbf{بینش کلیدی:} پیش‌بینی برای یک نقطه جدید به صورت زیر در می‌آید:
+\[
+\hat{y}(x) = w^T \phi(x) = \sum_{i=1}^{n} \alpha_i \phi(x_i)^T \phi(x) = \sum_{i=1}^{n} \alpha_i K(x_i, x)
+\]
+ما هرگز به طور صریح به $\phi(x)$ نیاز نداریم — فقط ارزیابی‌های هسته $K(x_i, x)$ مورد نیاز است!
+
+\subsection*{موازنه‌های محاسباتی}
+\begin{itemize}
+    \item \textbf{سناریوی $n \ll d$ (نمونه‌های کم، ویژگی‌های زیاد):} فرم نخستین کند (معکوس کردن $d \times d$) و فرم دوگان سریع (معکوس کردن $n \times n$) است.
+    \item \textbf{سناریوی $n \gg d$ (نمونه‌های زیاد، ویژگی‌های کم):} فرم نخستین سریع (معکوس کردن $d \times d$) و فرم دوگان کند (معکوس کردن $n \times n$) است.
+    \item \textbf{هسته‌های غیرخطی (RBF، چندجمله‌ای):} فرم نخستین غیرقابل اعمال و فرم دوگان مورد نیاز است (ترفند هسته).
+\end{itemize}
+
+مثال: هسته \lr{RBF} با $n=1000$ نمونه به طور موثر از ویژگی‌های بی‌نهایت بعدی ($d=\infty$) استفاده می‌کند:
+\begin{itemize}
+    \item فرم نخستین غیرممکن است (نمی‌توان $\phi(x)$ را صراحتاً محاسبه کرد).
+    \item فرم دوگان با ماتریس هسته $1000 \times 1000$ کار می‌کند.
+\end{itemize}
+
+\section*{۸. نکات کلیدی}
+\begin{enumerate}
+    \item رگرسیون هسته برازش غیرخطی را با نگاشت ضمنی داده‌ها به فضاهای با ابعاد بالا امکان‌پذیر می‌کند.
+    \item فرمولاسیون دوگان پیش‌بینی‌ها را به عنوان مجموع‌های وزنی از شباهت‌های هسته بیان می‌کند: $\hat{y}(x) = \sum_{i=1}^{n} \alpha_i K(x, x_i)$.
+    \item آموزش معادله $\alpha = K^{-1} y$ (بدون منظم‌سازی) یا $\alpha = (K + \lambda I)^{-1} y$ (منظم‌شده) را حل می‌کند.
+    \item تست از فرمول $\hat{y}_{\text{test}} = k_{\text{test}}^T \alpha$ استفاده می‌کند، که در آن $k_{\text{test}}$ شامل شباهت‌های بین نقاط تست و آموزشی است.
+    \item منظم‌سازی ($\lambda &gt; 0$) برای موارد زیر ضروری است:
+    \begin{itemize}
+        \item پایداری عددی (تضمین اینکه $K + \lambda I$ وارون‌پذیر است).
+        \item جلوگیری از بیش‌برازش به نویز.
+    \end{itemize}
+    \item انتخاب هسته انعطاف‌پذیری مدل را کنترل می‌کند:
+    \begin{itemize}
+        \item هسته خطی $\to$ رگرسیون خطی استاندارد.
+        \item هسته \lr{RBF} $\to$ تقریب هموار و محلی.
+        \item هسته چندجمله‌ای $\to$ جملات متقابل تا درجه $d$.
+    \end{itemize}
+\end{enumerate}
+
+\end{document}
+</code></pre></details><details class="source-file" ><summary><bdi>Linear models — Statistical Machine Learning/translation.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Linear%20models%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xepersian}
+\settextfont{XB Niloofar}
+
+\geometry{a4paper, margin=1in}
+
+\title{\lr{Linear models} \\ (مدل‌های خطی)}
+\author{محمود امین‌طوسی \\ دانشگاه فردوسی مشهد}
+\date{بهار ۲۰۲۶}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_13_1.png}
+  \caption{تأثیر نرخ یادگیری (Learning Rate) بر همگرایی یا واگرایی کاهش گرادیان}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_14_1.png}
+  \caption{تأثیر کاهش تدریجی نرخ یادگیری بر فرآیند آموزش}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_14_2.png}
+  \caption{خطوط تراز تابع زیان و بهینه‌سازی به روش کاهش گرادیان در فضای دوبعدی}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_15_1.png}
+  \caption{نمودار بیضی خطوط تراز خطای مربعات نمونه}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_15_2.png}
+  \caption{مسیر حرکت در امتداد جهت گرادیان روی منحنی‌ها}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_44_1.png}
+  \caption{موازنه میان وفاداری به داده اولیه و تنک‌سازی پاسخ در لاسو}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_53_1.png}
+  \caption{تاثیر مقیاس‌گذاری متغیرها بر نرخ هم‌گرایی الگوریتم‌های بهینه‌سازی}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_53_2.png}
+  \caption{مقایسه توابع زیان مختلف طبقه‌بندی (لجستیک، هینج، مربعات و غیره)}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_53_3.png}
+  \caption{نحوه کارکرد طبقه‌بندی چندکلاسه به روش یک در مقابل همه (One-vs-Rest)}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_56_1.png}
+  \caption{مرزهای تصمیم طبقه‌بند چندکلاسه در یک فضای دوبعدی نمونه}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_58_1.png}
+  \caption{نمودار خطای آموزش با افزایش تعداد نمونه‌ها}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{document}
+
+\maketitle
+
+\section*{فهرست مطالب}
+\begin{itemize}
+    \item نمادگذاری و تعاریف
+    \item مبانی مدل‌سازی، بهینه‌سازی و منظم‌سازی
+    \item رگرسیون خطی و حل آن
+    \item کاهش گرادیان (\lr{Gradient Descent})
+    \item رگرسیون ستیغی (\lr{Ridge Regression})
+    \item لاسو (\lr{Lasso}) و فرود مختصاتی (\lr{Coordinate Descent})
+    \item الاستیک‌نت (\lr{Elastic-Net})
+    \item بهینه‌سازی تنک و الگوریتم \lr{Orthogonal Matching Pursuit (OMP)}
+    \item ارتباط با آنالیز تابعی (\lr{Functional Analysis})
+    \item بازسازی تصاویر \lr{MRI}
+    \item مدل‌های خطی برای دسته‌بندی (\lr{Classification})
+    \item رگرسیون لجستیک (\lr{Logistic regression}) و توابع زیان
+    \item دسته‌بندی چندکلاسه (\lr{Multiclass classification})
+    \item جدول خلاصه مدل‌های خطی
+\end{itemize}
+
+\newpage
+
+\section*{نمادگذاری و تعاریف}
+\begin{itemize}
+    \item \textbf{اسکالر (\lr{Scalar}):} یک مقدار عددی ساده که با حروف کج نشان داده می‌شود (مانند $x = 3.24$).
+    \item \textbf{بردار (\lr{Vector}):} یک آرایه مرتب یک‌بعدی از $n$ اسکالر که با حروف کوچک پررنگ نشان داده می‌شود: $x = [3.24, 1.2]^T$. $x_i$ نشان‌دهنده عنصر $i$-ام بردار است.
+    \item \textbf{مجموعه (\lr{Set}):} یک گروه نامرتب از عناصر منحصربه‌فرد که با حروف بزرگ کالیگرافیک مانند $\mathcal{S}$ نشان داده می‌شود.
+    \item \textbf{ماتریس (\lr{Matrix}):} یک آرایه دوبعدی از اسکالرها که با حروف بزرگ پررنگ نشان داده می‌شود:
+    \[
+    \mathbf{X} = \begin{bmatrix} 3.24 &amp; 1.2 \\ 2.24 &amp; 0.2 \\ 3.0 &amp; 0.6 \end{bmatrix}
+    \]
+    $\mathbf{X}_{i,:}$ نشان‌دهنده سطر $i$-ام، $\mathbf{X}_{:,j}$ نشان‌دهنده ستون $j$-ام و $\mathbf{X}_{i,j}$ عنصر واقع در سطر $i$ و ستون $j$ است. یک ماتریس با ابعاد $n \times p$ نشان‌دهنده $n$ نقطه داده در فضای $p$-بعدی است.
+    \item \textbf{تنسور (\lr{Tensor}):} یک آرایه $k$-بعدی از داده‌ها که با حروف بزرگ کج مانند $T$ نشان داده می‌شود. $k$ مرتبه، درجه یا رتبه تنسور نامیده می‌شود. $T_{i,j,k,\dots}$ عنصر یا زیرتنسور را در موقعیت مربوطه نشان می‌دهد. برای مثال، مجموعه‌ای از تصاویر رنگی را می‌توان با یک تنسور ۴بعدی (نمونه × ارتفاع × عرض × کانال رنگ) نشان داد.
+\end{itemize}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_2_1.png}
+  \caption{تعریف هندسی بردارها و عملیات برداری}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_3_1.png}
+  \caption{نمایش داده‌ها به صورت تنسور با ابعاد بالا}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_33_1.png}
+  \caption{تخمین سیگنال اصلی تنک با استفاده از لاسو}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_33_2.png}
+  \caption{نتایج بازسازی تصویر با استفاده از مدل خطی تنک بر مبنای OMP}
+\end{figure}
+
+
+
+
+
+
+
+
+
+\subsection*{عملیات پایه}
+\begin{itemize}
+    \item مجموع‌ها و حاصل‌ضرب‌ها با سیگمای بزرگ ($\sum$) و پی بزرگ ($\prod$) نشان داده می‌شوند.
+    \item عملیات روی بردارها به صورت مولفه‌به‌مولفه است: $x + z = [x_0 + z_0, \dots, x_p + z_p]^T$.
+    \item ضرب داخلی (\lr{Dot product}):
+    \[
+    w \cdot x = w^T x = \sum_{i=0}^{p} w_i x_i = w_0 x_0 + \dots + w_p x_p
+    \]
+    \item ضرب ماتریسی (\lr{Matrix product}) به صورت $\mathbf{W}x$ تعریف می‌شود.
+    \item تابع $f(x)=y$ یک عنصر ورودی $x$ را به خروجی $y$ مرتبط می‌کند. دارای مینیمم محلی در $x=c$ است اگر $f(x) \ge f(c)$ در یک بازه اطراف $c$ برقرار باشد. دارای مینیمم سراسری در $x=c$ است اگر $f(x) \ge f(c)$ برای هر $x$ برقرار باشد.
+    \item $\max f(x)$ بزرگترین مقدار تابع و $\arg\max f(x)$ نقطه‌ای را که تابع در آن بیشینه می‌شود، بازمی‌گردانند.
+\end{itemize}
+
+\subsection*{گرادیان‌ها (\lr{Gradients})}
+مشتق تابع $f$ سرعت رشد یا کاهش آن را توصیف می‌کند. فرآیند یافتن مشتق را مشتق‌گیری می‌نامند. برای توابع چندمتغیره، گرادیان ($\nabla f$) برداری از مشتقات جزئی است:
+\[
+\nabla f = \left[ \frac{\partial f}{\partial x_0}, \frac{\partial f}{\partial x_1}, \dots \right]
+\]
+
+\subsection*{توزیع‌ها و احتمالات}
+توزیع نرمال (گاوسی) با میانگین $\mu$ و انحراف معیار $\sigma$ به صورت $N(\mu, \sigma)$ نشان داده می‌شود.
+برای متغیر تصادفی پیوسته $X$، توزیع احتمال با تابع چگالی احتمال (\lr{pdf}) و امید ریاضی با $E[X] = \int x f_X(x) dx$ مشخص می‌شود. برای متغیر گسسته از تابع جرم احتمال (\lr{pmf}) استفاده می‌شود.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_5_1.png}
+  \caption{توزیع نرمال گوسی برای خطاها در فرضیات رگرسیون خطی}
+\end{figure}
+
+
+
+
+\section*{مدل‌های خطی برای رگرسیون}
+مدل‌های خطی با استفاده از یک تابع خطی از ویژگی‌های ورودی پیش‌بینی می‌کنند:
+\[
+f_w(x) = \sum_{i=1}^{p} w_i x_i + w_0
+\]
+که در آن $w_1, \dots, w_p$ وزن‌ها یا ضرایب (\lr{weights/coefficients}) و $w_0$ بایاس یا عرض از مبدأ (\lr{bias/intercept}) است. هدف یادگیری پارامترهای $w$ است که تابع زیان (\lr{loss function}) را کمینه کنند:
+\[
+\arg\min_{w} L(f_w(X))
+\]
+
+الگوریتم‌های متعددی مانند کمترین مربعات معمولی (\lr{Ordinary Least Squares})، ستیغی (\lr{Ridge})، لاسو (\lr{Lasso}) و غیره با توابع زیان مختلف وجود دارند.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_8_1.png}
+  \caption{بهینه‌سازی تابع خطای حداقل مربعات}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_22_1.png}
+  \caption{مقایسه خطوط تراز جریمه منظم‌سازی‌های L1 و L2 در فضای پارامتر}
+\end{figure}
+
+
+
+
+
+
+\subsection*{رگرسیون خطی (کمترین مربعات معمولی - \lr{OLS})}
+تابع زیان مجموع خطاهای مربعات (\lr{SSE}) بین پیش‌بینی‌ها ($\hat{y}_n$) و اهداف واقعی ($y_n$) است:
+\[
+L_{\text{SSE}} = \sum_{n=1}^{N} (y_n - \hat{y}_n)^2 = \sum_{n=1}^{N} (y_n - (w^T x_n + w_0))^2
+\]
+
+\subsection*{راه حل فرم بسته (\lr{Closed-Form Solution})}
+این مسئله بهینه‌سازی محدب دارای یک راه حل یکتای فرم بسته به صورت زیر است:
+\[
+w^* = (X^T X)^{-1} X^T y
+\]
+
+\textbf{اثبات:} تابع زیان را به صورت ماتریسی می‌نویسیم:
+\[
+L_{\text{SSE}} = \|Xw - y\|_2^2 = w^T X^T X w - 2 y^T X w + y^T y
+\]
+با گرفتن مشتق نسبت به $w$ و قرار دادن آن برابر صفر داریم:
+\[
+\frac{\partial L_{\text{SSE}}}{\partial w} = 2 X^T X w - 2 X^T y = 0 \implies X^T X w = X^T y \implies w = (X^T X)^{-1} X^T y
+\]
+
+\textbf{نکات:}
+\begin{itemize}
+    \item پیچیدگی محاسباتی با تعداد ویژگی‌ها به صورت درجه دو $O(p^2 n)$ رشد می‌کند و کند است.
+    \item فقط زمانی کار می‌کند که تعداد نمونه‌ها بیشتر از ویژگی‌ها باشد ($n &gt; p$). در غیر این صورت ماتریس $X^T X$ منفرد (\lr{singular}) است و معکوس آن تعریف نشده است.
+    \item راه حل فرم بسته بسیار مستعد بیش‌برازش (\lr{overfitting}) است.
+\end{itemize}
+
+\section*{کاهش گرادیان (\lr{Gradient Descent})}
+زمانی که محاسبه $(X^T X)^{-1}$ به دلیل بزرگ بودن ابعاد داده‌ها غیرممکن است، از کاهش گرادیان استفاده می‌شود. با وزن‌های اولیه تصادفی $w_0$ شروع کرده و وزن‌ها را در جهت مخالف گرادیان با نرخ یادگیری $\eta$ به‌روزرسانی می‌کنیم:
+\[
+w_{s+1} = w_s - \eta \nabla L(w_s)
+\]
+گرادیان برای کمترین مربعات برابر است با:
+\[
+\frac{\partial L_{\text{SSE}}}{\partial w_i} = -2 \sum_{n=1}^{N} (y_n - \hat{y}_n) x_{n,i}
+\]
+
+\subsection*{کاهش گرادیان تصادفی (\lr{Stochastic Gradient Descent - SGD})}
+به جای محاسبه گرادیان روی کل مجموعه داده، گرادیان در هر زمان روی یک نقطه داده محاسب می‌شود:
+\[
+w_{s+1} = w_s - \eta \nabla L_i(w_s)
+\]
+روش‌های دیگری مانند \lr{Minibatch SGD} (محاسبه گرادیان روی دسته‌های کوچک داده) و \lr{Stochastic Average Gradient} (SAG) نیز وجود دارند.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_17_1.png}
+  \caption{جهت و سرعت تغییرات گرادیان در جهات مختلف تابع}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_55_1.png}
+  \caption{برازش منحنی لجستیک به نقاط داده نمونه}
+\end{figure}
+
+
+
+
+
+
+\section*{منظم‌سازی و رگرسیون ستیغی (\lr{Ridge Regression})}
+منظم‌سازی (\lr{Regularization}) به معنای محدود کردن مدل برای جلوگیری از بیش‌برازش است. رگرسیون ستیغی جریمه مرتبه دوم یا جریمه \lr{L2} را به تابع زیان اضافه می‌کند:
+\[
+L_{\text{Ridge}} = \sum_{n=1}^{N} (y_n - (w^T x_n + w_0))^2 + \alpha \sum_{i=1}^{p} w_i^2
+\]
+پارامتر $\alpha$ قدرت منظم‌سازی را کنترل می‌کند. راه حل فرم بسته رگرسیون ستیغی به صورت زیر است:
+\[
+w^* = (X^T X + \alpha I)^{-1} X^T y
+\]
+افزودن $\alpha I$ پایداری عددی را بهبود داده و وارون‌پذیری را تضمین می‌کند.
+\begin{itemize}
+    \item مقادیر کوچک $\alpha$: خطر بیش‌برازش (\lr{overfitting})
+    \item مقادیر بزرگ $\alpha$: خطر کم‌برازش (\lr{underfitting})
+\end{itemize}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_21_1.png}
+  \caption{نمودار خطای آموزش و آزمون به عنوان تابعی از شدت پارامتر منظم‌سازی}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_21_2.png}
+  \caption{پیدا کردن مقدار منظم‌سازی بهینه (Sweet Spot) برای پیشگیری از بیش‌برازش}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_46_1.jpeg}
+  \caption{بازسازی تصویر پزشکی ام‌آرآی (MRI) با فشرده‌سازی تنک}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_51_1.png}
+  \caption{مرز تصمیم رگرسیون لجستیک روی مجموعه داده‌های سرطان پستان}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_51_2.png}
+  \caption{بررسی ضرایب ویژگی‌ها با تغییر پارامتر منظم‌سازی C در رگرسیون لجستیک}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+\section*{لاسو (\lr{Lasso})}
+لاسو جریمه مرتبه اول یا جریمه \lr{L1} را به مجموع خطاهای مربعات اضافه می‌کند:
+\[
+L_{\text{Lasso}} = \sum_{n=1}^{N} (y_n - (w^T x_n + w_0))^2 + \alpha \sum_{i=1}^{p} |w_i|
+\]
+منظم‌سازی L1 باعث می‌شود بسیاری از وزن‌ها دقیقاً صفر شوند که منجر به مدل‌های تنک (\lr{sparse models}) می‌گردد. این ویژگی به عنوان انتخاب خودکار ویژگی (\lr{automatic feature selection}) عمل می‌کند. لاسو راه حل فرم بسته ندارد.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_23_1.png}
+  \caption{مجموعه مجاز جریمه لاسو در مقایسه با حداقل مربعات معمولی}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_31_1.png}
+  \caption{کاربرد لاسو در بازسازی و حذف نویز از یک سیگنال یک‌بعدی}
+\end{figure}
+
+
+
+
+
+
+
+
+\subsection*{فرود مختصاتی (\lr{Coordinate Descent})}
+برای بهینه‌سازی لاسو از فرود مختصاتی استفاده می‌شود که در آن در هر تکرار، تنها یک مختصات $w_i$ بهینه‌سازی می‌شود. با محاسبه زیرگرادیان (\lr{subgradient})، راه حل لاسو فرم یک تابع آستانه‌گذاری نرم (\lr{soft thresholding}) را به خود می‌گیرد:
+\[
+w_i^* = S(\rho_i, \alpha) = \begin{cases} \rho_i + \alpha &amp; \rho_i &lt; -\alpha \\ 0 &amp; -\alpha &lt; \rho_i &lt; \alpha \\ \rho_i - \alpha &amp; \rho_i &gt; \alpha \end{cases}
+\]
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_24_1.png}
+  \caption{مراحل الگوریتم فرود مختصاتی برای مدل لاسو}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_24_2.png}
+  \caption{فرآیند بهینه‌سازی مرحله به مرحله فرود مختصاتی}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_25_1.png}
+  \caption{تاثیر جریمه لاسو بر روی صفر شدن وزن‌ها و تنک‌سازی مدل}
+\end{figure}
+
+
+
+
+
+
+
+\section*{الاستیک‌نت (\lr{Elastic-Net})}
+الاستیک‌نت هر دو منظم‌سازی L1 و L2 را ترکیب می‌کند:
+\[
+L_{\text{Elastic}} = \sum_{n=1}^{N} (y_n - (w^T x_n + w_0))^2 + \alpha \rho \sum_{i=1}^{p} |w_i| + \alpha (1 - \rho) \sum_{i=1}^{p} w_i^2
+\]
+که در آن $\rho$ نسبت L1 را تعیین می‌کند. الاستیک‌نت به مدل اجازه می‌دهد ویژگی‌های همبسته را حفظ کند (بر خلاف لاسو که یکی را تصادفی انتخاب می‌کند).
+
+\section*{بهینه‌سازی تنک و الگوریتم \lr{OMP}}
+بهینه‌سازی تنک به دنبال یافتن راه‌حل‌هایی با تعداد عناصر غیرصفر کم است. این موضوع ریشه در تئوری حسگری فشرده (\lr{Compressed Sensing}) دارد.
+
+الگوریتم تعقیب تطبیقی متعامد (\lr{Orthogonal Matching Pursuit} یا \lr{OMP}) یک روش حریصانه برای حل مسئله تقریب تنک زیر است:
+\[
+\min_{w} \|w\|_0 \quad \text{subject to} \quad \|y - X w\|_2 \le \epsilon
+\]
+الگوریتم OMP به صورت تکراری در هر مرحله ستونی از ماتریس را که بیشترین همبستگی را با باقیمانده (\lr{residual}) فعلی دارد انتخاب می‌کند، سپس مسئله کمترین مربعات را روی مجموعه فعال حل می‌کند.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_1_1.png}
+  \caption{مدل رگرسیون خطی و نحوه برازش آن بر روی داده‌ها}
+\end{figure}
+
+
+
+
+\subsection*{ارتباط با آنالیز تابعی (\lr{Functional Analysis})}
+روش‌های بازیابی تنک مانند OMP و LASSO در آنالیز تابعی ریشه دارند. فضاهای هیلبرت (\lr{Hilbert spaces}) برای تحلیل پروجکشن‌های متعامد و ضرب‌های داخلی، و فضاهای باناخ (\lr{Banach spaces}) برای بررسی غیرهمواری جریمه‌های $\ell_1$ استفاده می‌شوند.
+
+\subsection*{بازسازی تصاویر \lr{MRI}}
+بازسازی تصاویر \lr{MRI} از داده‌های نمونه‌برداری نشده در حوزه فرکانس به کمک بهینه‌سازی تنک فرموله می‌شود:
+\[
+\min_{m} \|F_u m - y\|_2^2 + \lambda \|\Psi m\|_p
+\]
+که در آن $m$ تصویر بازسازی شده، $F_u$ اپراتور فوریه نمونه‌برداری نشده، $y$ داده‌های ثبت شده و $\Psi$ تبدیل تنک‌کننده (مانند موجک) است.
+
+\section*{مدل‌های خطی برای دسته‌بندی (\lr{Classification})}
+در دسته‌بندی باینری، هدف یافتن ابرصفحه‌ای است که نمونه‌ها را جدا کند:
+\[
+\hat{y} = w_1 x_1 + \dots + w_p x_p + w_0 &gt; 0
+\]
+اگر این مقدار بزرگتر از صفر باشد، کلاس $+1$ و در غیر این صورت کلاس $-1$ پیش‌بینی می‌شود.
+
+\subsection*{رگرسیون لجستیک (\lr{Logistic regression})}
+احتمال تعلق یک نمونه به کلاس مثبت را با استفاده از تابع سیگموئید (\lr{sigmoid}) مدل‌سازی می‌کند:
+\[
+\hat{y} = \frac{1}{1 + e^{-w^T x}}
+\]
+تابع زیان آن کراس آنتروپی (\lr{Cross-entropy} یا \lr{log loss}) است:
+\[
+L_{\text{log}}(w) = -\sum_{n=1}^{N} [y_n \log(\hat{y}_n) + (1 - y_n) \log(1 - \hat{y}_n)]
+\]
+برای حل این زیان از روش‌های بهینه‌سازی مانند کاهش گرادیان، نیوتن و شبه‌نیوتن (\lr{lbfgs}) استفاده می‌شود. پارامتر $C$ در کتابخانه \lr{scikit-learn} عکس قدرت منظم‌سازی است ($C = 1/\alpha$).
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_48_1.png}
+  \caption{تابع لجستیک سیگموئید و نگاشت مقادیر خروجی به احتمالات بین ۰ و ۱}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_49_1.png}
+  \caption{تابع زیان انتروپی متقاطع (Cross-Entropy Loss) در رگرسیون لجستیک}
+\end{figure}
+
+
+
+
+
+
+\subsection*{دسته‌بندی چندکلاسه (\lr{Multiclass classification})}
+\begin{itemize}
+    \item \textbf{یک در مقابل همه (\lr{one-vs-rest}):} برای هر کلاس یک مدل دسته‌بندی باینری در مقابل سایر کلاس‌ها آموزش داده می‌شود.
+    \item \textbf{یک در مقابل یک (\lr{one-vs-one}):} برای هر جفت از کلاس‌ها یک مدل آموزش داده می‌شود. برای $C$ کلاس، تعداد $\frac{C(C-1)}{2}$ مدل ساخته شده و با رای‌گیری اکثریت کلاس نهایی تعیین می‌شود.
+\end{itemize}
+
+\newpage
+
+\section*{جدول خلاصه مدل‌های خطی}
+\begin{table}[h]
+\centering
+\caption{خلاصه مدل‌های خطی برای رگرسیون (R) و دسته‌بندی (C)}
+\vspace{1mm}
+\begin{tabular}{lllll}
+\toprule
+\textbf{نام مدل} &amp; \textbf{نوع} &amp; \textbf{تابع زیان} &amp; \textbf{بهینه‌ساز} &amp; \textbf{منظم‌سازی} \\
+\midrule
+\lr{Least squares} &amp; R &amp; \lr{SSE} &amp; فرم بسته / \lr{SGD} &amp; ندارد \\
+\lr{Ridge} &amp; R &amp; \lr{SSE} + L2 &amp; فرم بسته / \lr{SGD} &amp; L2 \\
+\lr{Lasso} &amp; R &amp; \lr{SSE} + L1 &amp; فرود مختصاتی &amp; L1 \\
+\lr{Elastic-Net} &amp; R &amp; \lr{SSE} + L1 + L2 &amp; فرود مختصاتی &amp; L1 + L2 \\
+\lr{Logistic regression} &amp; C &amp; \lr{Log} + L1/L2 &amp; \lr{lbfgs} / \lr{SGD} / \lr{liblinear} &amp; L1 / L2 \\
+\lr{Ridge classification} &amp; C &amp; \lr{SSE} + L2 &amp; فرم بسته / \lr{SGD} &amp; L2 \\
+\lr{Linear SVM} &amp; C &amp; \lr{Hinge} &amp; برنامه‌نویسی مرتبه دوم / \lr{SGD} &amp; L2 \\
+\lr{Perceptron} &amp; C &amp; \lr{Perceptron loss} &amp; \lr{SGD} &amp; ندارد \\
+\bottomrule
+\end{tabular}
+\end{table}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_6_1.png}
+  \caption{نمایش برازش خط به داده‌های پراکنده تک‌متغیره}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_7_1.png}
+  \caption{تفسیر هندسی حل حداقل مربعات خطا}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_12_1.jpeg}
+  \caption{مفهوم الگوریتم کاهش گرادیان در بهینه‌سازی توابع هدف}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_16_1.png}
+  \caption{چالش نقاط کمینه محلی در مقایسه با بهینه سراسری در توابع غیرکوژ}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_16_2.png}
+  \caption{فرآیند بهینه‌سازی روی یک سطح پیچیده غیرمحدب}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_27_1.png}
+  \caption{نقاط برخورد خطوط تراز خطا با مرزهای جریمه L1 برای انتخاب ویژگی تنک}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_47_1.png}
+  \caption{کیفیت تصویر بازسازی‌شده ام‌آرآی به عنوان تابعی از وزن منظم‌سازی}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_52_1.png}
+  \caption{بررسی ضرایب حاصل از منظم‌سازی‌های L1 و L2 در رگرسیون لجستیک}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+</code></pre></details><details class="source-file" ><summary><bdi>Mahalanobis Distance — Statistical Machine Learning/translation.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Mahalanobis%20Distance%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xepersian}
+\settextfont{XB Niloofar}
+
+\geometry{a4paper, margin=1in}
+
+\title{\lr{Mahalanobis Distance} \\ (فاصله ماهالانوبیس)}
+\author{}
+\date{}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_3_1.png}
+  \caption{تفاوت هندسی فاصله اقلیدسی و فاصله ماهالانوبیس در توزیع‌های غیرکروی}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_4_1.png}
+  \caption{تأثیر جهت‌های مختلف واریانس داده‌ها بر محاسبه فاصله}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_19_1.png}
+  \caption{فواصل نقاط نسبت به مرکز توزیع با در نظر گرفتن همبستگی ویژگی‌ها}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_24_1.png}
+  \caption{مرز تصمیم‌گیری و دسته‌بندی کلاس‌ها بر اساس فاصله ماهالانوبیس}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+\begin{document}
+
+\maketitle
+
+\section*{فهرست مطالب}
+\begin{enumerate}
+    \item چرا به فاصله ماهالانوبیس نیاز داریم؟
+    \item تاثیر مقیاس‌بندی ویژگی‌ها
+    \item مقدمه‌ای بر ماتریس کوواریانس (\lr{Covariance Matrix})
+    \item تفسیر هندسی ماتریس کوواریانس
+    \item تبدیل‌های خطی و کوواریانس
+    \item تبدیل سفیدسازی (\lr{Whitening Transformation})
+    \item فاصله ماهالانوبیس
+    \item ماتریس کوواریانس در تئوری تصمیم‌گیری بیز (\lr{Bayesian Decision Theory})
+    \item مقایسه: \lr{PCA} در مقابل سفیدسازی
+    \item نتیجه‌گیری و نکات کلیدی
+\end{enumerate}
+
+\newpage
+
+\section*{۱. چرا به فاصله ماهالانوبیس نیاز داریم؟}
+در بسیاری از کاربردهای دنیای واقعی، ما با داده‌های چندمتغیره مواجه هستیم که در آنها ویژگی‌ها اغلب همبسته هستند و مقیاس‌های متفاوتی دارند. در حالی که فاصله اقلیدسی (\lr{Euclidean distance}) یک انتخاب متداول برای اندازه‌گیری فاصله‌ها است، یک محدودیت بزرگ دارد: فرض می‌کند که همه ویژگی‌ها غیرهمبسته بوده و دارای واریانس یکسانی هستند. این فرض به ندرت در عمل برقرار است.
+
+مجموعه‌داده‌ای را در نظر بگیرید که یک ویژگی آن به متر و ویژگی دیگر به کیلومتر اندازه‌گیری می‌شود. فاصله اقلیدسی به طور نامتناسبی وزن بیشتری به ویژگی با مقادیر بزرگتر می‌دهد. به همین ترتیب، اگر ویژگی‌ها همبسته باشند، شکل توزیع داده‌ها به جای کره، یک بیضی‌گون است. فاصله اقلیدسی در به حساب آوردن این ساختار زمینه‌ای شکست می‌خورد که منجر به نتایج گمراه‌کننده در دسته‌بندی و خوشه‌بندی می‌شود.
+
+فاصله ماهالانوبیس (\lr{Mahalanobis distance}) این مشکل را با اندازه‌گیری فاصله بین یک نقطه و یک توزیع حل می‌کند، که توسط واریانس هر ویژگی و همبستگی بین آنها نرمال‌سازی می‌شود.
+
+\subsection*{مثال تشریحی: فاصله اقلیدسی در مقابل ماهالانوبیس}
+نقطه ۱ و نقطه ۲ فاصله اقلیدسی یکسانی از مرکز دارند، اما در ``نواحی احتمال&#x27;&#x27; متفاوتی قرار می‌گیرند. نقطه ۲ در جهت واریانس کمتر (عمود بر همبستگی اصلی) قرار دارد که آن را از نظر آماری غیرمحتمل‌تر (دورتر در فاصله ماهالانوبیس) از نقطه ۱ می‌کند.
+
+\section*{۲. تاثیر مقیاس‌بندی ویژگی‌ها}
+\subsection*{مطالعه موردی: شباهت موشک‌های ایرانی}
+در این مثال، از مجموعه‌داده موشک‌های بالستیک ایرانی برای حل یک مسئله شباهت استفاده می‌کنیم. می‌خواهیم تعیین کنیم کدام موشک بر اساس برد و سرعت، شباهت بیشتری به خیبر شکن (موشک A) دارد.
+
+مجموعه‌داده:
+\begin{itemize}
+    \item \textbf{موشک A (خیبر شکن):} برد ۱۴۵۰ کیلومتر، سرعت ۵ ماخ (هدف)
+    \item \textbf{موشک B (سجیل):} برد ۲۰۰۰ کیلومتر، سرعت ۱۰ ماخ
+    \item \textbf{موشک C (فتاح):} برد ۱۴۰۰ کیلومتر، سرعت ۱۴ ماخ
+\end{itemize}
+
+\subsubsection*{رویکرد ساده‌لوحانه (فاصله خام اقلیدسی)}
+فاصله اقلیدسی استاندارد بین هدف (خیبر شکن) و سایر موشک‌ها به صورت زیر است:
+\begin{itemize}
+    \item خیبر در مقابل سجیل:
+    \[
+    D = \sqrt{550^2 + 5^2} \approx 550.02
+    \]
+    \item خیبر در مقابل فتاح:
+    \[
+    D = \sqrt{50^2 + 9^2} \approx 50.80
+    \]
+\end{itemize}
+\textbf{مشکل:} موشک فتاح بسیار نزدیک‌تر (۵۰.۸) به نظر می‌رسد تا سجیل (۵۵۰.۰). اما در واقعیت، ۵۰ کیلومتر تفاوت در برد موشک ناچیز است، اما ۹ ماخ تفاوت در کلاس سرعت (هایپرسونیک در مقابل متوسط) بسیار بزرگ است. محاسبات خام توسط ویژگی برد تحت‌الشعاع قرار می‌گیرد.
+
+\subsubsection*{رویکرد تصحیح‌شده (مقیاس‌بندی استاندارد)}
+برای رفع این مشکل، داده‌ها را با استفاده از امتیاز استاندارد (\lr{Z-scores}) نرمال‌سازی می‌کنیم. این کار هر دو ویژگی را در یک مقیاس قرار می‌دهد. پس از مقیاس‌بندی، فواصل به صورت زیر در می‌آیند:
+\begin{itemize}
+    \item خیبر در مقابل سجیل: $D \approx 2.44$
+    \item خیبر در مقابل فتاح: $D \approx 2.45$
+\end{itemize}
+\textbf{نتیجه:} اکنون سجیل به درستی به عنوان نزدیک‌ترین گزینه به خیبر شناسایی می‌شود. مقیاس‌بندی، تفاوت سرعت بزرگ فتاح را جریمه کرده و ویژگی‌ها را متعادل می‌کند.
+
+\textbf{نکته کلیدی:} عدم تطابق واحدها یک مشکل خاموش در یادگیری ماشین است. همیشه ویژگی‌های خود را قبل از محاسبه فواصل، آموزش شبکه‌های عصبی یا خوشه‌بندی مقیاس‌بندی کنید.
+
+\section*{۳. مقدمه‌ای بر ماتریس کوواریانس}
+ماتریس کوواریانس (\lr{covariance matrix}) یک ماتریس مربع است که واریانس‌ها و کوواریانس‌های مجموعه‌ای از متغیرهای تصادفی را خلاصه می‌کند. برای داده‌های با $d$ ویژگی، ماتریس کوواریانس $\Sigma$ یک ماتریس $d \times d$ به صورت زیر است:
+\[
+\Sigma = \begin{bmatrix} 
+\sigma_{11} &amp; \sigma_{12} &amp; \cdots &amp; \sigma_{1d} \\
+\sigma_{21} &amp; \sigma_{22} &amp; \cdots &amp; \sigma_{2d} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\sigma_{d1} &amp; \sigma_{d2} &amp; \cdots &amp; \sigma_{dd} 
+\end{bmatrix}
+\]
+که در آن:
+\begin{itemize}
+    \item $\sigma_{ii} = Var(x_i)$: واریانس ویژگی $i$-ام (عناصر روی قطر اصلی).
+    \item $\sigma_{ij} = Cov(x_i, x_j)$: کوواریانس بین ویژگی‌های $i$-ام و $j$-ام (عناصر خارج از قطر).
+\end{itemize}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_9_1.png}
+  \caption{پراکندگی داده‌ها و نسبت فواصل ماهالانوبیس نقاط مختلف}
+\end{figure}
+
+
+
+
+ویژگی‌ها: متقارن است ($\Sigma = \Sigma^T$) و نیمه‌معین مثبت است (تمام مقادیر ویژه غیرمنفی هستند $\lambda_i \ge 0$).
+
+\section*{۴. تفسیر هندسی ماتریس کوواریانس}
+ماتریس کوواریانس شکل و جهت توزیع داده‌ها را در فضای ویژگی تعریف می‌کند:
+\begin{enumerate}
+    \item \textbf{بردارهای ویژه (\lr{Eigenvectors}):} بردارهای ویژه $\Sigma$ نشان‌دهنده محورهای اصلی توزیع داده‌ها هستند و جهت‌های حداکثر واریانس را مشخص می‌کنند.
+    \item \textbf{مقادیر ویژه (\lr{Eigenvalues}):} مقادیر ویژه متناظر، مقدار واریانس را در امتداد جهت‌های این بردارهای ویژه نشان می‌دهند.
+    \item \textbf{بیضی‌گون:} در ۲ بعد، ماتریس کوواریانس یک بیضی و در $d$ بعد، یک بیضی‌گون با ابعاد بالا (\lr{hyper-ellipsoid}) را تعریف می‌کند. طول محورهای این بیضی‌گون متناسب با جذر مقادیر ویژه است.
+\end{enumerate}
+
+\section*{۵. تبدیل‌های خطی و کوواریانس}
+کوواریانس تحت تبدیل‌های خطی دستخوش تغییر می‌شود.
+
+\textbf{قضیه ۱ (ویژگی تبدیل کوواریانس):} 
+فرض کنید $x \in \mathbb{R}^d$ یک بردار تصادفی با میانگین $\mu$ و ماتریس کوواریانس $\Sigma$ باشد.
+فرض کنید $W \in \mathbb{R}^{d \times d}$ یک ماتریس تبدیل ثابت باشد. اگر بردار تصادفی تبدیل‌شده $y$ به صورت $y = W^T(x - \mu)$ تعریف شود، آنگاه ماتریس کوواریانس بردار تبدیل‌شده به صورت زیر خواهد بود:
+\[
+Cov(y) = W^T \Sigma W
+\]
+
+\textbf{اثبات:}
+ابتدا میانگین $y$ را محاسبه می‌کنیم:
+\[
+E[y] = E[W^T(x-\mu)] = W^T(E[x]-\mu) = W^T(\mu-\mu) = 0
+\]
+سپس کوواریانس $y$:
+\[
+Cov(y) = E[(y - E[y])(y - E[y])^T] = E[y y^T] = E[W^T(x-\mu)(x-\mu)^T W]
+\]
+با استفاده از خطی بودن عملگر امید ریاضی، ماتریس‌های ثابت را بیرون می‌آوریم:
+\[
+Cov(y) = W^T E[(x-\mu)(x-\mu)^T] W = W^T \Sigma W
+\]
+این قضیه پایه و اساس سفیدسازی داده‌ها است. با انتخاب $W$ به طوری که $W^T \Sigma W = I$ شود، داده‌ها غیرهمبسته و دارای واریانس واحد می‌شوند.
+
+\section*{۶. تبدیل سفیدسازی (\lr{Whitening Transformation})}
+سفیدسازی داده‌ها را به گونه‌ای تبدیل می‌کند که ماتریس کوواریانس آن به ماتریس همانی ($I$) تبدیل شود. 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_8_1.png}
+  \caption{بیضی‌های هم‌فاصله ماهالانوبیس بر اساس بردارهای ویژه ماتریس کوواریانس}
+\end{figure}
+
+
+
+
+ما به دنبال ماتریس تبدیل $W$ هستیم به طوری که $Cov(y) = W^T \Sigma W = I$ شود.
+با استفاده از تجزیه مقادیر ویژه ماتریس کوواریانس داریم: $\Sigma = \Phi \Lambda \Phi^T$ که در آن:
+\begin{itemize}
+    \item $\Phi$: ماتریس متعامد بردارهای ویژه.
+    \item $\Lambda$: ماتریس قطری مقادیر ویژه.
+\end{itemize}
+ما $W = \Phi \Lambda^{-1/2}$ را انتخاب می‌کنیم. راستی‌آزمایی:
+\[
+Cov(y) = (\Phi \Lambda^{-1/2})^T \Sigma (\Phi \Lambda^{-1/2}) = \Lambda^{-1/2} \Phi^T (\Phi \Lambda \Phi^T) \Phi \Lambda^{-1/2} = I
+\]
+
+\textbf{تفسیر هندسی:}
+\begin{enumerate}
+    \item \textbf{چرخش ($\Phi^T$):} داده‌ها را با محورهای اصلی تراز کرده و همبستگی‌ها را حذف می‌کند.
+    \item \textbf{مقیاس‌بندی ($\Lambda^{-1/2}$):} داده‌ها را در امتداد این محورها می‌کشد یا فشرده می‌کند تا طول همه محورها ۱ شود.
+\end{enumerate}
+در این فضای سفیدشده، فاصله اقلیدسی معادل با فاصله ماهالانوبیس در فضای اصلی است.
+
+\section*{۷. فاصله ماهالانوبیس}
+فاصله ماهالانوبیس بین یک نقطه $x$ و یک توزیع با میانگین $\mu$ و ماتریس کوواریانس $\Sigma$ به صورت زیر تعریف می‌شود:
+\[
+D_M(x, \mu) = \sqrt{(x - \mu)^T \Sigma^{-1} (x - \mu)}
+\]
+
+\textbf{اثبات هم‌ارزی:}
+فرض کنید $y = W^T(x-\mu)$ که در آن $W$ ماتریس سفیدکننده است. فاصله اقلیدسی در فضای سفیدشده برابر است با:
+\[
+\|y\|_2 = \sqrt{y^T y} = \sqrt{(x-\mu)^T W W^T (x-\mu)}
+\]
+نشان می‌دهیم که $W W^T = \Sigma^{-1}$ است. داریم $W = \Phi \Lambda^{-1/2}$، پس:
+\[
+W W^T = \Phi \Lambda^{-1/2} (\Phi \Lambda^{-1/2})^T = \Phi \Lambda^{-1} \Phi^T
+\]
+از طرفی، معکوس $\Sigma = \Phi \Lambda \Phi^T$ با توجه به متعامد بودن $\Phi$ برابر است با:
+\[
+\Sigma^{-1} = \Phi \Lambda^{-1} \Phi^T
+\]
+بنابراین $W W^T = \Sigma^{-1}$ برقرار است و فاصله اقلیدسی در فضای سفیدشده با فاصله ماهالانوبیس در فضای اصلی برابر است.
+
+\section*{۸. ماتریس کوواریانس در تئوری تصمیم‌گیری بیز}
+توزیع گاوسی چندمتغیره به صورت زیر است:
+\[
+p(x|\omega_i) = \frac{1}{(2\pi)^{d/2} |\Sigma_i|^{1/2}} \exp \left( -\frac{1}{2} (x - \mu_i)^T \Sigma_i^{-1} (x - \mu_i) \right)
+\]
+جمله داخل نما دقیقاً نصف فاصله ماهالانوبیس مربع است. معکوس ماتریس کوواریانس $\Sigma^{-1}$ ویژگی‌ها را با واریانس آنها مقیاس‌بندی کرده و فضا را برای رفع همبستگی می‌چرخاند.
+
+\section*{آیا سفیدسازی با نرمال‌سازی تک‌ویژگی معادل است؟}
+خیر. نرمال‌سازی تک‌ویژگی (استانداردسازی) هر ویژگی را به طور مستقل به واریانس واحد می‌رساند اما همبستگی بین آنها را حفظ می‌کند. اما سفیدسازی، همبستگی‌ها را نیز به طور کامل حذف می‌کند.
+
+\section*{۹. مقایسه: \lr{PCA} در مقابل سفیدسازی}
+\begin{itemize}
+    \item \textbf{\lr{PCA} (فقط چرخش):} داده‌ها را روی محورهای اصلی تصویر می‌کند. همبستگی‌ها را حذف می‌کند اما مقیاس واریانس را حفظ می‌کند. ماتریس کوواریانس حاصل قطری ($\Lambda$) است.
+    \item \textbf{سفیدسازی (چرخش + مقیاس‌بندی):} چرخش PCA را اعمال کرده و سپس واریانس هر مولفه را به ۱ می‌رساند. ماتریس کوواریانس حاصل همانی ($I$) است.
+\end{itemize}
+
+\begin{table}[h]
+\centering
+\caption{تفاوت‌های کلیدی بین \lr{PCA} و سفیدسازی}
+\vspace{1mm}
+\begin{tabular}{lll}
+\toprule
+\textbf{ویژگی} &amp; \textbf{\lr{PCA}} &amp; \textbf{سفیدسازی} \\
+\midrule
+هدف اصلی &amp; کاهش ابعاد / بیشینه‌سازی واریانس &amp; نرمال‌سازی واریانس و همبستگی \\
+نوع تبدیل &amp; فقط چرخش &amp; چرخش + مقیاس‌بندی \\
+واریانس خروجی &amp; مقادیر ویژه ($\lambda_i$) &amp; واریانس واحد ($1$) \\
+ماتریس کوواریانس &amp; قطری ($\Lambda$) &amp; همانی ($I$) \\
+شکل هندسی &amp; بیضی هم‌جهت با محورها &amp; کره کامل (همسانگرد) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{۱۰. نتیجه‌گیری و نکات کلیدی}
+\begin{itemize}
+    \item فاصله اقلیدسی داده‌ها را کروی فرض می‌کند، در حالی که فاصله ماهالانوبیس داده‌ها را بیضوی فرض می‌کند.
+    \item ماتریس کوواریانس شکل، مقیاس و جهت توزیع داده‌ها را ثبت می‌کند.
+    \item سفیدسازی داده‌ها را کروی می‌کند به طوری که فاصله اقلیدسی در فضای سفیدشده با فاصله ماهالانوبیس در فضای اصلی برابر می‌شود.
+    \item این فاصله برای تشخیص آنومالی و تعیین مرزهای تصمیم‌گیری بیز ضروری است.
+\end{itemize}
+
+\end{document}
+</code></pre></details><details class="source-file" ><summary><bdi>Maximum Likelihood Estimation (MLE) — Statistical Machine Learning/translation.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Maximum%20Likelihood%20Estimation%20%28MLE%29%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xepersian}
+\settextfont{XB Niloofar}
+
+\geometry{a4paper, margin=1in}
+
+\title{\lr{Maximum Likelihood Estimation (MLE)} \\ (تخمین بیشینه درست‌نمایی)}
+\author{}
+\date{}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_2_1.png}
+  \caption{تخمین درست‌نمایی بیشینه (MLE) برای پارامترهای توزیع}
+\end{figure}
+
+
+
+
+\begin{document}
+
+\maketitle
+
+\section*{فهرست مطالب}
+\begin{enumerate}
+    \item مقدمه
+    \item تابع درست‌نمایی (\lr{The Likelihood Function})
+    \item استخراج ریاضی: گاوسی تک‌متغیره (\lr{Univariate Gaussian})
+    \item تعمیم به گاوسی چندمتغیره (\lr{Multivariate Gaussian})
+    \item ویژگی‌ها و محدودیت‌ها
+    \item ارتباط با دسته‌بندی بیز (\lr{Bayesian Classification})
+    \item پل ارتباطی به موضوعات پیشرفته
+    \item خلاصه
+\end{enumerate}
+
+\newpage
+
+\section*{۱. مقدمه}
+در دسته‌بندی الگوهای آماری، یک فرض رایج این است که داده‌ها توسط یک توزیع احتمال (\lr{probability distribution}) زمینه‌ای با پارامترهای ناشناخته تولید می‌شوند. به عنوان مثال، ممکن است فرض کنیم ویژگی‌های $x$ از یک توزیع گاوسی (نرمال) پیروی می‌کنند. برای اتخاذ تصمیمات بهینه (مانند دسته‌بندی با استفاده از تئوری تصمیم‌گیری بیز)، باید پارامترهای این توزیع‌ها را از یک مجموعه‌داده آموزشی تخمین بزنیم.
+
+تخمین بیشینه درست‌نمایی (\lr{Maximum Likelihood Estimation} یا \lr{MLE}) یک روش پارامتریک استاندارد است که برای تخمین پارامترهای ناشناخته $\theta$ از یک تابع چگالی احتمال $p(x|\theta)$ با داشتن مجموعه‌داده $D$ استفاده می‌شود. اصل کار انتخاب مقادیر پارامتری است که داده‌های مشاهده‌شده را محتمل‌تر کند.
+
+\section*{۲. تابع درست‌نمایی}
+تابع درست‌نمایی که با $L(\theta|D)$ نشان داده می‌شود، احتمال مشاهده مجموعه‌داده خاص $D$ را به عنوان تابعی از پارامترهای $\theta$ نشان می‌دهد.
+
+\subsection*{تمایز کلیدی}
+تشخیص تفاوت بین تابع چگالی احتمال $p(x|\theta)$ و تابع درست‌نمایی $L(\theta|D)$ بسیار حیاتی است:
+\begin{enumerate}
+    \item $p(x|\theta)$: توزیع داده‌های $x$ را برای پارامترهای ثابت $\theta$ توصیف می‌کند.
+    \item $L(\theta|D)$: احتمال مجموعه‌داده $D$ را به ازای داده‌های مشاهده‌شده ثابت، به عنوان تابعی از $\theta$ توصیف می‌کند.
+\end{enumerate}
+تابع درست‌نمایی در فضایی متفاوت از تابع چگالی احتمال قرار دارد. فرم عملکردی درست‌نمایی لزوماً با فرم عملکردی چگالی یکسان نیست.
+
+مقداری که درست‌نمایی را بیشینه می‌کند با $\hat{\theta}$ نشان داده می‌شود؛ این مقدار لگاریتم درست‌نمایی (\lr{log-likelihood}) یعنی $l(\theta)$ را نیز بیشینه می‌کند.
+
+\section*{۳. استخراج ریاضی: گاوسی تک‌متغیره}
+با ساده‌ترین حالت شروع می‌کنیم: تخمین پارامترهای یک توزیع گاوسی تک‌متغیره. این کار به عنوان پایه‌ای برای درک حالت چندمتغیره مورد استفاده در دسته‌بندی الگو عمل می‌کند.
+
+\subsection*{تعریف مسئله}
+فرض کنید $D = \{x_1, x_2, \dots, x_n\}$ مجموعه‌داده‌ای شامل $n$ نمونه مستقل و هم‌توزیع (\lr{independent and identically distributed} یا \lr{i.i.d.}) باشد. فرض می‌کنیم هر نمونه از یک توزیع گاوسی تک‌متغیره استخراج شده است:
+\[
+p(x|\mu, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left( -\frac{(x-\mu)^2}{2\sigma^2} \right)
+\]
+که در آن $\mu$ میانگین و $\sigma^2$ واریانس است.
+
+\subsection*{تابع درست‌نمایی}
+تابع درست‌نمایی $L(\mu, \sigma^2)$ با فرض استقلال به صورت زیر است:
+\[
+L(\mu, \sigma^2) = \prod_{k=1}^n p(x_k|\mu, \sigma^2) = \left( \frac{1}{\sqrt{2\pi\sigma^2}} \right)^n \exp\left( -\sum_{k=1}^n \frac{(x_k-\mu)^2}{2\sigma^2} \right)
+\]
+
+\subsection*{تابع لگاریتم درست‌نمایی}
+بیشینه‌سازی مستقیم $L$ به دلیل حاصل‌ضرب توابع نمایی دشوار است. از آنجا که لگاریتم یک تابع اکیداً صعودی است، بیشینه‌سازی لگاریتم درست‌نمایی $l(\mu, \sigma^2) = \log L(\mu, \sigma^2)$ همان تخمین‌ها را به دست می‌دهد:
+\[
+l(\mu, \sigma^2) = -\frac{n}{2} \log(2\pi) - \frac{n}{2} \log(\sigma^2) - \frac{1}{2\sigma^2} \sum_{k=1}^n (x_k-\mu)^2
+\]
+
+\subsection*{تخمین میانگین ($\mu$)}
+با گرفتن مشتق جزئی نسبت به $\mu$ و قرار دادن آن برابر صفر:
+\[
+\frac{\partial l}{\partial \mu} = \frac{1}{\sigma^2} \sum_{k=1}^n (x_k - \mu) = 0 \implies \sum_{k=1}^n x_k - n\hat{\mu} = 0 \implies \hat{\mu} = \frac{1}{n} \sum_{k=1}^n x_k
+\]
+نتیجه: تخمین‌گر \lr{MLE} برای میانگین همان میانگین نمونه است.
+
+\subsection*{تخمین واریانس ($\sigma^2$)}
+با گرفتن مشتق جزئی نسبت به $\sigma^2$ (با فرض $\tau = \sigma^2$) و قرار دادن آن برابر صفر:
+\[
+\frac{\partial l}{\partial \tau} = -\frac{n}{2\tau} + \frac{1}{2\tau^2} \sum_{k=1}^n (x_k - \mu)^2 = 0 \implies -n\tau + \sum_{k=1}^n (x_k - \mu)^2 = 0
+\]
+با جایگذاری میانگین نمونه $\hat{\mu}$ به جای $\mu$:
+\[
+\hat{\sigma}^2 = \frac{1}{n} \sum_{k=1}^n (x_k - \hat{\mu})^2
+\]
+نتیجه: تخمین‌گر \lr{MLE} برای واریانس همان واریانس نمونه (با مخرج $n$) است.
+
+\section*{۴. تعمیم به گاوسی چندمتغیره}
+در دسته‌بندی الگو، ویژگی‌ها معمولاً بردار هستند ($x \in \mathbb{R}^d$). تابع چگالی گاوسی چندمتغیره به صورت زیر است:
+\[
+p(x|\mu, \Sigma) = \frac{1}{(2\pi)^{d/2} |\Sigma|^{1/2}} \exp\left( -\frac{1}{2} (x-\mu)^T \Sigma^{-1} (x-\mu) \right)
+\]
+تخمین‌های \lr{MLE} با به کارگیری همان روش بیشینه‌سازی لگاریتم درست‌نمایی به دست می‌آید:
+\begin{itemize}
+    \item \textbf{بردار میانگین ($\mu$):} 
+    \[
+    \hat{\mu} = \frac{1}{n} \sum_{k=1}^n x_k
+    \]
+    \item \textbf{ماتریس کوواریانس ($\Sigma$):} 
+    \[
+    \hat{\Sigma} = \frac{1}{n} \sum_{k=1}^n (x_k - \hat{\mu}) (x_k - \hat{\mu})^T
+    \]
+\end{itemize}
+
+\section*{۵. ویژگی‌ها و محدودیت‌ها}
+\begin{enumerate}
+    \item \textbf{انحراف (\lr{Bias}):}
+    \begin{itemize}
+        \item تخمین برای میانگین $\hat{\mu}$ بدون انحراف (\lr{unbiased}) است.
+        \item تخمین برای واریانس $\hat{\sigma}^2$ (و $\hat{\Sigma}$) دارای انحراف (\lr{biased}) است. این روش به طور سیستماتیک واریانس واقعی را کمتر از مقدار واقعی تخمین می‌زند زیرا از مخرج $n$ استفاده می‌کند. تخمین‌گر بدون انحراف برابر با $s^2 = \frac{1}{n-1} \sum (x_k - \hat{\mu})^2$ است.
+    \end{itemize}
+    \item \textbf{سازگاری (\lr{Consistency}):} با میل کردن تعداد نمونه‌ها به سمت بی‌نهایت ($n \to \infty$)، تخمین‌های \lr{MLE} به مقادیر واقعی پارامترها همگرا می‌شوند.
+    \item \textbf{ناوردا بودن (\lr{Invariance}):} اگر $\hat{\theta}$ تخمین‌گر \lr{MLE} برای $\theta$ باشد، برای هر تابع $g(\theta)$، تخمین‌گر \lr{MLE} آن برابر با $g(\hat{\theta})$ است.
+    \item \textbf{حساسیت به داده‌های پرت (\lr{Sensitivity to Outliers}):} داده‌های پرت (\lr{outliers}) می‌توانند به طور قابل توجهی تخمین‌های میانگین و کوواریانس را منحرف کنند.
+\end{enumerate}
+
+\section*{۶. ارتباط با دسته‌بندی بیز}
+نقش اصلی \lr{MLE} امکان‌پذیر ساختن دسته‌بندی بیز (\lr{Bayesian Classification}) در صورت ناشناخته بودن پارامترها است.
+
+\subsection*{رویکرد جایگذاری (\lr{Plug-In Approach})}
+\begin{enumerate}
+    \item \textbf{آموزش:} برای هر کلاس $\omega_i$، از داده‌های آموزشی $D_i$ برای محاسبه تخمین‌های \lr{MLE} یعنی $\hat{\mu}_i$ و $\hat{\Sigma}_i$ استفاده کنید.
+    \item \textbf{ساخت:} چگالی شرطی کلاس تخمین‌زده شده را تشکیل دهید: $\hat{p}(x|\omega_i) = N(x|\hat{\mu}_i, \hat{\Sigma}_i)$.
+    \item \textbf{تصمیم‌گیری:} قاعده تصمیم بیز را با استفاده از این چگالی‌های تخمینی اعمال کنید. این روش به عنوان دسته‌بندی‌کننده جایگذاری (\lr{Plug-In Classifier}) شناخته می‌شود.
+\end{enumerate}
+
+\subsection*{تاثیر بر مرزهای تصمیم‌گیری}
+\begin{itemize}
+    \item \textbf{تحلیل ممیز خطی (\lr{LDA}):} فرض می‌کند همه کلاس‌ها دارای ماتریس کوواریانس مشترک $\Sigma$ هستند. مرز تصمیم خطی (ابرصفحه) می‌شود.
+    \item \textbf{تحلیل ممیز درجه دوم (\lr{QDA}):} فرض می‌کند هر کلاس کوواریانس منحصربه‌فرد $\Sigma_i$ دارد. مرز تصمیم درجه دوم (بیضی‌گون با ابعاد بالا) می‌شود.
+\end{itemize}
+
+\section*{۷. پل ارتباطی به موضوعات پیشرفته}
+\begin{itemize}
+    \item \textbf{تحلیل مولفه‌های اصلی (\lr{PCA}):} می‌تواند به عنوان یک مسئله بیشینه درست‌نمایی برای مدل گاوسی با محدودیت‌ها مشتق شود.
+    \item \textbf{مدل‌های مخلوط گاوسی (\lr{GMM}):} گاوسی‌های منفرد را به مخلوط‌ها تعمیم می‌دهد. \lr{MLE} استفاده می‌شود اما برای حل تکرارشونده به الگوریتم \lr{EM} نیاز دارد.
+    \item \textbf{مدل‌های مارکوف پنهان (\lr{HMM}):} پارامترها با استفاده از \lr{MLE} از طریق الگوریتم جلو-عقب تخمین زده می‌شوند.
+\end{itemize}
+
+\section*{۸. خلاصه}
+\begin{itemize}
+    \item \textbf{درست‌نمایی در مقابل احتمال:} ما درست‌نمایی داده‌ها به شرط پارامترها را بیشینه می‌کنیم، نه احتمال پارامترها به شرط داده‌ها را.
+    \item \textbf{لگاریتم درست‌نمایی:} انتقال به حوزه لگاریتم حاصل‌ضرب‌ها را به جمع تبدیل کرده و بهینه‌سازی را ساده می‌کند.
+    \item \textbf{نتایج تک‌متغیره:} $\hat{\mu} = \text{mean}(D)$ و $\hat{\sigma}^2 = \text{var}(D)$ (دارای انحراف).
+\end{itemize}
+
+\end{document}
+</code></pre></details><details class="source-file" ><summary><bdi>Naive Bayes Classification — Statistical Machine Learning/translation.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Naive%20Bayes%20Classification%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xepersian}
+\settextfont{XB Niloofar}
+
+\geometry{a4paper, margin=1in}
+
+\title{\lr{Naive Bayes Classification} \\ (دسته‌بندی نایو بیز)}
+\author{}
+\date{}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_4_1.png}
+  \caption{نمودار احتمال شرطی کلاس برای کلاس‌های مختلف}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_5_1.png}
+  \caption{نمودار احتمال پسین و تعیین کلاس نهایی}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_5_2.png}
+  \caption{تعیین مرز تصمیم بر اساس توابع چگالی احتمال}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_6_1.png}
+  \caption{توزیع احتمالات ویژگی‌ها در ویژگی‌های مختلف}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_7_1.png}
+  \caption{نمایش فرضیه ساده‌لوحانه استقلال ویژگی‌ها}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_8_1.png}
+  \caption{مرز تصمیم‌گیری غیرخطی طبقه‌بند بیز ساده روی داده‌های شبیه‌سازی‌شده}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_12_1.png}
+  \caption{توزیع احتمال گوسی برای متغیرهای پیوسته در دسته‌بند بیز}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_12_2.png}
+  \caption{توزیع احتمال چندجمله‌ای برای متغیرهای گسسته}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_14_1.png}
+  \caption{ساختار گرافیکی شبکه‌ای ساده‌لوحانه بیز (Naive Bayes Graph)}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_27_1.png}
+  \caption{ارزیابی و بررسی صحت طبقه‌بند بر روی داده‌های آزمون}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_29_1.png}
+  \caption{مزایا و محدودیت‌های الگوریتم بیز ساده}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{document}
+
+\maketitle
+
+\section*{فهرست مطالب}
+\begin{enumerate}
+    \item مقدمه
+    \item قضیه بیز (\lr{Bayes&#x27; Theorem})
+    \item دسته‌بندی‌کننده‌های بیز (\lr{Bayes Classifiers})
+    \item نایو بیز با ویژگی‌های متعدد (\lr{Naive Bayes with Multiple Features})
+    \item مدل‌های زایشی (\lr{Generative Models})
+    \item نایو بیز گاوسی (\lr{Gaussian Naive Bayes})
+    \item نایو بیز چندجمله‌ای (\lr{Multinomial Naive Bayes})
+    \item چه زمانی از نایو بیز استفاده کنیم؟
+\end{enumerate}
+
+\newpage
+
+\section*{۱. مقدمه}
+مدل‌های نایو بیز (\lr{Naive Bayes}) گروهی از الگوریتم‌های دسته‌بندی فوق‌العاده سریع و ساده هستند که اغلب برای مجموعه‌داده‌های با ابعاد بسیار بالا مناسب می‌باشند. به دلیل سرعت بالا و پارامترهای قابل تنظیم بسیار کم، این مدل‌ها به عنوان یک مدل پایه (\lr{baseline}) ساده و سریع برای مسائل دسته‌بندی بسیار مفید هستند.
+
+\section*{۲. قضیه بیز}
+قضیه بیز (\lr{Bayes&#x27; Theorem}) یک اصل اساسی در تئوری احتمال است که نحوه به‌روزرسانی باورهای ما درباره یک رویداد را بر اساس شواهد جدید توصیف می‌کند. فرمول ریاضی قضیه بیز به صورت زیر بیان می‌شود:
+\[
+P(A|B) = \frac{P(B|A) \times P(A)}{P(B)}
+\]
+که در آن:
+\begin{itemize}
+    \item $P(A|B)$ احتمال پسین (\lr{posterior probability}) است: احتمال وقوع رویداد A به شرط برقرار بودن B.
+    \item $P(B|A)$ درست‌نمایی (\lr{likelihood}) است: احتمال وقوع رویداد B به شرط برقرار بودن A.
+    \item $P(A)$ احتمال پیشین (\lr{prior probability}) است: احتمال اولیه وقوع رویداد A.
+    \item $P(B)$ احتمال حاشیه‌ای (\lr{marginal probability}) است: احتمال کل وقوع رویداد B.
+\end{itemize}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_2_1.jpeg}
+  \caption{مدل مفهومی طبقه‌بندی ایمیل‌های اسپم و غیر اسپم بر اساس کلمات}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_9_1.png}
+  \caption{طبقه‌بندی بیز با ویژگی‌های چندگانه گسسته و پیوسته}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_22_1.png}
+  \caption{توزیع‌های نرمال چندمتغیره در طبقه‌بند بیز گوسی}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_22_2.png}
+  \caption{مرزهای تصمیم حاصل از طبقه‌بند بیز گوسی}
+\end{figure}
+
+
+
+
+
+
+
+
+
+\subsection*{مثال با تاس}
+فرض کنید دو تاس داریم: یکی معمولی (با احتمال برابر برای آوردن اعداد ۱ تا ۶) و دیگری غیرمعمولی (که همیشه ۶ می‌آورد). به طور تصادفی یکی از تاس‌ها را انتخاب کرده و می‌اندازیم و عدد ۶ می‌آید. احتمال اینکه تاس غیرمعمولی را انتخاب کرده باشیم چقدر است؟
+
+تعریف رویدادها:
+\begin{itemize}
+    \item رویداد A: انتخاب تاس غیرمعمولی
+    \item رویداد B: آمدن عدد ۶
+\end{itemize}
+احتمالات داده شده:
+\begin{itemize}
+    \item $P(A) = \frac{1}{2}$ (احتمال یکسان برای انتخاب هر تاس)
+    \item $P(B|A) = 1$ (تاس غیرمعمولی همیشه ۶ می‌آورد)
+    \item $P(B|A^c) = \frac{1}{6}$ (تاس معمولی با احتمال ۱/۶ عدد ۶ می‌آورد)
+\end{itemize}
+اعمال قضیه بیز:
+\[
+P(B) = P(B|A)P(A) + P(B|A^c)P(A^c) = 1 \times \frac{1}{2} + \frac{1}{6} \times \frac{1}{2} = \frac{7}{12}
+\]
+\[
+P(A|B) = \frac{P(B|A)P(A)}{P(B)} = \frac{1 \times 1/2}{7/12} = \frac{6}{7} \approx 85.7\%
+\]
+بنابراین، احتمال اینکه تاس انتخابی غیرمعمولی باشد، تقریباً ۸۵.۷ درصد است.
+
+\section*{۳. دسته‌بندی‌کننده‌های بیز}
+برای دسته‌بندی یک نمونه $d$، احتمال پسین قرار گرفتن در کلاس $c_j$ با فرمول زیر بیان می‌شود:
+\[
+P(c_j|d) = \frac{p(d|c_j)P(c_j)}{p(d)}
+\]
+که در آن:
+\begin{itemize}
+    \item احتمال پسین ($P(c_j|d)$): احتمال کلاس $c_j$ با فرض مشاهده نمونه $d$.
+    \item درست‌نمایی ($p(d|c_j)$): احتمال مشاهده نمونه $d$ به شرط تعلق به کلاس $c_j$.
+    \item احتمال پیشین ($P(c_j)$): احتمال وقوع کلاس $c_j$ در مجموعه‌داده (نرخ پایه).
+    \item شواهد ($p(d)$): احتمال کل مشاهده نمونه $d$ در تمامی کلاس‌ها که به عنوان فاکتور نرمال‌سازی عمل می‌کند.
+\end{itemize}
+
+فرمول ساده‌شده برای دسته‌بندی (با حذف مخرج مشترک):
+\[
+P(c_j|d) \propto p(d|c_j) P(c_j)
+\]
+ما نمونه $d$ را به کلاسی با بیشترین احتمال پسین اختصاص می‌دهیم.
+
+\section*{۴. نایو بیز با ویژگی‌های متعدد}
+در صورتی که چندین ویژگی داشته باشیم، دسته‌بندی‌کننده‌های نایو بیز با فرض ساده‌لوحانه مستقل بودن توزیع ویژگی‌ها از یکدیگر، درست‌نمایی را به صورت حاصل‌ضرب احتمالات تک‌تک ویژگی‌ها تخمین می‌زنند:
+\[
+p(d|c_j) = p(d_1|c_j) \times p(d_2|c_j) \times \dots \times p(d_n|c_j)
+\]
+
+\subsection*{مثال میوه‌ها}
+در یک مجموعه‌داده شامل ۱۰۰۰ میوه (موز، پرتقال، و سایر میوه‌ها)، می‌خواهیم میوه جدیدی با ویژگی‌های (بلند، شیرین، زرد) را دسته‌بندی کنیم. با محاسبه احتمالات پسین داریم:
+\begin{itemize}
+    \item $P(\text{Banana} | \text{Long, Sweet, Yellow}) = 0.8 \times 0.7 \times 0.9 \times 0.5 = 0.252$
+    \item $P(\text{Orange} | \text{Long, Sweet, Yellow}) = 0 \times 0.5 \times 1 \times 0.3 = 0$
+    \item $P(\text{Other} | \text{Long, Sweet, Yellow}) = 0.5 \times 0.75 \times 0.25 \times 0.2 = 0.01875$
+\end{itemize}
+از آنجا که احتمال پسین موز از همه بیشتر است، میوه جدید به عنوان موز دسته‌بندی می‌شود.
+
+\section*{۵. مدل‌های زایشی}
+مدلی که چگالی درست‌نمایی $P(\text{features}|L)$ را برای هر کلاس تعریف می‌کند، مدل زایشی (\lr{generative model}) نامیده می‌شود، زیرا فرآیند تصادفی فرضی تولید داده‌ها را مشخص می‌کند. در دسته‌بندی بیز، مشخص کردن این مدل زایشی گام اصلی آموزش است.
+
+\section*{۶. نایو بیز گاوسی}
+ساده‌ترین مدل نایو بیز، مدل نایو بیز گاوسی (\lr{Gaussian Naive Bayes}) است. در این مدل فرض می‌شود داده‌های مربوط به هر کلاس از یک توزیع گاوسی ساده بدون کوواریانس بین ابعاد استخراج شده‌اند. این مدل با محاسبه میانگین و انحراف معیار نقاط در هر کلاس برازش می‌شود.
+مرز تصمیم‌گیری حاصل از مدل نایو بیز گاوسی عموماً درجه دوم (منحنی) است. این روش امکان دسته‌بندی احتمالی (\lr{probabilistic classification}) را نیز فراهم می‌کند.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_23_1.png}
+  \caption{پیش‌بینی کلاس نقاط جدید بر روی فضای ویژگی}
+\end{figure}
+
+
+
+
+\section{۷. نایو بیز چندجمله‌ای}
+یکی دیگر از مدل‌ها، نایو بیز چندجمله‌ای (\lr{Multinomial Naive Bayes}) است که در آن فرض می‌شود ویژگی‌ها از یک توزیع چندجمله‌ای ساده تولید شده‌اند. این توزیع تعداد رخدادها را در چند طبقه توصیف می‌کند و برای ویژگی‌هایی که نشان‌دهنده فراوانی یا تعداد شمارش هستند مناسب است.
+
+کاربرد اصلی این روش در دسته‌بندی متون (\lr{text classification}) است، که در آن ویژگی‌ها مربوط به تعداد تکرار یا فرکانس کلمات در اسناد هستند.
+
+\section*{۸. چه زمانی از نایو بیز استفاده کنیم؟}
+با وجود فرضیات ساده‌لوحانه، دسته‌بندی‌کننده نایو بیز مزایای زیر را دارد:
+\begin{itemize}
+    \item آموزش و پیش‌بینی بسیار سریع.
+    \item ارائه پیش‌بینی‌های احتمالی صریح.
+    \item تفسیرپذیری بالا و پارامترهای قابل تنظیم بسیار کم.
+\end{itemize}
+این الگوریتم به ویژه برای داده‌های با ابعاد بسیار بالا (مانند متون) و دسته‌بندی‌های به خوبی تفکیک‌شده بسیار کارآمد عمل می‌کند.
+
+\end{document}
+</code></pre></details><details class="source-file" ><summary><bdi>Principal Component Analysis, Part 2 — Statistical Machine Learning/translation.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Principal%20Component%20Analysis%2C%20Part%202%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xepersian}
+\settextfont{XB Niloofar}
+
+\geometry{a4paper, margin=1in}
+
+\title{\lr{Principal Component Analysis, Part 2} \\ (تحلیل مولفه‌های اصلی، بخش ۲)}
+\author{}
+\date{}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_2_1.png}
+  \caption{تعریف بردارهای پایه و دستگاه مختصات در فضای دوبعدی هندسی}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_7_1.png}
+  \caption{تغییر پایه و دوران دستگاه مختصات برای تراز کردن داده‌ها بر روی جهت‌های اصلی}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_8_1.png}
+  \caption{مثال دوران داده‌ها روی پایه‌های جدید حاصل از تحلیل مولفه‌های اصلی}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_15_1.png}
+  \caption{مراحل کارکرد الگوریتم PCA برای کاهش ابعاد}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_22_1.png}
+  \caption{تصویر داده‌ها روی بردارهای ویژه اصلی برای کاهش بعد از ۲ بعد به ۱ بعد}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{document}
+
+\maketitle
+
+\section*{فهرست مطالب}
+\begin{enumerate}
+    \item مقدمه
+    \item پایه‌های جبر خطی
+    \item تصویر کردن بردارها (\lr{Vector Projections})
+    \item تبدیل پایه (\lr{Basis Transformation})
+    \item ماتریس دوران (\lr{Rotation Matrix})
+    \item پایه ریاضی \lr{PCA} و مسئله بیشینه‌سازی واریانس
+    \item بهینه‌سازی مقید از طریق ضرایب لاگرانژ (\lr{Lagrange Multipliers})
+    \item الگوریتم \lr{PCA}
+    \item تصویر و بازسازی داده‌ها (\lr{Projection \&amp; Reconstruction})
+    \item هم‌ارزی دو دیدگاه بهینه‌سازی در \lr{PCA}
+    \item تحلیل خطا در \lr{PCA}
+    \item خلاصه
+\end{enumerate}
+
+\newpage
+
+\section*{۱. مقدمه}
+تحلیل مولفه‌های اصلی (\lr{Principal Component Analysis} یا \lr{PCA}) یک روش بنیادی کاهش ابعاد (\lr{dimensionality reduction}) است که یک زیرفضای $r$-بعدی بهینه را شناسایی می‌کند که بیشترین واریانس را در داده‌ها ثبت می‌کند. پایه‌های ریاضی آن بر یافتن جهت‌های متعامد — به نام مولفه‌های اصلی (\lr{principal components}) — تکیه دارد که به طور متوالی واریانس تصویرشده را بیشینه می‌کنند.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_23_1.png}
+  \caption{نمودار خطای بازسازی داده‌ها در فرآیند کاهش بعد با حفظ مولفه‌های اصلی}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_24_1.png}
+  \caption{مقایسه نتایج کاهش بعد PCA پیاده‌سازی شده با کتابخانه scikit-learn}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_25_1.png}
+  \caption{نمونه‌هایی از کاربردهای PCA در بازسازی تصاویر و کاهش ابعاد مجموعه داده‌های بزرگ}
+\end{figure}
+
+
+
+
+
+
+
+
+با داشتن یک ماتریس داده مرکزی‌شده $X$، ما به دنبال بردارهای واحد $u$ هستیم که واریانس داده‌های تصویرشده $Xu$ را بیشینه کنند. این بهینه‌سازی به مسئله مقادیر ویژه کلیدی زیر منجر می‌شود:
+\[
+Cu = \lambda u
+\]
+که در آن $C$ یک ماتریس کوواریانس است.
+
+\section*{۲. پایه‌های جبر خطی}
+\subsection*{نمایش ماتریس داده‌ها}
+ماتریس داده $X$ با $n$ سطر (نمونه‌ها) و $d$ ستون (ویژگی‌ها) به صورت زیر است:
+\[
+\mathbf{X} = \begin{bmatrix} 
+x_{11} &amp; x_{12} &amp; \cdots &amp; x_{1d} \\
+x_{21} &amp; x_{22} &amp; \cdots &amp; x_{2d} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{nd} 
+\end{bmatrix}
+\]
+هر سطر $x_i = [x_{i1}, \dots, x_{id}]^T$ نشان‌دهنده یک نمونه در فضای $d$-بعدی است.
+
+\subsection*{عملیات برداری}
+\begin{itemize}
+    \item \textbf{ضرب داخلی (\lr{Dot Product}):} $a^T b = \sum_{i=1}^m a_i b_i$
+    \item \textbf{طول بردار (\lr{Norm}):} $\|a\| = \sqrt{a^T a} = \sqrt{\sum a_i^2}$
+    \item \textbf{بردار واحد (\lr{Unit Vector}):} $u = \frac{a}{\|a\|}$
+    \item \textbf{فاصله بین بردارها:} $\|a-b\| = \sqrt{\sum (a_i - b_i)^2}$
+    \item \textbf{زاویه بین بردارها:} $\cos\theta = \frac{a^T b}{\|a\|\|b\|}$
+\end{itemize}
+
+\section*{۳. تصویر کردن بردارها}
+ضرب داخلی و زاویه رابطه زیر را دارند:
+\[
+a^T b = \|a\| \|b\| \cos\theta
+\]
+
+طول سایه بردار $b$ در امتداد $a$ (تصویر اسکالر) برابر است با:
+\[
+\text{Scalar projection} = \|b\| \cos\theta = \frac{a^T b}{\|a\|}
+\]
+برای بردار واحد، این مقدار به $a^T b$ ساده می‌شود.
+
+برای به دست آوردن شکل برداری تصویر، تصویر اسکالر را در بردار واحد $a$ ضرب می‌کنیم:
+\[
+b_{\parallel} = \left( \frac{a^T b}{\|a\|^2} \right) a
+\]
+اگر $\|a\|=1$ باشد، $b_{\parallel} = (a^T b) a$ می‌شود.
+
+مولفه عمود (باقیمانده) به صورت زیر تعریف می‌شود:
+\[
+b_{\perp} = b - b_{\parallel}
+\]
+که بر $a$ عمود است.
+
+\section*{۴. تبدیل پایه}
+تغییر پایه به ما امکان می‌دهد هر بردار $x$ را بر حسب پایه‌های متعامد جدید $\{u_1, \dots, u_d\}$ بیان کنیم:
+\[
+x = a_1 u_1 + \dots + a_d u_d = U a
+\]
+که در آن $U = [u_1 | \dots | u_d]$ ماتریس پایه‌های جدید و $a$ مختصات $x$ در پایه جدید است:
+\[
+a = U^T x
+\]
+این به دلیل متعامد بودن است: $a_i = u_i^T x$.
+
+\section*{۵. ماتریس دوران}
+یک ماتریس دوران بردارها را با زاویه مشخص $\theta$ می‌چرخاند در حالی که طول آنها را حفظ می‌کند. برای دوران ۴۵ درجه در صفحه دو‌بعدی، ماتریس دوران به صورت زیر است:
+\[
+R = \begin{bmatrix} \cos\theta &amp; -\sin\theta &amp; 0 \\ \sin\theta &amp; \cos\theta &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{bmatrix} = \begin{bmatrix} \frac{1}{\sqrt{2}} &amp; -\frac{1}{\sqrt{2}} &amp; 0 \\ \frac{1}{\sqrt{2}} &amp; \frac{1}{\sqrt{2}} &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{bmatrix}
+\]
+ستون‌های $R$ نشان می‌دهند که هر محور پس از دوران به کجا منتقل می‌شود که به عنوان پایه‌های جدید استفاده می‌شوند.
+
+\section*{۶. پایه ریاضی \lr{PCA} و مسئله بیشینه‌سازی واریانس}
+\lr{PCA} به دنبال یک پایه متعامد $\{u_1, \dots, u_r\}$ است که بیشترین واریانس داده‌ها را در جهت‌های تصویرشده ثبت کند.
+
+برای اولین مولفه اصلی، به دنبال بردار واحد $u$ هستیم که واریانس داده‌های تصویرشده را بیشینه کند:
+\[
+\max_{\|u\|=1} Var(X u)
+\]
+فرض کنید $z_i = x_i - \bar{x}$ نقاط داده مرکزی‌شده باشند. واریانس تصویرشده برابر است با:
+\[
+\sigma^2_u = \frac{1}{n} \sum_{i=1}^n (u^T z_i)^2 = \frac{1}{n} \sum_{i=1}^n (u^T z_i)(z_i^T u) = u^T \left( \frac{1}{n} \sum_{i=1}^n z_i z_i^T \right) u = u^T C u
+\]
+که در آن $C$ ماتریس کوواریانس نمونه است. با استفاده از ماتریس داده‌های مرکزی‌شده $Z$:
+\[
+\sigma^2_u = u^T C u = \frac{1}{n} \|Z u\|^2
+\]
+
+\section*{۷. بهینه‌سازی مقید از طریق ضرایب لاگرانژ}
+ما $\sigma^2_u = u^T C u$ را تحت قید $\|u\|=1$ بیشینه می‌کنیم. با معرفی ضریب لاگرانژ $\lambda$، تابع لاگرانژ عبارت است از:
+\[
+J(u) = u^T C u - \lambda(u^T u - 1)
+\]
+با گرفتن گرادیان نسبت به $u$ و قرار دادن آن برابر صفر:
+\[
+2 C u - 2 \lambda u = 0 \implies C u = \lambda u
+\]
+این نشان می‌دهد $u$ باید بردار ویژه ماتریس کوواریانس $C$ باشد.
+
+واریانس تصویرشده برابر با مقدار ویژه $\lambda$ است:
+\[
+\sigma^2_u = u^T C u = u^T \lambda u = \lambda
+\]
+برای بیشینه‌سازی واریانس، ما بزرگترین مقدار ویژه $\lambda_1$ را انتخاب می‌کنیم. بردار ویژه متناظر $u_1$ اولین مولفه اصلی را تعریف می‌کند.
+
+\section*{۸. الگوریتم \lr{PCA}}
+\begin{enumerate}
+    \item مرکزی‌سازی داده‌ها: $Z = X - \mathbf{1}\mu^T$.
+    \item محاسبه ماتریس کوواریانس: $C = \frac{1}{n} Z^T Z$.
+    \item محاسبه مقادیر ویژه و بردارهای ویژه ماتریس $C$.
+    \item مرتب‌سازی مقادیر ویژه به صورت نزولی.
+    \item انتخاب $r$ بردار ویژه برتر به عنوان مولفه‌های اصلی ($U_r$).
+    \item تصویر داده‌ها: $Z&#x27; = Z U_r$.
+\end{enumerate}
+
+\section*{۹. تصویر و بازسازی داده‌ها}
+\begin{itemize}
+    \item \textbf{تصویر (کاهش ابعاد):} $a_i = U_r^T z_i$ که در آن $a$ بردار مختصات در فضای کاهش‌یافته است.
+    \item \textbf{بازسازی (تقریب):} $z&#x27;_i = \sum_{j=1}^r a_{ij} u_j = U_r a_i$. بازگشت به فضای اصلی: $x_{\text{recon}} = z&#x27;_i + \mu$.
+    \item \textbf{در فرم ماتریسی:} تصویر $A = Z U_r$ و بازسازی $Z&#x27; = A U_r^T$ و بازگشت به فضای اصلی $X_{\text{recon}} = Z&#x27; + \mathbf{1} \mu^T$.
+\end{itemize}
+بازسازی یک تقریب است و خطای بازسازی $\|z - z&#x27;\|$ ناشی از کنار گذاشتن مولفه‌های اصلی دیگر است.
+
+\section*{۱۰. هم‌ارزی دو دیدگاه بهینه‌سازی در \lr{PCA}}
+\lr{PCA} را می‌توان از دو دیدگاه هم‌ارز فرموله کرد:
+\begin{enumerate}
+    \item بیشینه‌سازی واریانس تصویرشده.
+    \item کمینه‌سازی خطای بازسازی.
+\end{enumerate}
+
+\textbf{اثبات هم‌ارزی:}
+با بسط دادن خطای بازسازی داریم:
+\[
+\|z_j - (u^T z_j)u\|^2 = \|z_j\|^2 - (u^T z_j)^2
+\]
+بنابراین میانگین خطای مربعات (\lr{MSE}) برابر است با:
+\[
+\text{\lr{MSE}} = \frac{1}{n} \sum_{j=1}^n \|z_j\|^2 - \frac{1}{n} \sum_{j=1}^n (u^T z_j)^2
+\]
+چون جمله اول کل واریانس داده‌ها و مقداری ثابت است، کمینه کردن \lr{MSE} معادل با بیشینه کردن جمله دوم (واریانس تصویرشده) است.
+
+\section*{۱۱. تحلیل خطا در \lr{PCA}}
+برای داده‌های با ابعاد $d$ و بازسازی با $r$ مولفه، بردار خطا برابر است با:
+\[
+e_j = z_j - z&#x27;_j = \sum_{i=r+1}^d (u_i^T z_j) u_i
+\]
+میانگین خطای مربعات کل برابر با مجموع مقادیر ویژه کنار گذاشته شده است:
+\[
+\text{\lr{MSE}} = \sum_{i=r+1}^d \lambda_i
+\]
+کنار گذاشتن مولفه‌های اصلی $r+1$ تا $d$ دقیقاً به اندازه مجموع مقادیر ویژه آنها باعث از دست رفتن واریانس داده‌ها می‌شود.
+
+\section*{۱۲. خلاصه}
+\begin{itemize}
+    \item بیشینه‌سازی واریانس و کمینه‌سازی خطای بازسازی در \lr{PCA} هم‌ارز هستند.
+    \item مقادیر ویژه نشان‌دهنده مقدار واریانس ثبت‌شده در امتداد هر مولفه هستند.
+    \item خطای \lr{MSE} بازسازی برابر با مجموع مقادیر ویژه کنار گذاشته شده است.
+\end{itemize}
+
+\end{document}
+</code></pre></details><details class="source-file" ><summary><bdi>The Kernel Method (Kernel Trick) — Statistical Machine Learning/translation.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/The%20Kernel%20Method%20%28Kernel%20Trick%29%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xepersian}
+\settextfont{XB Niloofar}
+
+\geometry{a4paper, margin=1in}
+
+\title{\lr{The Kernel Method (Kernel Trick)} \\ (روش هسته / ترفند هسته)}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{فهرست مطالب}
+\begin{enumerate}
+    \item مقدمه
+    \item محدودیت‌های مدل‌های خطی
+    \item نگاشت ویژگی (\lr{Feature Mapping})
+    \item ترفند هسته (\lr{The Kernel Trick})
+    \item الگوریتم‌های استفاده‌کننده از هسته
+    \item توابع هسته رایج (\lr{Common Kernel Functions})
+    \item قضیه مرسر (\lr{Mercer&#x27;s Theorem})
+    \item تفسیرهای بیشتر و عملیات در فضای ویژگی
+    \item مزایا و معایب ترفند هسته
+    \item خوشه‌بندی کی-مینز هسته (\lr{Kernel K-means Clustering})
+\end{enumerate}
+
+\newpage
+
+\section*{۱. مقدمه}
+بسیاری از الگوریتم‌های یادگیری ماشین از جمله رگرسیون خطی، رگرسیون لجستیک، تحلیل مولفه‌های اصلی (\lr{PCA}) و دسته‌بندی‌کننده‌های خطی (مانند پرسپترون یا ماشین‌های بردار پشتیبان خطی) بر روابط خطی بین نقاط داده تکیه دارند. این الگوریتم‌ها زمانی که داده‌ها به صورت خطی تفکیک‌پذیر باشند یا بتوان آنها را به طور مناسب با توابع خطی مدل‌سازی کرد، عملکرد خوبی دارند. با این حال، بسیاری از مسائل دنیای واقعی شامل ساختارهای داده غیرخطی و پیچیده‌ای هستند که مدل‌های خطی نمی‌توانند آنها را به طور موثر ثبت کنند.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_1_1.png}
+  \caption{مفهوم هندسی نگاشت داده‌ها به فضای با بعد بالا در روش‌های هسته}
+\end{figure}
+
+
+
+
+روش هسته (\lr{Kernel Method}) یا ترفند هسته (\lr{Kernel Trick}) راه قدرتمندی برای اعمال الگوریتم‌های خطی به داده‌های غیرخطی ارائه می‌دهد. ایده اصلی نگاشت داده‌ها به یک فضای ویژگی با ابعاد بالاتر ($\mathcal{F}$) است که در آن داده‌ها به صورت خطی تفکیک‌پذیر یا برای مدل‌سازی خطی آسان‌تر می‌شوند. ترفند این است که این نگاشت می‌تواند به طور ضمنی با استفاده از یک تابع هسته انجام شود، بدون اینکه نیازی به محاسبه صریح مختصات نقاط داده در فضای ویژگی با ابعاد بالا (و به طور بالقوه نامتناهی) باشد. این کار از بار محاسباتی مرتبط با نگاشت صریح جلوگیری می‌کند.
+
+\section*{۲. محدودیت‌های مدل‌های خطی}
+در یک مسئله دسته‌بندی باینری، یک مدل خطی تلاش می‌کند تا ابرصفحه‌ای برای جداسازی نقاط داده متعلق به کلاس‌های مختلف پیدا کند. در فضای ۲بعدی یک خط ($w^T x + b = 0$)، در ۳بعدی یک صفحه ($w_1 x_1 + w_2 x_2 + w_3 x_3 + b = 0$) و در فضای $p$-بعدی یک زیرفضای $(p-1)$-بعدی است. اگر چنین ابرصفحه جداکننده‌ای وجود داشته باشد، داده‌ها به صورت خطی تفکیک‌پذیر نامیده می‌شوند. اما اگر داده‌ها ساختار غیرخطی داشته باشند (مانند مسئله XOR یا دایره‌های هم‌مرکز)، هیچ ابرصفحه واحدی نمی‌تواند کلاس‌ها را به درستی در فضای ورودی اصلی جدا کند.
+
+\section*{۳. نگاشت ویژگی}
+برای مدیریت داده‌های غیرخطی، می‌توان داده‌ها را به یک فضای ویژگی جدید و با ابعاد بالاتر منتقل کرد که در آنجا ممکن است به صورت خطی تفکیک‌پذیر شوند. این کار با استفاده از یک تابع نگاشت که با $\phi$ نشان داده می‌شود، انجام می‌گیرد:
+\[
+\phi: \mathcal{X} \to \mathcal{F}
+\]
+که در آن $\mathcal{X}$ فضای ورودی اصلی (به عنوان مثال $\mathbb{R}^p$) و $\mathcal{F}$ فضای ویژگی با ابعاد بسیار بالاتر (به عنوان مثال $\mathbb{R}^d$ که $d \gg p$ است یا حتی نامتناهی) است.
+
+ترفند هسته با مفهوم هسته‌سازی (\lr{kernelization}) در طراحی الگوریتم‌های کارآمد (که در آن ورودی‌ها با ورودی کوچکتری به نام هسته جایگزین می‌شوند) متفاوت است.
+
+\section*{۴. ترفند هسته}
+قدرت روش هسته در این مشاهدات نهفته است که بسیاری از الگوریتم‌های خطی را می‌توان به گونه‌ای فرموله کرد که فقط به ضرب داخلی بین نقاط داده نیاز داشته باشند ($x_i^T x_j$).
+اگر از نگاشت ویژگی $\phi$ استفاده کنیم، این الگوریتم‌ها باید ضرب داخلی را در فضای ویژگی با ابعاد بالا محاسبه کنند: $\phi(x_i)^T \phi(x_j)$. محاسبه صریح $\phi(x)$ به ویژه اگر ابعاد آن نامتناهی یا بسیار بزرگ باشد، می‌تواند از نظر محاسباتی بسیار گران تمام شود.
+
+ترفند هسته از این محاسبات صریح جلوگیری می‌کند. ما یک تابع هسته تعریف می‌کنیم که ضرب داخلی در فضای ویژگی را مستقیماً از روی بردارهای ورودی اصلی محاسبه کند:
+\[
+K(x, z) = \phi(x)^T \phi(z)
+\]
+اگر بتوانیم تابع $K$ را پیدا کنیم که این ضرب داخلی را بدون محاسبه اولیه $\phi(x)$ و $\phi(z)$ به طور کارآمد محاسبه کند، به سادگی هر ضرب داخلی را با ارزیابی تابع هسته جایگزین می‌کنیم. این به ما امکان می‌دهد در فضای ویژگی با ابعاد بالا عمل کنیم در حالی که محاسبات را فقط در فضای ورودی اصلی انجام می‌دهیم.
+
+ضرب داخلی نشان‌دهنده شباهت بین نقاط در فضای ویژگی است. فضای ویژگی $\mathcal{F}$ به عنوان فضای هیلبرت هسته بازتولید‌کننده (\lr{Reproducing Kernel Hilbert Space} یا \lr{RKHS}) شناخته می‌شود.
+
+\section*{۵. الگوریتم‌های استفاده‌کننده از هسته}
+هر الگوریتمی که بتواند صرفاً بر حسب ضرب داخلی بین نمونه‌های ورودی بیان شود، پتانسیل هسته‌دار شدن (\lr{kernelized}) را دارد: دسته‌بندی‌کننده‌های خطی (پرسپترون، رگرسیون لجستیک)، تحلیل مولفه‌های اصلی هسته (\lr{Kernel PCA})، ماشین‌های بردار پشتیبان (\lr{SVM})، فرآیندهای گاوسی، رگرسیون ستیغی هسته و روش‌های خوشه‌بندی.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_4_1.png}
+  \caption{نمایش نگاشت ویژگی غیرخطی و محاسبات ضرب داخلی ساده با استفاده از تابع هسته}
+\end{figure}
+
+
+
+
+\section*{۶. توابع هسته رایج}
+\begin{itemize}
+    \item \textbf{هسته خطی (\lr{Linear Kernel}):} 
+    \[
+    K(x, z) = x^T z
+    \]
+    با نگاشت همانی $\phi(x)=x$ که الگوریتم خطی اصلی را بازیابی می‌کند.
+    \item \textbf{هسته چندجمله‌ای (\lr{Polynomial Kernel}):} 
+    \[
+    K(x, z) = (\gamma x^T z + c)^d
+    \]
+    که در آن $\gamma، c \ge 0$ و درجه چندجمله‌ای $d$ ابرپارامتر هستند. این هسته متناظر با فضای ویژگی شامل ترکیب‌های چندجمله‌ای ویژگی‌های اصلی تا درجه $d$ است.
+    \item \textbf{هسته گاوسی / تابع پایه شعاعی (\lr{Gaussian Kernel / RBF}):} 
+    \[
+    K(x, z) = \exp\left( -\frac{\|x-z\|^2}{2\sigma^2} \right) = \exp(-\gamma \|x-z\|^2)
+    \]
+    که در آن $\gamma = 1/(2\sigma^2)$ یک ابرپارامتر است. این هسته متناظر با فضای ویژگی با ابعاد نامتناهی است.
+\end{itemize}
+
+\section*{۷. قضیه مرسر: چه زمانی \lr{K} یک هسته معتبر است؟}
+هر تابعی نمی‌تواند به عنوان ضرب داخلی در یک فضای هیلبرت تفسیر شود. قضیه مرسر شرایط لازم برای معتبر بودن یک تابع هسته را فراهم می‌کند.
+
+\subsection*{ماتریس گرام (\lr{Gram Matrix})}
+با داشتن مجموعه‌داده $\{x_1, \dots, x_n\}$، ماتریس گرام $K$ یک ماتریس $n \times n$ است که در آن عنصر $K_{ij}$ ضرب داخلی بردارهای ویژگی است: $K_{ij} = \langle \phi(x_i), \phi(x_j) \rangle = K(x_i, x_j)$.
+
+\subsection*{ماتریس معین مثبت (\lr{Positive Semidefinite})}
+یک ماتریس متقارن $K$ معین مثبت است اگر برای هر بردار غیرصفر $c \in \mathbb{R}^n$ داشته باشیم: $c^T K c \ge 0$.
+
+\subsection*{قضیه مرسر (ساده‌شده)}
+یک تابع متقارن و پیوسته $K$ یک هسته معتبر است اگر و تنها اگر ماتریس گرام $K$ برای هر مجموعه متناهی از نقاط، معین مثبت باشد.
+
+\textbf{اثبات یک جهت قضیه (اگر $K$ هسته باشد، ماتریس گرام PSD است):}
+فرض کنید $K(x, z) = \phi(x)^T \phi(z)$. برای هر بردار $c = (c_1, \dots, c_n)^T \in \mathbb{R}^n$ داریم:
+\[
+c^T K c = \sum_{i=1}^n \sum_{j=1}^n c_i c_j K_{ij} = \sum_{i=1}^n \sum_{j=1}^n c_i c_j (\phi(x_i)^T \phi(x_j))
+\]
+\[
+c^T K c = \left( \sum_{i=1}^n c_i \phi(x_i) \right)^T \left( \sum_{j=1}^n c_j \phi(x_j) \right) = \|v\|^2 \ge 0
+\]
+که در آن $v = \sum c_i \phi(x_i)$ برداری در فضای ویژگی $\mathcal{F}$ است. چون هنجار مربع هر بردار همواره غیرمنفی است، پس ماتریس گرام معین مثبت است.
+
+\section*{۸. تفسیرهای بیشتر و عملیات در فضای ویژگی}
+\begin{itemize}
+    \item \textbf{هنجار (نرم) یک نقطه در فضای ویژگی:} 
+    \[
+    \|\phi(x)\|^2 = \phi(x)^T \phi(x) = K(x, x)
+    \]
+    \item \textbf{میانگین در فضای ویژگی:} برای داده‌های $\{x_1, \dots, x_n\}$ میانگین در فضای ویژگی $m_{\phi} = \frac{1}{n} \sum \phi(x_i)$ است. ضرب داخلی آن با هر نقطه: $\phi(x)^T m_{\phi} = \frac{1}{n} \sum K(x, x_j)$.
+    \item \textbf{فاصله بین نقاط در فضای ویژگی:} 
+    \[
+    \|\phi(x_i) - \phi(x_j)\| = \sqrt{K(x_i, x_i) + K(x_j, x_j) - 2 K(x_i, x_j)}
+    \]
+    \item \textbf{واریانس کل در فضای ویژگی:}
+    \[
+    Var_{\phi} = \frac{1}{n} \sum_{i=1}^n \|\phi(x_i) - m_{\phi}\|^2 = \frac{1}{n} \sum_{i=1}^n K(x_i, x_i) - \frac{2}{n^2} \sum_{i,j} K(x_i, x_j) + \frac{1}{n^2} \sum_{k,l} K(x_k, x_l)
+    \]
+    \item \textbf{مرکزی‌سازی (\lr{Centering}):} با تعریف $\tilde{\phi}(x_i) = \phi(x_i) - m_{\phi}$، ماتریس هسته مرکزی‌شده $\tilde{K}$ از رابطه زیر به دست می‌آید که گام اصلی در Kernel PCA است:
+    \[
+    \tilde{K} = K - \mathbf{1}_n K - K \mathbf{1}_n + \mathbf{1}_n K \mathbf{1}_n
+    \]
+    که در آن $\mathbf{1}_n$ ماتریس با مقادیر $1/n$ است.
+    \item \textbf{نرمال‌سازی هنجار واحد:} هسته نرمال‌سازی شده (یا هسته کسینوسی) به صورت زیر است:
+    \[
+    K_{\text{norm}}(x, z) = \frac{K(x, z)}{\sqrt{K(x, x)} \sqrt{K(z, z)}}
+    \]
+\end{itemize}
+
+\section*{۹. مزایا و معایب ترفند هسته}
+\begin{itemize}
+    \item \textbf{مزایا:} توانایی مدل‌سازی غیرخطی بودن، کارایی محاسباتی با عدم محاسبه صریح $\phi(x)$، ماژولار بودن و امکان کار با داده‌های غیربرداری (مانند متون یا گراف‌ها).
+    \item \textbf{معایب:} هزینه محاسباتی در داده‌های بزرگ (محاسبه ماتریس گرام زمان $O(n^2 d)$ و فضای $O(n^2)$ می‌برد)، دشواری انتخاب هسته و ابرپارامترها و کاهش تفسیرپذیری مرز تصمیم‌گیری.
+\end{itemize}
+
+\section*{۱۰. خوشه‌بندی کی-مینز هسته}
+الگوریتم \lr{K-means} استاندارد فقط خوشه‌های با مرزهای خطی را پیدا می‌کند. برای خوشه‌های با ساختار غیرخطی، کی-مینز هسته (\lr{Kernel K-means}) با ترفند هسته داده‌ها را به فضای ویژگی با ابعاد بالاتر نگاشت می‌کند.
+
+فاصله مربع بین یک نقطه و مرکز خوشه $C_i$ در فضای ویژگی به صورت زیر محاسبه می‌شود:
+\[
+\|\phi(x_j) - \mu^{\phi}_i\|^2 = K(x_j, x_j) - \frac{2}{n_i} \sum_{x_a \in C_i} K(x_a, x_j) + \frac{1}{n_i^2} \sum_{x_a, x_b \in C_i} K(x_a, x_b)
+\]
+در این الگوریتم، پس از تخصیص تصادفی اولیه نقاط به خوشه‌ها، فواصل در فضای ویژگی با استفاده از رابطه فوق محاسبه شده و نقاط به نزدیک‌ترین خوشه تخصیص داده می‌شوند. این فرآیند تا همگرایی تکرار می‌شود.
+
+\end{document}
+</code></pre></details><details class="source-file" ><summary><bdi>Understanding the Covariance Matrix — Statistical Machine Learning/translation.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Understanding%20the%20Covariance%20Matrix%20%E2%80%94%20Statistical%20Machine%20Learning/translation.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xepersian}
+\settextfont{XB Niloofar}
+
+\geometry{a4paper, margin=1in}
+
+\title{\lr{Understanding the Covariance Matrix} \\ (درک ماتریس کوواریانس)}
+\author{}
+\date{}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_4_1.png}
+  \caption{نقشه حرارتی ماتریس کوواریانس نمونه برای داده‌های شبیه‌سازی‌شده}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_5_1.png}
+  \caption{نمودار توزیع داده‌ها بر اساس همبستگی و پراکندگی آن‌ها}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_7_1.png}
+  \caption{رابطه مستقیم و همبستگی مثبت بین دو متغیر تصادفی}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_10_1.png}
+  \caption{نمایش بردارهای ویژه و مقادیر ویژه به عنوان جهت‌های اصلی واریانس و پراکندگی داده‌ها}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_16_1.png}
+  \caption{ماتریس همبستگی پیرسون مربوط به شباهت امتیازدهی کاربران به فیلم‌ها}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img_page_17_1.png}
+  \caption{خلاصه هندسی و مفهومی ماتریس کوواریانس}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{document}
+
+\maketitle
+
+\section*{فهرست مطالب}
+\begin{enumerate}
+    \item کوواریانس چیست؟ (\lr{What is Covariance?})
+    \item ماتریس کوواریانس چیست؟ (\lr{What is the Covariance Matrix?})
+    \item مقادیر ویژه و بردارهای ویژه ماتریس کوواریانس
+    \item ارتباط با تحلیل مولفه‌های اصلی (\lr{PCA})
+    \item محاسبه دستی ماتریس کوواریانس نمونه
+    \item ماتریس همبستگی (\lr{Correlation Matrix})
+    \item مثال: فیلتر کردن داده‌ها بر اساس همبستگی پیرسون (\lr{Pearson Correlation})
+    \item نتیجه‌گیری
+\end{enumerate}
+
+\newpage
+
+\section*{۱. کوواریانس چیست؟}
+کوواریانس (\lr{Covariance}) میزان تغییر همزمان دو متغیر تصادفی را اندازه‌گیری می‌کند. اگر متغیرها رفتار مشابهی نشان دهند (یعنی با افزایش یکی، دیگری نیز افزایش یابد)، کوواریانس مثبت است. اگر رفتار متضاد نشان دهند (با افزایش یکی، دیگری کاهش یابد)، کوواریانس منفی است. اگر متغیرها مستقل باشند، کوواریانس صفر است (اگرچه کوواریانس صفر لزوماً به معنای استقلال نیست).
+
+فرمول کوواریانس نمونه بین دو متغیر X و Y به صورت زیر است:
+\[
+cov(X,Y) = \frac{1}{n-1} \sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})
+\]
+
+\section*{۲. ماتریس کوواریانس چیست؟}
+برای مجموعه‌داده‌ای با چندین متغیر (ویژگی)، ماتریس کوواریانس، کوواریانس‌های بین تمام جفت متغیرها را سازماندهی می‌کند. برای مجموعه‌داده‌ای با $d$ متغیر ($X_1, X_2, \dots, X_d$)، ماتریس کوواریانس $\Sigma$ (یا $S$ برای نمونه) یک ماتریس متقارن $d \times d$ است که در آن:
+\begin{itemize}
+    \item عنصر در موقعیت $(i, j)$ کوواریانس بین متغیر $X_i$ و متغیر $X_j$ است: $\Sigma_{ij} = cov(X_i, X_j)$.
+    \item عناصر روی قطر اصلی $\Sigma_{ii}$ واریانس هر متغیر هستند: $\Sigma_{ii} = cov(X_i, X_i) = var(X_i)$.
+\end{itemize}
+
+مثال برای ۳ متغیر $(X, Y, Z)$:
+\[
+S = \begin{pmatrix} 
+var(X) &amp; cov(X,Y) &amp; cov(X,Z) \\ 
+cov(Y,X) &amp; var(Y) &amp; cov(Y,Z) \\ 
+cov(Z,X) &amp; cov(Z,Y) &amp; var(Z) 
+\end{pmatrix}
+\]
+از آنجا که $cov(X, Y) = cov(Y, X)$ است، این ماتریس همواره متقارن است.
+
+\subsection*{مثال شهودی}
+فرض کنید مجموعه‌داده‌ای از ۱۵۰ دانش‌آموز با متغیرهای ساعت مطالعه، ساعت تفریح و نمره ریاضی داریم:
+\begin{itemize}
+    \item \textbf{واریانس‌ها (عناصر روی قطر):} واریانس ساعت مطالعه (۱۴.۲۴)، واریانس ساعت تفریح (۱۲.۴۹) و واریانس نمره ریاضی (۱۲.۳۶) که پراکندگی هر متغیر را نشان می‌دهند.
+    \item \textbf{کوواریانس‌ها (عناصر خارج از قطر):}
+    \begin{itemize}
+        \item کوواریانس ساعت مطالعه و ساعت تفریح (۱۰.۱۱-): نشان‌دهنده رابطه معکوس است (دانش‌آموزانی که بیشتر مطالعه می‌کنند، کمتر تفریح می‌کنند).
+        \item کوواریانس ساعت مطالعه و نمره ریاضی (۸.۲۶+): نشان‌دهنده رابطه مستقیم است.
+        \item کوواریانس ساعت تفریح و نمره ریاضی (۶.۶۸-): نشان‌دهنده رابطه معکوس است.
+    \end{itemize}
+\end{itemize}
+
+\section*{۳. مقادیر ویژه و بردارهای ویژه ماتریس کوواریانس}
+بردارهای ویژه و مقادیر ویژه اطلاعات مهمی درباره ساختار داده‌ها ارائه می‌دهند:
+\begin{itemize}
+    \item \textbf{بردارهای ویژه (\lr{Eigenvectors}):} جهت‌های حداکثر واریانس را در داده‌ها نشان می‌دهند که همان محورهای اصلی توزیع داده‌ها هستند.
+    \item \textbf{مقادیر ویژه (\lr{Eigenvalues}):} مقدار واریانس داده‌ها را در امتداد جهت بردارهای ویژه نشان می‌دهند. مقدار ویژه بزرگتر یعنی واریانس بیشتر در آن جهت.
+\end{itemize}
+
+\section*{۴. ارتباط با تحلیل مولفه‌های اصلی (\lr{PCA})}
+این تحلیل هسته اصلی الگوریتم \lr{PCA} است:
+\begin{enumerate}
+    \item بردارهای ویژه ماتریس کوواریانس، جهت‌های مولفه‌های اصلی هستند.
+    \item مقادیر ویژه نشان‌دهنده میزان واریانس ثبت‌یافته توسط هر مولفه اصلی متناظر هستند.
+\end{enumerate}
+با تصویر داده‌ها روی بردارهای ویژه، داده‌ها به یک سیستم مختصات جدید منتقل می‌شوند که محورهای آن جهت‌های بیشترین واریانس هستند. این روش برای کاهش ابعاد با حذف مولفه‌های دارای مقادیر ویژه کوچک استفاده می‌شود.
+
+\section*{۵. محاسبه دستی ماتریس کوواریانس نمونه}
+فرمول کوواریانس نمونه بدون انحراف بین دو متغیر $X_i$ و $X_j$ به صورت زیر است:
+\[
+S_{ij} = \frac{1}{n-1} \sum_{k=1}^n (x_{ki} - \bar{x}_i)(x_{kj} - \bar{x}_j)
+\]
+که در آن $n$ تعداد نمونه‌ها، $x_{ki}$ مشاهده $k$-ام از ویژگی $i$-ام و $\bar{x}_i$ میانگین نمونه ویژگی $i$-ام است.
+
+برای محاسبه ماتریسی:
+\begin{enumerate}
+    \item \textbf{مرکزی‌سازی داده‌ها:} میانگین هر ستون را از مقادیر آن ستون کم می‌کنیم تا ماتریس داده‌های مرکزی‌شده $X_{\text{centered}}$ به دست آید:
+    \[
+    X_{\text{centered}} = X - \mu^T
+    \]
+    \item \textbf{محاسبه ماتریس کوواریانس:} با استفاده از ضرب ماتریسی داریم:
+    \[
+    S = \frac{1}{n-1} X_{\text{centered}}^T X_{\text{centered}}
+    \]
+\end{enumerate}
+این رویکرد ماتریسی بسیار کارآمد بوده و برای مجموعه‌داده‌های بزرگ ترجیح داده می‌شود.
+
+\section*{۶. ماتریس همبستگی}
+هرچند ماتریس کوواریانس جهت و اندازه رابطه خطی را نشان می‌دهد، اما اندازه آن به مقیاس متغیرها بستگی دارد. ماتریس همبستگی (\lr{correlation matrix}) که با $R$ نشان داده می‌شود، کوواریانس را استاندارد می‌کند و قدرت و جهت رابطه خطی را بین جفت متغیرها بین -۱ و ۱ اندازه‌گیری می‌کند:
+\[
+R_{ij} = \frac{Cov(X_i, X_j)}{\sqrt{Var(X_i) Var(X_j)}} = \frac{S_{ij}}{\sqrt{S_{ii} S_{jj}}}
+\]
+عناصر روی قطر اصلی همواره ۱ هستند.
+
+\section*{۷. مثال: فیلتر کردن داده‌ها بر اساس همبستگی پیرسون}
+ضریب همبستگی پیرسون (\lr{Pearson correlation}) که از ماتریس کوواریانس به دست می‌آید، برای شناسایی و حذف ویژگی‌های تکراری یا ضعیف استفاده می‌شود. به عنوان مثال، در داده‌های امتیازدهی فیلم کاربران، کاربران با بیشترین شباهت (&#x27;Robert&#x27;, &#x27;Clara&#x27;) دارای همبستگی ۱.۰۰ و کاربران با کمترین شباهت (&#x27;Dan&#x27;, &#x27;Robert&#x27;) دارای همبستگی -۰.۹۷ هستند.
+
+\section*{۸. نتیجه‌گیری}
+ماتریس کوواریانس ابزاری بنیادی در آمار چندمتغیره است.
+\begin{itemize}
+    \item این ماتریس مربع و متقارن است.
+    \item عناصر روی قطر اصلی واریانس و عناصر خارج از قطر کوواریانس هستند.
+    \item بردارهای ویژه و مقادیر ویژه آن محورهای اصلی و اندازه پراکندگی داده‌ها را مشخص می‌کنند که مبنای \lr{PCA} است.
+\end{itemize}
+
+\end{document}
+</code></pre></details><details class="source-file" ><summary><bdi>Chapter9.md</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/study-notes/Chapter9.md" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>این متن‌ها به طور کامل درباره **نظریه تصمیم گیری بزنس** (Bayesian Decision Theory) در دسته‌بندی الگوها می‌باشد. این نظریه یک رویکرد آماری برای دسته‌بندی الگوها است که از **احتمالات** و **هزینه‌ها** برای ارزیابی میانبرهای تصمیم‌گیری در دسته‌بندی استفاده می‌کند. این تئوری با فرض دسترسی به تمام احتمالات مرتبط (prior، likelihood و posterior) تصمیم‌گیری بهینه را ارائه می‌دهد.
+
+---
+
+### **9.1 - مقدمه (Introduction)**
+
+**نظریه تصمیم گیری بزنس**، رویکرد آماری برای دسته‌بندی الگوها است.  
+این نظریه به صورت ریاضی **میانبرهای احتمالات** و **هزینه‌ها را** براساس تصمیمات دسته‌بندی مقداری می‌کند.  
+**فرض اصلی:** تمام احتمالات مرتبط با داده‌ها (prior، likelihood و posterior) شناخته شده است.  
+**مثال:** دسته‌بندی ماهی (ماهی توت فرنگی vs. ماہی سالمون) براساس ویژگی‌هایی مانند **نور (lightness)**.
+
+---
+
+### **9.2 - مفاهیم اصلی (Key Concepts)**
+
+همچنین، تعریف‌های مهم نظریه احتمالات بزنس به شرح زیر است:
+
+1. **وضعیت طبیعی (State of Nature $ \omega $)**:  
+   دسته واقعی یا کلاس داده (مثلاً ماہی توت فرنگی یا سالمون).
+
+2. **احتمال پیشین (Prior Probability $ P(\omega_j) $)**:  
+   احتمال یک کلاس قبل از مشاهده داده (مثلاً احتمال ماہی فرنگی بدون استفاده از داده‌ها).
+
+3. **چگالی احتمال شرطی (Class-Conditional Probability Density $ p(x|\omega_j) $)**:  
+   احتمال مشاهده یک ویژگی $ x $ با توجه به اینکه داده در کلاس $ \omega_j $ است.
+
+4. **احتمال پسین (Posterior Probability $ P(\omega_j|x) $)**:  
+   احتمال یک کلاس با توجه به مشاهده یک ویژگی $ x $.  
+   این احتمال را می‌توان با **فرمول بزنس** (Bayes’ Theorem) محاسبه کرد.
+
+---
+
+### **9.3 - فرمول بزنس (Bayes’ Formula)**
+
+**فرمول بزنس** به صورت زیر است:
+
+$$
+P(\omega_j|x) = \frac{p(x|\omega_j) P(\omega_j)}{p(x)}
+$$
+
+که در آن:
+
+- $ p(x) $: مقدار احتمال گزارش‌دهنده (evidence)، به عنوان یک ثابت نормال‌سازی شناخته می‌شود.
+- $ p(x) = \sum_j p(x|\omega_j) P(\omega_j) $
+
+این فرمول احتمال پسین (poserior probability) را به عنوان **نسبت بین احتمال ممکن (likelihood) و پیشین** به دست می‌آورد.  
+**توضیح:** احتمال پسین به ما می‌گوید در صورت مشاهده یک ویژگی $ x $، احتمال آن است که داده در کلاس $ \omega_j $ باشد.
+
+---
+
+### **9.4 - قانون تصمیم گیری (Decision Rule)**
+
+**هدف اصلی:** کاهش **نرخ خطا** (Error Rate) در دسته‌بندی.
+
+- **قاعده تصمیم:**  
+  اگر $ P(\omega_1|x) &gt; P(\omega_2|x) $، دسته‌بندی به $ \omega_1 $ صورت می‌گیرد.  
+  در غیر این صورت، به $ \omega_2 $.
+
+- **میزان خطا (Probability of Error):**  
+  $$
+  P(\text{error}|x) = \min[P(\omega_1|x), P(\omega_2|x)]
+  $$
+
+---
+
+### **9.5 - تعمیم به بیش از دو کلاس (Generalization to More Than Two Classes)**
+
+- در صورت وجود **بیش از دو کلاس**، باقی‌مانده را به **کلاسی که احتمال پسین $ P(\omega_i|x) $ بزرگتر است** اختیار می‌کنیم.
+- این قاعده به طور طبیعی برای تعداد بیشتری از کلاس‌ها (c &gt; 2) قابل تعمیم است.
+
+---
+
+### **9.6 - توابع تفکیک (Discriminant Functions)**
+
+تابع‌های تفکیک یا **تقریم‌ها** (Discriminant Functions)، ابزاری برای دسته‌بندی هستند.
+
+- $ g_i(x) = P(\omega_i|x) $  
+  یا به صورت دیگر:  
+  $$
+  g_i(x) = \ln p(x|\omega_i) + \ln P(\omega_i)
+  $$
+
+این توابع می‌توانند **خطی** یا **کوادراتیک** باشند، بسته به توزیع احتمالات.
+
+---
+
+### **9.7 - چگالی نرمال (Normal Density)**
+
+- توزیع یک‌متغیره نرمال (Univariate Normal):
+$$
+p(x) = \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(x - \mu)^2}{2\sigma^2}}
+$$
+- **میانگین ($ \mu $)**: نقطه اصلی توزیع.
+- **وریانس ($ \sigma^2 $)**: میزان پخش توزیع.
+- **نمونه‌ها** در اطراف میانگین گردآمده و با استاندارد حجم (sigma) توزیع می‌شوند.
+
+---
+
+### **9.8 - چگالی نرمال چند‌متغیره (Multivariate Normal Density)**
+
+- فرمول:
+$$
+p(x) = \frac{1}{(2\pi)^{d/2}|\Sigma|^{1/2}} \exp\left( -\frac{1}{2} (x - \mu)^T \Sigma^{-1}(x - \mu) \right)
+$$
+- **میانگین بردار ($ \mu $)**: میانه توزیع.
+- **ماتریس کوواریانس ($ \Sigma $)**: نشان‌دهنده رابطه بین متغیرها.
+- **محل نمونه‌ها** حول میانگین و با شکلی مشخص (تعریف توسط $ \Sigma $) گردآورده می‌شود.
+
+---
+
+### **9.12 - توابع تفکیک برای چگالی نرمال**
+
+#### **حالت 1: ماتریس‌های کوواریانس برابر (Equal Covariance Matrices)**
+
+- تابع تفکیک **خطی** است:
+$$
+g_i(x) = w_i^T x + b_i
+$$
+
+- این حالت معمولاً در نمونه‌هایی به کار می‌رود که **ماتریس کوواریانس** یکسان است.
+
+---
+
+### **9.13 - مثال عملی: یافتن مرز تصمیم**
+
+در این بخش، با استفاده از **ماتریس‌های کوواریانس یکسان** دو دسته داده (Gaussian) تولید می‌کنیم و با رویکرد نظری (Bayes) و تابع **GaussianNB** از Scikit-Learn، مرز تصمیم را محاسبه و ترسیم می‌کنیم.
+
+**هدف:**
+- نمودار تولید داده‌ها.
+- محاسبه ریاضی مرز تصمیم.
+- مقایسه نتایج با تابع **GaussianNB**.
+
+---
+
+### **9.14 - خلاصه (Summary)**
+
+- نظریه تصمیم گیری بزنس، **روش بهینه‌تر** برای دسته‌بندی در حالت عدم قطعیت است.
+- از **احتمالات پیشین و شرطی** برای محاسبه احتمال پسین استفاده می‌شود.
+- **تابع تفکیک** به تصمیمنامه بین کلاس‌ها را به اصطلاح میکند.
+- توزیع نرمال چون **ساده‌ترین و پرکاربردترین** توزیع در آمار، معمولاً استفاده می‌شود.
+
+---
+
+### **نتیجه‌گیری (Final Note)**
+
+نظریه تصمیم‌گیری بزنس یک **چارچوب تئوری** برای دسته‌بندی است. این رویکرد با **تعمیم‌پذیری بالا**، در دسته‌بندی الگوها، تشخیص تصویر، و به طور کلی تحلیل داده‌ها بسیار مفید است.
+
+اگر دوست داشتی، می‌توانم این توضیحات را به صورت گفتار مکالمه‌ای یا اسلاید درسی ترتیب دهم.</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw1-naive-bayes/">تمرین ۱: Gaussian Naive Bayes ←</a><a href="../hw3-image-denoising/">تمرین ۳: کاهش نویز تصویر با Sparse Coding ←</a><a href="../hw4-kernel-kmeans/">تمرین ۴: Kernel K-Means ←</a><a href="../mashhad-real-estate/">پروژهٔ داده‌های املاک مشهد ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

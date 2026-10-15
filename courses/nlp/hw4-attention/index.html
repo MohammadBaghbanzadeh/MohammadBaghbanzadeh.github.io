@@ -1,0 +1,292 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="محاسبهٔ Q، K و V، وزن‌های Attention و نمایش تصویری مراحل."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>تمرین ۴: Attention و Transformer · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">پردازش زبان طبیعی</a></nav><p class="eyebrow">نوت‌بوک</p><h1 class="work-title">تمرین ۴: Attention و Transformer</h1><p class="course-lead">محاسبهٔ Q، K و V، وزن‌های Attention و نمایش تصویری مراحل.</p><div class="topic-list"><bdi class="topic">Transformer</bdi><bdi class="topic">Attention</bdi><bdi class="topic">Softmax</bdi></div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw4-attention" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw4-attention/exercise_2.ipynb" target="_blank" rel="noopener noreferrer"><bdi>exercise_2.ipynb</bdi><span class="file-meta">19 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw4-attention/exercise_2_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>exercise_2_notebook.py</bdi><span class="file-meta">9 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="notebook-notes"><summary>بخشی از توضیحات نوت‌بوک</summary><pre class="notes-preview"># تمرین طراحی معماری Transformer (مکانیسم توجه)
+
+در این نوت‌بوک، تمام تمرین‌های ۱ تا ۷ را به صورت مرحله‌به‌مرحله حل می‌کنیم:
+- رسم نمودار معماری برای هر تمرین (با `matplotlib`)
+- پیاده‌سازی محاسباتی هر مرحله (با `numpy`)
+
+**دنباله مثال:** «گاو قهوه‌ای ... گوسفند ...» را با ۳ توکن نمونه مدل می‌کنیم:
+- توکن ۱: `cow` (گاو)
+- توکن ۲: `brown` (قهوه‌ای)
+- توکن ۳: `sheep` (گوسفند)
+
+---
+## تمرین ۱) رسم سه فضای Embedding، Q و K + تعریف Wq و Wk
+
+ما از فضای Embedding با ضرب در ماتریس‌های مترجم به دو فضای جدید می‌رویم:
+$$Q = X W_q \qquad K = X W_k$$
+
+**انتخاب مثال‌ها:**
+- بردار تعبیه ۳ توکن (هر کدام ۲ بعدی):
+$$x_1 = \begin{bmatrix}1 \\ 0\end{bmatrix},\; x_2 = \begin{bmatrix}0 \\ 1\end{bmatrix},\; x_3 = \begin{bmatrix}1 \\ 1\end{bmatrix}$$
+- ماتریس‌های مترجم (نامساوی و ناصفر):
+$$W_q = \begin{bmatrix}1 &amp; 1 \\ 0 &amp; 1\end{bmatrix},\; W_k = \begin{bmatrix}1 &amp; 0 \\ 1 &amp; 1\end{bmatrix}$$</pre></details><details class="source-file" open><summary><bdi>exercise_2_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw4-attention/exercise_2_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Exported notebook code; may contain IPython commands.
+# %%
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Circle
+
+np.set_printoptions(precision=4, suppress=True)
+
+def softmax(x, axis=-1):
+    &quot;&quot;&quot;Numerically stable softmax along the given axis.&quot;&quot;&quot;
+    x = x - np.max(x, axis=axis, keepdims=True)
+    e = np.exp(x)
+    return e / np.sum(e, axis=axis, keepdims=True)
+
+def draw_box(ax, xy, w, h, label, color=&quot;#cfe2ff&quot;, edge=&quot;#1f4e79&quot;, fontsize=12):
+    &quot;&quot;&quot;Helper to draw a rounded rectangle with a centered label.&quot;&quot;&quot;
+    box = FancyBboxPatch(xy, w, h,
+                         boxstyle=&quot;round,pad=0.02,rounding_size=0.15&quot;,
+                         linewidth=1.5, edgecolor=edge, facecolor=color)
+    ax.add_patch(box)
+    ax.text(xy[0] + w / 2, xy[1] + h / 2, label,
+            ha=&quot;center&quot;, va=&quot;center&quot;, fontsize=fontsize, weight=&quot;bold&quot;)
+
+def draw_arrow(ax, p1, p2, label=&quot;&quot;, color=&quot;#444&quot;, offset=(0, 0.15), fontsize=11):
+    &quot;&quot;&quot;Helper to draw an arrow between two points with an optional label.&quot;&quot;&quot;
+    arrow = FancyArrowPatch(p1, p2, arrowstyle=&quot;-|&gt;&quot;, mutation_scale=16,
+                            color=color, linewidth=1.5)
+    ax.add_patch(arrow)
+    if label:
+        mx, my = (p1[0] + p2[0]) / 2 + offset[0], (p1[1] + p2[1]) / 2 + offset[1]
+        ax.text(mx, my, label, ha=&quot;center&quot;, va=&quot;center&quot;,
+                fontsize=fontsize, color=&quot;#1f4e79&quot;, weight=&quot;bold&quot;)
+
+# %%
+# Token embeddings (each row is one token)
+X = np.array([
+    [1.0, 0.0],   # x1 - cow
+    [0.0, 1.0],   # x2 - brown
+    [1.0, 1.0],   # x3 - sheep
+])
+
+Wq = np.array([
+    [1.0, 1.0],
+    [0.0, 1.0],
+])
+
+Wk = np.array([
+    [1.0, 0.0],
+    [1.0, 1.0],
+])
+
+Q = X @ Wq
+K = X @ Wk
+
+print(&quot;X (Token Embeddings):\n&quot;, X)
+print(&quot;\nWq:\n&quot;, Wq)
+print(&quot;Wk:\n&quot;, Wk)
+print(&quot;\nQ = X @ Wq:\n&quot;, Q)
+print(&quot;\nK = X @ Wk:\n&quot;, K)
+
+# %%
+# Diagram for Exercise 1
+fig, ax = plt.subplots(figsize=(11, 4))
+ax.set_xlim(0, 11); ax.set_ylim(0, 4); ax.axis(&quot;off&quot;)
+ax.set_title(&quot;Exercise 1: Embedding -&gt; Q, K spaces&quot;, fontsize=13)
+
+draw_box(ax, (0.5, 1.5), 2.2, 1.0, &quot;Embedding\nSpace (X)&quot;, color=&quot;#fff2cc&quot;, edge=&quot;#bf9000&quot;)
+draw_box(ax, (7.5, 2.6), 2.2, 1.0, &quot;Query Space (Q)&quot;, color=&quot;#cfe2ff&quot;)
+draw_box(ax, (7.5, 0.4), 2.2, 1.0, &quot;Key Space (K)&quot;, color=&quot;#d5e8d4&quot;, edge=&quot;#2d6a4f&quot;)
+
+draw_arrow(ax, (2.7, 2.2), (7.5, 3.1), label=&quot;x Wq&quot;, offset=(0, 0.25))
+draw_arrow(ax, (2.7, 1.8), (7.5, 0.9), label=&quot;x Wk&quot;, offset=(0, -0.35))
+
+plt.tight_layout(); plt.show()
+
+# %%
+# Diagram for Exercise 2
+fig, ax = plt.subplots(figsize=(12, 4))
+ax.set_xlim(0, 12); ax.set_ylim(0, 4); ax.axis(&quot;off&quot;)
+ax.set_title(&quot;Exercise 2: Q, K -&gt; Dot -&gt; Softmax -&gt; Relevancy Matrix&quot;, fontsize=13)
+
+draw_box(ax, (0.3, 2.5), 1.8, 1.0, &quot;Q&quot;, color=&quot;#cfe2ff&quot;)
+draw_box(ax, (0.3, 0.5), 1.8, 1.0, &quot;K&quot;, color=&quot;#d5e8d4&quot;, edge=&quot;#2d6a4f&quot;)
+
+# Dot symbol
+circ = Circle((3.7, 2.0), 0.45, facecolor=&quot;#fde2e4&quot;, edgecolor=&quot;#9b2226&quot;, linewidth=1.5)
+ax.add_patch(circ)
+ax.text(3.7, 2.0, &quot;·&quot;, ha=&quot;center&quot;, va=&quot;center&quot;, fontsize=28, weight=&quot;bold&quot;)
+ax.text(3.7, 1.35, &quot;Dot&quot;, ha=&quot;center&quot;, fontsize=11)
+
+# Softmax symbol
+draw_box(ax, (5.6, 1.55), 2.1, 0.9, &quot;Softmax&quot;, color=&quot;#ffe5b4&quot;, edge=&quot;#a5673f&quot;)
+
+# Final relevancy matrix
+draw_box(ax, (9.3, 1.4), 2.4, 1.2, &quot;Relevancy\nMatrix (3x3)&quot;, color=&quot;#e1d5e7&quot;, edge=&quot;#6c3483&quot;)
+
+draw_arrow(ax, (2.1, 3.0), (3.3, 2.3))
+draw_arrow(ax, (2.1, 1.0), (3.3, 1.7))
+draw_arrow(ax, (4.15, 2.0), (5.6, 2.0), label=&quot;QK^T&quot;, offset=(0, 0.25))
+draw_arrow(ax, (7.7, 2.0), (9.3, 2.0))
+
+plt.tight_layout(); plt.show()
+
+# %%
+d_k = K.shape[1]
+scores = Q @ K.T
+scaled_scores = scores / np.sqrt(d_k)
+R = softmax(scaled_scores, axis=1)
+
+print(&quot;Raw scores (Q @ K^T):\n&quot;, scores)
+print(&quot;\nScaled scores (/ sqrt(d_k)):\n&quot;, scaled_scores)
+print(&quot;\nRelevancy Matrix R = softmax(scaled scores):\n&quot;, R)
+print(&quot;\nRow sums (must equal 1):&quot;, R.sum(axis=1))
+
+# %%
+# Visualize the relevancy matrix as a heatmap
+fig, ax = plt.subplots(figsize=(5, 4))
+im = ax.imshow(R, cmap=&quot;Blues&quot;, vmin=0, vmax=1)
+labels = [&quot;cow (1)&quot;, &quot;brown (2)&quot;, &quot;sheep (3)&quot;]
+ax.set_xticks(range(3)); ax.set_yticks(range(3))
+ax.set_xticklabels(labels); ax.set_yticklabels(labels)
+ax.set_xlabel(&quot;Key tokens&quot;); ax.set_ylabel(&quot;Query tokens&quot;)
+ax.set_title(&quot;Relevancy matrix (rows = queries)&quot;)
+for i in range(3):
+    for j in range(3):
+        ax.text(j, i, f&quot;{R[i, j]:.3f}&quot;, ha=&quot;center&quot;, va=&quot;center&quot;,
+                color=&quot;white&quot; if R[i, j] &gt; 0.5 else &quot;black&quot;)
+fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+plt.tight_layout(); plt.show()
+
+# %%
+fig, ax = plt.subplots(figsize=(10, 3.5))
+ax.set_xlim(0, 10); ax.set_ylim(0, 3); ax.axis(&quot;off&quot;)
+ax.set_title(&quot;Exercise 4: relevancy of token 1 -&gt; 2 and token 3 -&gt; 2&quot;, fontsize=13)
+
+centers = [(1.5, 1.5), (5.0, 1.5), (8.5, 1.5)]
+names = [f&quot;x1 = {tuple(X[0])}\ncow&quot;,
+         f&quot;x2 = {tuple(X[1])}\nbrown&quot;,
+         f&quot;x3 = {tuple(X[2])}\nsheep&quot;]
+colors = [&quot;#fff2cc&quot;, &quot;#cfe2ff&quot;, &quot;#d5e8d4&quot;]
+edges = [&quot;#bf9000&quot;, &quot;#1f4e79&quot;, &quot;#2d6a4f&quot;]
+
+for (cx, cy), label, c, ec in zip(centers, names, colors, edges):
+    draw_box(ax, (cx - 0.9, cy - 0.55), 1.8, 1.1, label, color=c, edge=ec, fontsize=10)
+
+# Arrows from token 1 -&gt; 2 with score R[1, 0]
+draw_arrow(ax, (2.4, 1.9), (4.1, 1.9),
+           label=f&quot;R[2-&gt;1] = {R[1, 0]:.3f}&quot;, offset=(0, 0.2))
+# Arrow from token 3 -&gt; 2 with score R[1, 2]
+draw_arrow(ax, (7.6, 1.9), (5.9, 1.9),
+           label=f&quot;R[2-&gt;3] = {R[1, 2]:.3f}&quot;, offset=(0, 0.2))
+
+plt.tight_layout(); plt.show()
+
+print(f&quot;R[query=token2, key=token1] = {R[1, 0]:.4f}&quot;)
+print(f&quot;R[query=token2, key=token3] = {R[1, 2]:.4f}&quot;)
+
+# %%
+Wv = np.array([
+    [1.0, 2.0],
+    [0.0, 1.0],
+])
+
+V = X @ Wv
+print(&quot;Wv:\n&quot;, Wv)
+print(&quot;\nV = X @ Wv:\n&quot;, V)
+
+# %%
+# Diagram for Exercise 5
+fig, ax = plt.subplots(figsize=(9, 3))
+ax.set_xlim(0, 9); ax.set_ylim(0, 3); ax.axis(&quot;off&quot;)
+ax.set_title(&quot;Exercise 5: Embedding -&gt; Value space (V)&quot;, fontsize=13)
+
+draw_box(ax, (0.5, 1.0), 2.2, 1.0, &quot;Embedding (X)&quot;, color=&quot;#fff2cc&quot;, edge=&quot;#bf9000&quot;)
+draw_box(ax, (6.0, 1.0), 2.2, 1.0, &quot;Value Space (V)&quot;, color=&quot;#f4cccc&quot;, edge=&quot;#a61c00&quot;)
+draw_arrow(ax, (2.7, 1.5), (6.0, 1.5), label=&quot;x Wv&quot;, offset=(0, 0.25))
+
+plt.tight_layout(); plt.show()
+
+# %%
+ATT = R @ V
+
+for i in range(3):
+    print(f&quot;ATT[{i+1}] = sum_j R[{i+1}, j] * V[j]&quot;)
+    parts = [f&quot;{R[i, j]:.3f}*{tuple(V[j])}&quot; for j in range(3)]
+    print(&quot;        = &quot; + &quot; + &quot;.join(parts))
+    print(f&quot;        = {ATT[i]}\n&quot;)
+
+print(&quot;ATT matrix (rows = tokens):\n&quot;, ATT)
+
+# %%
+# Diagram for Exercise 6
+fig, ax = plt.subplots(figsize=(11, 4))
+ax.set_xlim(0, 11); ax.set_ylim(0, 4); ax.axis(&quot;off&quot;)
+ax.set_title(&quot;Exercise 6: V and Relevancy -&gt; Sum -&gt; ATT&quot;, fontsize=13)
+
+draw_box(ax, (0.3, 2.6), 2.2, 1.0, &quot;V&quot;, color=&quot;#f4cccc&quot;, edge=&quot;#a61c00&quot;)
+draw_box(ax, (0.3, 0.4), 2.2, 1.0, &quot;Relevancy\nMatrix R&quot;, color=&quot;#e1d5e7&quot;, edge=&quot;#6c3483&quot;)
+
+circ = Circle((5.2, 2.0), 0.55, facecolor=&quot;#fde2e4&quot;, edgecolor=&quot;#9b2226&quot;, linewidth=1.5)
+ax.add_patch(circ)
+ax.text(5.2, 2.0, r&quot;$\sum$&quot;, ha=&quot;center&quot;, va=&quot;center&quot;, fontsize=24)
+
+draw_box(ax, (8.2, 1.55), 2.2, 0.9, &quot;ATT space&quot;, color=&quot;#cfe2ff&quot;)
+
+draw_arrow(ax, (2.5, 3.1), (4.7, 2.3))
+draw_arrow(ax, (2.5, 0.9), (4.7, 1.7))
+draw_arrow(ax, (5.75, 2.0), (8.2, 2.0), label=&quot;R . V&quot;, offset=(0, 0.25))
+
+plt.tight_layout(); plt.show()
+
+# %%
+# Diagram for Exercise 7
+fig, ax = plt.subplots(figsize=(10, 3.5))
+ax.set_xlim(0, 10); ax.set_ylim(0, 3); ax.axis(&quot;off&quot;)
+ax.set_title(&quot;Exercise 7: ATT -&gt; Feed Forward NN -&gt; Output&quot;, fontsize=13)
+
+draw_box(ax, (0.3, 1.0), 2.0, 1.0, &quot;ATT&quot;, color=&quot;#cfe2ff&quot;)
+
+# NN as 2 layers of small circles
+for i, y in enumerate([0.6, 1.5, 2.4]):
+    ax.add_patch(Circle((4.5, y), 0.22, facecolor=&quot;#ffe5b4&quot;, edgecolor=&quot;#a5673f&quot;))
+for i, y in enumerate([1.0, 2.0]):
+    ax.add_patch(Circle((6.0, y), 0.22, facecolor=&quot;#ffe5b4&quot;, edgecolor=&quot;#a5673f&quot;))
+for x_a in [4.5]:
+    for ya in [0.6, 1.5, 2.4]:
+        for yb in [1.0, 2.0]:
+            ax.plot([x_a + 0.22, 6.0 - 0.22], [ya, yb], color=&quot;#a5673f&quot;, linewidth=0.6)
+ax.text(5.25, 0.15, &quot;Feed Forward NN&quot;, ha=&quot;center&quot;, fontsize=11, color=&quot;#a5673f&quot;)
+
+draw_box(ax, (7.7, 1.0), 2.0, 1.0, &quot;Output Space&quot;, color=&quot;#d5e8d4&quot;, edge=&quot;#2d6a4f&quot;)
+
+draw_arrow(ax, (2.3, 1.5), (4.28, 1.5))
+draw_arrow(ax, (6.22, 1.5), (7.7, 1.5))
+
+plt.tight_layout(); plt.show()
+
+# %%
+# Optional: A tiny feed-forward network applied independently to each ATT vector
+rng = np.random.default_rng(seed=0)
+
+W1 = rng.standard_normal((2, 4))   # expand 2 -&gt; 4
+b1 = rng.standard_normal(4)
+W2 = rng.standard_normal((4, 2))   # back 4 -&gt; 2
+b2 = rng.standard_normal(2)
+
+def relu(x):
+    return np.maximum(x, 0.0)
+
+hidden = relu(ATT @ W1 + b1)
+output = hidden @ W2 + b2
+
+print(&quot;ATT input to FFN:\n&quot;, ATT)
+print(&quot;\nHidden activations (after ReLU):\n&quot;, hidden)
+print(&quot;\nFinal output (one row per token):\n&quot;, output)
+
+# %%
+def scaled_dot_product_attention(X, Wq, Wk, Wv):
+    Q = X @ Wq
+    K = X @ Wk
+    V = X @ Wv
+    d_k = K.shape[1]
+    scores = Q @ K.T / np.sqrt(d_k)
+    R = softmax(scores, axis=1)
+    return R @ V, R
+
+ATT_check, R_check = scaled_dot_product_attention(X, Wq, Wk, Wv)
+print(&quot;Relevancy matrix:\n&quot;, R_check)
+print(&quot;\nATT vectors:\n&quot;, ATT_check)
+print(&quot;\nMatches earlier ATT?&quot;, np.allclose(ATT_check, ATT))
+</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw1-language-models/">تمرین ۱: N-gram و Naive Bayes ←</a><a href="../hw2-embeddings/">تمرین ۲: Logistic Regression و Embedding ←</a><a href="../hw3-neural-models/">تمرین ۳: مدل‌های عصبی ←</a><a href="../hw4-rnn/">تمرین ۴: طراحی RNN ←</a><a href="../hw4-gpt2/">تمرین ۴: Fine-Tuning مدل GPT-2 ←</a><a href="../hw5-bert/">تمرین ۵: BERT برای Sentiment Analysis ←</a><a href="../hw5-post-training/">تمرین ۵: Post-Training با SFT و LoRA ←</a><a href="../hw6-rag-translation/">تمرین ۶: RAG و Machine Translation ←</a><a href="../study-notes/">یادداشت‌های مرور NLP ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

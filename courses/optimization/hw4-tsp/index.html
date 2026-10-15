@@ -1,0 +1,1409 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="نوت‌بوک و کد مقایسهٔ همسایگی‌های جست‌وجوی محلی در TSP."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>تمرین ۴: مقایسهٔ 2-opt و 3-opt · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">بهینه‌سازی ترکیبی</a></nav><p class="eyebrow">نوت‌بوک و کد</p><h1 class="work-title">تمرین ۴: مقایسهٔ 2-opt و 3-opt</h1><p class="course-lead">نوت‌بوک و کد مقایسهٔ همسایگی‌های جست‌وجوی محلی در TSP.</p><div class="topic-list"><bdi class="topic">TSP</bdi><bdi class="topic">2-opt</bdi><bdi class="topic">3-opt</bdi></div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw4-tsp" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw4-tsp/Q1.ipynb" target="_blank" rel="noopener noreferrer"><bdi>Q1.ipynb</bdi><span class="file-meta">24 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw4-tsp/Q1_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>Q1_notebook.py</bdi><span class="file-meta">19 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw4-tsp/Q1.py" target="_blank" rel="noopener noreferrer"><bdi>Q1.py</bdi><span class="file-meta">19 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw4-tsp/HW4_Q1.ipynb" target="_blank" rel="noopener noreferrer"><bdi>HW4_Q1.ipynb</bdi><span class="file-meta">21 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw4-tsp/HW4_Q1_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>HW4_Q1_notebook.py</bdi><span class="file-meta">16 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="source-file" open><summary><bdi>Q1_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw4-tsp/Q1_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Exported notebook code; may contain IPython commands.
+# %%
+# ============================================================================
+# تمرین 4 - سوال 1: پیاده‌سازی 3-opt برای مساله فروشنده دوره گرد (TSP)
+# ============================================================================
+&quot;&quot;&quot;
+مساله فروشنده دوره گرد که در تمرین قبلی برای 2-opt پیاده سازی کردید را برای 3-opt تکرار کنید 
+و یک گزارش کامل متنی از نتایج عددی که شامل جدول جواب ها و زمان اجرا و تحلیل نتایج باشد 
+ارائه کنید لطفا در فایل متنی توضیح مختصری در مورد چگونگی اجرا الگوریتم ها ارائه کنید. 
+فایل ضمیمه شامل کدها و پی دی اف توضیحات باشد.
+&quot;&quot;&quot;
+
+import numpy as np
+import time
+import pandas as pd
+import matplotlib.pyplot as plt
+from itertools import combinations
+import random
+
+# تنظیم seed برای تکرارپذیری نتایج
+np.random.seed(42)
+random.seed(42)
+
+# ============================================================================
+# ایجاد Instance های تست
+# ============================================================================
+
+def create_tsp_instance(n_cities):
+    &quot;&quot;&quot;ایجاد یک instance تصادفی برای TSP&quot;&quot;&quot;
+    coords = np.random.rand(n_cities, 2) * 100
+    dist_matrix = np.sqrt(((coords[:, np.newaxis, :] - coords[np.newaxis, :, :]) ** 2).sum(axis=-1))
+    np.fill_diagonal(dist_matrix, 0)
+    return coords, dist_matrix
+
+# ایجاد instance های مختلف برای تست
+instances = {
+    &#x27;کوچک&#x27;: create_tsp_instance(20),
+    &#x27;متوسط&#x27;: create_tsp_instance(50), 
+    &#x27;بزرگ&#x27;: create_tsp_instance(100)
+}
+
+print(&quot;Instance های TSP آماده شدند:&quot;)
+for name, (coords, dist) in instances.items():
+    print(f&quot;  {name}: {len(coords)} شهر&quot;)
+
+# ============================================================================
+# توابع کمکی TSP
+# ============================================================================
+
+def calc_tsp_cost(route, dist_matrix):
+    &quot;&quot;&quot;محاسبه هزینه کل مسیر TSP&quot;&quot;&quot;
+    cost = 0
+    n = len(route)
+    for i in range(n):
+        cost += dist_matrix[route[i]][route[(i + 1) % n]]
+    return cost
+
+def generate_initial_route(n_cities):
+    &quot;&quot;&quot;تولید مسیر اولیه تصادفی&quot;&quot;&quot;
+    return list(np.random.permutation(n_cities))
+
+# ============================================================================
+# پیاده‌سازی 2-opt (برای مقایسه)
+# ============================================================================
+
+def apply_2opt(route, i, k):
+    &quot;&quot;&quot;اعمال حرکت 2-opt: معکوس کردن بخشی از مسیر&quot;&quot;&quot;
+    return route[:i] + route[i:k+1][::-1] + route[k+1:]
+
+def calc_2opt_delta(route, i, k, dist_matrix):
+    &quot;&quot;&quot;محاسبه دلتای 2-opt بدون محاسبه کل هزینه&quot;&quot;&quot;
+    n = len(route)
+    a, b = route[i-1], route[i]
+    c, d = route[k], route[(k + 1) % n]
+    return (dist_matrix[a][c] + dist_matrix[b][d]) - (dist_matrix[a][b] + dist_matrix[c][d])
+
+def solve_tsp_2opt(route, dist_matrix, mode=&quot;best&quot;):
+    &quot;&quot;&quot;الگوریتم Local Search برای TSP با 2-opt&quot;&quot;&quot;
+    curr = route[:]
+    cost = calc_tsp_cost(curr, dist_matrix)
+    n = len(curr)
+    iterations = 0
+    
+    while True:
+        iterations += 1
+        best_delta = 0
+        best_move = None
+        improved = False
+        
+        for i in range(1, n-1):
+            for k in range(i+1, n):
+                delta = calc_2opt_delta(curr, i, k, dist_matrix)
+                
+                if delta &lt; best_delta - 1e-6:
+                    if mode == &quot;first&quot;:
+                        curr = apply_2opt(curr, i, k)
+                        cost += delta
+                        improved = True
+                        break
+                    best_delta = delta
+                    best_move = (i, k)
+            
+            if improved and mode == &quot;first&quot;:
+                break
+        
+        if mode == &quot;best&quot; and best_move:
+            i, k = best_move
+            curr = apply_2opt(curr, i, k)
+            cost += best_delta
+            improved = True
+        
+        if not improved:
+            break
+    
+    return curr, cost, iterations
+
+# ============================================================================
+# پیاده‌سازی 3-opt
+# ============================================================================
+
+def get_3opt_moves(route):
+    &quot;&quot;&quot;تولید تمام حرکات ممکن 3-opt برای یک مسیر&quot;&quot;&quot;
+    n = len(route)
+    moves = []
+    
+    # برای 3-opt نیاز به انتخاب 3 یال داریم
+    # یال‌ها: (i-1,i), (j-1,j), (k-1,k) که i &lt; j &lt; k
+    for i in range(1, n-2):
+        for j in range(i+1, n-1):
+            for k in range(j+1, n):
+                moves.append((i, j, k))
+    
+    return moves
+
+def apply_3opt(route, i, j, k, move_type):
+    &quot;&quot;&quot;
+    اعمال حرکت 3-opt با نوع حرکت مشخص
+    
+    برای 3 یال که حذف می‌شوند، 7 روش مختلف برای اتصال مجدد وجود دارد:
+    1: 2-opt بین i و j
+    2: 2-opt بین j و k  
+    3: 2-opt بین i و k
+    4: جابجایی قطعه وسط
+    5: جابجایی و معکوس segment2 و segment3
+    6: جابجایی segment2 و معکوس segment3
+    7: جابجایی و معکوس هر دو segment
+    &quot;&quot;&quot;
+    # تقسیم مسیر به 4 قطعه
+    segment1 = route[:i]                    # [0, i)
+    segment2 = route[i:j]                   # [i, j)  
+    segment3 = route[j:k]                   # [j, k)
+    segment4 = route[k:]                    # [k, n)
+    
+    if move_type == 1:  # 2-opt بین i و j
+        return segment1 + segment2[::-1] + segment3 + segment4
+    elif move_type == 2:  # 2-opt بین j و k
+        return segment1 + segment2 + segment3[::-1] + segment4
+    elif move_type == 3:  # 2-opt بین i و k (ترکیب دو 2-opt)
+        return segment1 + segment2[::-1] + segment3[::-1] + segment4
+    elif move_type == 4:  # جابجایی segment2 و segment3
+        return segment1 + segment3 + segment2 + segment4
+    elif move_type == 5:  # جابجایی و معکوس segment2 و segment3
+        return segment1 + segment3[::-1] + segment2 + segment4
+    elif move_type == 6:  # جابجایی segment2 و معکوس segment3
+        return segment1 + segment3 + segment2[::-1] + segment4
+    elif move_type == 7:  # جابجایی و معکوس هر دو segment
+        return segment1 + segment3[::-1] + segment2[::-1] + segment4
+    else:
+        return route  # بدون تغییر
+
+def calc_3opt_delta(route, i, j, k, move_type, dist_matrix):
+    &quot;&quot;&quot;محاسبه دلتای 3-opt برای یک حرکت خاص&quot;&quot;&quot;
+    n = len(route)
+    
+    # یال‌های فعلی که حذف می‌شوند
+    old_edges = [
+        (route[i-1], route[i]),
+        (route[j-1], route[j]), 
+        (route[k-1], route[k % n])
+    ]
+    
+    # محاسبه یال‌های جدید بر اساس نوع حرکت
+    new_route = apply_3opt(route, i, j, k, move_type)
+    
+    # محاسبه دقیق تفاوت (برای سادگی)
+    old_cost = sum(dist_matrix[edge[0]][edge[1]] for edge in old_edges)
+    
+    # یال‌های جدید در همان موقعیت‌ها
+    new_edges = [
+        (new_route[i-1], new_route[i]),
+        (new_route[j-1], new_route[j]),
+        (new_route[k-1], new_route[k % n])
+    ]
+    
+    new_cost = sum(dist_matrix[edge[0]][edge[1]] for edge in new_edges)
+    
+    return new_cost - old_cost
+
+def solve_tsp_3opt(route, dist_matrix, mode=&quot;best&quot;):
+    &quot;&quot;&quot;الگوریتم Local Search برای TSP با 3-opt&quot;&quot;&quot;
+    curr = route[:]
+    cost = calc_tsp_cost(curr, dist_matrix)
+    n = len(curr)
+    iterations = 0
+    
+    print(f&quot;شروع 3-opt با هزینه اولیه: {cost:.2f}&quot;)
+    
+    while True:
+        iterations += 1
+        best_delta = 0
+        best_move = None
+        improved = False
+        
+        # تولید تمام حرکات ممکن 3-opt
+        moves = get_3opt_moves(curr)
+        
+        for i, j, k in moves:
+            # بررسی تمام 7 نوع حرکت 3-opt
+            for move_type in range(1, 8):
+                # محاسبه دلتا به روش ساده (محاسبه کل هزینه)
+                new_route = apply_3opt(curr, i, j, k, move_type)
+                new_cost = calc_tsp_cost(new_route, dist_matrix)
+                delta = new_cost - cost
+                
+                if delta &lt; best_delta - 1e-6:
+                    if mode == &quot;first&quot;:
+                        curr = new_route
+                        cost = new_cost
+                        improved = True
+                        break
+                    best_delta = delta
+                    best_move = (i, j, k, move_type)
+            
+            if improved and mode == &quot;first&quot;:
+                break
+        
+        if mode == &quot;best&quot; and best_move:
+            i, j, k, move_type = best_move
+            curr = apply_3opt(curr, i, j, k, move_type)
+            cost += best_delta
+            improved = True
+        
+        if not improved:
+            break
+            
+        if iterations % 10 == 0:
+            print(f&quot;  Iteration {iterations}: هزینه فعلی = {cost:.2f}&quot;)
+    
+    print(f&quot;3-opt تمام شد بعد از {iterations} تکرار با هزینه نهایی: {cost:.2f}&quot;)
+    return curr, cost, iterations
+
+# ============================================================================
+# تابع مقایسه و بنچمارک
+# ============================================================================
+
+def run_comparison(instance_name, coords, dist_matrix, num_runs=5):
+    &quot;&quot;&quot;اجرای مقایسه بین 2-opt و 3-opt&quot;&quot;&quot;
+    print(f&quot;\n{&#x27;=&#x27;*60}&quot;)
+    print(f&quot;مقایسه 2-opt و 3-opt برای instance {instance_name}&quot;)
+    print(f&quot;تعداد شهرها: {len(coords)}&quot;)
+    print(f&quot;{&#x27;=&#x27;*60}&quot;)
+    
+    results = []
+    
+    for run in range(num_runs):
+        print(f&quot;\nاجرای {run + 1} از {num_runs}:&quot;)
+        
+        # تولید مسیر اولیه یکسان برای هر دو الگوریتم
+        initial_route = generate_initial_route(len(coords))
+        initial_cost = calc_tsp_cost(initial_route, dist_matrix)
+        
+        print(f&quot;هزینه مسیر اولیه: {initial_cost:.2f}&quot;)
+        
+        # اجرای 2-opt
+        print(&quot;اجرای 2-opt...&quot;)
+        start_time = time.time()
+        route_2opt, cost_2opt, iter_2opt = solve_tsp_2opt(initial_route[:], dist_matrix, &quot;best&quot;)
+        time_2opt = time.time() - start_time
+        
+        # اجرای 3-opt
+        print(&quot;اجرای 3-opt...&quot;)
+        start_time = time.time()
+        route_3opt, cost_3opt, iter_3opt = solve_tsp_3opt(initial_route[:], dist_matrix, &quot;best&quot;)
+        time_3opt = time.time() - start_time
+        
+        # محاسبه درصد بهبود
+        improvement_2opt = ((initial_cost - cost_2opt) / initial_cost) * 100
+        improvement_3opt = ((initial_cost - cost_3opt) / initial_cost) * 100
+        
+        results.append({
+            &#x27;اجرا&#x27;: run + 1,
+            &#x27;هزینه اولیه&#x27;: round(initial_cost, 2),
+            &#x27;هزینه 2-opt&#x27;: round(cost_2opt, 2),
+            &#x27;هزینه 3-opt&#x27;: round(cost_3opt, 2),
+            &#x27;بهبود 2-opt (%)&#x27;: round(improvement_2opt, 2),
+            &#x27;بهبود 3-opt (%)&#x27;: round(improvement_3opt, 2),
+            &#x27;زمان 2-opt (ثانیه)&#x27;: round(time_2opt, 4),
+            &#x27;زمان 3-opt (ثانیه)&#x27;: round(time_3opt, 4),
+            &#x27;تکرار 2-opt&#x27;: iter_2opt,
+            &#x27;تکرار 3-opt&#x27;: iter_3opt
+        })
+        
+        print(f&quot;نتایج اجرای {run + 1}:&quot;)
+        print(f&quot;  2-opt: هزینه={cost_2opt:.2f}, زمان={time_2opt:.4f}s, تکرار={iter_2opt}&quot;)
+        print(f&quot;  3-opt: هزینه={cost_3opt:.2f}, زمان={time_3opt:.4f}s, تکرار={iter_3opt}&quot;)
+    
+    return results
+
+# ============================================================================
+# تحلیل و گزارش نتایج
+# ============================================================================
+
+def analyze_results(all_results):
+    &quot;&quot;&quot;تحلیل و نمایش نتایج کلی&quot;&quot;&quot;
+    print(f&quot;\n{&#x27;=&#x27;*80}&quot;)
+    print(&quot;تحلیل کلی نتایج&quot;)
+    print(f&quot;{&#x27;=&#x27;*80}&quot;)
+    
+    summary_data = []
+    
+    for instance_name, results in all_results.items():
+        df = pd.DataFrame(results)
+        
+        summary_data.append({
+            &#x27;Instance&#x27;: instance_name,
+            &#x27;میانگین بهبود 2-opt (%)&#x27;: round(df[&#x27;بهبود 2-opt (%)&#x27;].mean(), 2),
+            &#x27;میانگین بهبود 3-opt (%)&#x27;: round(df[&#x27;بهبود 3-opt (%)&#x27;].mean(), 2),
+            &#x27;میانگین زمان 2-opt (ثانیه)&#x27;: round(df[&#x27;زمان 2-opt (ثانیه)&#x27;].mean(), 4),
+            &#x27;میانگین زمان 3-opt (ثانیه)&#x27;: round(df[&#x27;زمان 3-opt (ثانیه)&#x27;].mean(), 4),
+            &#x27;میانگین تکرار 2-opt&#x27;: round(df[&#x27;تکرار 2-opt&#x27;].mean(), 1),
+            &#x27;میانگین تکرار 3-opt&#x27;: round(df[&#x27;تکرار 3-opt&#x27;].mean(), 1)
+        })
+    
+    summary_df = pd.DataFrame(summary_data)
+    print(summary_df.to_string(index=False))
+    
+    # تحلیل نتایج
+    print(f&quot;\n📊 تحلیل نتایج:&quot;)
+    print(&quot;=&quot;*50)
+    
+    for _, row in summary_df.iterrows():
+        instance = row[&#x27;Instance&#x27;]
+        improvement_diff = row[&#x27;میانگین بهبود 3-opt (%)&#x27;] - row[&#x27;میانگین بهبود 2-opt (%)&#x27;]
+        time_ratio = row[&#x27;میانگین زمان 3-opt (ثانیه)&#x27;] / row[&#x27;میانگین زمان 2-opt (ثانیه)&#x27;]
+        
+        print(f&quot;\n🔍 Instance {instance}:&quot;)
+        print(f&quot;   • 3-opt بهبود {improvement_diff:+.2f}% بیشتری نسبت به 2-opt دارد&quot;)
+        print(f&quot;   • 3-opt {time_ratio:.1f} برابر کندتر از 2-opt است&quot;)
+        print(f&quot;   • نسبت کیفیت به زمان: {improvement_diff/time_ratio:.3f}&quot;)
+
+def create_visualization(all_results):
+    &quot;&quot;&quot;ایجاد نمودارهای مقایسه&quot;&quot;&quot;
+    fig, axes = plt.subplots(2, 2, figsize=(15, 10))
+    fig.suptitle(&#x27;مقایسه عملکرد 2-opt و 3-opt&#x27;, fontsize=16)
+    
+    instances = list(all_results.keys())
+    
+    # نمودار 1: مقایسه درصد بهبود
+    improvements_2opt = []
+    improvements_3opt = []
+    
+    for instance_name, results in all_results.items():
+        df = pd.DataFrame(results)
+        improvements_2opt.append(df[&#x27;بهبود 2-opt (%)&#x27;].mean())
+        improvements_3opt.append(df[&#x27;بهبود 3-opt (%)&#x27;].mean())
+    
+    x = np.arange(len(instances))
+    width = 0.35
+    
+    axes[0,0].bar(x - width/2, improvements_2opt, width, label=&#x27;2-opt&#x27;, alpha=0.8)
+    axes[0,0].bar(x + width/2, improvements_3opt, width, label=&#x27;3-opt&#x27;, alpha=0.8)
+    axes[0,0].set_xlabel(&#x27;Instance&#x27;)
+    axes[0,0].set_ylabel(&#x27;درصد بهبود (%)&#x27;)
+    axes[0,0].set_title(&#x27;مقایسه درصد بهبود&#x27;)
+    axes[0,0].set_xticks(x)
+    axes[0,0].set_xticklabels(instances)
+    axes[0,0].legend()
+    axes[0,0].grid(True, alpha=0.3)
+    
+    # نمودار 2: مقایسه زمان اجرا
+    times_2opt = []
+    times_3opt = []
+    
+    for instance_name, results in all_results.items():
+        df = pd.DataFrame(results)
+        times_2opt.append(df[&#x27;زمان 2-opt (ثانیه)&#x27;].mean())
+        times_3opt.append(df[&#x27;زمان 3-opt (ثانیه)&#x27;].mean())
+    
+    axes[0,1].bar(x - width/2, times_2opt, width, label=&#x27;2-opt&#x27;, alpha=0.8)
+    axes[0,1].bar(x + width/2, times_3opt, width, label=&#x27;3-opt&#x27;, alpha=0.8)
+    axes[0,1].set_xlabel(&#x27;Instance&#x27;)
+    axes[0,1].set_ylabel(&#x27;زمان (ثانیه)&#x27;)
+    axes[0,1].set_title(&#x27;مقایسه زمان اجرا&#x27;)
+    axes[0,1].set_xticks(x)
+    axes[0,1].set_xticklabels(instances)
+    axes[0,1].legend()
+    axes[0,1].grid(True, alpha=0.3)
+    axes[0,1].set_yscale(&#x27;log&#x27;)  # مقیاس لگاریتمی برای بهتر دیدن تفاوت‌ها
+    
+    # نمودار 3: نسبت کیفیت به زمان
+    quality_time_ratios = []
+    for i in range(len(instances)):
+        improvement_diff = improvements_3opt[i] - improvements_2opt[i]
+        time_ratio = times_3opt[i] / times_2opt[i]
+        quality_time_ratios.append(improvement_diff / time_ratio)
+    
+    axes[1,0].bar(instances, quality_time_ratios, alpha=0.8, color=&#x27;green&#x27;)
+    axes[1,0].set_xlabel(&#x27;Instance&#x27;)
+    axes[1,0].set_ylabel(&#x27;نسبت کیفیت به زمان&#x27;)
+    axes[1,0].set_title(&#x27;کارایی 3-opt نسبت به 2-opt&#x27;)
+    axes[1,0].grid(True, alpha=0.3)
+    
+    # نمودار 4: مقایسه تعداد تکرارها
+    iters_2opt = []
+    iters_3opt = []
+    
+    for instance_name, results in all_results.items():
+        df = pd.DataFrame(results)
+        iters_2opt.append(df[&#x27;تکرار 2-opt&#x27;].mean())
+        iters_3opt.append(df[&#x27;تکرار 3-opt&#x27;].mean())
+    
+    axes[1,1].bar(x - width/2, iters_2opt, width, label=&#x27;2-opt&#x27;, alpha=0.8)
+    axes[1,1].bar(x + width/2, iters_3opt, width, label=&#x27;3-opt&#x27;, alpha=0.8)
+    axes[1,1].set_xlabel(&#x27;Instance&#x27;)
+    axes[1,1].set_ylabel(&#x27;تعداد تکرار&#x27;)
+    axes[1,1].set_title(&#x27;مقایسه تعداد تکرارها&#x27;)
+    axes[1,1].set_xticks(x)
+    axes[1,1].set_xticklabels(instances)
+    axes[1,1].legend()
+    axes[1,1].grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    plt.savefig(&#x27;tsp_2opt_vs_3opt_comparison.png&#x27;, dpi=300, bbox_inches=&#x27;tight&#x27;)
+    plt.show()
+
+# ============================================================================
+# اجرای اصلی برنامه
+# ============================================================================
+
+def main():
+    &quot;&quot;&quot;تابع اصلی برنامه&quot;&quot;&quot;
+    print(&quot;🚀 شروع مقایسه 2-opt و 3-opt برای مساله TSP&quot;)
+    print(&quot;=&quot;*60)
+    
+    all_results = {}
+    
+    # اجرای آزمایش‌ها برای هر instance
+    for instance_name, (coords, dist_matrix) in instances.items():
+        results = run_comparison(instance_name, coords, dist_matrix, num_runs=3)
+        all_results[instance_name] = results
+        
+        # نمایش جدول نتایج برای این instance
+        df = pd.DataFrame(results)
+        print(f&quot;\n📋 جدول نتایج برای instance {instance_name}:&quot;)
+        print(df.to_string(index=False))
+    
+    # تحلیل کلی نتایج
+    analyze_results(all_results)
+    
+    # ایجاد نمودارهای مقایسه
+    create_visualization(all_results)
+    
+    # ذخیره نتایج در فایل CSV
+    all_data = []
+    for instance_name, results in all_results.items():
+        for result in results:
+            result[&#x27;Instance&#x27;] = instance_name
+            all_data.append(result)
+    
+    final_df = pd.DataFrame(all_data)
+    final_df.to_csv(&#x27;tsp_2opt_vs_3opt_results.csv&#x27;, index=False, encoding=&#x27;utf-8-sig&#x27;)
+    
+    print(f&quot;\n✅ نتایج در فایل &#x27;tsp_2opt_vs_3opt_results.csv&#x27; ذخیره شد&quot;)
+    print(&quot;✅ نمودار مقایسه در فایل &#x27;tsp_2opt_vs_3opt_comparison.png&#x27; ذخیره شد&quot;)
+    
+    # خلاصه نهایی
+    print(f&quot;\n{&#x27;=&#x27;*80}&quot;)
+    print(&quot;خلاصه نهایی&quot;)
+    print(f&quot;{&#x27;=&#x27;*80}&quot;)
+    print(&quot;🎯 نتایج کلیدی:&quot;)
+    print(&quot;   • 3-opt معمولاً کیفیت بهتری نسبت به 2-opt دارد&quot;)
+    print(&quot;   • 3-opt به طور قابل توجهی کندتر از 2-opt است&quot;)
+    print(&quot;   • برای instance های کوچک، 3-opt قابل اجرا است&quot;)
+    print(&quot;   • برای instance های بزرگ، 2-opt عملی‌تر است&quot;)
+    print(&quot;   • انتخاب بین 2-opt و 3-opt بستگی به اولویت زمان یا کیفیت دارد&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre></details><details class="source-file" ><summary><bdi>Q1.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw4-tsp/Q1.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># ============================================================================
+# تمرین 4 - سوال 1: پیاده‌سازی 3-opt برای مساله فروشنده دوره گرد (TSP)
+# ============================================================================
+&quot;&quot;&quot;
+مساله فروشنده دوره گرد که در تمرین قبلی برای 2-opt پیاده سازی کردید را برای 3-opt تکرار کنید 
+و یک گزارش کامل متنی از نتایج عددی که شامل جدول جواب ها و زمان اجرا و تحلیل نتایج باشد 
+ارائه کنید لطفا در فایل متنی توضیح مختصری در مورد چگونگی اجرا الگوریتم ها ارائه کنید. 
+فایل ضمیمه شامل کدها و پی دی اف توضیحات باشد.
+&quot;&quot;&quot;
+
+import numpy as np
+import time
+import pandas as pd
+import matplotlib.pyplot as plt
+from itertools import combinations
+import random
+
+# تنظیم seed برای تکرارپذیری نتایج
+np.random.seed(42)
+random.seed(42)
+
+# ============================================================================
+# ایجاد Instance های تست
+# ============================================================================
+
+def create_tsp_instance(n_cities):
+    &quot;&quot;&quot;ایجاد یک instance تصادفی برای TSP&quot;&quot;&quot;
+    coords = np.random.rand(n_cities, 2) * 100
+    dist_matrix = np.sqrt(((coords[:, np.newaxis, :] - coords[np.newaxis, :, :]) ** 2).sum(axis=-1))
+    np.fill_diagonal(dist_matrix, 0)
+    return coords, dist_matrix
+
+# ایجاد instance های مختلف برای تست
+instances = {
+    &#x27;کوچک&#x27;: create_tsp_instance(20),
+    &#x27;متوسط&#x27;: create_tsp_instance(50), 
+    &#x27;بزرگ&#x27;: create_tsp_instance(100)
+}
+
+print(&quot;Instance های TSP آماده شدند:&quot;)
+for name, (coords, dist) in instances.items():
+    print(f&quot;  {name}: {len(coords)} شهر&quot;)
+
+# ============================================================================
+# توابع کمکی TSP
+# ============================================================================
+
+def calc_tsp_cost(route, dist_matrix):
+    &quot;&quot;&quot;محاسبه هزینه کل مسیر TSP&quot;&quot;&quot;
+    cost = 0
+    n = len(route)
+    for i in range(n):
+        cost += dist_matrix[route[i]][route[(i + 1) % n]]
+    return cost
+
+def generate_initial_route(n_cities):
+    &quot;&quot;&quot;تولید مسیر اولیه تصادفی&quot;&quot;&quot;
+    return list(np.random.permutation(n_cities))
+
+# ============================================================================
+# پیاده‌سازی 2-opt (برای مقایسه)
+# ============================================================================
+
+def apply_2opt(route, i, k):
+    &quot;&quot;&quot;اعمال حرکت 2-opt: معکوس کردن بخشی از مسیر&quot;&quot;&quot;
+    return route[:i] + route[i:k+1][::-1] + route[k+1:]
+
+def calc_2opt_delta(route, i, k, dist_matrix):
+    &quot;&quot;&quot;محاسبه دلتای 2-opt بدون محاسبه کل هزینه&quot;&quot;&quot;
+    n = len(route)
+    a, b = route[i-1], route[i]
+    c, d = route[k], route[(k + 1) % n]
+    return (dist_matrix[a][c] + dist_matrix[b][d]) - (dist_matrix[a][b] + dist_matrix[c][d])
+
+def solve_tsp_2opt(route, dist_matrix, mode=&quot;best&quot;):
+    &quot;&quot;&quot;الگوریتم Local Search برای TSP با 2-opt&quot;&quot;&quot;
+    curr = route[:]
+    cost = calc_tsp_cost(curr, dist_matrix)
+    n = len(curr)
+    iterations = 0
+    
+    while True:
+        iterations += 1
+        best_delta = 0
+        best_move = None
+        improved = False
+        
+        for i in range(1, n-1):
+            for k in range(i+1, n):
+                delta = calc_2opt_delta(curr, i, k, dist_matrix)
+                
+                if delta &lt; best_delta - 1e-6:
+                    if mode == &quot;first&quot;:
+                        curr = apply_2opt(curr, i, k)
+                        cost += delta
+                        improved = True
+                        break
+                    best_delta = delta
+                    best_move = (i, k)
+            
+            if improved and mode == &quot;first&quot;:
+                break
+        
+        if mode == &quot;best&quot; and best_move:
+            i, k = best_move
+            curr = apply_2opt(curr, i, k)
+            cost += best_delta
+            improved = True
+        
+        if not improved:
+            break
+    
+    return curr, cost, iterations
+
+# ============================================================================
+# پیاده‌سازی 3-opt
+# ============================================================================
+
+def get_3opt_moves(route):
+    &quot;&quot;&quot;تولید تمام حرکات ممکن 3-opt برای یک مسیر&quot;&quot;&quot;
+    n = len(route)
+    moves = []
+    
+    # برای 3-opt نیاز به انتخاب 3 یال داریم
+    # یال‌ها: (i-1,i), (j-1,j), (k-1,k) که i &lt; j &lt; k
+    for i in range(1, n-2):
+        for j in range(i+1, n-1):
+            for k in range(j+1, n):
+                moves.append((i, j, k))
+    
+    return moves
+
+def apply_3opt(route, i, j, k, move_type):
+    &quot;&quot;&quot;
+    اعمال حرکت 3-opt با نوع حرکت مشخص
+    
+    برای 3 یال که حذف می‌شوند، 7 روش مختلف برای اتصال مجدد وجود دارد:
+    1: 2-opt بین i و j
+    2: 2-opt بین j و k  
+    3: 2-opt بین i و k
+    4: جابجایی قطعه وسط
+    5: جابجایی و معکوس segment2 و segment3
+    6: جابجایی segment2 و معکوس segment3
+    7: جابجایی و معکوس هر دو segment
+    &quot;&quot;&quot;
+    # تقسیم مسیر به 4 قطعه
+    segment1 = route[:i]                    # [0, i)
+    segment2 = route[i:j]                   # [i, j)  
+    segment3 = route[j:k]                   # [j, k)
+    segment4 = route[k:]                    # [k, n)
+    
+    if move_type == 1:  # 2-opt بین i و j
+        return segment1 + segment2[::-1] + segment3 + segment4
+    elif move_type == 2:  # 2-opt بین j و k
+        return segment1 + segment2 + segment3[::-1] + segment4
+    elif move_type == 3:  # 2-opt بین i و k (ترکیب دو 2-opt)
+        return segment1 + segment2[::-1] + segment3[::-1] + segment4
+    elif move_type == 4:  # جابجایی segment2 و segment3
+        return segment1 + segment3 + segment2 + segment4
+    elif move_type == 5:  # جابجایی و معکوس segment2 و segment3
+        return segment1 + segment3[::-1] + segment2 + segment4
+    elif move_type == 6:  # جابجایی segment2 و معکوس segment3
+        return segment1 + segment3 + segment2[::-1] + segment4
+    elif move_type == 7:  # جابجایی و معکوس هر دو segment
+        return segment1 + segment3[::-1] + segment2[::-1] + segment4
+    else:
+        return route  # بدون تغییر
+
+def calc_3opt_delta(route, i, j, k, move_type, dist_matrix):
+    &quot;&quot;&quot;محاسبه دلتای 3-opt برای یک حرکت خاص&quot;&quot;&quot;
+    n = len(route)
+    
+    # یال‌های فعلی که حذف می‌شوند
+    old_edges = [
+        (route[i-1], route[i]),
+        (route[j-1], route[j]), 
+        (route[k-1], route[k % n])
+    ]
+    
+    # محاسبه یال‌های جدید بر اساس نوع حرکت
+    new_route = apply_3opt(route, i, j, k, move_type)
+    
+    # محاسبه دقیق تفاوت (برای سادگی)
+    old_cost = sum(dist_matrix[edge[0]][edge[1]] for edge in old_edges)
+    
+    # یال‌های جدید در همان موقعیت‌ها
+    new_edges = [
+        (new_route[i-1], new_route[i]),
+        (new_route[j-1], new_route[j]),
+        (new_route[k-1], new_route[k % n])
+    ]
+    
+    new_cost = sum(dist_matrix[edge[0]][edge[1]] for edge in new_edges)
+    
+    return new_cost - old_cost
+
+def solve_tsp_3opt(route, dist_matrix, mode=&quot;best&quot;):
+    &quot;&quot;&quot;الگوریتم Local Search برای TSP با 3-opt&quot;&quot;&quot;
+    curr = route[:]
+    cost = calc_tsp_cost(curr, dist_matrix)
+    n = len(curr)
+    iterations = 0
+    
+    print(f&quot;شروع 3-opt با هزینه اولیه: {cost:.2f}&quot;)
+    
+    while True:
+        iterations += 1
+        best_delta = 0
+        best_move = None
+        improved = False
+        
+        # تولید تمام حرکات ممکن 3-opt
+        moves = get_3opt_moves(curr)
+        
+        for i, j, k in moves:
+            # بررسی تمام 7 نوع حرکت 3-opt
+            for move_type in range(1, 8):
+                # محاسبه دلتا به روش ساده (محاسبه کل هزینه)
+                new_route = apply_3opt(curr, i, j, k, move_type)
+                new_cost = calc_tsp_cost(new_route, dist_matrix)
+                delta = new_cost - cost
+                
+                if delta &lt; best_delta - 1e-6:
+                    if mode == &quot;first&quot;:
+                        curr = new_route
+                        cost = new_cost
+                        improved = True
+                        break
+                    best_delta = delta
+                    best_move = (i, j, k, move_type)
+            
+            if improved and mode == &quot;first&quot;:
+                break
+        
+        if mode == &quot;best&quot; and best_move:
+            i, j, k, move_type = best_move
+            curr = apply_3opt(curr, i, j, k, move_type)
+            cost += best_delta
+            improved = True
+        
+        if not improved:
+            break
+            
+        if iterations % 10 == 0:
+            print(f&quot;  Iteration {iterations}: هزینه فعلی = {cost:.2f}&quot;)
+    
+    print(f&quot;3-opt تمام شد بعد از {iterations} تکرار با هزینه نهایی: {cost:.2f}&quot;)
+    return curr, cost, iterations
+
+# ============================================================================
+# تابع مقایسه و بنچمارک
+# ============================================================================
+
+def run_comparison(instance_name, coords, dist_matrix, num_runs=5):
+    &quot;&quot;&quot;اجرای مقایسه بین 2-opt و 3-opt&quot;&quot;&quot;
+    print(f&quot;\n{&#x27;=&#x27;*60}&quot;)
+    print(f&quot;مقایسه 2-opt و 3-opt برای instance {instance_name}&quot;)
+    print(f&quot;تعداد شهرها: {len(coords)}&quot;)
+    print(f&quot;{&#x27;=&#x27;*60}&quot;)
+    
+    results = []
+    
+    for run in range(num_runs):
+        print(f&quot;\nاجرای {run + 1} از {num_runs}:&quot;)
+        
+        # تولید مسیر اولیه یکسان برای هر دو الگوریتم
+        initial_route = generate_initial_route(len(coords))
+        initial_cost = calc_tsp_cost(initial_route, dist_matrix)
+        
+        print(f&quot;هزینه مسیر اولیه: {initial_cost:.2f}&quot;)
+        
+        # اجرای 2-opt
+        print(&quot;اجرای 2-opt...&quot;)
+        start_time = time.time()
+        route_2opt, cost_2opt, iter_2opt = solve_tsp_2opt(initial_route[:], dist_matrix, &quot;best&quot;)
+        time_2opt = time.time() - start_time
+        
+        # اجرای 3-opt
+        print(&quot;اجرای 3-opt...&quot;)
+        start_time = time.time()
+        route_3opt, cost_3opt, iter_3opt = solve_tsp_3opt(initial_route[:], dist_matrix, &quot;best&quot;)
+        time_3opt = time.time() - start_time
+        
+        # محاسبه درصد بهبود
+        improvement_2opt = ((initial_cost - cost_2opt) / initial_cost) * 100
+        improvement_3opt = ((initial_cost - cost_3opt) / initial_cost) * 100
+        
+        results.append({
+            &#x27;اجرا&#x27;: run + 1,
+            &#x27;هزینه اولیه&#x27;: round(initial_cost, 2),
+            &#x27;هزینه 2-opt&#x27;: round(cost_2opt, 2),
+            &#x27;هزینه 3-opt&#x27;: round(cost_3opt, 2),
+            &#x27;بهبود 2-opt (%)&#x27;: round(improvement_2opt, 2),
+            &#x27;بهبود 3-opt (%)&#x27;: round(improvement_3opt, 2),
+            &#x27;زمان 2-opt (ثانیه)&#x27;: round(time_2opt, 4),
+            &#x27;زمان 3-opt (ثانیه)&#x27;: round(time_3opt, 4),
+            &#x27;تکرار 2-opt&#x27;: iter_2opt,
+            &#x27;تکرار 3-opt&#x27;: iter_3opt
+        })
+        
+        print(f&quot;نتایج اجرای {run + 1}:&quot;)
+        print(f&quot;  2-opt: هزینه={cost_2opt:.2f}, زمان={time_2opt:.4f}s, تکرار={iter_2opt}&quot;)
+        print(f&quot;  3-opt: هزینه={cost_3opt:.2f}, زمان={time_3opt:.4f}s, تکرار={iter_3opt}&quot;)
+    
+    return results
+
+# ============================================================================
+# تحلیل و گزارش نتایج
+# ============================================================================
+
+def analyze_results(all_results):
+    &quot;&quot;&quot;تحلیل و نمایش نتایج کلی&quot;&quot;&quot;
+    print(f&quot;\n{&#x27;=&#x27;*80}&quot;)
+    print(&quot;تحلیل کلی نتایج&quot;)
+    print(f&quot;{&#x27;=&#x27;*80}&quot;)
+    
+    summary_data = []
+    
+    for instance_name, results in all_results.items():
+        df = pd.DataFrame(results)
+        
+        summary_data.append({
+            &#x27;Instance&#x27;: instance_name,
+            &#x27;میانگین بهبود 2-opt (%)&#x27;: round(df[&#x27;بهبود 2-opt (%)&#x27;].mean(), 2),
+            &#x27;میانگین بهبود 3-opt (%)&#x27;: round(df[&#x27;بهبود 3-opt (%)&#x27;].mean(), 2),
+            &#x27;میانگین زمان 2-opt (ثانیه)&#x27;: round(df[&#x27;زمان 2-opt (ثانیه)&#x27;].mean(), 4),
+            &#x27;میانگین زمان 3-opt (ثانیه)&#x27;: round(df[&#x27;زمان 3-opt (ثانیه)&#x27;].mean(), 4),
+            &#x27;میانگین تکرار 2-opt&#x27;: round(df[&#x27;تکرار 2-opt&#x27;].mean(), 1),
+            &#x27;میانگین تکرار 3-opt&#x27;: round(df[&#x27;تکرار 3-opt&#x27;].mean(), 1)
+        })
+    
+    summary_df = pd.DataFrame(summary_data)
+    print(summary_df.to_string(index=False))
+    
+    # تحلیل نتایج
+    print(f&quot;\n📊 تحلیل نتایج:&quot;)
+    print(&quot;=&quot;*50)
+    
+    for _, row in summary_df.iterrows():
+        instance = row[&#x27;Instance&#x27;]
+        improvement_diff = row[&#x27;میانگین بهبود 3-opt (%)&#x27;] - row[&#x27;میانگین بهبود 2-opt (%)&#x27;]
+        time_ratio = row[&#x27;میانگین زمان 3-opt (ثانیه)&#x27;] / row[&#x27;میانگین زمان 2-opt (ثانیه)&#x27;]
+        
+        print(f&quot;\n🔍 Instance {instance}:&quot;)
+        print(f&quot;   • 3-opt بهبود {improvement_diff:+.2f}% بیشتری نسبت به 2-opt دارد&quot;)
+        print(f&quot;   • 3-opt {time_ratio:.1f} برابر کندتر از 2-opt است&quot;)
+        print(f&quot;   • نسبت کیفیت به زمان: {improvement_diff/time_ratio:.3f}&quot;)
+
+def create_visualization(all_results):
+    &quot;&quot;&quot;ایجاد نمودارهای مقایسه&quot;&quot;&quot;
+    fig, axes = plt.subplots(2, 2, figsize=(15, 10))
+    fig.suptitle(&#x27;مقایسه عملکرد 2-opt و 3-opt&#x27;, fontsize=16)
+    
+    instances = list(all_results.keys())
+    
+    # نمودار 1: مقایسه درصد بهبود
+    improvements_2opt = []
+    improvements_3opt = []
+    
+    for instance_name, results in all_results.items():
+        df = pd.DataFrame(results)
+        improvements_2opt.append(df[&#x27;بهبود 2-opt (%)&#x27;].mean())
+        improvements_3opt.append(df[&#x27;بهبود 3-opt (%)&#x27;].mean())
+    
+    x = np.arange(len(instances))
+    width = 0.35
+    
+    axes[0,0].bar(x - width/2, improvements_2opt, width, label=&#x27;2-opt&#x27;, alpha=0.8)
+    axes[0,0].bar(x + width/2, improvements_3opt, width, label=&#x27;3-opt&#x27;, alpha=0.8)
+    axes[0,0].set_xlabel(&#x27;Instance&#x27;)
+    axes[0,0].set_ylabel(&#x27;درصد بهبود (%)&#x27;)
+    axes[0,0].set_title(&#x27;مقایسه درصد بهبود&#x27;)
+    axes[0,0].set_xticks(x)
+    axes[0,0].set_xticklabels(instances)
+    axes[0,0].legend()
+    axes[0,0].grid(True, alpha=0.3)
+    
+    # نمودار 2: مقایسه زمان اجرا
+    times_2opt = []
+    times_3opt = []
+    
+    for instance_name, results in all_results.items():
+        df = pd.DataFrame(results)
+        times_2opt.append(df[&#x27;زمان 2-opt (ثانیه)&#x27;].mean())
+        times_3opt.append(df[&#x27;زمان 3-opt (ثانیه)&#x27;].mean())
+    
+    axes[0,1].bar(x - width/2, times_2opt, width, label=&#x27;2-opt&#x27;, alpha=0.8)
+    axes[0,1].bar(x + width/2, times_3opt, width, label=&#x27;3-opt&#x27;, alpha=0.8)
+    axes[0,1].set_xlabel(&#x27;Instance&#x27;)
+    axes[0,1].set_ylabel(&#x27;زمان (ثانیه)&#x27;)
+    axes[0,1].set_title(&#x27;مقایسه زمان اجرا&#x27;)
+    axes[0,1].set_xticks(x)
+    axes[0,1].set_xticklabels(instances)
+    axes[0,1].legend()
+    axes[0,1].grid(True, alpha=0.3)
+    axes[0,1].set_yscale(&#x27;log&#x27;)  # مقیاس لگاریتمی برای بهتر دیدن تفاوت‌ها
+    
+    # نمودار 3: نسبت کیفیت به زمان
+    quality_time_ratios = []
+    for i in range(len(instances)):
+        improvement_diff = improvements_3opt[i] - improvements_2opt[i]
+        time_ratio = times_3opt[i] / times_2opt[i]
+        quality_time_ratios.append(improvement_diff / time_ratio)
+    
+    axes[1,0].bar(instances, quality_time_ratios, alpha=0.8, color=&#x27;green&#x27;)
+    axes[1,0].set_xlabel(&#x27;Instance&#x27;)
+    axes[1,0].set_ylabel(&#x27;نسبت کیفیت به زمان&#x27;)
+    axes[1,0].set_title(&#x27;کارایی 3-opt نسبت به 2-opt&#x27;)
+    axes[1,0].grid(True, alpha=0.3)
+    
+    # نمودار 4: مقایسه تعداد تکرارها
+    iters_2opt = []
+    iters_3opt = []
+    
+    for instance_name, results in all_results.items():
+        df = pd.DataFrame(results)
+        iters_2opt.append(df[&#x27;تکرار 2-opt&#x27;].mean())
+        iters_3opt.append(df[&#x27;تکرار 3-opt&#x27;].mean())
+    
+    axes[1,1].bar(x - width/2, iters_2opt, width, label=&#x27;2-opt&#x27;, alpha=0.8)
+    axes[1,1].bar(x + width/2, iters_3opt, width, label=&#x27;3-opt&#x27;, alpha=0.8)
+    axes[1,1].set_xlabel(&#x27;Instance&#x27;)
+    axes[1,1].set_ylabel(&#x27;تعداد تکرار&#x27;)
+    axes[1,1].set_title(&#x27;مقایسه تعداد تکرارها&#x27;)
+    axes[1,1].set_xticks(x)
+    axes[1,1].set_xticklabels(instances)
+    axes[1,1].legend()
+    axes[1,1].grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    plt.savefig(&#x27;tsp_2opt_vs_3opt_comparison.png&#x27;, dpi=300, bbox_inches=&#x27;tight&#x27;)
+    plt.show()
+
+# ============================================================================
+# اجرای اصلی برنامه
+# ============================================================================
+
+def main():
+    &quot;&quot;&quot;تابع اصلی برنامه&quot;&quot;&quot;
+    print(&quot;🚀 شروع مقایسه 2-opt و 3-opt برای مساله TSP&quot;)
+    print(&quot;=&quot;*60)
+    
+    all_results = {}
+    
+    # اجرای آزمایش‌ها برای هر instance
+    for instance_name, (coords, dist_matrix) in instances.items():
+        results = run_comparison(instance_name, coords, dist_matrix, num_runs=3)
+        all_results[instance_name] = results
+        
+        # نمایش جدول نتایج برای این instance
+        df = pd.DataFrame(results)
+        print(f&quot;\n📋 جدول نتایج برای instance {instance_name}:&quot;)
+        print(df.to_string(index=False))
+    
+    # تحلیل کلی نتایج
+    analyze_results(all_results)
+    
+    # ایجاد نمودارهای مقایسه
+    create_visualization(all_results)
+    
+    # ذخیره نتایج در فایل CSV
+    all_data = []
+    for instance_name, results in all_results.items():
+        for result in results:
+            result[&#x27;Instance&#x27;] = instance_name
+            all_data.append(result)
+    
+    final_df = pd.DataFrame(all_data)
+    final_df.to_csv(&#x27;tsp_2opt_vs_3opt_results.csv&#x27;, index=False, encoding=&#x27;utf-8-sig&#x27;)
+    
+    print(f&quot;\n✅ نتایج در فایل &#x27;tsp_2opt_vs_3opt_results.csv&#x27; ذخیره شد&quot;)
+    print(&quot;✅ نمودار مقایسه در فایل &#x27;tsp_2opt_vs_3opt_comparison.png&#x27; ذخیره شد&quot;)
+    
+    # خلاصه نهایی
+    print(f&quot;\n{&#x27;=&#x27;*80}&quot;)
+    print(&quot;خلاصه نهایی&quot;)
+    print(f&quot;{&#x27;=&#x27;*80}&quot;)
+    print(&quot;🎯 نتایج کلیدی:&quot;)
+    print(&quot;   • 3-opt معمولاً کیفیت بهتری نسبت به 2-opt دارد&quot;)
+    print(&quot;   • 3-opt به طور قابل توجهی کندتر از 2-opt است&quot;)
+    print(&quot;   • برای instance های کوچک، 3-opt قابل اجرا است&quot;)
+    print(&quot;   • برای instance های بزرگ، 2-opt عملی‌تر است&quot;)
+    print(&quot;   • انتخاب بین 2-opt و 3-opt بستگی به اولویت زمان یا کیفیت دارد&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre></details><details class="source-file" ><summary><bdi>HW4_Q1_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw4-tsp/HW4_Q1_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Exported notebook code; may contain IPython commands.
+# %%
+#!/usr/bin/env python3
+# ============================================================================
+# مقایسه کامل 2-opt و 3-opt برای مسئله فروشنده دوره‌گرد (TSP)
+# ============================================================================
+
+import numpy as np
+import time
+import pandas as pd
+from itertools import combinations
+
+np.random.seed(42)
+
+# ============================================================================
+# تولید Instance های تست
+# ============================================================================
+def generate_tsp_instance(n, coord_range=100):
+    &quot;&quot;&quot;تولید یک instance تصادفی TSP&quot;&quot;&quot;
+    coords = np.random.randint(0, coord_range, size=(n, 2))
+    dist_matrix = np.zeros((n, n), dtype=int)
+    
+    for i in range(n):
+        for j in range(n):
+            if i != j:
+                dist_matrix[i][j] = abs(coords[i][0] - coords[j][0]) + \
+                                   abs(coords[i][1] - coords[j][1])
+    
+    return coords, dist_matrix
+
+# ============================================================================
+# توابع کمکی TSP
+# ============================================================================
+def calc_tsp_cost(route, dist):
+    &quot;&quot;&quot;محاسبه هزینه کل مسیر&quot;&quot;&quot;
+    total = 0
+    n = len(route)
+    for i in range(n):
+        total += dist[route[i]][route[(i + 1) % n]]
+    return int(total)
+
+def apply_2opt(route, i, k):
+    &quot;&quot;&quot;اعمال حرکت 2-opt: معکوس کردن بخش [i:k+1]&quot;&quot;&quot;
+    return route[:i] + route[i:k+1][::-1] + route[k+1:]
+
+def calc_2opt_delta(route, i, k, dist):
+    &quot;&quot;&quot;محاسبه دلتای 2-opt بدون محاسبه کامل هزینه&quot;&quot;&quot;
+    n = len(route)
+    a, b = route[i-1], route[i]
+    c, d = route[k], route[(k + 1) % n]
+    return int((dist[a][c] + dist[b][d]) - (dist[a][b] + dist[c][d]))
+
+def apply_3opt(route, i, j, k, case=0):
+    &quot;&quot;&quot;
+    اعمال حرکت 3-opt با 7 حالت مختلف
+    
+    بخش‌ها:
+    - A: route[0:i]
+    - B: route[i:j]
+    - C: route[j:k+1]
+    - D: route[k+1:]
+    
+    حالت‌های مختلف:
+    0: A + B + C + D (بدون تغییر)
+    1: A + B&#x27; + C + D (معکوس B)
+    2: A + B + C&#x27; + D (معکوس C)
+    3: A + C + B + D (جابجایی B و C)
+    4: A + B&#x27; + C&#x27; + D (معکوس B و C)
+    5: A + C&#x27; + B + D (معکوس C و جابجایی)
+    6: A + C + B&#x27; + D (جابجایی و معکوس B)
+    &quot;&quot;&quot;
+    A = route[:i]
+    B = route[i:j]
+    C = route[j:k+1]
+    D = route[k+1:]
+    
+    if case == 0:
+        return route[:]
+    elif case == 1:
+        return A + B[::-1] + C + D
+    elif case == 2:
+        return A + B + C[::-1] + D
+    elif case == 3:
+        return A + C + B + D
+    elif case == 4:
+        return A + B[::-1] + C[::-1] + D
+    elif case == 5:
+        return A + C[::-1] + B + D
+    elif case == 6:
+        return A + C + B[::-1] + D
+    else:
+        return route[:]
+
+def calc_3opt_delta(route, i, j, k, case, dist):
+    &quot;&quot;&quot;محاسبه دلتای 3-opt برای یک حالت خاص&quot;&quot;&quot;
+    current_cost = calc_tsp_cost(route, dist)
+    new_route = apply_3opt(route, i, j, k, case)
+    new_cost = calc_tsp_cost(new_route, dist)
+    return int(new_cost - current_cost), new_route
+
+# ============================================================================
+# الگوریتم 2-opt Local Search
+# ============================================================================
+def solve_tsp_2opt(route, dist, mode=&quot;best&quot;, use_delta=True, max_time=300):
+    &quot;&quot;&quot;
+    الگوریتم Local Search با 2-opt
+    
+    Args:
+        route: مسیر اولیه
+        dist: ماتریس فاصله
+        mode: &quot;best&quot; یا &quot;first&quot; improvement
+        use_delta: استفاده از محاسبه دلتا
+        max_time: حداکثر زمان اجرا (ثانیه)
+    &quot;&quot;&quot;
+    curr = route[:]
+    cost = calc_tsp_cost(curr, dist)
+    initial_cost = cost
+    n = len(curr)
+    iters = 0
+    start_time = time.time()
+    
+    while True:
+        if time.time() - start_time &gt; max_time:
+            print(f&quot;⏰ 2-opt timeout بعد از {max_time}s&quot;)
+            break
+            
+        iters += 1
+        best_delta = 0
+        best_move = None
+        improved = False
+        
+        for i in range(1, n-1):
+            for k in range(i+1, n):
+                if use_delta:
+                    delta = calc_2opt_delta(curr, i, k, dist)
+                else:
+                    new_route = apply_2opt(curr, i, k)
+                    delta = calc_tsp_cost(new_route, dist) - cost
+
+                if delta &lt; best_delta:
+                    if mode == &quot;first&quot;:
+                        curr = apply_2opt(curr, i, k)
+                        cost += delta
+                        improved = True
+                        break
+                    best_delta = delta
+                    best_move = (i, k)
+            
+            if improved and mode == &quot;first&quot;:
+                break
+        
+        if mode == &quot;best&quot; and best_move and best_delta &lt; 0:
+            i, k = best_move
+            curr = apply_2opt(curr, i, k)
+            cost += best_delta
+            improved = True
+        
+        if not improved:
+            break
+    
+    elapsed = time.time() - start_time
+    improvement = initial_cost - cost
+    
+    return {
+        &#x27;route&#x27;: curr,
+        &#x27;cost&#x27;: int(cost),
+        &#x27;initial_cost&#x27;: int(initial_cost),
+        &#x27;improvement&#x27;: int(improvement),
+        &#x27;improvement_pct&#x27;: (improvement / initial_cost * 100) if initial_cost &gt; 0 else 0,
+        &#x27;iterations&#x27;: iters,
+        &#x27;time&#x27;: elapsed
+    }
+
+# ============================================================================
+# الگوریتم 3-opt Local Search
+# ============================================================================
+def solve_tsp_3opt(route, dist, mode=&quot;best&quot;, use_delta=True, max_time=300):
+    &quot;&quot;&quot;
+    الگوریتم Local Search با 3-opt
+    
+    Args:
+        route: مسیر اولیه
+        dist: ماتریس فاصله
+        mode: &quot;best&quot; یا &quot;first&quot; improvement
+        use_delta: استفاده از محاسبه دلتا
+        max_time: حداکثر زمان اجرا (ثانیه)
+    &quot;&quot;&quot;
+    curr = route[:]
+    cost = calc_tsp_cost(curr, dist)
+    initial_cost = cost
+    n = len(curr)
+    iters = 0
+    start_time = time.time()
+    
+    while True:
+        if time.time() - start_time &gt; max_time:
+            print(f&quot;⏰ 3-opt timeout بعد از {max_time}s&quot;)
+            break
+            
+        iters += 1
+        best_delta = 0
+        best_move = None
+        improved = False
+        
+        # بررسی تمام ترکیبات ممکن i, j, k
+        for i in range(1, n-2):
+            for j in range(i+1, n-1):
+                for k in range(j+1, n):
+                    # بررسی 7 حالت مختلف 3-opt (حالت 0 تغییری ندارد)
+                    for case in range(1, 7):
+                        if use_delta:
+                            delta, new_route = calc_3opt_delta(curr, i, j, k, case, dist)
+                        else:
+                            new_route = apply_3opt(curr, i, j, k, case)
+                            delta = calc_tsp_cost(new_route, dist) - cost
+                        
+                        if delta &lt; best_delta:
+                            if mode == &quot;first&quot;:
+                                curr = new_route
+                                cost += delta
+                                improved = True
+                                break
+                            best_delta = delta
+                            best_move = (i, j, k, case, new_route)
+                    
+                    if improved and mode == &quot;first&quot;:
+                        break
+                
+                if improved and mode == &quot;first&quot;:
+                    break
+            
+            if improved and mode == &quot;first&quot;:
+                break
+        
+        if mode == &quot;best&quot; and best_move and best_delta &lt; 0:
+            i, j, k, case, new_route = best_move
+            curr = new_route
+            cost += best_delta
+            improved = True
+        
+        if not improved:
+            break
+    
+    elapsed = time.time() - start_time
+    improvement = initial_cost - cost
+    
+    return {
+        &#x27;route&#x27;: curr,
+        &#x27;cost&#x27;: int(cost),
+        &#x27;initial_cost&#x27;: int(initial_cost),
+        &#x27;improvement&#x27;: int(improvement),
+        &#x27;improvement_pct&#x27;: (improvement / initial_cost * 100) if initial_cost &gt; 0 else 0,
+        &#x27;iterations&#x27;: iters,
+        &#x27;time&#x27;: elapsed
+    }
+
+# ============================================================================
+# اجرای آزمایش‌ها
+# ============================================================================
+def run_experiments():
+    &quot;&quot;&quot;اجرای آزمایش‌های مقایسه‌ای&quot;&quot;&quot;
+    
+    # اندازه‌های مختلف برای تست
+    sizes = {
+        &#x27;کوچک&#x27;: 15,
+        &#x27;متوسط&#x27;: 25,
+        &#x27;بزرگ&#x27;: 40
+    }
+    
+    results = []
+    
+    for size_name, n in sizes.items():
+        print(f&quot;\n{&#x27;=&#x27;*80}&quot;)
+        print(f&quot;آزمایش برای اندازه {size_name} (n={n})&quot;)
+        print(&#x27;=&#x27;*80)
+        
+        # تولید instance
+        coords, dist_matrix = generate_tsp_instance(n)
+        initial_route = list(range(n))
+        np.random.shuffle(initial_route)
+        initial_cost = calc_tsp_cost(initial_route, dist_matrix)
+        
+        print(f&quot;هزینه اولیه: {initial_cost}&quot;)
+        
+        # تست 2-opt Best
+        print(&quot;\n🔄 اجرای 2-opt Best Improvement...&quot;)
+        result_2opt_best = solve_tsp_2opt(initial_route, dist_matrix, &quot;best&quot;, True, 300)
+        
+        # تست 2-opt First
+        print(&quot;🔄 اجرای 2-opt First Improvement...&quot;)
+        result_2opt_first = solve_tsp_2opt(initial_route, dist_matrix, &quot;first&quot;, True, 300)
+        
+        # تست 3-opt Best
+        print(&quot;🔄 اجرای 3-opt Best Improvement...&quot;)
+        result_3opt_best = solve_tsp_3opt(initial_route, dist_matrix, &quot;best&quot;, True, 300)
+        
+        # تست 3-opt First
+        print(&quot;🔄 اجرای 3-opt First Improvement...&quot;)
+        result_3opt_first = solve_tsp_3opt(initial_route, dist_matrix, &quot;first&quot;, True, 300)
+        
+        # ذخیره نتایج
+        results.append({
+            &#x27;اندازه&#x27;: size_name,
+            &#x27;n&#x27;: n,
+            &#x27;هزینه اولیه&#x27;: initial_cost,
+            &#x27;2-opt Best - هزینه&#x27;: result_2opt_best[&#x27;cost&#x27;],
+            &#x27;2-opt Best - بهبود%&#x27;: f&quot;{result_2opt_best[&#x27;improvement_pct&#x27;]:.2f}&quot;,
+            &#x27;2-opt Best - زمان&#x27;: f&quot;{result_2opt_best[&#x27;time&#x27;]:.3f}&quot;,
+            &#x27;2-opt Best - تکرار&#x27;: result_2opt_best[&#x27;iterations&#x27;],
+            &#x27;2-opt First - هزینه&#x27;: result_2opt_first[&#x27;cost&#x27;],
+            &#x27;2-opt First - بهبود%&#x27;: f&quot;{result_2opt_first[&#x27;improvement_pct&#x27;]:.2f}&quot;,
+            &#x27;2-opt First - زمان&#x27;: f&quot;{result_2opt_first[&#x27;time&#x27;]:.3f}&quot;,
+            &#x27;2-opt First - تکرار&#x27;: result_2opt_first[&#x27;iterations&#x27;],
+            &#x27;3-opt Best - هزینه&#x27;: result_3opt_best[&#x27;cost&#x27;],
+            &#x27;3-opt Best - بهبود%&#x27;: f&quot;{result_3opt_best[&#x27;improvement_pct&#x27;]:.2f}&quot;,
+            &#x27;3-opt Best - زمان&#x27;: f&quot;{result_3opt_best[&#x27;time&#x27;]:.3f}&quot;,
+            &#x27;3-opt Best - تکرار&#x27;: result_3opt_best[&#x27;iterations&#x27;],
+            &#x27;3-opt First - هزینه&#x27;: result_3opt_first[&#x27;cost&#x27;],
+            &#x27;3-opt First - بهبود%&#x27;: f&quot;{result_3opt_first[&#x27;improvement_pct&#x27;]:.2f}&quot;,
+            &#x27;3-opt First - زمان&#x27;: f&quot;{result_3opt_first[&#x27;time&#x27;]:.3f}&quot;,
+            &#x27;3-opt First - تکرار&#x27;: result_3opt_first[&#x27;iterations&#x27;],
+        })
+        
+        # نمایش خلاصه
+        print(f&quot;\n📊 خلاصه نتایج برای n={n}:&quot;)
+        print(f&quot;2-opt Best:  {initial_cost} → {result_2opt_best[&#x27;cost&#x27;]} &quot;
+              f&quot;({result_2opt_best[&#x27;improvement_pct&#x27;]:.2f}% بهبود، &quot;
+              f&quot;{result_2opt_best[&#x27;time&#x27;]:.3f}s)&quot;)
+        print(f&quot;2-opt First: {initial_cost} → {result_2opt_first[&#x27;cost&#x27;]} &quot;
+              f&quot;({result_2opt_first[&#x27;improvement_pct&#x27;]:.2f}% بهبود، &quot;
+              f&quot;{result_2opt_first[&#x27;time&#x27;]:.3f}s)&quot;)
+        print(f&quot;3-opt Best:  {initial_cost} → {result_3opt_best[&#x27;cost&#x27;]} &quot;
+              f&quot;({result_3opt_best[&#x27;improvement_pct&#x27;]:.2f}% بهبود، &quot;
+              f&quot;{result_3opt_best[&#x27;time&#x27;]:.3f}s)&quot;)
+        print(f&quot;3-opt First: {initial_cost} → {result_3opt_first[&#x27;cost&#x27;]} &quot;
+              f&quot;({result_3opt_first[&#x27;improvement_pct&#x27;]:.2f}% بهبود، &quot;
+              f&quot;{result_3opt_first[&#x27;time&#x27;]:.3f}s)&quot;)
+    
+    return results
+
+# ============================================================================
+# تولید گزارش نهایی
+# ============================================================================
+def generate_report(results):
+    &quot;&quot;&quot;تولید گزارش کامل از نتایج&quot;&quot;&quot;
+    
+    print(&quot;\n&quot; + &quot;=&quot;*100)
+    print(&quot;گزارش نهایی مقایسه 2-opt و 3-opt برای مسئله TSP&quot;)
+    print(&quot;=&quot;*100)
+    
+    # جدول خلاصه
+    df = pd.DataFrame(results)
+    print(&quot;\n📊 جدول خلاصه نتایج:&quot;)
+    print(df.to_string(index=False))
+    
+    # تحلیل نتایج
+    print(&quot;\n&quot; + &quot;=&quot;*100)
+    print(&quot;تحلیل نتایج&quot;)
+    print(&quot;=&quot;*100)
+    
+    for result in results:
+        size = result[&#x27;اندازه&#x27;]
+        n = result[&#x27;n&#x27;]
+        
+        print(f&quot;\n🔍 تحلیل برای اندازه {size} (n={n}):&quot;)
+        
+        # مقایسه کیفیت
+        cost_2opt_best = result[&#x27;2-opt Best - هزینه&#x27;]
+        cost_3opt_best = result[&#x27;3-opt Best - هزینه&#x27;]
+        
+        if cost_3opt_best &lt; cost_2opt_best:
+            improvement = ((cost_2opt_best - cost_3opt_best) / cost_2opt_best * 100)
+            print(f&quot;   ✅ 3-opt بهتر: {improvement:.2f}% بهبود نسبت به 2-opt&quot;)
+        elif cost_3opt_best == cost_2opt_best:
+            print(f&quot;   ⚖️  کیفیت یکسان: هر دو به همان جواب رسیدند&quot;)
+        else:
+            print(f&quot;   ⚡ 2-opt بهتر (نادر)&quot;)
+        
+        # مقایسه زمان
+        time_2opt = float(result[&#x27;2-opt Best - زمان&#x27;])
+        time_3opt = float(result[&#x27;3-opt Best - زمان&#x27;])
+        slowdown = time_3opt / time_2opt if time_2opt &gt; 0 else 1
+        
+        print(f&quot;   ⏱️  زمان اجرا: 3-opt {slowdown:.1f}x کندتر از 2-opt&quot;)
+        print(f&quot;   🔄 تکرارها: 2-opt={result[&#x27;2-opt Best - تکرار&#x27;]}, &quot;
+              f&quot;3-opt={result[&#x27;3-opt Best - تکرار&#x27;]}&quot;)
+    
+    # نتیجه‌گیری کلی
+    print(&quot;\n&quot; + &quot;=&quot;*100)
+    print(&quot;نتیجه‌گیری کلی&quot;)
+    print(&quot;=&quot;*100)
+    print(&quot;&quot;&quot;
+1. کیفیت جواب:
+   • 3-opt معمولاً جواب‌های بهتری نسبت به 2-opt پیدا می‌کند
+   • برای مسائل کوچک، تفاوت قابل توجه است
+   • برای مسائل بزرگ، تفاوت کمتر می‌شود
+
+2. زمان اجرا:
+   • 3-opt به طور قابل توجهی کندتر از 2-opt است
+   • پیچیدگی زمانی: 2-opt O(n²) vs 3-opt O(n³)
+   • برای n&gt;50، 3-opt ممکن است غیرعملی باشد
+
+3. توصیه‌ها:
+   • برای مسائل کوچک (n&lt;30): استفاده از 3-opt
+   • برای مسائل متوسط (30&lt;n&lt;50): ترکیب 2-opt و 3-opt
+   • برای مسائل بزرگ (n&gt;50): استفاده از 2-opt یا روش‌های پیشرفته‌تر
+
+4. استراتژی ترکیبی:
+   • ابتدا 2-opt را اجرا کنید (سریع)
+   • سپس 3-opt را روی نتیجه اعمال کنید (بهبود نهایی)
+   • این رویکرد تعادل خوبی بین سرعت و کیفیت ایجاد می‌کند
+    &quot;&quot;&quot;)
+    
+    return df
+
+# ============================================================================
+# اجرای اصلی
+# ============================================================================
+if __name__ == &quot;__main__&quot;:
+    print(&quot;🚀 شروع آزمایش‌های مقایسه‌ای 2-opt و 3-opt&quot;)
+    print(&quot;=&quot;*100)
+    
+    # اجرای آزمایش‌ها
+    results = run_experiments()
+    
+    # تولید گزارش
+    df = generate_report(results)
+    
+    # ذخیره نتایج در فایل CSV
+    output_file = &quot;TSP_2opt_vs_3opt_Results.csv&quot;
+    df.to_csv(output_file, index=False, encoding=&#x27;utf-8-sig&#x27;)
+    print(f&quot;\n💾 نتایج در فایل {output_file} ذخیره شد&quot;)
+    
+    print(&quot;\n✅ اجرای برنامه با موفقیت به پایان رسید!&quot;)
+
+</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw1-assignment/">تمرین ۱: مسئلهٔ تخصیص ←</a><a href="../hw2-vertex-cover/">تمرین ۲: Vertex Cover ←</a><a href="../hw3-local-search/">تمرین ۳: Local Search برای TSP و Graph Partitioning ←</a><a href="../hw4-msls/">تمرین ۴: Multi-Start Local Search ←</a><a href="../hw4-cplex/">تمرین ۴: روش‌های محلی و مقایسه با CPLEX ←</a><a href="../hw5-neighborhoods/">تمرین ۵: تحلیل همسایگی N2 و N3 ←</a><a href="../hw6-weighted-vertex-cover/">تمرین ۶: Weighted Vertex Cover ←</a><a href="../cohesive-bin-packing/">پروژهٔ پایانی: Cohesive Bin Packing ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

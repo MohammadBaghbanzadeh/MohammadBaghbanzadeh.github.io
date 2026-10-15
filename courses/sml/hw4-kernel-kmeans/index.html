@@ -1,0 +1,797 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="پیاده‌سازی خوشه‌بندی در فضای Kernel و بررسی آن روی داده‌های غیرخطی."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>تمرین ۴: Kernel K-Means · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">یادگیری ماشین آماری</a></nav><p class="eyebrow">نوت‌بوک و کد</p><h1 class="work-title">تمرین ۴: Kernel K-Means</h1><p class="course-lead">پیاده‌سازی خوشه‌بندی در فضای Kernel و بررسی آن روی داده‌های غیرخطی.</p><div class="topic-list"><bdi class="topic">Kernel K-Means</bdi><bdi class="topic">Clustering</bdi><bdi class="topic">RBF</bdi></div><div class="work-note">فایل KernelKMeans.py کد مرجع Mathieu Blondel با برچسب BSD 3-Clause است؛ نوت‌بوک تمرین و بررسی‌ها در کنار آن آمده‌اند. این فایل مرجع به‌عنوان کد تألیفی معرفی نمی‌شود.</div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/hw4-kernel-kmeans" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/hw4-kernel-kmeans/KernelKMeans.py" target="_blank" rel="noopener noreferrer"><bdi>KernelKMeans.py</bdi><span class="file-meta">4 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/hw4-kernel-kmeans/KernelKMeans_Assignment.ipynb" target="_blank" rel="noopener noreferrer"><bdi>KernelKMeans_Assignment.ipynb</bdi><span class="file-meta">49 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/hw4-kernel-kmeans/KernelKMeans_Assignment_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>KernelKMeans_Assignment_notebook.py</bdi><span class="file-meta">21 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="notebook-notes"><summary>بخشی از توضیحات نوت‌بوک</summary><pre class="notes-preview"># Statistical Machine Learning (SML) Homework 4: Kernel K-Means Clustering
+
+**Topic:** Kernel K-Means &amp; Non-linear Clustering  
+**Goal:** Implement, analyze, and visualize Kernel K-Means on complex non-linearly separable datasets, demonstrating mathematical understanding and optimization tricks.  
+
+---
+
+### Executive Summary
+
+
+در الگوریتم K-Means استاندارد، فرض بر این است که خوشه‌ها به صورت خطی جداپذیر، کروی و هم‌اندازه هستند، زیرا از فاصله اقلیدسی استفاده می‌شود. هنگام مواجهه با ساختارهای پیچیده و غیرخطی (مانند دایره‌های هم‌مرکز یا هلال‌های درهم‌تنیده)، K-Means استاندارد کاملاً شکست می‌خورد.
+
+
+
+
+
+**Kernel K-Means** این محدودیت را با نگاشت ضمنی داده‌ها به یک فضای ویژگی با بُعد بالا $\mathcal{H}$ با استفاده از یک تابع نگاشت غیرخطی $\Phi(x)$ برطرف می‌کند. با به‌کارگیری **ترفند کرنل**، می‌توانیم تخصیص خوشه‌ها را در $\mathcal{H}$ تنها با استفاده از ضرب‌های داخلی (از طریق تابع کرنل $K(x, y) = \langle\Phi(x), \Phi(y)\rangle$) محاسبه کنیم، بدون اینکه هرگز مختصات بُعد بالا را به صورت صریح محاسبه کنیم.
+
+
+
+
+
+این نوت‌بوک شامل موارد زیر است:
+
+
+
+1. **Rigorous Mathematical Derivations** از تابع هدف Kernel K-means و محاسبه فاصله.
+2. **An Object-Oriented Implementation** از Kernel K-means (سازگار با scikit-learn).
+3. **Comparative Analysis** مقایسه K-Means استاندارد با Kernel K-Means روی مجموعه‌داده‌های مصنوعی متعدد.
+4. **Hyperparameter Sensitivity Studies** نشان‌دهنده تأثیر پارامتر $\gamma$ کرنل RBF.
+
+## 1. Mathematical Foundations of Kernel K-Means
+
+
+
+فرض کنید $X = \{x_1, x_2, \dots, x_N\}$ یک مجموعه‌داده شامل $N$ نمونه در $\mathbb{R}^d$ باشد. هدف ما افراز داده‌ها به $K$ خوشه مجزا $\{C_1, C_2, \dots, C_K\}$ است.
+
+
+
+### 1.1 Mapping to Feature Space
+
+
+فرض کنید $\Phi: \mathbb{R}^d \to \mathcal{H}$ یک تابع نگاشت غیرخطی باشد که نمونه‌ها را به یک فضای هیلبرت $\mathcal{H}$ با بُعد بالا (و احتمالاً بی‌نهایت‌بُعدی) تصویر می‌کند.
+
+در این فضای بُعد بالا، هدف Kernel K-Means کمینه‌سازی مجموع مربعات فاصله‌ها تا مراکز خوشه‌ها است:
+
+
+
+$$
+J = \sum_{c=1}^K \sum_{x_i \in C_c} \| \Phi(x_i) - \mu_c \|^2
+$$
+
+
+
+که در آن $\mu_c$ مرکز خوشه $C_c$ در فضای ویژگی است:
+
+
+
+$$
+\mu_c = \frac{1}{|C_c|} \sum_{x_j \in C_c} \Phi(x_j)
+$$
+
+### 1.2 The Kernel Trick Derivation
+
+
+از آنجا که $\mathcal{H}$ ممکن است بسیار بُعد بالا یا بی‌نهایت‌بُعدی باشد، نمی‌توانیم $\Phi(x_i)$ یا $\mu_c$ را مستقیماً محاسبه کنیم. در عوض، از یک تابع کرنل $K(x_i, x_j) = \langle \Phi(x_i), \Phi(x_j) \rangle$ برای محاسبه فاصله‌ها استفاده می‌کنیم.
+
+بیایید مربع فاصله بین نقطه نگاشت‌شده $\Phi(x_i)$ و مرکز خوشه $\mu_c$ را بسط دهیم:
+
+
+
+$$
+\| \Phi(x_i) - \mu_c \|^2 = \langle \Phi(x_i) - \mu_c, \Phi(x_i) - \mu_c \rangle
+$$
+$$
+\| \Phi(x_i) - \mu_c \|^2 = \langle \Phi(x_i), \Phi(x_i) \rangle - 2 \langle \Phi(x_i), \mu_c \rangle + \langle \mu_c, \mu_c \rangle
+$$
+
+
+
+حال $\mu_c = \frac{1}{|C_c|} \sum_{x_j \in C_c} \Phi(x_j)$ را در جملات جایگذاری می‌کنیم:
+
+
+
+1. **First Term**:
+   $$
+   \langle \Phi(x_i), \Phi(x_i) \rangle = K(x_i, x_i)
+   $$
+
+2. **Second Term**:
+   $$
+   -2 \langle \Phi(x_i), \mu_c \rangle = -2 \left\langle \Phi(x_i), \frac{1}{|C_c|} \sum_{x_j \in C_c} \Phi(x_j) \right\rangle = -\frac{2}{|C_c|} \sum_{x_j \in C_c} K(x_i, x_j)
+   $$
+
+3. **Third Term**:
+   $$
+   \langle \mu_c, \mu_c \rangle = \left\langle \frac{1}{|C_c|} \sum_{x_j \in C_c} \Phi(x_j), \frac{1}{|C_c|} \sum_{x_l \in C_c} \Phi(x_l) \right\rangle = \frac{1}{|C_c|^2} \sum_{x_j \in C_c} \sum_{x_l \in C_c} K(x_j, x_l)
+   $$
+
+
+
+با کنار هم قرار دادن همه اینها، مربع فاصله در فضای ویژگی برابر است با:
+
+
+
+$$
+d^2(\Phi(x_i), C_c) = K(x_i, x_i) - \frac{2}{|C_c|} \sum_{x_j \in C_c} K(x_i, x_j) + \frac{1}{|C_c|^2} \sum_{x_j \in C_c} \sum_{x_l \in C_c} K(x_j, x_l)
+$$
+
+### 1.3 Key Optimization Trick (Omitting $K(x_i, x_i)$)
+
+
+در مرحله تخصیص خوشه، هر نمونه $x_i$ به خوشه‌ای اختصاص داده می‌شود که فاصله را کمینه کند:
+
+
+
+$$
+c^*(x_i) = \arg\min_{c} d^2(\Phi(x_i), C_c)
+$$
+
+
+
+توجه کنید که $K(x_i, x_i)$ نسبت به اندیس خوشه $c$ ثابت است! این مقدار فقط به نمونه $x_i$ بستگی دارد. بنابراین:
+
+
+
+$$
+\arg\min_{c} d^2(\Phi(x_i), C_c) = \arg\min_{c} \left( -\frac{2}{|C_c|} \sum_{x_j \in C_c} K(x_i, x_j) + \frac{1}{|C_c|^2} \sum_{x_j \in C_c} \sum_{x_l \in C_c} K(x_j, x_l) \right)
+$$
+
+
+
+این یک بهینه‌سازی کلیدی است. این امکان را فراهم می‌کند که $K(x_i, x_i)$ را به طور کامل از محاسبات ماتریس فاصله در حین خوشه‌بندی حذف کنیم، که سرعت و کارایی عددی را به شدت بهبود می‌بخشد.
+
+</pre></details><details class="source-file" open><summary><bdi>KernelKMeans.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/hw4-kernel-kmeans/KernelKMeans.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>&quot;&quot;&quot;Kernel K-means&quot;&quot;&quot;
+
+# Author: Mathieu Blondel &lt;mathieu@mblondel.org&gt;
+# License: BSD 3 clause
+
+import numpy as np
+
+from sklearn.base import BaseEstimator, ClusterMixin
+from sklearn.metrics.pairwise import pairwise_kernels
+from sklearn.utils import check_random_state
+
+
+class KernelKMeans(BaseEstimator, ClusterMixin):
+    &quot;&quot;&quot;
+    Kernel K-means
+
+    Reference
+    ---------
+    Kernel k-means, Spectral Clustering and Normalized Cuts.
+    Inderjit S. Dhillon, Yuqiang Guan, Brian Kulis.
+    KDD 2004.
+    &quot;&quot;&quot;
+
+    def __init__(self, n_clusters=3, max_iter=50, tol=1e-3, random_state=None,
+                 kernel=&quot;linear&quot;, gamma=None, degree=3, coef0=1,
+                 kernel_params=None, verbose=0):
+        self.n_clusters = n_clusters
+        self.max_iter = max_iter
+        self.tol = tol
+        self.random_state = random_state
+        self.kernel = kernel
+        self.gamma = gamma
+        self.degree = degree
+        self.coef0 = coef0
+        self.kernel_params = kernel_params
+        self.verbose = verbose
+
+    @property
+    def _pairwise(self):
+        return self.kernel == &quot;precomputed&quot;
+
+    def _get_kernel(self, X, Y=None):
+        if callable(self.kernel):
+            params = self.kernel_params or {}
+        else:
+            params = {&quot;gamma&quot;: self.gamma,
+                      &quot;degree&quot;: self.degree,
+                      &quot;coef0&quot;: self.coef0}
+        return pairwise_kernels(X, Y, metric=self.kernel,
+                                filter_params=True, **params)
+
+    def fit(self, X, y=None, sample_weight=None):
+        n_samples = X.shape[0]
+
+        K = self._get_kernel(X)
+
+        sw = sample_weight if sample_weight is not None else np.ones(n_samples)
+        self.sample_weight_ = sw
+
+        rs = check_random_state(self.random_state)
+        self.labels_ = rs.randint(self.n_clusters, size=n_samples)
+
+        dist = np.zeros((n_samples, self.n_clusters))
+        self.within_distances_ = np.zeros(self.n_clusters)
+
+        for it in range(self.max_iter):
+            dist.fill(0)
+            self._compute_dist(K, dist, self.within_distances_,
+                               update_within=True)
+            labels_old = self.labels_
+            self.labels_ = dist.argmin(axis=1)
+
+            # Compute the number of samples whose cluster did not change
+            # since last iteration.
+            n_same = np.sum((self.labels_ - labels_old) == 0)
+            if 1 - float(n_same) / n_samples &lt; self.tol:
+                if self.verbose:
+                    print()
+                    print(&quot;Converged at iteration&quot;, it + 1)
+                break
+
+        self.X_fit_ = X
+
+        return self
+
+    def _compute_dist(self, K, dist, within_distances, update_within):
+        &quot;&quot;&quot;Compute a n_samples x n_clusters distance matrix using the
+        kernel trick.&quot;&quot;&quot;
+        sw = self.sample_weight_
+
+        for j in range(self.n_clusters):
+            mask = self.labels_ == j
+
+            if np.sum(mask) == 0:
+                raise ValueError(&quot;Empty cluster found, try smaller n_cluster.&quot;)
+
+            denom = sw[mask].sum()
+            denomsq = denom * denom
+
+            if update_within:
+                KK = K[mask][:, mask]  # K[mask, mask] does not work.
+                dist_j = np.sum(np.outer(sw[mask], sw[mask]) * KK / denomsq)
+                within_distances[j] = dist_j
+                dist[:, j] += dist_j
+            else:
+                dist[:, j] += within_distances[j]
+
+            dist[:, j] -= 2 * np.sum(sw[mask] * K[:, mask], axis=1) / denom
+
+    def predict(self, X):
+        K = self._get_kernel(X, self.X_fit_)
+        n_samples = X.shape[0]
+        dist = np.zeros((n_samples, self.n_clusters))
+        self._compute_dist(K, dist, self.within_distances_,
+                           update_within=False)
+        return dist.argmin(axis=1)
+
+
+if __name__ == &#x27;__main__&#x27;:
+    from sklearn.datasets import make_blobs
+
+    X, y = make_blobs(n_samples=1000, centers=5, random_state=0)
+
+    km = KernelKMeans(n_clusters=5, max_iter=100, random_state=0, verbose=1)
+    print()
+    print(km.fit_predict(X)[:10])
+    print()
+    print(km.predict(X[:10]))</code></pre></details><details class="source-file" ><summary><bdi>KernelKMeans_Assignment_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/hw4-kernel-kmeans/KernelKMeans_Assignment_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Exported notebook code; may contain IPython commands.
+# %%
+import numpy as np
+from sklearn.base import BaseEstimator, ClusterMixin
+from sklearn.metrics.pairwise import pairwise_kernels
+from sklearn.utils import check_random_state
+
+class KernelKMeans(BaseEstimator, ClusterMixin):
+    &quot;&quot;&quot;
+    Kernel K-means
+
+    Reference
+    ---------
+    Kernel k-means, Spectral Clustering and Normalized Cuts.
+    Inderjit S. Dhillon, Yuqiang Guan, Brian Kulis.
+    KDD 2004.
+    &quot;&quot;&quot;
+
+    def __init__(self, n_clusters=3, max_iter=50, tol=1e-3, random_state=None,
+                 kernel=&quot;linear&quot;, gamma=None, degree=3, coef0=1,
+                 kernel_params=None, verbose=0):
+        self.n_clusters = n_clusters
+        self.max_iter = max_iter
+        self.tol = tol
+        self.random_state = random_state
+        self.kernel = kernel
+        self.gamma = gamma
+        self.degree = degree
+        self.coef0 = coef0
+        self.kernel_params = kernel_params
+        self.verbose = verbose
+
+    @property
+    def _pairwise(self):
+        return self.kernel == &quot;precomputed&quot;
+
+    def _get_kernel(self, X, Y=None):
+        if callable(self.kernel):
+            params = self.kernel_params or {}
+        else:
+            params = {&quot;gamma&quot;: self.gamma,
+                      &quot;degree&quot;: self.degree,
+                      &quot;coef0&quot;: self.coef0}
+        return pairwise_kernels(X, Y, metric=self.kernel,
+                                filter_params=True, **params)
+
+    def fit(self, X, y=None, sample_weight=None):
+        n_samples = X.shape[0]
+
+        K = self._get_kernel(X)
+
+        sw = sample_weight if sample_weight is not None else np.ones(n_samples)
+        self.sample_weight_ = sw
+
+        rs = check_random_state(self.random_state)
+        self.labels_ = rs.randint(self.n_clusters, size=n_samples)
+
+        dist = np.zeros((n_samples, self.n_clusters))
+        self.within_distances_ = np.zeros(self.n_clusters)
+
+        for it in range(self.max_iter):
+            dist.fill(0)
+            self._compute_dist(K, dist, self.within_distances_,
+                               update_within=True)
+            labels_old = self.labels_
+            self.labels_ = dist.argmin(axis=1)
+
+            # Compute the number of samples whose cluster did not change
+            # since last iteration.
+            n_same = np.sum((self.labels_ - labels_old) == 0)
+            if 1 - float(n_same) / n_samples &lt; self.tol:
+                if self.verbose:
+                    print()
+                    print(&quot;Converged at iteration&quot;, it + 1)
+                break
+
+        self.X_fit_ = X
+
+        return self
+
+    def _compute_dist(self, K, dist, within_distances, update_within):
+        &quot;&quot;&quot;Compute a n_samples x n_clusters distance matrix using the
+        kernel trick.&quot;&quot;&quot;
+        sw = self.sample_weight_
+
+        for j in range(self.n_clusters):
+            mask = self.labels_ == j
+
+            if np.sum(mask) == 0:
+                raise ValueError(&quot;Empty cluster found, try smaller n_clusters or different initialization.&quot;)
+
+            denom = sw[mask].sum()
+            denomsq = denom * denom
+
+            if update_within:
+                KK = K[mask][:, mask]
+                dist_j = np.sum(np.outer(sw[mask], sw[mask]) * KK / denomsq)
+                within_distances[j] = dist_j
+                dist[:, j] += dist_j
+            else:
+                dist[:, j] += within_distances[j]
+
+            dist[:, j] -= 2 * np.sum(sw[mask] * K[:, mask], axis=1) / denom
+
+    def predict(self, X):
+        K = self._get_kernel(X, self.X_fit_)
+        n_samples = X.shape[0]
+        dist = np.zeros((n_samples, self.n_clusters))
+        self._compute_dist(K, dist, self.within_distances_,
+                           update_within=False)
+        return dist.argmin(axis=1)
+
+# %%
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.datasets import make_blobs, make_circles, make_moons
+from sklearn.metrics import adjusted_rand_score, silhouette_score
+
+def plot_clustering_results(X, y_true, y_std, y_kernel, title, kernel_name=&quot;Kernel K-Means&quot;):
+    fig, axes = plt.subplots(1, 3, figsize=(18, 5.5))
+    
+    # Ground Truth
+    axes[0].scatter(X[:, 0], X[:, 1], c=y_true, cmap=&#x27;viridis&#x27;, edgecolor=&#x27;k&#x27;, alpha=0.8, s=50)
+    axes[0].set_title(&quot;Ground Truth Labels&quot;, fontsize=13, fontweight=&#x27;bold&#x27;)
+    axes[0].set_xlabel(&quot;Feature 1&quot;, fontsize=10)
+    axes[0].set_ylabel(&quot;Feature 2&quot;, fontsize=10)
+    axes[0].grid(True, linestyle=&#x27;--&#x27;, alpha=0.5)
+    
+    # Standard K-Means
+    ari_std = adjusted_rand_score(y_true, y_std)
+    sil_std = silhouette_score(X, y_std) if len(np.unique(y_std)) &gt; 1 else 0.0
+    axes[1].scatter(X[:, 0], X[:, 1], c=y_std, cmap=&#x27;plasma&#x27;, edgecolor=&#x27;k&#x27;, alpha=0.8, s=50)
+    axes[1].set_title(f&quot;Standard K-Means\nARI: {ari_std:.4f} | Silh: {sil_std:.4f}&quot;, fontsize=13, fontweight=&#x27;bold&#x27;)
+    axes[1].set_xlabel(&quot;Feature 1&quot;, fontsize=10)
+    axes[1].set_ylabel(&quot;Feature 2&quot;, fontsize=10)
+    axes[1].grid(True, linestyle=&#x27;--&#x27;, alpha=0.5)
+    
+    # Kernel K-Means
+    ari_kernel = adjusted_rand_score(y_true, y_kernel)
+    sil_kernel = silhouette_score(X, y_kernel) if len(np.unique(y_kernel)) &gt; 1 else 0.0
+    axes[2].scatter(X[:, 0], X[:, 1], c=y_kernel, cmap=&#x27;coolwarm&#x27;, edgecolor=&#x27;k&#x27;, alpha=0.8, s=50)
+    axes[2].set_title(f&quot;{kernel_name}\nARI: {ari_kernel:.4f} | Silh: {sil_kernel:.4f}&quot;, fontsize=13, fontweight=&#x27;bold&#x27;)
+    axes[2].set_xlabel(&quot;Feature 1&quot;, fontsize=10)
+    axes[2].set_ylabel(&quot;Feature 2&quot;, fontsize=10)
+    axes[2].grid(True, linestyle=&#x27;--&#x27;, alpha=0.5)
+    
+    plt.suptitle(title, fontsize=16, fontweight=&#x27;bold&#x27;, y=1.03)
+    plt.tight_layout()
+    plt.show()
+
+# %%
+# Generate Blobs
+X_blobs, y_blobs = make_blobs(n_samples=300, centers=3, cluster_std=0.8, random_state=42)
+
+# Fit Standard K-Means
+km_std = KMeans(n_clusters=3, random_state=42, n_init=&#x27;auto&#x27;)
+y_std_blobs = km_std.fit_predict(X_blobs)
+
+# Fit Kernel K-Means with Linear Kernel
+km_kernel_blobs = KernelKMeans(n_clusters=3, kernel=&quot;linear&quot;, max_iter=100, random_state=42)
+y_kernel_blobs = km_kernel_blobs.fit_predict(X_blobs)
+
+# Plot Comparison
+plot_clustering_results(X_blobs, y_blobs, y_std_blobs, y_kernel_blobs,
+                        title=&quot;Experiment 1: Linearly Separable Blobs (Linear Kernel)&quot;,
+                        kernel_name=&quot;Kernel K-Means (Linear)&quot;)
+
+# %%
+# Generate Concentric Circles
+X_circles, y_circles = make_circles(n_samples=400, factor=0.4, noise=0.05, random_state=42)
+
+# Fit Standard K-Means
+km_std_circles = KMeans(n_clusters=2, random_state=42, n_init=&#x27;auto&#x27;)
+y_std_circles = km_std_circles.fit_predict(X_circles)
+
+# Fit Kernel K-Means with RBF Kernel (gamma = 7.0)
+km_kernel_circles = KernelKMeans(n_clusters=2, kernel=&quot;rbf&quot;, gamma=7.0, max_iter=100, random_state=42)
+y_kernel_circles = km_kernel_circles.fit_predict(X_circles)
+
+# Plot Comparison
+plot_clustering_results(X_circles, y_circles, y_std_circles, y_kernel_circles,
+                        title=&quot;Experiment 2: Concentric Circles (RBF Kernel)&quot;,
+                        kernel_name=&quot;Kernel K-Means (RBF, gamma=7.0)&quot;)
+
+# %%
+# Generate Moons
+X_moons, y_moons = make_moons(n_samples=400, noise=0.05, random_state=42)
+
+# Fit Standard K-Means
+km_std_moons = KMeans(n_clusters=2, random_state=42, n_init=&#x27;auto&#x27;)
+y_std_moons = km_std_moons.fit_predict(X_moons)
+
+# Fit Kernel K-Means with RBF Kernel (gamma = 12.0)
+km_kernel_moons = KernelKMeans(n_clusters=2, kernel=&quot;rbf&quot;, gamma=12.0, max_iter=100, random_state=42)
+y_kernel_moons = km_kernel_moons.fit_predict(X_moons)
+
+# Plot Comparison
+plot_clustering_results(X_moons, y_moons, y_std_moons, y_kernel_moons,
+                        title=&quot;Experiment 3: Interlocking Moons (RBF Kernel)&quot;,
+                        kernel_name=&quot;Kernel K-Means (RBF, gamma=12.0)&quot;)
+
+# %%
+gammas = [0.1, 2.0, 15.0, 150.0]
+fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+axes = axes.ravel()
+
+for idx, gamma in enumerate(gammas):
+    try:
+        km_gamma = KernelKMeans(n_clusters=2, kernel=&quot;rbf&quot;, gamma=gamma, random_state=42)
+        y_gamma = km_gamma.fit_predict(X_moons)
+        ari = adjusted_rand_score(y_moons, y_gamma)
+        
+        axes[idx].scatter(X_moons[:, 0], X_moons[:, 1], c=y_gamma, cmap=&#x27;coolwarm&#x27;, edgecolor=&#x27;k&#x27;, alpha=0.8, s=40)
+        axes[idx].set_title(f&quot;RBF Kernel with $\gamma = {gamma}$\nAdjusted Rand Index (ARI): {ari:.4f}&quot;, fontsize=12, fontweight=&#x27;bold&#x27;)
+    except Exception as e:
+        axes[idx].text(0.5, 0.5, f&quot;Failed for $\gamma = {gamma}$:\n{str(e)}&quot;, 
+                      ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, color=&#x27;red&#x27;, weight=&#x27;bold&#x27;)
+        axes[idx].set_title(f&quot;RBF Kernel with $\gamma = {gamma}$ (Numerical Error)&quot;, fontsize=12, fontweight=&#x27;bold&#x27;)
+        
+    axes[idx].grid(True, linestyle=&#x27;--&#x27;, alpha=0.5)
+    axes[idx].set_xlabel(&quot;Feature 1&quot;)
+    axes[idx].set_ylabel(&quot;Feature 2&quot;)
+
+plt.suptitle(&quot;Hyperparameter Sensitivity: Effect of Gamma on Moons Clustering&quot;, fontsize=16, fontweight=&#x27;bold&#x27;, y=1.02)
+plt.tight_layout()
+plt.show()
+
+# %%
+class KernelKMeansWithHistory(KernelKMeans):
+    &quot;&quot;&quot;
+    Extended KernelKMeans that tracks the objective function value
+    at each iteration for convergence analysis.
+    &quot;&quot;&quot;
+    def fit(self, X, y=None, sample_weight=None):
+        n_samples = X.shape[0]
+        K = self._get_kernel(X)
+        sw = sample_weight if sample_weight is not None else np.ones(n_samples)
+        self.sample_weight_ = sw
+        rs = check_random_state(self.random_state)
+        self.labels_ = rs.randint(self.n_clusters, size=n_samples)
+        dist = np.zeros((n_samples, self.n_clusters))
+        self.within_distances_ = np.zeros(self.n_clusters)
+        self.objective_history_ = []
+
+        for it in range(self.max_iter):
+            dist.fill(0)
+            self._compute_dist(K, dist, self.within_distances_, update_within=True)
+            # Compute objective: sum of min distances for each sample
+            obj = sum(dist[i, self.labels_[i]] for i in range(n_samples))
+            self.objective_history_.append(obj)
+            labels_old = self.labels_
+            self.labels_ = dist.argmin(axis=1)
+            n_same = np.sum((self.labels_ - labels_old) == 0)
+            if 1 - float(n_same) / n_samples &lt; self.tol:
+                break
+
+        self.X_fit_ = X
+        return self
+
+# Run convergence analysis on Moons dataset
+km_conv = KernelKMeansWithHistory(n_clusters=2, kernel=&#x27;rbf&#x27;, gamma=12.0,
+                                   max_iter=50, tol=1e-4, random_state=42)
+km_conv.fit(X_moons)
+
+fig, ax = plt.subplots(figsize=(8, 5))
+ax.plot(range(1, len(km_conv.objective_history_) + 1), km_conv.objective_history_,
+        &#x27;b-o&#x27;, linewidth=2, markersize=6)
+ax.set_xlabel(&#x27;Iteration&#x27;, fontsize=12)
+ax.set_ylabel(&#x27;Objective Function (Within-Cluster Distance Sum)&#x27;, fontsize=12)
+ax.set_title(&#x27;Convergence of Kernel K-Means (RBF, $\\gamma=12.0$) on Moons&#x27;,
+             fontsize=14, fontweight=&#x27;bold&#x27;)
+ax.grid(True, linestyle=&#x27;--&#x27;, alpha=0.5)
+plt.tight_layout()
+plt.show()
+
+# %%
+# Test sensitivity to initialization with 10 different random seeds
+n_runs = 10
+ari_scores_circles = []
+ari_scores_moons = []
+
+for seed in range(n_runs):
+    # Circles
+    km_c = KernelKMeans(n_clusters=2, kernel=&#x27;rbf&#x27;, gamma=7.0,
+                        max_iter=100, random_state=seed)
+    y_pred_c = km_c.fit_predict(X_circles)
+    ari_scores_circles.append(adjusted_rand_score(y_circles, y_pred_c))
+    
+    # Moons
+    km_m = KernelKMeans(n_clusters=2, kernel=&#x27;rbf&#x27;, gamma=12.0,
+                        max_iter=100, random_state=seed)
+    y_pred_m = km_m.fit_predict(X_moons)
+    ari_scores_moons.append(adjusted_rand_score(y_moons, y_pred_m))
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+axes[0].bar(range(n_runs), ari_scores_circles, color=&#x27;steelblue&#x27;, edgecolor=&#x27;k&#x27;)
+axes[0].axhline(y=np.mean(ari_scores_circles), color=&#x27;red&#x27;, linestyle=&#x27;--&#x27;,
+               label=f&#x27;Mean ARI = {np.mean(ari_scores_circles):.4f}&#x27;)
+axes[0].set_xlabel(&#x27;Random Seed&#x27;, fontsize=11)
+axes[0].set_ylabel(&#x27;ARI&#x27;, fontsize=11)
+axes[0].set_title(&#x27;Initialization Sensitivity - Circles\n&#x27;
+                  f&#x27;(Std: {np.std(ari_scores_circles):.4f})&#x27;,
+                  fontsize=13, fontweight=&#x27;bold&#x27;)
+axes[0].legend(fontsize=10)
+axes[0].grid(True, linestyle=&#x27;--&#x27;, alpha=0.4)
+axes[0].set_ylim([0, 1.1])
+
+axes[1].bar(range(n_runs), ari_scores_moons, color=&#x27;coral&#x27;, edgecolor=&#x27;k&#x27;)
+axes[1].axhline(y=np.mean(ari_scores_moons), color=&#x27;red&#x27;, linestyle=&#x27;--&#x27;,
+               label=f&#x27;Mean ARI = {np.mean(ari_scores_moons):.4f}&#x27;)
+axes[1].set_xlabel(&#x27;Random Seed&#x27;, fontsize=11)
+axes[1].set_ylabel(&#x27;ARI&#x27;, fontsize=11)
+axes[1].set_title(&#x27;Initialization Sensitivity - Moons\n&#x27;
+                  f&#x27;(Std: {np.std(ari_scores_moons):.4f})&#x27;,
+                  fontsize=13, fontweight=&#x27;bold&#x27;)
+axes[1].legend(fontsize=10)
+axes[1].grid(True, linestyle=&#x27;--&#x27;, alpha=0.4)
+axes[1].set_ylim([0, 1.1])
+
+plt.suptitle(&#x27;Sensitivity to Random Initialization&#x27;, fontsize=15, fontweight=&#x27;bold&#x27;, y=1.02)
+plt.tight_layout()
+plt.show()
+
+print(f&#x27;Circles - Mean ARI: {np.mean(ari_scores_circles):.4f}, &#x27;
+      f&#x27;Std: {np.std(ari_scores_circles):.4f}&#x27;)
+print(f&#x27;Moons   - Mean ARI: {np.mean(ari_scores_moons):.4f}, &#x27;
+      f&#x27;Std: {np.std(ari_scores_moons):.4f}&#x27;)
+
+# %%
+degrees = [2, 3, 4, 5]
+fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+axes = axes.ravel()
+
+for idx, degree in enumerate(degrees):
+    try:
+        km_poly = KernelKMeans(n_clusters=2, kernel=&#x27;poly&#x27;, degree=degree,
+                              gamma=1.0, coef0=1, max_iter=100, random_state=42)
+        y_poly = km_poly.fit_predict(X_circles)
+        ari = adjusted_rand_score(y_circles, y_poly)
+        
+        axes[idx].scatter(X_circles[:, 0], X_circles[:, 1], c=y_poly,
+                         cmap=&#x27;coolwarm&#x27;, edgecolor=&#x27;k&#x27;, alpha=0.8, s=40)
+        axes[idx].set_title(f&#x27;Polynomial Kernel (degree={degree})\n&#x27;
+                           f&#x27;ARI: {ari:.4f}&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+    except Exception as e:
+        axes[idx].text(0.5, 0.5, f&#x27;Failed for degree={degree}:\n{str(e)}&#x27;,
+                      ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=11, color=&#x27;red&#x27;)
+        axes[idx].set_title(f&#x27;Polynomial Kernel (degree={degree}) - Error&#x27;,
+                           fontsize=12, fontweight=&#x27;bold&#x27;)
+    axes[idx].grid(True, linestyle=&#x27;--&#x27;, alpha=0.5)
+    axes[idx].set_xlabel(&#x27;Feature 1&#x27;)
+    axes[idx].set_ylabel(&#x27;Feature 2&#x27;)
+
+plt.suptitle(&#x27;Polynomial Kernel with Different Degrees on Circles&#x27;,
+             fontsize=15, fontweight=&#x27;bold&#x27;, y=1.02)
+plt.tight_layout()
+plt.show()
+
+# %%
+from sklearn.metrics import normalized_mutual_info_score
+
+def purity_score(y_true, y_pred):
+    &quot;&quot;&quot;Compute purity of clustering.&quot;&quot;&quot;
+    from sklearn.metrics import confusion_matrix
+    cm = confusion_matrix(y_true, y_pred)
+    return np.sum(np.amax(cm, axis=0)) / np.sum(cm)
+
+# Evaluate all experiments with comprehensive metrics
+datasets = {
+    &#x27;Blobs (Linear)&#x27;: (y_blobs, y_kernel_blobs),
+    &#x27;Circles (RBF)&#x27;: (y_circles, y_kernel_circles),
+    &#x27;Moons (RBF)&#x27;: (y_moons, y_kernel_moons)
+}
+
+print(f&#x27;{&quot;Dataset&quot;:&lt;20} {&quot;ARI&quot;:&lt;10} {&quot;NMI&quot;:&lt;10} {&quot;Purity&quot;:&lt;10} {&quot;Silhouette&quot;:&lt;10}&#x27;)
+print(&#x27;=&#x27; * 60)
+
+results = []
+for name, (y_true, y_pred) in datasets.items():
+    ari = adjusted_rand_score(y_true, y_pred)
+    nmi = normalized_mutual_info_score(y_true, y_pred)
+    purity = purity_score(y_true, y_pred)
+    # Get corresponding X for silhouette
+    if &#x27;Blobs&#x27; in name:
+        X_data = X_blobs
+    elif &#x27;Circles&#x27; in name:
+        X_data = X_circles
+    else:
+        X_data = X_moons
+    sil = silhouette_score(X_data, y_pred) if len(np.unique(y_pred)) &gt; 1 else 0.0
+    print(f&#x27;{name:&lt;20} {ari:&lt;10.4f} {nmi:&lt;10.4f} {purity:&lt;10.4f} {sil:&lt;10.4f}&#x27;)
+    results.append([name, ari, nmi, purity, sil])
+
+# Also compare with Standard K-Means
+print(&#x27;\n--- Standard K-Means for comparison ---&#x27;)
+print(f&#x27;{&quot;Dataset&quot;:&lt;20} {&quot;ARI&quot;:&lt;10} {&quot;NMI&quot;:&lt;10} {&quot;Purity&quot;:&lt;10} {&quot;Silhouette&quot;:&lt;10}&#x27;)
+print(&#x27;=&#x27; * 60)
+
+datasets_std = {
+    &#x27;Blobs&#x27;: (y_blobs, y_std_blobs, X_blobs),
+    &#x27;Circles&#x27;: (y_circles, y_std_circles, X_circles),
+    &#x27;Moons&#x27;: (y_moons, y_std_moons, X_moons)
+}
+
+for name, (y_true, y_pred, X_data) in datasets_std.items():
+    ari = adjusted_rand_score(y_true, y_pred)
+    nmi = normalized_mutual_info_score(y_true, y_pred)
+    purity = purity_score(y_true, y_pred)
+    sil = silhouette_score(X_data, y_pred) if len(np.unique(y_pred)) &gt; 1 else 0.0
+    print(f&#x27;{name:&lt;20} {ari:&lt;10.4f} {nmi:&lt;10.4f} {purity:&lt;10.4f} {sil:&lt;10.4f}&#x27;)
+
+# %%
+from sklearn.cluster import SpectralClustering
+
+fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+
+# --- Circles ---
+# Ground Truth
+axes[0, 0].scatter(X_circles[:, 0], X_circles[:, 1], c=y_circles,
+                   cmap=&#x27;viridis&#x27;, edgecolor=&#x27;k&#x27;, alpha=0.8, s=40)
+axes[0, 0].set_title(&#x27;Circles - Ground Truth&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+
+# Kernel K-Means
+axes[0, 1].scatter(X_circles[:, 0], X_circles[:, 1], c=y_kernel_circles,
+                   cmap=&#x27;coolwarm&#x27;, edgecolor=&#x27;k&#x27;, alpha=0.8, s=40)
+ari_kkm_c = adjusted_rand_score(y_circles, y_kernel_circles)
+axes[0, 1].set_title(f&#x27;Circles - Kernel K-Means\nARI: {ari_kkm_c:.4f}&#x27;,
+                     fontsize=12, fontweight=&#x27;bold&#x27;)
+
+# Spectral Clustering
+sc_circles = SpectralClustering(n_clusters=2, affinity=&#x27;rbf&#x27;, gamma=7.0,
+                                random_state=42, assign_labels=&#x27;kmeans&#x27;)
+y_sc_circles = sc_circles.fit_predict(X_circles)
+ari_sc_c = adjusted_rand_score(y_circles, y_sc_circles)
+axes[0, 2].scatter(X_circles[:, 0], X_circles[:, 1], c=y_sc_circles,
+                   cmap=&#x27;plasma&#x27;, edgecolor=&#x27;k&#x27;, alpha=0.8, s=40)
+axes[0, 2].set_title(f&#x27;Circles - Spectral Clustering\nARI: {ari_sc_c:.4f}&#x27;,
+                     fontsize=12, fontweight=&#x27;bold&#x27;)
+
+# --- Moons ---
+# Ground Truth
+axes[1, 0].scatter(X_moons[:, 0], X_moons[:, 1], c=y_moons,
+                   cmap=&#x27;viridis&#x27;, edgecolor=&#x27;k&#x27;, alpha=0.8, s=40)
+axes[1, 0].set_title(&#x27;Moons - Ground Truth&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+
+# Kernel K-Means
+axes[1, 1].scatter(X_moons[:, 0], X_moons[:, 1], c=y_kernel_moons,
+                   cmap=&#x27;coolwarm&#x27;, edgecolor=&#x27;k&#x27;, alpha=0.8, s=40)
+ari_kkm_m = adjusted_rand_score(y_moons, y_kernel_moons)
+axes[1, 1].set_title(f&#x27;Moons - Kernel K-Means\nARI: {ari_kkm_m:.4f}&#x27;,
+                     fontsize=12, fontweight=&#x27;bold&#x27;)
+
+# Spectral Clustering
+sc_moons = SpectralClustering(n_clusters=2, affinity=&#x27;rbf&#x27;, gamma=12.0,
+                              random_state=42, assign_labels=&#x27;kmeans&#x27;)
+y_sc_moons = sc_moons.fit_predict(X_moons)
+ari_sc_m = adjusted_rand_score(y_moons, y_sc_moons)
+axes[1, 2].scatter(X_moons[:, 0], X_moons[:, 1], c=y_sc_moons,
+                   cmap=&#x27;plasma&#x27;, edgecolor=&#x27;k&#x27;, alpha=0.8, s=40)
+axes[1, 2].set_title(f&#x27;Moons - Spectral Clustering\nARI: {ari_sc_m:.4f}&#x27;,
+                     fontsize=12, fontweight=&#x27;bold&#x27;)
+
+for ax in axes.ravel():
+    ax.grid(True, linestyle=&#x27;--&#x27;, alpha=0.4)
+    ax.set_xlabel(&#x27;Feature 1&#x27;)
+    ax.set_ylabel(&#x27;Feature 2&#x27;)
+
+plt.suptitle(&#x27;Kernel K-Means vs Spectral Clustering&#x27;,
+             fontsize=16, fontweight=&#x27;bold&#x27;, y=1.02)
+plt.tight_layout()
+plt.show()
+
+# %%
+import time
+
+sample_sizes = [100, 200, 500, 1000, 2000, 3000]
+times_std = []
+times_kernel = []
+
+for n in sample_sizes:
+    X_test, _ = make_moons(n_samples=n, noise=0.05, random_state=42)
+    
+    # Standard K-Means
+    start = time.time()
+    KMeans(n_clusters=2, random_state=42, n_init=&#x27;auto&#x27;).fit(X_test)
+    times_std.append(time.time() - start)
+    
+    # Kernel K-Means
+    start = time.time()
+    KernelKMeans(n_clusters=2, kernel=&#x27;rbf&#x27;, gamma=12.0,
+                 max_iter=100, random_state=42).fit(X_test)
+    times_kernel.append(time.time() - start)
+
+fig, ax = plt.subplots(figsize=(9, 6))
+ax.plot(sample_sizes, times_std, &#x27;b-o&#x27;, linewidth=2, markersize=7, label=&#x27;Standard K-Means&#x27;)
+ax.plot(sample_sizes, times_kernel, &#x27;r-s&#x27;, linewidth=2, markersize=7, label=&#x27;Kernel K-Means (RBF)&#x27;)
+ax.set_xlabel(&#x27;Number of Samples (N)&#x27;, fontsize=12)
+ax.set_ylabel(&#x27;Runtime (seconds)&#x27;, fontsize=12)
+ax.set_title(&#x27;Runtime Scalability: Standard K-Means vs Kernel K-Means&#x27;,
+             fontsize=14, fontweight=&#x27;bold&#x27;)
+ax.legend(fontsize=11)
+ax.grid(True, linestyle=&#x27;--&#x27;, alpha=0.5)
+plt.tight_layout()
+plt.show()
+
+print(&#x27;\nRuntime Summary:&#x27;)
+print(f&#x27;{&quot;N&quot;:&lt;8} {&quot;Std K-Means (s)&quot;:&lt;18} {&quot;Kernel K-Means (s)&quot;:&lt;20} {&quot;Ratio&quot;:&lt;8}&#x27;)
+print(&#x27;=&#x27; * 55)
+for i, n in enumerate(sample_sizes):
+    ratio = times_kernel[i] / times_std[i] if times_std[i] &gt; 0 else float(&#x27;inf&#x27;)
+    print(f&#x27;{n:&lt;8} {times_std[i]:&lt;18.4f} {times_kernel[i]:&lt;20.4f} {ratio:&lt;8.1f}x&#x27;)
+
+# %%
+from sklearn.metrics.pairwise import rbf_kernel
+
+# Sort data by true labels for better visualization
+sort_idx = np.argsort(y_circles)
+X_sorted = X_circles[sort_idx]
+
+gammas_viz = [0.1, 2.0, 7.0, 50.0]
+fig, axes = plt.subplots(1, 4, figsize=(20, 4.5))
+
+for idx, gamma in enumerate(gammas_viz):
+    K_matrix = rbf_kernel(X_sorted, gamma=gamma)
+    im = axes[idx].imshow(K_matrix, cmap=&#x27;hot&#x27;, interpolation=&#x27;nearest&#x27;)
+    axes[idx].set_title(f&#x27;$\\gamma = {gamma}$&#x27;, fontsize=13, fontweight=&#x27;bold&#x27;)
+    axes[idx].set_xlabel(&#x27;Sample Index&#x27;)
+    axes[idx].set_ylabel(&#x27;Sample Index&#x27;)
+    plt.colorbar(im, ax=axes[idx], fraction=0.046)
+
+plt.suptitle(&#x27;RBF Kernel Matrix Visualization (Circles, sorted by label)&#x27;,
+             fontsize=15, fontweight=&#x27;bold&#x27;, y=1.05)
+plt.tight_layout()
+plt.show()
+</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw1-naive-bayes/">تمرین ۱: Gaussian Naive Bayes ←</a><a href="../hw3-image-denoising/">تمرین ۳: کاهش نویز تصویر با Sparse Coding ←</a><a href="../mashhad-real-estate/">پروژهٔ داده‌های املاک مشهد ←</a><a href="../study-notes/">یادداشت‌های مرور SML ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

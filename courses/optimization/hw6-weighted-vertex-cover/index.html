@@ -1,0 +1,580 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="نوت‌بوک و متن آماده‌سازی ارائه دربارهٔ پوشش رأس وزن‌دار."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>تمرین ۶: Weighted Vertex Cover · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">بهینه‌سازی ترکیبی</a></nav><p class="eyebrow">نوت‌بوک و گزارش</p><h1 class="work-title">تمرین ۶: Weighted Vertex Cover</h1><p class="course-lead">نوت‌بوک و متن آماده‌سازی ارائه دربارهٔ پوشش رأس وزن‌دار.</p><div class="topic-list"><bdi class="topic">Weighted Vertex Cover</bdi><bdi class="topic">Approximation</bdi></div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw6-weighted-vertex-cover" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw6-weighted-vertex-cover/Weighted_Vertex_Cover.ipynb" target="_blank" rel="noopener noreferrer"><bdi>Weighted_Vertex_Cover.ipynb</bdi><span class="file-meta">37 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw6-weighted-vertex-cover/Weighted_Vertex_Cover_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>Weighted_Vertex_Cover_notebook.py</bdi><span class="file-meta">16 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw6-weighted-vertex-cover/wvc_presentation_guide.tex" target="_blank" rel="noopener noreferrer"><bdi>wvc_presentation_guide.tex</bdi><span class="file-meta">13 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="notebook-notes"><summary>بخشی از توضیحات نوت‌بوک</summary><pre class="notes-preview"># پیاده‌سازی، مدل‌سازی و تحلیل مسئله پوشش رأس وزن‌دار (Weighted Vertex Cover)
+## درس: بهینه‌سازی ترکیبیاتی - تمرین ۶ (HW6)
+
+در این دفترچه، مسئله **پوشش رأس وزن‌دار (Weighted Vertex Cover - WVC)** را در ابعاد بزرگ (بین ۱۰۰ تا ۵۰۰ گره) پیاده‌سازی، حل و تحلیل می‌کنیم. این پروژه شامل بخش‌های زیر است:
+
+1. **تعریف مسئله و تولید داده:** تولید گراف‌های تصادفی با وزن‌های مثبت برای رأس‌ها.
+2. **مدل‌سازی و حل با برنامه‌ریزی اعداد صحیح (IP):** فرمول‌بندی مسئله در PuLP و حل بهینه گسسته.
+3. **حل با آزادسازی خطی (LP Relaxation):**
+   - **حالت اول:** با قید $0 \le x_i \le 1$.
+   - **حالت دوم:** با قید $x_i \ge 0$ (بدون حد بالا) برای بررسی اینکه آیا جواب بهینه همچنان $\le 1$ می‌ماند یا خیر.
+4. **گرد کردن (Rounding):** اعمال مکانیسم گرد کردن روی جواب LP برای ساخت یک جواب شدنی گسسته و بررسی قضیه ضریب تقریب ۲.
+5. **جستجوی محلی (Local Search):** طراحی الگوریتم جستجوی محلی (Hill Climbing با بهبود ۱-swap و حذف افزونگی) برای بهبود جواب گرد شده.
+6. **آزمایش‌های عددی و تحلیل نتایج (Gap &amp; Runtime):** ارزیابی کارایی، تحلیل شکاف IP-LP، زمان اجرا و نسبت تقریب در ابعاد بزرگ.
+
+
+## ۱. تعریف مسئله و تولید داده
+
+در نظریه گراف، **پوشش رأس (Vertex Cover)** در یک گراف غیرجهت‌دار $G = (V, E)$، مجموعه‌ای از رأس‌ها $C \subseteq V$ است به‌طوری که برای هر یال $(u, v) \in E$، حداقل یکی از دو رأس $u$ یا $v$ در $C$ باشد (یعنی یال توسط مجموعه رأس‌ها پوشش داده شود).
+
+در **مسئله پوشش رأس وزن‌دار (Weighted Vertex Cover)**، به هر رأس $i \in V$ یک وزن مثبت $w_i &gt; 0$ اختصاص داده می‌شود. هدف کمینه‌سازی مجموع وزن رأس‌های موجود در پوشش است:
+$$ \min \sum_{i \in V} w_i x_i $$
+
+در این بخش، کدی برای تولید گراف تصادفی با وزن‌های تصادفی برای رأس‌ها می‌نویسیم. برای تولید گراف‌ها از مدل Erdős-Rényi استفاده می‌کنیم.
+</pre></details><details class="source-file" open><summary><bdi>Weighted_Vertex_Cover_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw6-weighted-vertex-cover/Weighted_Vertex_Cover_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Exported notebook code; may contain IPython commands.
+# %%
+import time
+import random
+import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
+import pulp
+import pandas as pd
+
+# تنظیم شیوه نمایش نمودارها برای داشتن ظاهری مدرن و زیبا
+plt.style.use(&#x27;seaborn-v0_8-whitegrid&#x27;)
+plt.rcParams[&#x27;figure.figsize&#x27;] = (10, 6)
+plt.rcParams[&#x27;font.size&#x27;] = 12
+plt.rcParams[&#x27;axes.edgecolor&#x27;] = &#x27;#CCCCCC&#x27;
+plt.rcParams[&#x27;axes.linewidth&#x27;] = 0.8
+plt.rcParams[&#x27;grid.color&#x27;] = &#x27;#EEEEEE&#x27;
+plt.rcParams[&#x27;grid.linestyle&#x27;] = &#x27;--&#x27;
+plt.rcParams[&#x27;grid.alpha&#x27;] = 0.7
+
+# تنظیم دانه تصادفی برای تکرارپذیری آزمایش‌ها
+random.seed(42)
+np.random.seed(42)
+
+
+# %%
+def generate_weighted_graph(n, p=0.05, weight_range=(10, 100)):
+    &quot;&quot;&quot;
+    تولید یک گراف تصادفی غیرجهت‌دار بر اساس مدل Erdős-Rényi و انتساب وزن‌های مثبت به گره‌ها
+    &quot;&quot;&quot;
+    G = nx.erdos_renyi_graph(n, p)
+    
+    # انتساب وزن‌های مثبت تصادفی به گره‌ها
+    for u in G.nodes():
+        G.nodes[u][&#x27;weight&#x27;] = random.randint(weight_range[0], weight_range[1])
+        
+    return G
+
+# تولید یک نمونه کوچک برای نمایش بصری و صحت‌سنجی اولیه
+small_G = generate_weighted_graph(n=15, p=0.25)
+print(&quot;تعداد گره‌ها:&quot;, small_G.number_of_nodes())
+print(&quot;تعداد یال‌ها:&quot;, small_G.number_of_edges())
+print(&quot;وزن ۵ گره اول:&quot;)
+for u in list(small_G.nodes())[:5]:
+    print(f&quot;گره {u}: وزن {small_G.nodes[u][&#x27;weight&#x27;]}&quot;)
+
+
+# %%
+def solve_wvc_ip(G):
+    &quot;&quot;&quot;
+    حل مسئله پوشش رأس وزن‌دار با استفاده از برنامه‌ریزی اعداد صحیح (IP)
+    &quot;&quot;&quot;
+    start_time = time.time()
+    
+    # تعریف مسئله کمینه‌سازی
+    prob = pulp.LpProblem(&quot;Weighted_Vertex_Cover_IP&quot;, pulp.LpMinimize)
+    
+    # تعریف متغیرهای تصمیم‌گیری (باینری 0 و 1)
+    x = pulp.LpVariable.dicts(&quot;x&quot;, G.nodes(), cat=pulp.LpBinary)
+    
+    # تعریف تابع هدف: مجموع وزن گره‌های انتخاب شده
+    prob += pulp.lpSum(G.nodes[i][&#x27;weight&#x27;] * x[i] for i in G.nodes())
+    
+    # قیدها: برای هر یال (i, j) حداقل یکی از دو سر یال باید در پوشش باشد
+    for u, v in G.edges():
+        prob += x[u] + x[v] &gt;= 1
+        
+    # حل مسئله با خاموش کردن خروجی متنی سالور و محدودیت زمانی ۱۵ ثانیه‌ای
+    prob.solve(pulp.PULP_CBC_CMD(msg=False, timeLimit=15))
+    
+    end_time = time.time()
+    
+    # استخراج جواب
+    solution = {i: int(x[i].varValue) for i in G.nodes()}
+    objective_val = pulp.value(prob.objective)
+    
+    return objective_val, solution, end_time - start_time
+
+# تست تابع روی گراف کوچک
+ip_val, ip_sol, ip_time = solve_wvc_ip(small_G)
+print(f&quot;جواب بهینه IP: {ip_val}&quot;)
+print(f&quot;زمان اجرا: {ip_time:.4f} ثانیه&quot;)
+print(f&quot;تعداد گره‌های انتخاب شده در پوشش: {sum(ip_sol.values())} از {small_G.number_of_nodes()}&quot;)
+
+
+# %%
+# رسم گراف کوچک و مشخص کردن گره‌های پوشش رأس به دست آمده
+pos = nx.spring_layout(small_G, seed=42)
+node_colors = [&#x27;#E74C3C&#x27; if ip_sol[node] == 1 else &#x27;#3498DB&#x27; for node in small_G.nodes()]
+node_sizes = [small_G.nodes[node][&#x27;weight&#x27;] * 8 for node in small_G.nodes()]
+
+plt.figure(figsize=(9, 7))
+nx.draw_networkx_nodes(small_G, pos, node_color=node_colors, node_size=node_sizes, alpha=0.9, edgecolors=&#x27;#2C3E50&#x27;)
+nx.draw_networkx_edges(small_G, pos, width=1.0, alpha=0.4, edge_color=&#x27;#BDC3C7&#x27;)
+nx.draw_networkx_labels(small_G, pos, font_size=10, font_family=&#x27;sans-serif&#x27;, font_color=&#x27;white&#x27;)
+
+# اضافه کردن لژند بصری برای درک بهتر
+import matplotlib.patches as mpatches
+red_patch = mpatches.Patch(color=&#x27;#E74C3C&#x27;, label=&#x27;Selected in Cover&#x27;)
+blue_patch = mpatches.Patch(color=&#x27;#3498DB&#x27;, label=&#x27;Not Selected&#x27;)
+plt.legend(handles=[red_patch, blue_patch], loc=&#x27;upper right&#x27;, frameon=True, facecolor=&#x27;white&#x27;)
+
+plt.title(&quot;Optimal IP Weighted Vertex Cover on a 15-Node Graph\n(Node Size is Proportional to Vertex Weight)&quot;, fontsize=13, fontweight=&#x27;bold&#x27;)
+plt.axis(&#x27;off&#x27;)
+plt.tight_layout()
+plt.show()
+
+
+# %%
+def solve_wvc_lp_case1(G):
+    &quot;&quot;&quot;
+    حل آزادسازی خطی با قید 0 &lt;= x_i &lt;= 1
+    &quot;&quot;&quot;
+    start_time = time.time()
+    
+    prob = pulp.LpProblem(&quot;Weighted_Vertex_Cover_LP_Case1&quot;, pulp.LpMinimize)
+    x = pulp.LpVariable.dicts(&quot;x&quot;, G.nodes(), lowBound=0, upBound=1, cat=pulp.LpContinuous)
+    
+    # تابع هدف
+    prob += pulp.lpSum(G.nodes[i][&#x27;weight&#x27;] * x[i] for i in G.nodes())
+    
+    # قیدها
+    for u, v in G.edges():
+        prob += x[u] + x[v] &gt;= 1
+        
+    prob.solve(pulp.PULP_CBC_CMD(msg=False))
+    end_time = time.time()
+    
+    solution = {i: x[i].varValue for i in G.nodes()}
+    objective_val = pulp.value(prob.objective)
+    
+    return objective_val, solution, end_time - start_time
+
+def solve_wvc_lp_case2(G):
+    &quot;&quot;&quot;
+    حل آزادسازی خطی با قید x_i &gt;= 0 (بدون سقف بالا)
+    &quot;&quot;&quot;
+    start_time = time.time()
+    
+    prob = pulp.LpProblem(&quot;Weighted_Vertex_Cover_LP_Case2&quot;, pulp.LpMinimize)
+    x = pulp.LpVariable.dicts(&quot;x&quot;, G.nodes(), lowBound=0, cat=pulp.LpContinuous)
+    
+    # تابع هدف
+    prob += pulp.lpSum(G.nodes[i][&#x27;weight&#x27;] * x[i] for i in G.nodes())
+    
+    # قیدها
+    for u, v in G.edges():
+        prob += x[u] + x[v] &gt;= 1
+        
+    prob.solve(pulp.PULP_CBC_CMD(msg=False))
+    end_time = time.time()
+    
+    solution = {i: x[i].varValue for i in G.nodes()}
+    objective_val = pulp.value(prob.objective)
+    
+    return objective_val, solution, end_time - start_time
+
+# اجرای هر دو حالت روی گراف کوچک و مقایسه مقادیر هدف و زمان اجرا
+lp1_val, lp1_sol, lp1_time = solve_wvc_lp_case1(small_G)
+lp2_val, lp2_sol, lp2_time = solve_wvc_lp_case2(small_G)
+
+print(f&quot;مقدار هدف LP حالت اول (0 &lt;= x_i &lt;= 1): {lp1_val:.4f}&quot;)
+print(f&quot;مقدار هدف LP حالت دوم (x_i &gt;= 0): {lp2_val:.4f}&quot;)
+print(f&quot;اختلاف دو جواب: {abs(lp1_val - lp2_val):.6f}&quot;)
+
+max_val_case2 = max(lp2_sol.values())
+print(f&quot;بزرگترین مقدار متغیر در جواب بهینه حالت دوم: {max_val_case2:.4f}&quot;)
+
+
+# %%
+def round_lp_solution(G, lp_solution):
+    &quot;&quot;&quot;
+    اعمال مکانیسم گرد کردن روی خروجی LP:
+    اگر مقدار متغیر بزرگتر یا مساوی 0.5 بود 1، در غیر این صورت 0.
+    &quot;&quot;&quot;
+    rounded_solution = {}
+    for i in G.nodes():
+        if lp_solution[i] &gt;= 0.5:
+            rounded_solution[i] = 1
+        else:
+            rounded_solution[i] = 0
+            
+    # محاسبه وزن کل جواب گرد شده
+    total_weight = sum(G.nodes[i][&#x27;weight&#x27;] * rounded_solution[i] for i in G.nodes())
+    
+    # بررسی شدنی بودن (آیا تمام یال‌ها پوشش داده شده‌اند؟)
+    is_feasible = True
+    for u, v in G.edges():
+        if rounded_solution[u] + rounded_solution[v] &lt; 1:
+            is_feasible = False
+            break
+            
+    return total_weight, rounded_solution, is_feasible
+
+# اجرای گرد کردن روی جواب گراف کوچک
+round_weight, round_sol, round_feasible = round_lp_solution(small_G, lp1_sol)
+print(f&quot;وزن پوشش رأس حاصل از گرد کردن: {round_weight}&quot;)
+print(f&quot;آیا جواب شدنی است؟ {&#x27;بله&#x27; if round_feasible else &#x27;خیر&#x27;}&quot;)
+print(f&quot;نسبت جواب گرد شده به بهینه IP: {round_weight / ip_val:.4f}&quot;)
+
+
+# %%
+def local_search_wvc(G, initial_cover):
+    &quot;&quot;&quot;
+    بهبود جواب پوشش رأس با جستجوی محلی (Hill Climbing)
+    &quot;&quot;&quot;
+    start_time = time.time()
+    
+    # کپی کردن پوشش رأس اولیه به صورت مجموعه‌ای از گره‌ها
+    cover = {u for u, val in initial_cover.items() if val == 1}
+    
+    def remove_redundancies(curr_cover):
+        # حذف گره‌هایی که تمام همسایگانشان در پوشش هستند
+        # کاندیداها را بر اساس وزن نزولی مرتب می‌کنیم تا اول گره‌های سنگین‌تر حذف شوند
+        redundant_candidates = sorted(list(curr_cover), key=lambda x: G.nodes[x][&#x27;weight&#x27;], reverse=True)
+        modified = False
+        for u in redundant_candidates:
+            if all(neighbor in curr_cover for neighbor in G.neighbors(u)):
+                curr_cover.remove(u)
+                modified = True
+        return curr_cover, modified
+
+    # اولین پاکسازی افزونگی‌ها
+    cover, _ = remove_redundancies(cover)
+    
+    improved = True
+    iterations = 0
+    max_iterations = 1000
+    
+    while improved and iterations &lt; max_iterations:
+        improved = False
+        iterations += 1
+        
+        # مرتب‌سازی گره‌های داخل پوشش برای انتخاب به ترتیب نزولی وزن
+        cover_sorted = sorted(list(cover), key=lambda x: G.nodes[x][&#x27;weight&#x27;], reverse=True)
+        
+        for u in cover_sorted:
+            # پیدا کردن همسایگانی از u که در پوشش نیستند
+            uncovered_neighbors = [n for n in G.neighbors(u) if n not in cover]
+            
+            if len(uncovered_neighbors) == 0:
+                cover.remove(u)
+                cover, _ = remove_redundancies(cover)
+                improved = True
+                break
+                
+            elif len(uncovered_neighbors) == 1:
+                v = uncovered_neighbors[0]
+                # شرط تعویض: وزن گره خارج از پوشش کمتر از گره داخل پوشش باشد
+                if G.nodes[v][&#x27;weight&#x27;] &lt; G.nodes[u][&#x27;weight&#x27;]:
+                    cover.remove(u)
+                    cover.add(v)
+                    cover, _ = remove_redundancies(cover)
+                    improved = True
+                    break
+            else:
+                pass
+                
+    end_time = time.time()
+    
+    # ساخت دیکشنری جواب نهایی
+    final_cover = {u: (1 if u in cover else 0) for u in G.nodes()}
+    final_weight = sum(G.nodes[u][&#x27;weight&#x27;] for u in cover)
+    
+    return final_weight, final_cover, end_time - start_time
+
+# تست جستجوی محلی روی گراف کوچک
+ls_weight, ls_sol, ls_time = local_search_wvc(small_G, round_sol)
+print(f&quot;وزن پس از جستجوی محلی: {ls_weight}&quot;)
+print(f&quot;میزان بهبود نسبت به گرد کردن ساده: {round_weight - ls_weight}&quot;)
+print(f&quot;نسبت جواب جستجوی محلی به بهینه IP: {ls_weight / ip_val:.4f}&quot;)
+
+
+# %%
+# تعریف ابعاد بزرگ مسئله
+node_sizes = [100, 150, 200, 250, 300, 350, 400, 450, 500]
+p_edge = 0.05  # چگالی یال‌ها در گراف تصادفی
+results = []
+
+print(&quot;شروع اجرای آزمایش‌های عددی...&quot;)
+print(&quot;-&quot; * 105)
+print(f&quot;{&#x27;Nodes&#x27;:&lt;8}{&#x27;Edges&#x27;:&lt;8}{&#x27;IP Weight&#x27;:&lt;12}{&#x27;LP Weight&#x27;:&lt;12}{&#x27;Round W.&#x27;:&lt;10}{&#x27;LS Weight&#x27;:&lt;10}{&#x27;IP Time(s)&#x27;:&lt;12}{&#x27;LP Time(s)&#x27;:&lt;12}{&#x27;LS Time(s)&#x27;:&lt;12}&quot;)
+print(&quot;-&quot; * 105)
+
+for n in node_sizes:
+    # ۱. تولید گراف تصادفی با وزن‌های مثبت
+    G = generate_weighted_graph(n, p=p_edge, weight_range=(10, 100))
+    num_edges = G.number_of_edges()
+    
+    # ۲. حل به روش باینری IP
+    ip_weight, ip_sol, ip_time = solve_wvc_ip(G)
+    
+    # ۳. حل به روش آزادسازی خطی LP (حالت اول)
+    lp_weight, lp_sol, lp_time = solve_wvc_lp_case1(G)
+    
+    # ۴. حل به روش آزادسازی خطی LP (حالت دوم) برای صحت‌سنجی تجربی فرضیه عدم تجاوز متغیرها از ۱
+    _, lp2_sol, _ = solve_wvc_lp_case2(G)
+    violating_vars = sum(1 for v in lp2_sol.values() if v &gt; 1.0001)  # تعداد متغیرهای بزرگتر از ۱
+    
+    # ۵. گرد کردن جواب LP
+    round_weight, round_sol, round_feasible = round_lp_solution(G, lp_sol)
+    
+    # ۶. بهبود با جستجوی محلی
+    ls_weight, ls_sol, ls_time = local_search_wvc(G, round_sol)
+    
+    # محاسبات تحلیل نتایج
+    gap_pct = ((ip_weight - lp_weight) / ip_weight) * 100 if ip_weight &gt; 0 else 0
+    round_ratio = round_weight / ip_weight if ip_weight &gt; 0 else 1
+    ls_ratio = ls_weight / ip_weight if ip_weight &gt; 0 else 1
+    
+    results.append({
+        &#x27;nodes&#x27;: n,
+        &#x27;edges&#x27;: num_edges,
+        &#x27;ip_weight&#x27;: ip_weight,
+        &#x27;lp_weight&#x27;: lp_weight,
+        &#x27;round_weight&#x27;: round_weight,
+        &#x27;ls_weight&#x27;: ls_weight,
+        &#x27;ip_time&#x27;: ip_time,
+        &#x27;lp_time&#x27;: lp_time,
+        &#x27;ls_time&#x27;: ls_time,
+        &#x27;gap_pct&#x27;: gap_pct,
+        &#x27;round_ratio&#x27;: round_ratio,
+        &#x27;ls_ratio&#x27;: ls_ratio,
+        &#x27;round_feasible&#x27;: round_feasible,
+        &#x27;violating_vars_case2&#x27;: violating_vars
+    })
+    
+    print(f&quot;{n:&lt;8}{num_edges:&lt;8}{ip_weight:&lt;12.1f}{lp_weight:&lt;12.2f}{round_weight:&lt;10.1f}{ls_weight:&lt;10.1f}{ip_time:&lt;12.4f}{lp_time:&lt;12.4f}{ls_time:&lt;12.4f}&quot;)
+
+print(&quot;-&quot; * 105)
+print(&quot;آزمایش‌های تجربی با موفقیت پایان یافت.&quot;)
+
+
+# %%
+# ایجاد و نمایش جدول نتایج با Pandas
+df = pd.DataFrame(results)
+df
+
+
+# %%
+plt.figure(figsize=(10, 6))
+plt.plot(df[&#x27;nodes&#x27;], df[&#x27;ip_weight&#x27;], marker=&#x27;o&#x27;, linewidth=2.5, color=&#x27;#2C3E50&#x27;, label=&#x27;Optimal IP&#x27;)
+plt.plot(df[&#x27;nodes&#x27;], df[&#x27;lp_weight&#x27;], marker=&#x27;s&#x27;, linewidth=2.0, color=&#x27;#7F8C8D&#x27;, linestyle=&#x27;--&#x27;, label=&#x27;LP Relaxation&#x27;)
+plt.plot(df[&#x27;nodes&#x27;], df[&#x27;round_weight&#x27;], marker=&#x27;^&#x27;, linewidth=2.0, color=&#x27;#E74C3C&#x27;, label=&#x27;Rounding (Approximation)&#x27;)
+plt.plot(df[&#x27;nodes&#x27;], df[&#x27;ls_weight&#x27;], marker=&#x27;d&#x27;, linewidth=2.0, color=&#x27;#27AE60&#x27;, label=&#x27;Local Search (Improved)&#x27;)
+
+plt.title(&#x27;Total Vertex Cover Weight by Graph Size&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;, pad=15)
+plt.xlabel(&#x27;Number of Nodes ($N$)&#x27;, fontsize=12)
+plt.ylabel(&#x27;Total Weight&#x27;, fontsize=12)
+plt.xticks(df[&#x27;nodes&#x27;])
+plt.legend(frameon=True, facecolor=&#x27;white&#x27;, edgecolor=&#x27;#EAEAEA&#x27;, fontsize=11)
+plt.grid(True, linestyle=&#x27;--&#x27;, alpha=0.5)
+plt.tight_layout()
+plt.show()
+
+
+# %%
+plt.figure(figsize=(10, 6))
+plt.plot(df[&#x27;nodes&#x27;], df[&#x27;ip_time&#x27;], marker=&#x27;o&#x27;, linewidth=2.5, color=&#x27;#8E44AD&#x27;, label=&#x27;IP Solving Time&#x27;)
+plt.plot(df[&#x27;nodes&#x27;], df[&#x27;lp_time&#x27;], marker=&#x27;s&#x27;, linewidth=2.0, color=&#x27;#2980B9&#x27;, label=&#x27;LP Solving Time&#x27;)
+plt.plot(df[&#x27;nodes&#x27;], df[&#x27;ls_time&#x27;], marker=&#x27;d&#x27;, linewidth=2.0, color=&#x27;#27AE60&#x27;, label=&#x27;Local Search Time&#x27;)
+
+plt.title(&#x27;Execution Time Comparison (Seconds) by Graph Size&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;, pad=15)
+plt.xlabel(&#x27;Number of Nodes ($N$)&#x27;, fontsize=12)
+plt.ylabel(&#x27;Time (Seconds)&#x27;, fontsize=12)
+plt.yscale(&#x27;log&#x27;)  # استفاده از مقیاس لگاریتمی به دلیل اختلاف مقیاس زمانی زیاد
+plt.xticks(df[&#x27;nodes&#x27;])
+plt.legend(frameon=True, facecolor=&#x27;white&#x27;, edgecolor=&#x27;#EAEAEA&#x27;, fontsize=11)
+plt.grid(True, which=&quot;both&quot;, linestyle=&#x27;--&#x27;, alpha=0.5)
+plt.tight_layout()
+plt.show()
+
+
+# %%
+plt.figure(figsize=(10, 6))
+plt.plot(df[&#x27;nodes&#x27;], df[&#x27;round_ratio&#x27;], marker=&#x27;^&#x27;, linewidth=2.0, color=&#x27;#E74C3C&#x27;, label=&#x27;Rounding / Optimal IP&#x27;)
+plt.plot(df[&#x27;nodes&#x27;], df[&#x27;ls_ratio&#x27;], marker=&#x27;d&#x27;, linewidth=2.0, color=&#x27;#27AE60&#x27;, label=&#x27;Local Search / Optimal IP&#x27;)
+plt.axhline(y=2.0, color=&#x27;#C0392B&#x27;, linestyle=&#x27;:&#x27;, linewidth=2.0, label=&#x27;Theoretical Approximation Bound (2.0)&#x27;)
+plt.axhline(y=1.0, color=&#x27;black&#x27;, linestyle=&#x27;-&#x27;, linewidth=1.0)
+
+plt.title(&#x27;Approximation Ratio vs. Theoretical Bound&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;, pad=15)
+plt.xlabel(&#x27;Number of Nodes ($N$)&#x27;, fontsize=12)
+plt.ylabel(&#x27;Approximation Ratio&#x27;, fontsize=12)
+plt.ylim(0.8, 2.2)
+plt.xticks(df[&#x27;nodes&#x27;])
+plt.legend(frameon=True, facecolor=&#x27;white&#x27;, edgecolor=&#x27;#EAEAEA&#x27;, fontsize=11)
+plt.grid(True, linestyle=&#x27;--&#x27;, alpha=0.5)
+plt.tight_layout()
+plt.show()
+
+
+# %%
+plt.figure(figsize=(10, 6))
+bars = plt.bar(df[&#x27;nodes&#x27;], df[&#x27;gap_pct&#x27;], color=&#x27;#34495E&#x27;, width=20, edgecolor=&#x27;#2C3E50&#x27;, alpha=0.85, label=&#x27;IP-LP Gap %&#x27;)
+
+plt.title(&#x27;LP Optimality Gap Percentage&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;, pad=15)
+plt.xlabel(&#x27;Number of Nodes ($N$)&#x27;, fontsize=12)
+plt.ylabel(&#x27;Gap (%)&#x27;, fontsize=12)
+plt.xticks(df[&#x27;nodes&#x27;])
+
+# افزودن مقادیر بالای هر ستون
+for bar in bars:
+    yval = bar.get_height()
+    plt.text(bar.get_x() + bar.get_width()/2.0, yval + 0.15, f&quot;{yval:.2f}%&quot;, ha=&#x27;center&#x27;, va=&#x27;bottom&#x27;, fontweight=&#x27;bold&#x27;, fontsize=10)
+    
+plt.ylim(0, max(df[&#x27;gap_pct&#x27;]) + 1.5)
+plt.grid(True, axis=&#x27;y&#x27;, linestyle=&#x27;--&#x27;, alpha=0.5)
+plt.tight_layout()
+plt.show()
+
+</code></pre></details><details class="source-file" ><summary><bdi>wvc_presentation_guide.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw6-weighted-vertex-cover/wvc_presentation_guide.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\documentclass[12pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\geometry{top=3cm, bottom=3cm, left=2.5cm, right=2.5cm}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+
+% تعریف رنگ‌های سفارشی برای زیبایی
+\definecolor{primaryColor}{HTML}{2C3E50}
+\definecolor{secondaryColor}{HTML}{18BC9C}
+\definecolor{accentColor}{HTML}{E74C3C}
+
+% تعریف کادرهای سوال و جواب و نکات کلیدی
+\newtcolorbox{questionBox}[1]{
+  colback=red!5!white,
+  colframe=red!75!black,
+  fonttitle=\bfseries,
+  title={سوال احتمالی استاد: #1},
+  fontupper=\small,
+  breakable
+}
+
+\newtcolorbox{answerBox}[1]{
+  colback=green!5!white,
+  colframe=green!75!black,
+  fonttitle=\bfseries,
+  title={پاسخ پیشنهادی شما: #1},
+  fontupper=\small,
+  breakable
+}
+
+\newtcolorbox{tipBox}[1]{
+  colback=blue!5!white,
+  colframe=blue!75!black,
+  fonttitle=\bfseries,
+  title={نکته کلیدی برای ارائه: #1},
+  fontupper=\small,
+  breakable
+}
+
+\usepackage{xepersian}
+\settextfont{Amiri}
+\setlatintextfont{Times New Roman}
+
+\title{\textbf{راهنمای جامع ارائه و دفاع شفاهی پروژه پوشش رأس وزن‌دار \lr{(Weighted Vertex Cover)}}}
+\author{درس بهینه‌سازی ترکیبیاتی}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\textbf{چکیده راهنما:} 
+این سند به عنوان راهنمای کمکی دفاع شفاهی دانشجو برای ارائه پروژه پوشش رأس وزن‌دار \lr{(WVC)} تنظیم شده است. هدف این راهنما، هدایت گام‌به‌گام دانشجو در زمان ارائه پروژه به استاد، توضیح دلیل علمی کدهای پیاده‌سازی شده در نوت‌بوک، و نحوه پاسخ به سوالات سخت و چالش‌برانگیز داوران یا استاد درس است. مفاهیم پیاده‌سازی شده در قالب روابط ریاضی و تحلیل‌های رفتاری الگوریتم‌ها دسته‌بندی شده‌اند.
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{ساختار فایل‌های خروجی پروژه}
+
+پروژه نهایی تحویل داده شده شامل فایل‌های مهندسی‌شده زیر است که هر کدام وظیفه مشخصی دارند:
+\begin{itemize}
+    \item \textbf{\lr{Weighted\_Vertex\_Cover.ipynb}:} فایل اصلی نوت‌بوک شامل تعاریف، پیاده‌سازی کدهای آزمایش‌های عددی در ابعاد ۱۰۰ تا ۵۰۰ گره و نمودارهای رندر شده.
+    \item \textbf{\lr{wvc\_tutorial.pdf} و \lr{wvc\_tutorial.tex}:} درسنامه علمی ۱۰ صفحه‌ای کامپایل شده به همراه اثبات‌های ریاضی و قضایا جهت مطالعه مبانی تئوری از پایه.
+    \item \textbf{\lr{generate\_notebook.py} و \lr{execute\_notebook.py}:} اسکریپت‌های مکانیزه برای ایجاد و اجرای بدون خطای سلول‌های نوت‌بوک و ثبت خروجی‌ها به صورت متمرکز.
+\end{itemize}
+
+---
+
+\section{سناریوی پیشنهادی برای ارائه گام‌به‌گام به استاد}
+
+در زمان ارائه نوت‌بوک، بهتر است کدهای هر سلول را همراه با «چرایی» و «دلیل علمی» آن به استاد نشان دهید. از سناریوی زیر استفاده کنید:
+
+\subsection{گام اول: تولید داده تصادفی گراف}
+توضیح دهید که یک گراف تصادفی غیرجهت‌دار بر اساس مدل \lr{Erdős-Rényi} با چگالی یال $p=0.05$ تولید کرده و به هر گره یک وزن تصادفی بین ۱۰ تا ۱۰۰ اختصاص داده‌اید.
+\begin{itemize}
+    \item \textbf{چرا چگالی $0.05$؟} زیرا این مقدار تضمین می‌کند که گراف هم به اندازه کافی جاده (یال) برای پوشش دادن دارد و هم بیش از حد شلوغ نیست که مسئله بدیهی شود.
+    \item \textbf{چرا وزن‌های مثبت؟} زیرا اگر وزن‌ها منفی یا صفر باشند، مسئله پوشش رأس وزن‌دار معنای فیزیکی و هزینه‌ای خود را از دست می‌دهد و گره‌های با وزن منفی همواره بدون هزینه انتخاب می‌شوند.
+\end{itemize}
+
+\subsection{گام دوم: حل با مدل برنامه‌ریزی اعداد صحیح باینری \lr{(IP)}}
+با استفاده از کتابخانه \lr{PuLP} مدل را تعریف کرده و متغیرهای تصمیم‌گیری را به صورت باینری صفر و یک تعریف کرده‌اید.
+\begin{tipBox}{محدودیت زمان حل \lr{IP}}
+حتماً به استاد بگویید: «در زمان فراخوانی سالور \lr{CBC}، پارامتر محدودیت زمانی را روی ۱۵ ثانیه تنظیم کرده‌ام (\lr{timeLimit=15})؛ زیرا در ابعاد بالای ۱۵۰ رأس، مسئله به دلیل نمایی بودن فضای جستجوی درخت شاخه و حد ($2^N$) بسیار زمان‌بر می‌شود. این محدودیت زمانی باعث می‌شود سالور پس از ۱۵ ثانیه بهترین جواب شدنی پیدا شده را برگرداند تا روند اجرای کل پروژه متوقف نشود.»
+\end{tipBox}
+
+\subsection{گام سوم: آزادسازی خطی \lr{(LP Relaxation)} و بررسی حالت بدون سقف}
+آزادسازی خطی را یک بار با قید استاندارد $0 \le x_i \le 1$ و بار دیگر با قید $x_i \ge 0$ (بدون حد بالای ۱) اجرا کرده‌اید.
+\begin{itemize}
+    \item \textbf{توضیح برای استاد:} به استاد نشان دهید که جواب بهینه هر دو مدل کاملاً یکسان است و بزرگترین مقدار متغیر در حالت بدون سقف نیز هرگز از ۱ تجاوز نکرده است.
+    \item \textbf{علت تئوری:} چون وزن گره‌ها مثبت است ($w_i &gt; 0$) و ما در حال کمینه کردن وزن کل هستیم، اگر در نقطه بهینه متغیر گرهی از ۱ بزرگتر باشد ($x_u^* &gt; 1$)، سالور می‌تواند بدون نقض قیود یال‌ها ($1 + x_v^* \ge 1$) مقدار آن را به ۱ کاهش داده و مقدار تابع هدف را بهبود بخشد که این موضوع با فرض بهینه بودن در تناقض است.
+\end{itemize}
+
+\subsection{گام چهارم: الگوریتم گرد کردن \lr{(Rounding)}}
+مقادیر اعشاری خروجی \lr{LP} را با آستانه $0.5$ گرد کرده و یک جواب باینری شدنی ساخته‌اید.
+\begin{itemize}
+    \item \textbf{اثبات شدنی بودن:} برای هر یال $(u, v)$ قید $x_u^* + x_v^* \ge 1$ برقرار است، پس حداقل یکی از این دو متغیر باید $\ge 0.5$ باشد (طبق اصل لانه کبوتر). بنابراین در زمان گرد کردن، حداقل یکی از آن‌ها به ۱ تبدیل شده و یال به صورت خودکار پوشش داده می‌شود.
+    \item \textbf{ضریب تقریب ۲:} اثبات ریاضی نشان می‌دهد وزن جواب گرد شده همواره کمتر یا مساوی ۲ برابر کران پایین \lr{LP} و در نتیجه کمتر یا مساوی ۲ برابر بهینه واقعی \lr{IP} است.
+\end{itemize}
+
+\subsection{گام پنجم: بهبود به کمک جستجوی محلی \lr{(Local Search)}}
+الگوریتم جستجوی محلی بر پایه روش \lr{Hill Climbing} را اجرا کرده‌اید که دو حرکت اصلی دارد: حذف گره‌های افزونه (که همسایگانشان در پوشش هستند) با ترتیب وزن نزولی، و حرکت تعویضی ۱-\lr{Swap} برای جایگزینی گره‌های سنگین با سبک‌تر.
+\begin{itemize}
+    \item \textbf{توضیح برای استاد:} جواب گرد شده در گراف‌های تصادفی شلوغ است (چون سالور تمام مقادیر را $0.5$ می‌گیرد و همه به ۱ گرد می‌شوند). جستجوی محلی با هزینه محاسباتی ناچیز (زیر ۱ میلی‌ثانیه)، این افزونگی‌ها را حذف کرده و جواب را به شدت به بهینه واقعی نزدیک می‌کند.
+\end{itemize}
+
+---
+
+\section{آنالیز نتایج تجربی شبیه‌سازی}
+
+استاد بر اساس خروجی‌های جدول آزمایش‌ها ممکن است چند تحلیل بخواهد:
+
+\subsection{پدیده نسبت تقریب دقیقاً ۲.۰ در گرد کردن}
+در جدول نتایج ابعاد بزرگ (۱۵۰ رأس به بالا)، متوجه می‌شوید که نسبت جواب گرد شده به \lr{LP} دقیقاً برابر با $2.0$ است.
+\begin{itemize}
+    \item \textbf{علت:} در گراف‌های تصادفی متقارن با چگالی متوازن و وزن‌های یکنواخت، بهینه‌ترین جواب برای آزادسازی خطی این است که به تمام متغیرها مقدار دقیقاً $0.5$ اختصاص داده شود ($x_i^* = 0.5$). در زمان گرد کردن، طبق قانون آستانه، تمام این مقادیر $0.5$ به ۱ تبدیل می‌شوند؛ یعنی کل گره‌های گراف در پوشش قرار می‌گیرند. این موضوع باعث می‌شود وزن پوشش گرد شده دقیقاً $\sum w_i$ شود که دقیقاً ۲ برابر جواب \lr{LP} (یعنی $0.5 \sum w_i$) است.
+\end{itemize}
+
+\subsection{کارایی فوق‌العاده جستجوی محلی}
+با وجود اینکه جواب گرد شده بسیار سنگین است و نسبت تقریب ۲ را نشان می‌دهد، اما جستجوی محلی بلافاصله وارد عمل شده و گره‌های اضافی را حذف می‌کند. در جدول خروجی مشخص است که در سایز ۵۰۰ گره، وزن جواب جستجوی محلی با جواب بهینه \lr{IP} کمتر از $0.2\%$ تفاضل دارد، در حالی که زمان اجرای آن نزدیک به صفر است.
+
+---
+
+\section{سؤالات چالشی استاد در جلسه دفاع و نحوه پاسخ به آن‌ها}
+
+\begin{questionBox}{چرا از ابتدا مستقیماً مدل دقیق \lr{IP} را برای ابعاد بزرگ حل نمی‌کنیم؟}
+\textbf{پاسخ پیشنهادی:} زیرا مسئله پوشش رأس وزن‌دار یک مسئله \lr{NP-Hard} است. در ابعاد بزرگ، زمان حل درخت شاخه و حد به صورت نمایی با مرتبه زمانی $2^N$ رشد می‌کند و پیدا کردن جواب بهینه مطلق غیرممکن می‌شود. اما آزادسازی خطی \lr{LP} در زمان چندجمله‌ای (چند میلی‌ثانیه) حل می‌شود و به ما کمک می‌کند با روش گرد کردن و جستجوی محلی، در کسری از ثانیه به جوابی با اختلاف کمتر از ۳٪ نسبت به بهینه واقعی دست یابیم.
+\end{questionBox}
+
+\begin{questionBox}{در حذف گره‌های افزونه، چرا کاندیداها را بر اساس وزن نزولی مرتب کردید؟}
+\textbf{پاسخ پیشنهادی:} هدف ما کمینه کردن وزن کل پوشش است. حذف یک گره افزونه ممکن است باعث شود همسایگان آن دیگر افزونه نباشند (یعنی نتوانیم آن‌ها را حذف کنیم). بنابراین، با مرتب‌سازی نزولی بر اساس وزن، مطمئن می‌شویم که ابتدا سنگین‌ترین گره‌های افزونه را حذف می‌کنیم تا بیشترین کاهش هزینه در تابع هدف حاصل شود.
+\end{questionBox}
+
+\begin{questionBox}{آیا جواب گرد شده همواره شدنی است؟ چطور این را اثبات می‌کنید؟}
+\textbf{پاسخ پیشنهادی:} بله، ۱۰۰٪ شدنی است. برای هر یال $(u, v)$ قید $x_u^* + x_v^* \ge 1$ در مدل \lr{LP} ارضا می‌شود. طبق اصل لانه کبوتر، غیرممکن است هر دو متغیر کوچک‌تر از $0.5$ باشند؛ زیرا در این صورت جمعشان کوچک‌تر از ۱ خواهد شد. پس حداقل یکی از آن‌ها $\ge 0.5$ است و طبق آستانه به ۱ گرد می‌شود. در نتیجه، برای تمام یال‌ها حداقل یکی از دو سر یال در پوشش قرار می‌گیرد و جواب شدنی باقی می‌ماند.
+\end{questionBox}
+
+\begin{questionBox}{مفهوم شکاف بهینگی \lr{(Optimality Gap)} در آزمایش‌ها چیست؟}
+\textbf{پاسخ پیشنهادی:} این شکاف نشان‌دهنده فاصله درصد بین کران پایین (وزن حاصل از \lr{LP Relaxation}) و جواب بهینه گسسته (\lr{IP}) است. هرچه این شکاف کوچک‌تر باشد، یعنی تخمین آزادسازی خطی به جواب واقعی نزدیک‌تر است. در آزمایش‌های تجربی ما این شکاف حول ۳۸٪ به دست آمد که نشان‌دهنده کارکرد طبیعی آزادسازی خطی در تخمین پوشش گره‌ها است.
+\end{questionBox}
+
+\end{document}
+</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw1-assignment/">تمرین ۱: مسئلهٔ تخصیص ←</a><a href="../hw2-vertex-cover/">تمرین ۲: Vertex Cover ←</a><a href="../hw3-local-search/">تمرین ۳: Local Search برای TSP و Graph Partitioning ←</a><a href="../hw4-tsp/">تمرین ۴: مقایسهٔ 2-opt و 3-opt ←</a><a href="../hw4-msls/">تمرین ۴: Multi-Start Local Search ←</a><a href="../hw4-cplex/">تمرین ۴: روش‌های محلی و مقایسه با CPLEX ←</a><a href="../hw5-neighborhoods/">تمرین ۵: تحلیل همسایگی N2 و N3 ←</a><a href="../cohesive-bin-packing/">پروژهٔ پایانی: Cohesive Bin Packing ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

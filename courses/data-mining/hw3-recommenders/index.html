@@ -1,0 +1,91 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="صورت تمرین محاسبهٔ Collaborative Filtering و ارزیابی سیستم توصیه‌گر."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>تمرین ۳: Recommender Systems · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">داده‌کاوی</a></nav><p class="eyebrow">صورت تمرین آموزشی</p><h1 class="work-title">تمرین ۳: Recommender Systems</h1><p class="course-lead">صورت تمرین محاسبهٔ Collaborative Filtering و ارزیابی سیستم توصیه‌گر.</p><div class="topic-list"><bdi class="topic">Collaborative Filtering</bdi><bdi class="topic">Recommender Systems</bdi></div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/data-mining/hw3-recommenders" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/data-mining/hw3-recommenders/HW3.tex" target="_blank" rel="noopener noreferrer"><bdi>HW3.tex</bdi><span class="file-meta">7 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="source-file" ><summary><bdi>HW3.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/data-mining/hw3-recommenders/HW3.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>\documentclass[a4paper,12pt]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{tcolorbox}
+\usepackage{booktabs}
+\usepackage{enumerate}
+\usepackage{setspace}
+\usepackage{xcolor}
+
+\usepackage{xepersian}
+\settextfont{XB Niloofar}
+\setdigitfont{XB Niloofar}
+
+% تنظیم فاصله بین خطوط به ۱.۲۵ برابر برای خوانایی بهتر
+\setstretch{1.25}
+
+\begin{document}
+
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, boxrule=1pt, arc=3pt, left=15pt, right=15pt, top=10pt, bottom=10pt]
+\noindent
+\begin{tabular}{@{}p{0.55\textwidth} @{}p{0.45\textwidth}}
+\textbf{درس:} داده‌کاوی &amp; \textbf{دانشکده:} علوم ریاضی -- گروه علوم کامپیوتر \\
+\textbf{تمرین:} سری سوم: سیستم‌های توصیه‌گر &amp; \textbf{استاد:} دکتر سهیلا اشکذری طوسی \\
+\textbf{ترم:} بهار ۱۴۰۵ &amp; \textbf{دانشگاه:} فردوسی مشهد \\
+\end{tabular}
+\end{tcolorbox}
+
+\vspace{0.5cm}
+
+\begin{enumerate}
+
+\item \textbf{محاسبه دستی فیلترینگ مشارکتی کاربر‌محور (\lr{User-Based CF})}
+\\
+ماتریس امتیازات زیر را برای ۴ کاربر و ۴ فیلم در نظر بگیرید. علامت سؤال ($?$) نشان‌دهنده امتیازات مفقود است:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ccccc}
+\toprule
+\textbf{کاربر / فیلم} &amp; \textbf{فیلم ۱} &amp; \textbf{فیلم ۲} &amp; \textbf{فیلم ۳} &amp; \textbf{فیلم ۴} \\
+\midrule
+\textbf{کاربر ۱ ($U_1$)} &amp; $5$ &amp; $3$ &amp; $?$ &amp; $1$ \\
+\textbf{کاربر ۲ ($U_2$)} &amp; $4$ &amp; $?$ &amp; $4$ &amp; $2$ \\
+\textbf{کاربر ۳ ($U_3$)} &amp; $1$ &amp; $2$ &amp; $5$ &amp; $4$ \\
+\textbf{کاربر ۴ ($U_4$)} &amp; $4$ &amp; $3$ &amp; $2$ &amp; $?$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+هدف ما پیش‌بینی امتیاز مفقود کاربر ۱ برای \textbf{فیلم ۳} ($\hat{r}_{u_1, i_3}$) است. گام‌های زیر را به صورت دقیق انجام دهید:
+\begin{enumerate}
+    \item ضریب همبستگی پیرسون (\lr{Pearson Correlation Coefficient}) را بین کاربر ۱ ($U_1$) و سایر کاربران محاسبه نمایید. به صورت خلاصه توضیح دهید چرا در این سناریو، معیار پیرسون نسبت به شباهت کسینوسی (\lr{Cosine Similarity}) ساده، ارزیابی عادلانه‌تری از شباهت کاربران ارائه می‌دهد؟ 
+    \item با فرض انتخاب ۲ همسایه نزدیک ($K=2$) بر اساس بالاترین ضریب پیرسون، امتیاز پیش‌بینی‌شده $\hat{r}_{u_1, i_3}$ را با فرمول میانگین وزنی نرمال‌سازی‌شده (\lr{Mean Centering}) محاسبه کنید. (نکته: در صورتی که یکی از همسایگان برتر، خود فاقد امتیاز روی فیلم ۳ باشد، او را کنار گذاشته و همسایه واجد شرایط بعدی را جایگزین کنید).
+\end{enumerate}
+
+\item \textbf{ریاضیات فاکتورگیری ماتریس (\lr{Matrix Factorization}) و بهینه‌سازی \lr{SGD}}
+\\
+تابع هزینه کلي (\lr{Loss Function}) زیر را همراه با مؤلفه‌های بایاس (\lr{Bias}) و تنظیم‌گر (\lr{Regularization}) در نظر بگیرید:
+$$L = \sum_{(u,i) \in K} \left( r_{u,i} - (\mu + b_u + b_i + p_u \cdot q_i^T) \right)^2 + \lambda \left( ||p_u||^2 + ||q_i||^2 + b_u^2 + b_i^2 \right)$$
+با فرض اینکه خطای پیش‌بینی به صورت $e_{u,i} = r_{u,i} - \hat{r}_{u,i}$ تعریف شده باشد:
+\begin{enumerate}
+\item \textbf{\textcolor{red}{(امتیازی)}} با توجه به الگوی بهینه‌سازی تصادفی نزول گرادیان (\lr{SGD}) تدریس‌شده در جزوه، روابط نهایی به‌روزرسانی را برای \textbf{بردار فاکتور پنهان آیتم ($q_i$)} و \textbf{پارامتر بایاس کاربر ($b_u$)} با در نظر گرفتن نرخ یادگیری $\eta$ و ضریب تنظیم‌گر $\lambda$ بنویسید. تغییرات هر پارامتر را در هر گام به صورت کیفی تحلیل کنید.    \item مفهوم فاکتورهای پنهان (\lr{Latent Factors}) را بر اساس مثال‌های کلاسی (مانند ابعاد اکشن یا احساسی بودن فیلم‌ها) توضیح دهید  و مشخص کنید چرا این فاکتورها لزوماً با ویژگی‌های صریح کاتالوگ انطباق یک‌به‌یک ندارند؟ 
+\end{enumerate}
+
+\item \textbf{ارزیابی معیارهای رتبه‌بندی (\lr{Ranking Metrics})}
+\\
+یک سیستم توصیه‌گر لیستی با ۵ کاندید برتر از محصولات را به صورت زیر تولید کرده است:
+$$Recommended = [Item_A, Item_B, Item_C, Item_D, Item_E]$$
+طبق داده‌های تست، تنها اقلام $Item_A$، $Item_C$ و $Item_E$ مرتبط (\lr{Relevant}) هستند و کاربر به آن‌ها امتیازهای واقعی $rel_A = 3$، $rel_C = 5$ و $rel_E = 2$ داده است ($rel_B = 0, rel_D = 0$). با فرض اینکه تعداد کل آیتم‌های مرتبطِ این کاربر در کل بخش تست برابر با \lr{4} باشد:
+\begin{enumerate}
+    \item مقادیر معیارهای ارزیابی دقت در ۵ بردار اول ($Precision_5$) و فراخوانی در ۵ بردار اول ($Recall_5$) را برای این کاربر به دست آورید.
+    \item معیار بهره‌وری تراکمی تخفیف‌خورده نرمال‌سازی‌شده در سطح ۵ ($NDCG_5$) را برای این لیست با محاسبات گام‌به‌گام محاسبه کنید. (برای تشکیل \lr{IDCG}، ابتدا امتیازهای واقعی اقلام مرتبط را به صورت نزولی مرتب کنید) .
+\end{enumerate}
+
+\item \textbf{کدنویسی کارگاهی: محاسبه ماتریس شباهت متنی فیلم‌ها}
+\\
+با استفاده از کتابخانه \texttt{sklearn} در پایتون، یک اسکریپت ساده بنویسید که توضیحات خلاصه داستان سه فیلم زیر را دریافت کند:
+\begin{enumerate}
+    \item \lr{Inception}: \small{\texttt{&quot;A sci-fi movie about space exploration and time travel.&quot;}} 
+    \item \lr{Titanic}: \small{\texttt{&quot;A romance drama about two people in love.&quot;}}
+    \item \lr{Interstellar}: \small{\texttt{&quot;A science fiction story with time travel and space mission.&quot;}}
+\end{enumerate}
+برنامه شما باید با ابزار \texttt{TfidfVectorizer} بردارهای عددی این سه فیلم را استخراج کرده  و در نهایت، ماتریس شباهت کسینوسی متقابل (\lr{Cosine Similarity Matrix}) بین آن‌ها را محاسبه و در خروجی چاپ کند. (از تنظیمات پیش‌فرض برای \texttt{ngram} استفاده کنید).
+
+\end{enumerate}
+
+\vspace{0.5cm}
+\noindent
+\textbf{تاریخ تحویل:} تا یک روز قبل از آزمون پایان ترم
+
+\end{document}</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../recommender-template/">قالب پروژهٔ سیستم توصیه‌گر کتاب ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

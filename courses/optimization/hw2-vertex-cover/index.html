@@ -1,0 +1,378 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="مدل ILP، رهاسازی LP و مستندات تمرین."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>تمرین ۲: Vertex Cover · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">بهینه‌سازی ترکیبی</a></nav><p class="eyebrow">نوت‌بوک و گزارش</p><h1 class="work-title">تمرین ۲: Vertex Cover</h1><p class="course-lead">مدل ILP، رهاسازی LP و مستندات تمرین.</p><div class="topic-list"><bdi class="topic">Vertex Cover</bdi><bdi class="topic">ILP</bdi><bdi class="topic">LP Relaxation</bdi></div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw2-vertex-cover" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw2-vertex-cover/Q1.ipynb" target="_blank" rel="noopener noreferrer"><bdi>Q1.ipynb</bdi><span class="file-meta">4 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw2-vertex-cover/Q1_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>Q1_notebook.py</bdi><span class="file-meta">3 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw2-vertex-cover/HW2_Q1_Doc.tex" target="_blank" rel="noopener noreferrer"><bdi>HW2_Q1_Doc.tex</bdi><span class="file-meta">10 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw2-vertex-cover/Q2.tex" target="_blank" rel="noopener noreferrer"><bdi>Q2.tex</bdi><span class="file-meta">9 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="source-file" open><summary><bdi>Q1_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw2-vertex-cover/Q1_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Exported notebook code; may contain IPython commands.
+# %%
+#!pip install -i https://mirror-pypi.runflare.com/simple networkx matplotlib pulp
+!pip install networkx matplotlib pulp
+
+# %%
+# Vertex Cover Exercise - Combinatorial Optimization
+import networkx as nx
+import matplotlib.pyplot as plt
+from pulp import *
+
+# ==================== بخش ب و و: ILP و LP Relaxation ====================
+def solve_vertex_cover_ilp(G, relaxation=False):
+    prob = LpProblem(&quot;Vertex_Cover&quot;, LpMinimize)
+    x = {v: LpVariable(f&quot;x_{v}&quot;, cat=&quot;Continuous&quot; if relaxation else &quot;Binary&quot;, lowBound=0, upBound=1)
+         for v in G.nodes()}
+
+    # Objective
+    prob += lpSum(x[v] for v in G.nodes())
+
+    # Constraints
+    for u, v in G.edges():
+        prob += x[u] + x[v] &gt;= 1
+
+    prob.solve(PULP_CBC_CMD(msg=0))
+
+    # تصحیح: شرط rounding برابر با &gt;= 0.5 (پوشش همواره معتبر)
+    cover = [v for v in G.nodes() if value(x[v]) &gt;= 0.5]
+    obj_value = value(prob.objective)
+    return obj_value, cover, {v: value(x[v]) for v in G.nodes()}
+
+# ==================== بخش ج و د: الگوریتم حریصانه ====================
+def greedy_vertex_cover(G):
+    G_copy = G.copy()
+    cover = []
+    while G_copy.edges():
+        u, v = next(iter(G_copy.edges()))
+        cover.extend([u, v])
+        # حذف رأس‌ها و یال‌های incident
+        G_copy.remove_node(u)
+        if v in G_copy:
+            G_copy.remove_node(v)
+    return len(set(cover)), set(cover)
+
+# ==================== نمونه‌های گراف برای تست ====================
+G1 = nx.Graph()
+G1.add_edges_from([(0,1), (1,2), (2,0), (2,3)])
+
+G2 = nx.complete_bipartite_graph(3, 3)
+
+G3 = nx.cycle_graph(5)
+
+graphs = {&quot;G1&quot;: G1, &quot;G2&quot;: G2, &quot;G3&quot;: G3}
+
+print(&quot;نتایج برای نمونه‌ها:\n&quot;)
+
+for name, G in graphs.items():
+    print(f&quot;--- گراف {name} ---&quot;)
+    print(&quot;تعداد رأس:&quot;, G.number_of_nodes(), &quot;تعداد یال:&quot;, G.number_of_edges())
+
+    # ILP
+    ilp_val, ilp_cover, _ = solve_vertex_cover_ilp(G, relaxation=False)
+    print(f&quot;ILP (بهینه): اندازه = {ilp_val}, پوشش = {sorted(ilp_cover)}&quot;)
+
+    # LP Relaxation
+    lp_val, lp_rounded, lp_values = solve_vertex_cover_ilp(G, relaxation=True)
+    print(f&quot;LP Relaxation: مقدار = {lp_val:.2f}&quot;)
+    print(f&quot;   مقادیر fractional: { {v: round(lp_values[v],3) for v in lp_values} }&quot;)
+    print(f&quot;   بعد از rounding ساده (&gt;=0.5): اندازه تقریبی = {len(lp_rounded)}&quot;)
+
+    # Greedy
+    greedy_size, greedy_cover = greedy_vertex_cover(G)
+    print(f&quot;Greedy: اندازه = {greedy_size}, پوشش = {sorted(greedy_cover)}&quot;)
+
+    print(&quot;\n&quot;)
+
+    pos = nx.spring_layout(G)
+    nx.draw(G, pos, with_labels=True, node_color=&#x27;lightblue&#x27;)
+    plt.title(f&quot;Graph {name}&quot;)
+    plt.show()
+
+# %%
+
+</code></pre></details><details class="source-file" ><summary><bdi>HW2_Q1_Doc.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw2-vertex-cover/HW2_Q1_Doc.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{geometry}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{Vazir}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+
+\title{پاسخ تمرین بهینه‌سازی ترکیبیاتی: پوشش رأسی (\en{Vertex Cover})}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{\today}
+
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section*{تعریف مسئله پوشش رأس (\en{Vertex Cover})}
+در یک گراف بدون جهت \( G = (V, E) \)، یک پوشش رأس، زیرمجموعه‌ای از رئوس \( C \subseteq V \) است به طوری که هر یال \( e \in E \) حداقل به یک رأس در \( C \) متصل باشد. هدف، یافتن پوشش رأس با کمترین تعداد رأس است.
+\[
+\min |C| \quad \text{s.t.} \quad \forall (u,v)\in E: \; u\in C \text{ یا } v\in C
+\]
+
+\separator
+
+\section{الف) مدل برنامه‌ریزی عدد صحیح (\en{ILP})}
+برای هر رأس \( v \in V \) یک متغیر دودویی \( x_v \) تعریف می‌کنیم:
+\[
+x_v = \begin{cases}
+1 &amp; \text{اگر رأس \( v \) در پوشش انتخاب شود} \\
+0 &amp; \text{در غیر این صورت}
+\end{cases}
+\]
+
+مدل \en{ILP} به صورت زیر است:
+\begin{align}
+\min \quad &amp; \sum_{v \in V} x_v \label{eq:obj}\\
+\text{s.t.} \quad &amp; x_u + x_v \geq 1 \quad \forall (u,v) \in E \label{eq:cons}\\
+&amp; x_v \in \{0,1\} \quad \forall v \in V \label{eq:binary}
+\end{align}
+
+\separator
+
+\section{ب) اجرای مدل \en{ILP}}
+مدل بالا با استفاده از کتابخانه \en{PuLP} در پایتون و حل‌کننده \en{CBC} پیاده‌سازی شده است. نتایج برای سه گراف نمونه در جدول \ref{tab:ilp} آورده شده است.
+
+\begin{table}[h!]
+\centering
+\caption{نتایج حل \en{ILP} برای گراف‌های نمونه}
+\label{tab:ilp}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{نام گراف} &amp; \textbf{تعداد رأس} &amp; \textbf{تعداد یال} &amp; \textbf{اندازه پوشش بهینه \en{ILP}} \\
+\hline
+\en{G1} &amp; 4 &amp; 4 &amp; 2 \\
+\en{G2} (\en{K}$_{3,3}$) &amp; 6 &amp; 9 &amp; 3 \\
+\en{G3} (چرخه ۵) &amp; 5 &amp; 5 &amp; 3 \\
+\hline
+\end{tabular}
+\end{table}
+
+در گراف \en{G1}، پوشش بهینه شامل رئوس \{0, 2\} است. در \en{G2}، پوشش بهینه شامل \{3,4,5\} (یک طرف دو بخش) و در \en{G3} پوشش بهینه \{1,3,4\} می‌باشد.
+
+\separator
+
+\section{ج) طراحی الگوریتم حریصانه}
+الگوریتم حریصانه ساده‌ای که در اینجا استفاده شده است، در هر مرحله یک یال دلخواه را انتخاب کرده و هر دو رأس آن را به پوشش می‌افزاید. سپس آن رئوس و تمام یال‌های متصل به آنها را از گراف حذف می‌کند. این روند تا زمانی که گراف بدون یال شود ادامه می‌یابد.
+
+\begin{center}
+\fbox{\parbox{0.85\textwidth}{
+\textbf{الگوریتم حریصانه برای پوشش رأس} \\
+1. \( C \gets \emptyset \) \\
+2. \textbf{تا زمانی که} \( E \neq \emptyset \) \textbf{انجام بده:} \\
+\phantom{2.} \hspace{0.5cm} یک یال \( (u,v) \) را به دلخواه انتخاب کن \\
+\phantom{2.} \hspace{0.5cm} \( C \gets C \cup \{u, v\} \) \\
+\phantom{2.} \hspace{0.5cm} همه یال‌های مجاور به \( u \) یا \( v \) را حذف کن \\
+3. \textbf{برگردان} \( C \)
+}}
+\end{center}
+
+این الگوریتم از نظر پیچیدگی زمانی \( O(|E|) \) با پیاده‌سازی مناسب است و ضریب تقریب ۲ را تضمین می‌کند (یعنی اندازه پوشش یافت شده حداکثر دو برابر اندازه بهینه است).
+
+\separator
+\newpage
+
+\section{د) اجرای الگوریتم حریصانه}
+الگوریتم حریصانه روی همان سه گراف نمونه اجرا شده و نتایج در جدول \ref{tab:greedy} نشان داده شده است.
+
+\begin{table}[h!]
+\centering
+\caption{نتایج الگوریتم حریصانه}
+\label{tab:greedy}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{گراف} &amp; \textbf{اندازه پوشش حریصانه} &amp; \textbf{مجموعه پوشش} \\
+\hline
+\en{G1} &amp; 4 &amp; \{0,1,2,3\} \\
+\en{G2} &amp; 6 &amp; \{0,1,2,3,4,5\} \\
+\en{G3} &amp; 4 &amp; \{0,1,2,3\} \\
+\hline
+\end{tabular}
+\end{table}
+
+\separator
+
+\section{ه) مقایسه و تحلیل جواب‌های \en{ILP} و الگوریتم حریصانه}
+جدول \ref{tab:compare} مقایسه نتایج دو روش را نشان می‌دهد.
+
+\begin{table}[h!]
+\centering
+\caption{مقایسه اندازه پوشش بهینه (\en{ILP}) و حریصانه}
+\label{tab:compare}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{گراف} &amp; \textbf{\en{ILP} (بهینه)} &amp; \textbf{\en{Greedy}} &amp; \textbf{نسبت تقریب} \\
+\hline
+\en{G1} &amp; 2 &amp; 4 &amp; 2.0 \\
+\en{G2} &amp; 3 &amp; 6 &amp; 2.0 \\
+\en{G3} &amp; 3 &amp; 4 &amp; 1.33 \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{تحلیل:}
+\begin{itemize}
+\item در گراف \en{G1} (مثلث به اضافه یک یال)، الگوریتم حریصانه بدترین حالت ممکن را نشان می‌دهد و همه رئوس را بر می‌گرداند. علت آن است که در اولین قدم یال (0,1) یا (0,2) انتخاب می‌شود و هر دو رأس حذف می‌شوند، اما رأس ۳ جدا می‌ماند و در گام بعدی یال (2,3) دوباره انتخاب می‌شود که رأس ۳ را هم اضافه می‌کند. در حالی که جواب بهینه با انتخاب \{0,2\} حاصل می‌شد.
+\item در گراف \en{G2} (کامل دو بخشی \( K_{3,3} \))، الگوریتم حریصانه هر بار یک یال از دو بخش انتخاب می‌کند و در نهایت همه ۶ رأس را برمی‌دارد، در حالی که جواب بهینه ۳ رأس از یک بخش است. این مثال نشان می‌دهد که ضریب تقریب ۲ برای این الگوریتم قابل دستیابی است.
+\item در گراف \en{G3} (چرخه ۵ رأس)، جواب حریصانه ۴ و بهینه ۳ است. نسبت تقریب ۱.۳۳ است که بهتر از حد بالای نظری ۲ می‌باشد.
+\end{itemize}
+نتیجه می‌گیریم که الگوریتم حریصانه بسیار سریع است اما تضمین بهینگی ندارد و در بدترین حالت دو برابر بهینه عمل می‌کند.
+
+\separator
+
+\section{و) \en{Relax} کردن مدل (\en{LP Relaxation}) و مقایسه}
+در مدل \en{LP relaxation}، شرط صحیح بودن متغیرها (\( x_v \in \{0,1\} \)) را با محدودیت \( 0 \leq x_v \leq 1 \) جایگزین می‌کنیم. بدین ترتیب مدل به یک برنامه‌ریزی خطی تبدیل می‌شود که می‌تواند جواب‌های کسری داشته باشد.
+\[
+\min \sum_{v \in V} x_v \quad \text{s.t.} \quad x_u+x_v \geq 1, \quad 0 \leq x_v \leq 1
+\]
+
+این مدل یک کران پایین (\en{lower bound}) برای جواب بهینه \en{ILP} فراهم می‌کند. نتایج \en{LP} و گرد کردن ساده با شرط \( x_v \ge 0.5 \) (که همواره یک پوشش معتبر می‌سازد) در جدول \ref{tab:lp} مطابق با خروجی کد ارائه شده است.
+
+\begin{table}[h!]
+\centering
+\caption{نتایج \en{LP relaxation} و \en{rounding} با شرط \( \ge 0.5 \)}
+\label{tab:lp}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{گراف} &amp; \textbf{مقدار \en{LP}} &amp; \textbf{مقادیر کسری \( x_v \)} &amp; \textbf{پوشش \en{rounded}} &amp; \textbf{اندازه \en{rounded}} \\
+\hline
+\en{G1} &amp; 2.00 &amp; همه 0.5 &amp; \{0,1,2,3\} &amp; 4 \\
+\en{G2} &amp; 3.00 &amp; \{0,1,2:0,  3,4,5:1\} &amp; \{3,4,5\} &amp; 3 \\
+\en{G3} &amp; 2.50 &amp; همه 0.5 &amp; \{0,1,2,3,4\} &amp; 5 \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{تحلیل:}
+\begin{itemize}
+\item گرد کردن با آستانه \( \ge 0.5 \) همیشه یک پوشش رأس معتبر می‌دهد؛ زیرا برای هر یال \( (u,v) \) داریم \( x_u + x_v \ge 1 \)، بنابراین دست‌کم یکی از متغیرها بزرگ‌تر یا مساوی 0.5 است و در مجموعه انتخاب می‌شود.
+\item این روش یک الگوریتم ۲-تقریبی است: اندازه پوشش گردشده \( \le 2 \times \text{Opt}_{\text{LP}} \le 2 \times \text{Opt}_{\text{ILP}} \). در مثال‌های \en{G1} و \en{G3}، با وجود کسری بودن جواب \en{LP}، پوشش‌های گردشده به ترتیب اندازه ۴ و ۵ دارند که نسبت به بهینه (۲ و ۳) تقریب‌های ۲ و ۱.۶۷ هستند و همچنان در محدوده‌ی ضمانت ۲ قرار می‌گیرند.
+\item \textbf{\en{Integrality gap}}: شکاف بین مقدار \en{LP} و \en{ILP}. در \en{G3}، \en{ILP}=3 و \en{LP}=2.5، بنابراین \en{gap} برابر \( \frac{3}{2.5}=1.2 \) است. در بدترین حالت، این شکاف برای مسأله پوشش رأس به ۲ نزدیک می‌شود (مانند گراف‌های کامل \( K_n \) که \en{ILP}=n-1 و \en{LP}=n/2). این نشان می‌دهد که \en{LP relaxation} به تنهایی کران پایین خوبی فراهم می‌کند ولی برای رسیدن به جواب صحیح نیاز به گرد کردن دارد.
+\end{itemize}
+
+\separator
+
+\subsection*{نتیجه‌گیری نهایی}
+مدل \en{ILP} جواب دقیق اما با پیچیدگی نمایی می‌دهد. الگوریتم حریصانه سریع و با ضریب تقریب ۲ است. \en{LP relaxation} کران پایین مفیدی می‌دهد و با گرد کردن مناسب می‌توان یک الگوریتم ۲-تقریبی ساخت.
+
+\appendix
+\section{ضمیمه: کد پایتون}
+کد کامل پیاده‌سازی در فایل جداگانه \en{Q1.ipynb} ضمیمه شده است.
+
+\thickseparator
+
+\end{document}</code></pre></details><details class="source-file" ><summary><bdi>Q2.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/optimization/hw2-vertex-cover/Q2.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{Vazir}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{پاسخ تمرین بهینه‌سازی ترکیبیاتی: مسأله تخصیص خطی}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{\today}
+
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{تعریف مسأله تخصیص خطی (\en{Linear Assignment Problem})}
+
+مسأله تخصیص خطی یکی از مشهورترین مسائل بهینه‌سازی ترکیبیاتی است. فرض کنید $n$ کار و $n$ ماشین (یا فرد) داریم. هزینه (یا سود) اختصاص کار $i$ به ماشین $j$ برابر با $c_{ij}$ است. هدف آن است که هر کار دقیقاً به یک ماشین و هر ماشین دقیقاً یک کار اختصاص یابد، به گونه‌ای که مجموع هزینه‌های تخصیص کمینه (یا بیشینه) گردد.
+
+به بیان ریاضی، مجموعه $X$ از تخصیص‌های یک‌به‌یک میان دو مجموعه $I=\{1,\dots,n\}$ و $J=\{1,\dots,n\}$ به صورت جایگشت $\pi$ از $\{1,\dots,n\}$ مدل می‌شود. مسأله عبارت است از:
+\[
+\min_{\pi \in S_n} \sum_{i=1}^{n} c_{i,\pi(i)},
+\]
+که $S_n$ مجموعه همه جایگشت‌های $n$ عنصری است.
+
+\separator
+\newpage
+\section{مدل‌سازی به صورت برنامه‌ریزی عدد صحیح}
+
+برای هر زوج $(i,j)$ متغیر دودویی $x_{ij}$ تعریف می‌کنیم:
+\[
+x_{ij} = \begin{cases}
+1 &amp; \text{اگر کار $i$ به ماشین $j$ اختصاص یابد}\\
+0 &amp; \text{در غیر این صورت}
+\end{cases}
+\]
+
+مدل برنامه‌ریزی عدد صحیح $0$-$1$ به شکل زیر است:
+\begin{align}
+\min \quad &amp; \sum_{i=1}^{n}\sum_{j=1}^{n} c_{ij} x_{ij} \label{eq:obj}\\
+\text{s.t.} \quad &amp; \sum_{j=1}^{n} x_{ij} = 1, \qquad \forall i=1,\dots,n \label{eq:assign1}\\
+&amp; \sum_{i=1}^{n} x_{ij} = 1, \qquad \forall j=1,\dots,n \label{eq:assign2}\\
+&amp; x_{ij} \in \{0,1\}, \qquad \forall i,j \label{eq:binary}
+\end{align}
+محدودیت \eqref{eq:assign1} تضمین می‌کند هر کار دقیقاً یک ماشین دریافت کند و محدودیت \eqref{eq:assign2} تضمین می‌کند هر ماشین دقیقاً یک کار انجام دهد.
+
+\separator
+\newpage
+\section{پیچیدگی: آیا مسأله تخصیص خطی \en{NP-hard} است؟}
+
+خیر، مسأله تخصیص خطی \textbf{\en{NP-hard} نیست} و در زمان چندجمله‌ای قابل حل است. دلایل اصلی به شرح زیر است:
+
+\begin{enumerate}
+\item \textbf{وجود الگوریتم‌های چندجمله‌ای}: مشهورترین الگوریتم، الگوریتم مجارستانی (\en{Hungarian algorithm}) است که این مسأله را در زمان $O(n^3)$ حل می‌کند. همچنین می‌توان آن را به عنوان یک نمونه خاص از مسأله کمترین هزینه جریان (\en{Min-Cost Flow}) با ظرفیت‌های $1$ و $n$ گره مبدأ و $n$ گره مقصد در نظر گرفت که برای آن نیز الگوریتم‌های چندجمله‌ای وجود دارد.
+
+\item \textbf{یکپارچگی (\en{Integrality}) ماتریس قیود}: ماتریس ضرایب قیود \eqref{eq:assign1} و \eqref{eq:assign2} یک ماتریس \textbf{تمام‌اً یک‌پارچه} (\en{Totally Unimodular}) است. یکی از خواص مهم ماتریس‌های تمام‌اً یک‌پارچه آن است که رأس‌های چندوجهی $\{x \ge 0 : Ax = b\}$ برای بردار صحیح $b$، دارای مختصات صحیح هستند. در نتیجه، \textbf{برنامه‌ریزی خطی حاصل از relaxing} کردن شرط صحیح بودن متغیرها ($0 \le x_{ij} \le 1$) یک جواب بهینه با مقادیر $0$ یا $1$ تولید می‌کند. بدین ترتیب، مسأله تخصیص خطی را می‌توان با حل یک برنامه‌ریزی خطی (که در زمان چندجمله‌ای قابل حل است) دقیقاً حل کرد، بدون این‌که نیاز به حل یک \en{ILP} عمومی باشد.
+
+\item \textbf{جایگاه در کلاس $P$}: وجود الگوریتم چندجمله‌ای (چه ترکیبیاتی مانند مجارستانی و چه مبتنی بر \en{LP}) ثابت می‌کند که مسأله تخصیص خطی به کلاس پیچیدگی $P$ تعلق دارد و نمی‌تواند \en{NP-hard} باشد، مگر آن‌که $P = NP$.
+\end{enumerate}
+
+بنابراین، مسأله تخصیص یک مثال برجسته از مسائلی است که \en{IP} آن با وجود متغیرهای دودویی، ذاتاً «آسان» است و سخت‌ی \en{NP-hardness} عمومی برنامه‌ریزی عدد صحیح را به ارث نمی‌برد.
+
+\separator
+\newpage
+\section{پرسش تحلیلی: رابطه یک نمونه حل‌شدنی چندجمله‌ای با \en{NP-hardness} عمومی}
+
+\textbf{اگر یک مسأله \en{integer programming} داشته باشیم که جوابش در زمان چندجمله‌ای به‌دست می‌آید، آیا می‌توان نتیجه گرفت که برنامه‌ریزی عدد صحیح \en{NP-hard} نیست؟}
+
+پاسخ: \textbf{خیر، این نتیجه‌گیری نادرست است.} 
+
+برنامه‌ریزی عدد صحیح عمومی ($IP$) یک چارچوب مدل‌سازی بسیار گسترده است. \en{NP-hard} بودن آن به این معنا است که \textbf{بدترین حالت} مسأله (یعنی وجود حداقل یک خانواده از نمونه‌ها) نیازمند زمان نمایی است، مگر $P=NP$. این خاصیت با ارائه یک نمونه خاص که بتوان آن را در زمان چندجمله‌ای حل کرد، نقض نمی‌شود. به عبارت دیگر:
+
+\begin{itemize}
+\item \textbf{\en{NP-hardness} یک ویژگی کل کلاس مسائل است، نه یک نمونه خاص.} یک مسأله \en{NP-hard} می‌تواند زیرمسائل ساده (قابل حل در $P$) فراوانی داشته باشد. برای مثال:
+\begin{itemize}
+\item مسأله کوله‌پشتی صفر و یک \en{NP-hard} است، اما اگر وزن همه اشیا یکسان باشد با یک مرتب‌سازی ساده و انتخاب حریصانه حل می‌شود.
+\item مسأله پوشش رأسی \en{NP-hard} است، اما برای گراف‌های دوبخشی در زمان چندجمله‌ای (از طریق تطابق ماکزیمم) حل می‌شود.
+\item مسأله تخصیص خطی که در بالا بررسی شد خود یک زیرمسأله ساده از \en{IP} است که ماتریس ضرایب آن ساختار ویژه‌ای دارد.
+\end{itemize}
+\item \textbf{کلاس $P$ در برابر $NP$}: اگر برای یک \en{IP} مشخص الگوریتم چندجمله‌ای یافت شود، صرفاً نشان می‌دهد که آن محدودیت خاص از $IP$ در کلاس $P$ جای دارد، نه آن‌که $IP$ عمومی در $P$ باشد.
+\item برای رد \en{NP-hard} بودن کل $IP$، باید ثابت کرد که \textbf{هر} نمونه از برنامه‌ریزی عدد صحیح (از جمله مسائل \en{NP-complete} مانند \en{SAT}, \en{3-SAT}, رنگ‌آمیزی گراف و ... که همگی قابل فرمول‌بندی به صورت $IP$ هستند) در زمان چندجمله‌ای حل می‌شود. این امری است که با شناخت کنونی علوم کامپیوتر معادل با اثبات $P=NP$ خواهد بود.
+\end{itemize}
+
+در نتیجه، ارائه یک الگوریتم سریع برای یک مدل $IP$ مشخص، کوچک‌ترین خدشه‌ای به \en{NP-hardness} کلی برنامه‌ریزی عدد صحیح وارد نمی‌کند. \en{NP-hardness} بر اساس وجود \textbf{حداقل یک} نمونه سخت تعریف می‌شود، و پیدا شدن نمونه‌های آسان تأثیری در آن ندارد.
+
+\thickseparator
+
+\end{document}</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw1-assignment/">تمرین ۱: مسئلهٔ تخصیص ←</a><a href="../hw3-local-search/">تمرین ۳: Local Search برای TSP و Graph Partitioning ←</a><a href="../hw4-tsp/">تمرین ۴: مقایسهٔ 2-opt و 3-opt ←</a><a href="../hw4-msls/">تمرین ۴: Multi-Start Local Search ←</a><a href="../hw4-cplex/">تمرین ۴: روش‌های محلی و مقایسه با CPLEX ←</a><a href="../hw5-neighborhoods/">تمرین ۵: تحلیل همسایگی N2 و N3 ←</a><a href="../hw6-weighted-vertex-cover/">تمرین ۶: Weighted Vertex Cover ←</a><a href="../cohesive-bin-packing/">پروژهٔ پایانی: Cohesive Bin Packing ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

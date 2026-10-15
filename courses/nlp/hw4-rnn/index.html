@@ -1,0 +1,947 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="تعریف فضاها و ماتریس‌ها و محاسبهٔ قدم‌به‌قدم یک شبکهٔ بازگشتی."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>تمرین ۴: طراحی RNN · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">پردازش زبان طبیعی</a></nav><p class="eyebrow">نوت‌بوک</p><h1 class="work-title">تمرین ۴: طراحی RNN</h1><p class="course-lead">تعریف فضاها و ماتریس‌ها و محاسبهٔ قدم‌به‌قدم یک شبکهٔ بازگشتی.</p><div class="topic-list"><bdi class="topic">RNN</bdi><bdi class="topic">NumPy</bdi></div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw4-rnn" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw4-rnn/exercise_1.ipynb" target="_blank" rel="noopener noreferrer"><bdi>exercise_1.ipynb</bdi><span class="file-meta">60 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw4-rnn/exercise_1_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>exercise_1_notebook.py</bdi><span class="file-meta">35 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="notebook-notes"><summary>بخشی از توضیحات نوت‌بوک</summary><pre class="notes-preview">
+
+# پاسخ تمرین‌های ۱ و ۲ — بخش اول: طراحی RNN
+
+---
+
+## تمرین ۱: تعریف فضاهای برداری و بردارها
+
+**۱. فضای ورودی ($x_t$):**
+بردارهای ورودی مقادیر حقیقی دلخواهی دارند (بدون محدودیت بازه). سه بردار ۲ بعدی غیرصفر:
+
+
+
+- $x_1 = [1.5,\ 2.0]$
+- $x_2 = [-1.0,\ 1.5]$
+- $x_3 = [2.0,\ -0.5]$
+
+
+
+**۲. فضای وضعیت پنهان ($h_t$):**
+چون خروجی تابع $\tanh$ است، مقادیر در بازه $[-1,\ 1]$ قرار دارند:
+
+
+
+
+- $h = [0.8,\ -0.6]$
+
+
+
+**۳. فضای خروجی ($y_t$):**
+خروجی $\mathrm{softmax}$ است، پس مقادیر نامنفی و مجموعشان ۱ است:
+
+
+
+- $y = [0.7,\ 0.3]$
+
+
+
+
+
+
+---
+
+## تمرین ۲: طراحی فضای میانی $z_t$ و ماتریس‌های مترجم
+
+### فرمول‌ها
+
+
+
+
+- $z_t = (W_{xz} \cdot x_t) + (W_{hz} \cdot h_{t-1})$
+- $h_t = \tanh(z_t)$
+
+
+
+### ماتریس‌های مترجم ۲×۲ غیرصفر و متمایز
+
+
+
+- $W_{xz} = \begin{bmatrix} 0.5 &amp; 1.2 \\ -0.8 &amp; 0.4 \end{bmatrix}$
+- $W_{hz} = \begin{bmatrix} 0.9 &amp; -0.3 \\ 0.6 &amp; 0.7 \end{bmatrix}$
+
+
+
+### مسیرهای جهت‌دار
+
+- از $x_t$ به $z_t$ با نام $W_{xz}$
+- از $h_{t-1}$ به $z_t$ با نام $W_{hz}$
+- از $z_t$ به $h_t$ با نام $\tanh$
+
+</pre></details><details class="source-file" open><summary><bdi>exercise_1_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw4-rnn/exercise_1_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Exported notebook code; may contain IPython commands.
+# %%
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+
+# تعریف بردارها
+x1 = np.array([1.5, 2.0])
+x2 = np.array([-1.0, 1.5])
+x3 = np.array([2.0, -0.5])
+h = np.array([0.8, -0.6])
+y = np.array([0.7, 0.3])
+
+fig, axs = plt.subplots(1, 3, figsize=(18, 6))
+
+# --- فضای ورودی ---
+axs[0].axhline(0, color=&#x27;black&#x27;, linewidth=1, alpha=0.5)
+axs[0].axvline(0, color=&#x27;black&#x27;, linewidth=1, alpha=0.5)
+axs[0].quiver(0, 0, x1[0], x1[1], angles=&#x27;xy&#x27;, scale_units=&#x27;xy&#x27;, scale=1,
+              color=&#x27;#1f77b4&#x27;, width=0.015, label=r&#x27;$x_1 = [1.5,\ 2.0]$&#x27;)
+axs[0].quiver(0, 0, x2[0], x2[1], angles=&#x27;xy&#x27;, scale_units=&#x27;xy&#x27;, scale=1,
+              color=&#x27;#ff7f0e&#x27;, width=0.015, label=r&#x27;$x_2 = [-1.0,\ 1.5]$&#x27;)
+axs[0].quiver(0, 0, x3[0], x3[1], angles=&#x27;xy&#x27;, scale_units=&#x27;xy&#x27;, scale=1,
+              color=&#x27;#2ca02c&#x27;, width=0.015, label=r&#x27;$x_3 = [2.0,\ -0.5]$&#x27;)
+axs[0].set_xlim(-2.5, 2.5)
+axs[0].set_ylim(-2.5, 2.5)
+axs[0].set_aspect(&#x27;equal&#x27;)
+axs[0].set_title(r&#x27;Input Space ($x_t$)&#x27; + &#x27;\nNo Bounds&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
+axs[0].set_xlabel(r&#x27;$x^{(1)}$&#x27;)
+axs[0].set_ylabel(r&#x27;$x^{(2)}$&#x27;)
+axs[0].legend(loc=&#x27;upper left&#x27;)
+axs[0].grid(True, linestyle=&#x27;--&#x27;, alpha=0.6)
+
+# --- فضای وضعیت پنهان ---
+axs[1].axhline(0, color=&#x27;black&#x27;, linewidth=1, alpha=0.5)
+axs[1].axvline(0, color=&#x27;black&#x27;, linewidth=1, alpha=0.5)
+axs[1].quiver(0, 0, h[0], h[1], angles=&#x27;xy&#x27;, scale_units=&#x27;xy&#x27;, scale=1,
+              color=&#x27;#9467bd&#x27;, width=0.015, label=r&#x27;$h = [0.8,\ -0.6]$&#x27;)
+rect = patches.Rectangle((-1, -1), 2, 2, linewidth=1.5, edgecolor=&#x27;red&#x27;,
+                         facecolor=&#x27;none&#x27;, linestyle=&#x27;--&#x27;,
+                         label=r&#x27;$\tanh$ Bounds $[-1,\ 1]$&#x27;)
+axs[1].add_patch(rect)
+axs[1].set_xlim(-1.5, 1.5)
+axs[1].set_ylim(-1.5, 1.5)
+axs[1].set_aspect(&#x27;equal&#x27;)
+axs[1].set_title(r&#x27;Hidden State Space ($h_t$)&#x27; + &#x27;\n&#x27; + r&#x27;Bounded by $\tanh$ in $[-1,\ 1]$&#x27;,
+                 fontsize=14, fontweight=&#x27;bold&#x27;)
+axs[1].set_xlabel(r&#x27;$h^{(1)}$&#x27;)
+axs[1].set_ylabel(r&#x27;$h^{(2)}$&#x27;)
+axs[1].legend(loc=&#x27;upper left&#x27;)
+axs[1].grid(True, linestyle=&#x27;--&#x27;, alpha=0.6)
+
+# --- فضای خروجی ---
+axs[2].axhline(0, color=&#x27;black&#x27;, linewidth=1, alpha=0.5)
+axs[2].axvline(0, color=&#x27;black&#x27;, linewidth=1, alpha=0.5)
+axs[2].quiver(0, 0, y[0], y[1], angles=&#x27;xy&#x27;, scale_units=&#x27;xy&#x27;, scale=1,
+              color=&#x27;#d62728&#x27;, width=0.015, label=r&#x27;$y = [0.7,\ 0.3]$&#x27;)
+prob_line_x = np.linspace(0, 1, 100)
+axs[2].plot(prob_line_x, 1 - prob_line_x, color=&#x27;black&#x27;, linestyle=&#x27;--&#x27;,
+            alpha=0.7, label=r&#x27;$y^{(1)} + y^{(2)} = 1$&#x27;)
+axs[2].set_xlim(-0.2, 1.2)
+axs[2].set_ylim(-0.2, 1.2)
+axs[2].set_aspect(&#x27;equal&#x27;)
+axs[2].set_title(r&#x27;Output Space ($y_t$)&#x27; + &#x27;\nSoftmax Probabilities&#x27;,
+                 fontsize=14, fontweight=&#x27;bold&#x27;)
+axs[2].set_xlabel(r&#x27;$y^{(1)}$&#x27;)
+axs[2].set_ylabel(r&#x27;$y^{(2)}$&#x27;)
+axs[2].legend(loc=&#x27;upper right&#x27;)
+axs[2].grid(True, linestyle=&#x27;--&#x27;, alpha=0.6)
+
+plt.tight_layout()
+plt.show()
+
+# %%
+# رسم گراف محاسباتی تمرین ۲
+fig, ax = plt.subplots(figsize=(12, 6))
+
+bbox_x = dict(boxstyle=&#x27;round,pad=1&#x27;, facecolor=&#x27;#1f77b4&#x27;, alpha=0.25)
+bbox_h_prev = dict(boxstyle=&#x27;round,pad=1&#x27;, facecolor=&#x27;#9467bd&#x27;, alpha=0.25)
+bbox_z = dict(boxstyle=&#x27;round,pad=1&#x27;, facecolor=&#x27;#2ca02c&#x27;, alpha=0.25)
+bbox_h = dict(boxstyle=&#x27;round,pad=1&#x27;, facecolor=&#x27;#d62728&#x27;, alpha=0.25)
+
+ax.text(1.5, 4.2, &#x27;Input Space\n$x_t$&#x27;,
+        bbox=bbox_x, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+ax.text(1.5, 1.2, &#x27;Previous Hidden\n$h_{t-1}$&#x27;,
+        bbox=bbox_h_prev, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+ax.text(6.0, 2.7, &#x27;Pre-activation\n$z_t$\n$z_t = W_{xz}x_t + W_{hz}h_{t-1}$&#x27;,
+        bbox=bbox_z, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+ax.text(10.5, 2.7, &#x27;New Hidden\n$h_t$\n&#x27; + r&#x27;$h_t = \tanh(z_t)$&#x27;,
+        bbox=bbox_h, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+
+# فلش از x_t به z_t
+ax.annotate(&#x27;&#x27;, xy=(4.2, 3.2), xytext=(2.7, 4.2),
+            arrowprops=dict(arrowstyle=&#x27;-&gt;&#x27;, lw=2.5, color=&#x27;#1f77b4&#x27;))
+ax.text(3.3, 3.9, r&#x27;$W_{xz}$&#x27;, fontsize=15, color=&#x27;blue&#x27;, fontweight=&#x27;bold&#x27;, ha=&#x27;center&#x27;)
+
+# فلش از h_{t-1} به z_t
+ax.annotate(&#x27;&#x27;, xy=(4.2, 2.2), xytext=(2.7, 1.2),
+            arrowprops=dict(arrowstyle=&#x27;-&gt;&#x27;, lw=2.5, color=&#x27;#9467bd&#x27;))
+ax.text(3.3, 1.4, r&#x27;$W_{hz}$&#x27;, fontsize=15, color=&#x27;purple&#x27;, fontweight=&#x27;bold&#x27;, ha=&#x27;center&#x27;)
+
+# فلش از z_t به h_t
+ax.annotate(&#x27;&#x27;, xy=(8.7, 2.7), xytext=(7.8, 2.7),
+            arrowprops=dict(arrowstyle=&#x27;-&gt;&#x27;, lw=2.5, color=&#x27;#d62728&#x27;))
+ax.text(8.25, 3.0, r&#x27;$\tanh$&#x27;, fontsize=15, color=&#x27;red&#x27;, fontweight=&#x27;bold&#x27;, ha=&#x27;center&#x27;)
+
+ax.set_xlim(0, 12)
+ax.set_ylim(0, 5.5)
+ax.axis(&#x27;off&#x27;)
+plt.title(&#x27;RNN Computational Graph (Exercise 2)&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;, pad=20)
+plt.tight_layout()
+plt.show()
+
+# %%
+W_xz = np.array([[0.5, 1.2],
+                 [-0.8, 0.4]])
+
+W_hz = np.array([[0.9, -0.3],
+                 [0.6, 0.7]])
+
+x_sample = x1  # بردار x1
+h_prev = np.array([0.0, 0.0])  # h0
+
+z_t = W_xz @ x_sample + W_hz @ h_prev
+h_1 = np.tanh(z_t)
+
+print(f&#x27;W_xz =\n{W_xz}&#x27;)
+print(f&#x27;\nW_hz =\n{W_hz}&#x27;)
+print(f&#x27;\nx_1 = {x_sample}&#x27;)
+print(f&#x27;h_0 = {h_prev}&#x27;)
+print(&#x27;-&#x27; * 40)
+print(f&#x27;z_t = W_xz @ x_1 + W_hz @ h_0 = {z_t}&#x27;)
+print(f&#x27;h_1 = tanh(z_t) = {h_1}&#x27;)
+
+# %%
+# رسم گراف محاسباتی تمرین ۳ (اضافه شدن مسیر h_t -&gt; y_t)
+fig, ax = plt.subplots(figsize=(14, 6))
+
+bbox_x = dict(boxstyle=&#x27;round,pad=1&#x27;, facecolor=&#x27;#1f77b4&#x27;, alpha=0.25)
+bbox_h_prev = dict(boxstyle=&#x27;round,pad=1&#x27;, facecolor=&#x27;#9467bd&#x27;, alpha=0.25)
+bbox_z = dict(boxstyle=&#x27;round,pad=1&#x27;, facecolor=&#x27;#2ca02c&#x27;, alpha=0.25)
+bbox_h = dict(boxstyle=&#x27;round,pad=1&#x27;, facecolor=&#x27;#d62728&#x27;, alpha=0.25)
+bbox_y = dict(boxstyle=&#x27;round,pad=1&#x27;, facecolor=&#x27;#ff7f0e&#x27;, alpha=0.25)
+
+ax.text(1.5, 4.2, &#x27;Input Space\n$x_t$&#x27;,
+        bbox=bbox_x, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+ax.text(1.5, 1.2, &#x27;Previous Hidden\n$h_{t-1}$&#x27;,
+        bbox=bbox_h_prev, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+ax.text(6.0, 2.7, &#x27;Pre-activation\n$z_t$\n$z_t = W_{xz}x_t + W_{hz}h_{t-1}$&#x27;,
+        bbox=bbox_z, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+ax.text(10.0, 2.7, &#x27;New Hidden\n$h_t$\n&#x27; + r&#x27;$h_t = \tanh(z_t)$&#x27;,
+        bbox=bbox_h, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+ax.text(13.5, 2.7, &#x27;Output\n$y_t$\n&#x27; + r&#x27;$y_t = \mathrm{softmax}(W_{hy} h_t)$&#x27;,
+        bbox=bbox_y, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+
+# فلش از x_t به z_t
+ax.annotate(&#x27;&#x27;, xy=(4.2, 3.2), xytext=(2.7, 4.2),
+            arrowprops=dict(arrowstyle=&#x27;-&gt;&#x27;, lw=2.5, color=&#x27;#1f77b4&#x27;))
+ax.text(3.3, 3.9, r&#x27;$W_{xz}$&#x27;, fontsize=14, color=&#x27;blue&#x27;, fontweight=&#x27;bold&#x27;, ha=&#x27;center&#x27;)
+
+# فلش از h_{t-1} به z_t
+ax.annotate(&#x27;&#x27;, xy=(4.2, 2.2), xytext=(2.7, 1.2),
+            arrowprops=dict(arrowstyle=&#x27;-&gt;&#x27;, lw=2.5, color=&#x27;#9467bd&#x27;))
+ax.text(3.3, 1.4, r&#x27;$W_{hz}$&#x27;, fontsize=14, color=&#x27;purple&#x27;, fontweight=&#x27;bold&#x27;, ha=&#x27;center&#x27;)
+
+# فلش از z_t به h_t
+ax.annotate(&#x27;&#x27;, xy=(8.2, 2.7), xytext=(7.8, 2.7),
+            arrowprops=dict(arrowstyle=&#x27;-&gt;&#x27;, lw=2.5, color=&#x27;#d62728&#x27;))
+ax.text(8.0, 3.2, r&#x27;$\tanh$&#x27;, fontsize=14, color=&#x27;red&#x27;, fontweight=&#x27;bold&#x27;, ha=&#x27;center&#x27;)
+
+# فلش از h_t به y_t (تمرین ۳)
+ax.annotate(&#x27;&#x27;, xy=(12.0, 2.7), xytext=(11.5, 2.7),
+            arrowprops=dict(arrowstyle=&#x27;-&gt;&#x27;, lw=2.5, color=&#x27;#ff7f0e&#x27;))
+ax.text(11.75, 3.2, r&#x27;$\mathrm{softmax}(W_{hy} \cdot)$&#x27;, fontsize=12, color=&#x27;#ff7f0e&#x27;, fontweight=&#x27;bold&#x27;, ha=&#x27;center&#x27;)
+
+ax.set_xlim(0, 15)
+ax.set_ylim(0, 5.5)
+ax.axis(&#x27;off&#x27;)
+plt.title(&#x27;RNN Computational Graph (Exercises 2 &amp; 3)&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;, pad=20)
+plt.tight_layout()
+plt.show()
+
+# %%
+# تعریف ماتریس W_hy
+W_hy = np.array([[1.0, 0.3],
+                 [-0.5, 0.8]])
+
+# تابع softmax
+def softmax(x):
+    e_x = np.exp(x - np.max(x))  # برای پایداری عددی
+    return e_x / e_x.sum()
+
+# محاسبه خروجی y_1
+logits_1 = W_hy @ h_1
+y_1 = softmax(logits_1)
+
+print(f&#x27;W_hy =\n{W_hy}&#x27;)
+print(f&#x27;\nh_1 = {h_1}&#x27;)
+print(&#x27;-&#x27; * 40)
+print(f&#x27;W_hy @ h_1 = {logits_1}&#x27;)
+print(f&#x27;y_1 = softmax(W_hy @ h_1) = {y_1}&#x27;)
+print(f&#x27;\nمجموع y_1 = {y_1.sum():.6f}  (باید ۱ باشد)&#x27;)
+
+# %%
+# رسم گراف محاسباتی کامل RNN (تمرین ۴) — فرمول‌ها درون فضاها
+fig, ax = plt.subplots(figsize=(14, 6))
+
+bbox_x = dict(boxstyle=&#x27;round,pad=1&#x27;, facecolor=&#x27;#1f77b4&#x27;, alpha=0.25)
+bbox_h_prev = dict(boxstyle=&#x27;round,pad=1&#x27;, facecolor=&#x27;#9467bd&#x27;, alpha=0.25)
+bbox_z = dict(boxstyle=&#x27;round,pad=1&#x27;, facecolor=&#x27;#2ca02c&#x27;, alpha=0.25)
+bbox_h = dict(boxstyle=&#x27;round,pad=1&#x27;, facecolor=&#x27;#d62728&#x27;, alpha=0.25)
+bbox_y = dict(boxstyle=&#x27;round,pad=1&#x27;, facecolor=&#x27;#ff7f0e&#x27;, alpha=0.25)
+
+ax.text(1.5, 4.2, &#x27;$x_t$&#x27;,
+        bbox=bbox_x, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
+ax.text(1.5, 1.2, &#x27;$h_{t-1}$&#x27;,
+        bbox=bbox_h_prev, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
+ax.text(6.0, 2.7, &#x27;$z_t$\n\n$z_t = W_{xz} \\cdot x_t + W_{hz} \\cdot h_{t-1}$&#x27;,
+        bbox=bbox_z, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+ax.text(10.0, 2.7, &#x27;$h_t$\n\n$h_t = \\tanh(z_t)$&#x27;,
+        bbox=bbox_h, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+ax.text(13.5, 2.7, &#x27;$y_t$\n\n$y_t = \\mathrm{softmax}(W_{hy} \\cdot h_t)$&#x27;,
+        bbox=bbox_y, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+
+# فلش از x_t به z_t
+ax.annotate(&#x27;&#x27;, xy=(4.2, 3.2), xytext=(2.5, 4.2),
+            arrowprops=dict(arrowstyle=&#x27;-&gt;&#x27;, lw=2.5, color=&#x27;#1f77b4&#x27;))
+ax.text(3.2, 3.9, r&#x27;$W_{xz}$&#x27;, fontsize=14, color=&#x27;blue&#x27;, fontweight=&#x27;bold&#x27;, ha=&#x27;center&#x27;)
+
+# فلش از h_{t-1} به z_t
+ax.annotate(&#x27;&#x27;, xy=(4.2, 2.2), xytext=(2.5, 1.2),
+            arrowprops=dict(arrowstyle=&#x27;-&gt;&#x27;, lw=2.5, color=&#x27;#9467bd&#x27;))
+ax.text(3.2, 1.4, r&#x27;$W_{hz}$&#x27;, fontsize=14, color=&#x27;purple&#x27;, fontweight=&#x27;bold&#x27;, ha=&#x27;center&#x27;)
+
+# فلش از z_t به h_t
+ax.annotate(&#x27;&#x27;, xy=(8.3, 2.7), xytext=(7.8, 2.7),
+            arrowprops=dict(arrowstyle=&#x27;-&gt;&#x27;, lw=2.5, color=&#x27;#d62728&#x27;))
+ax.text(8.05, 3.3, r&#x27;$\tanh$&#x27;, fontsize=14, color=&#x27;red&#x27;, fontweight=&#x27;bold&#x27;, ha=&#x27;center&#x27;)
+
+# فلش از h_t به y_t
+ax.annotate(&#x27;&#x27;, xy=(12.0, 2.7), xytext=(11.5, 2.7),
+            arrowprops=dict(arrowstyle=&#x27;-&gt;&#x27;, lw=2.5, color=&#x27;#ff7f0e&#x27;))
+ax.text(11.75, 3.3, r&#x27;$W_{hy}$&#x27;, fontsize=14, color=&#x27;#ff7f0e&#x27;, fontweight=&#x27;bold&#x27;, ha=&#x27;center&#x27;)
+
+ax.set_xlim(0, 15)
+ax.set_ylim(0, 5.5)
+ax.axis(&#x27;off&#x27;)
+plt.title(&#x27;RNN Architecture with Formulas (Exercise 4)&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;, pad=20)
+plt.tight_layout()
+plt.show()
+
+# %%
+# تمرین ۵: پردازش مرحله‌به‌مرحله سه بردار ورودی
+
+# بردارهای ورودی (از تمرین ۱)
+inputs = [x1, x2, x3]
+
+# وضعیت پنهان اولیه
+h_prev = np.array([0.0, 0.0])
+
+print(&#x27;=&#x27; * 50)
+print(&#x27;پردازش مرحله‌به‌مرحله RNN&#x27;)
+print(&#x27;=&#x27; * 50)
+print(f&#x27;h_0 = {h_prev}&#x27;)
+print()
+
+# پردازش هر مرحله
+hidden_states = [h_prev]
+for t, x_t in enumerate(inputs, 1):
+    z_t = W_xz @ x_t + W_hz @ h_prev
+    h_t = np.tanh(z_t)
+    hidden_states.append(h_t)
+    
+    print(f&#x27;--- مرحله {t} ---&#x27;)
+    print(f&#x27;x_{t} = {x_t}&#x27;)
+    print(f&#x27;z_{t} = W_xz @ x_{t} + W_hz @ h_{t-1} = {z_t}&#x27;)
+    print(f&#x27;h_{t} = tanh(z_{t}) = {h_t}&#x27;)
+    print()
+    
+    h_prev = h_t
+
+# محاسبه خروجی نهایی y_3
+h_3 = hidden_states[3]
+logits_3 = W_hy @ h_3
+y_3 = softmax(logits_3)
+
+print(&#x27;--- خروجی نهایی ---&#x27;)
+print(f&#x27;W_hy @ h_3 = {logits_3}&#x27;)
+print(f&#x27;y_3 = softmax(W_hy @ h_3) = {y_3}&#x27;)
+print(f&#x27;مجموع y_3 = {y_3.sum():.6f}&#x27;)
+
+# %%
+# تمرین ۶: رسم فضاهای LSTM (بدون اتصالات)
+
+# بردارهای جدید برای بخش LSTM
+lstm_h_prev = np.array([0.5, -0.3])
+lstm_c_prev = np.array([-0.2, 0.9])
+lstm_x1 = np.array([1.0, 0.5])
+lstm_x2 = np.array([-0.7, 1.2])
+lstm_x3 = np.array([0.3, -1.0])
+
+fig, axs = plt.subplots(1, 5, figsize=(22, 5))
+
+spaces = [
+    (axs[0], r&#x27;$x_t$&#x27;, [lstm_x1, lstm_x2, lstm_x3],
+     [r&#x27;$x_1=[1.0,\ 0.5]$&#x27;, r&#x27;$x_2=[-0.7,\ 1.2]$&#x27;, r&#x27;$x_3=[0.3,\ -1.0]$&#x27;],
+     [&#x27;#1f77b4&#x27;, &#x27;#ff7f0e&#x27;, &#x27;#2ca02c&#x27;], (-1.5, 1.5)),
+    (axs[1], r&#x27;$h_{t-1}$&#x27;, [lstm_h_prev],
+     [r&#x27;$h_{t-1}=[0.5,\ -0.3]$&#x27;], [&#x27;#9467bd&#x27;], (-1.0, 1.0)),
+    (axs[2], r&#x27;$c_{t-1}$&#x27;, [lstm_c_prev],
+     [r&#x27;$c_{t-1}=[-0.2,\ 0.9]$&#x27;], [&#x27;#e377c2&#x27;], (-1.5, 1.5)),
+    (axs[3], r&#x27;$z_t$&#x27;, [], [], [], (-1.5, 1.5)),
+    (axs[4], r&#x27;$y_t$&#x27;, [], [], [], (-0.2, 1.2)),
+]
+
+for ax, title, vecs, labels, colors, lims in spaces:
+    ax.axhline(0, color=&#x27;black&#x27;, linewidth=1, alpha=0.5)
+    ax.axvline(0, color=&#x27;black&#x27;, linewidth=1, alpha=0.5)
+    for v, lbl, c in zip(vecs, labels, colors):
+        ax.quiver(0, 0, v[0], v[1], angles=&#x27;xy&#x27;, scale_units=&#x27;xy&#x27;, scale=1,
+                  color=c, width=0.02, label=lbl)
+    ax.set_xlim(*lims)
+    ax.set_ylim(*lims)
+    ax.set_aspect(&#x27;equal&#x27;)
+    ax.set_title(title, fontsize=14, fontweight=&#x27;bold&#x27;)
+    ax.grid(True, linestyle=&#x27;--&#x27;, alpha=0.6)
+    if vecs:
+        ax.legend(loc=&#x27;best&#x27;, fontsize=9)
+
+plt.suptitle(&#x27;LSTM Vector Spaces (Exercise 6) — No Connections Yet&#x27;,
+             fontsize=16, fontweight=&#x27;bold&#x27;, y=1.02)
+plt.tight_layout()
+plt.show()
+
+# %%
+# تمرین ۸: رسم تمام فضاها — شامل فضاهای قبلی (z_t, y_t) و افزودن f و i
+fig, ax = plt.subplots(figsize=(15, 8))
+
+bbox_x = dict(boxstyle=&#x27;round,pad=0.7&#x27;, facecolor=&#x27;#1f77b4&#x27;, alpha=0.25)
+bbox_h_prev = dict(boxstyle=&#x27;round,pad=0.7&#x27;, facecolor=&#x27;#9467bd&#x27;, alpha=0.25)
+bbox_c_prev = dict(boxstyle=&#x27;round,pad=0.7&#x27;, facecolor=&#x27;#e377c2&#x27;, alpha=0.25)
+bbox_z = dict(boxstyle=&#x27;round,pad=0.7&#x27;, facecolor=&#x27;#2ca02c&#x27;, alpha=0.25)
+bbox_f = dict(boxstyle=&#x27;round,pad=0.7&#x27;, facecolor=&#x27;#d62728&#x27;, alpha=0.25)
+bbox_i = dict(boxstyle=&#x27;round,pad=0.7&#x27;, facecolor=&#x27;#ff7f0e&#x27;, alpha=0.25)
+bbox_y = dict(boxstyle=&#x27;round,pad=0.7&#x27;, facecolor=&#x27;#bcbd22&#x27;, alpha=0.25)
+
+# Inputs (left)
+ax.text(1.5, 6.5, &#x27;$x_t$&#x27;, bbox=bbox_x, ha=&#x27;center&#x27;, va=&#x27;center&#x27;,
+        fontsize=14, fontweight=&#x27;bold&#x27;)
+ax.text(1.5, 4.0, &#x27;$h_{t-1}$&#x27;, bbox=bbox_h_prev, ha=&#x27;center&#x27;, va=&#x27;center&#x27;,
+        fontsize=14, fontweight=&#x27;bold&#x27;)
+ax.text(1.5, 1.5, &#x27;$c_{t-1}$&#x27;, bbox=bbox_c_prev, ha=&#x27;center&#x27;, va=&#x27;center&#x27;,
+        fontsize=14, fontweight=&#x27;bold&#x27;)
+
+# Existing intermediate spaces from RNN section
+ax.text(7, 6.5, &#x27;$z_t$\n(Pre-activation\nFeature)&#x27;,
+        bbox=bbox_z, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+
+# NEW spaces added in Exercise 8
+ax.text(7, 4.0, &#x27;$f$\n(Forget Gate)\nNEW&#x27;,
+        bbox=bbox_f, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+ax.text(7, 1.5, &#x27;$i$\n(Input Gate)\nNEW&#x27;,
+        bbox=bbox_i, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+
+# Existing output space (was present from Ex 1-5)
+ax.text(12, 4.0, &#x27;$y_t$\n(Output)&#x27;,
+        bbox=bbox_y, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+
+# Highlight new boxes with thick frame
+for (cx, cy) in [(7, 4.0), (7, 1.5)]:
+    rect = patches.Rectangle((cx-1.05, cy-0.7), 2.1, 1.4, linewidth=2.5,
+                             edgecolor=&#x27;red&#x27;, facecolor=&#x27;none&#x27;, linestyle=&#x27;-&#x27;,
+                             zorder=5)
+    ax.add_patch(rect)
+
+ax.text(7, 7.7, &#x27;Pre-existing spaces&#x27;, color=&#x27;black&#x27;, fontsize=10,
+        ha=&#x27;center&#x27;, style=&#x27;italic&#x27;)
+ax.text(7, 0.3, &#x27;New gate spaces (Exercise 8)&#x27;, color=&#x27;red&#x27;, fontsize=11,
+        ha=&#x27;center&#x27;, fontweight=&#x27;bold&#x27;)
+
+ax.set_xlim(0, 14)
+ax.set_ylim(-0.5, 8.5)
+ax.axis(&#x27;off&#x27;)
+plt.title(&#x27;Exercise 8 — All Spaces So Far + New Gate Spaces $f$ and $i$&#x27;,
+          fontsize=15, fontweight=&#x27;bold&#x27;, pad=20)
+plt.tight_layout()
+plt.show()
+
+
+# %%
+# تمرین ۹: نمودار اختصاصی — اتصال x_t و h_{t-1} به z_t, f, i با فرمول‌های جمع
+fig, ax = plt.subplots(figsize=(14, 8))
+
+bbox_x = dict(boxstyle=&#x27;round,pad=0.6&#x27;, facecolor=&#x27;#1f77b4&#x27;, alpha=0.25)
+bbox_h_prev = dict(boxstyle=&#x27;round,pad=0.6&#x27;, facecolor=&#x27;#9467bd&#x27;, alpha=0.25)
+bbox_z = dict(boxstyle=&#x27;round,pad=0.6&#x27;, facecolor=&#x27;#2ca02c&#x27;, alpha=0.25)
+bbox_f = dict(boxstyle=&#x27;round,pad=0.6&#x27;, facecolor=&#x27;#d62728&#x27;, alpha=0.25)
+bbox_i = dict(boxstyle=&#x27;round,pad=0.6&#x27;, facecolor=&#x27;#ff7f0e&#x27;, alpha=0.25)
+bbox_main_mem = dict(boxstyle=&#x27;round,pad=0.6&#x27;, facecolor=&#x27;#e377c2&#x27;, alpha=0.20)
+
+# Inputs
+ax.text(1.5, 6, &#x27;$x_t$&#x27;, bbox=bbox_x, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
+ax.text(1.5, 2, &#x27;$h_{t-1}$&#x27;, bbox=bbox_h_prev, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
+
+# Three spaces with addition formulas inside
+ax.text(7, 7, &#x27;$z_t$\n$z_t = W_{xz}\\, x_t + W_{hz}\\, h_{t-1}$&#x27;,
+        bbox=bbox_z, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+ax.text(7, 4, &#x27;$f$\n$f = W_{xf}\\, x_t + W_{hf}\\, h_{t-1}$&#x27;,
+        bbox=bbox_f, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+ax.text(7, 1, &#x27;$i$\n$i = W_{xi}\\, x_t + W_{hi}\\, h_{t-1}$&#x27;,
+        bbox=bbox_i, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+
+# Hint at &quot;main memory&quot; target via tanh from z_t
+ax.text(12, 4, &quot;to main memory $c_t$\n(after $\\tanh$)&quot;,
+        bbox=bbox_main_mem, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=11, style=&#x27;italic&#x27;)
+
+# Arrows from x_t to z_t, f, i
+for ty, mat in [(7, &#x27;W_{xz}&#x27;), (4, &#x27;W_{xf}&#x27;), (1, &#x27;W_{xi}&#x27;)]:
+    ax.annotate(&#x27;&#x27;, xy=(5.3, ty), xytext=(2.5, 6),
+                arrowprops=dict(arrowstyle=&#x27;-&gt;&#x27;, lw=2, color=&#x27;#1f77b4&#x27;, alpha=0.8))
+    midx = (2.5 + 5.3) / 2
+    midy = (6 + ty) / 2
+    ax.text(midx, midy + 0.15, f&#x27;${mat}$&#x27;, fontsize=11, color=&#x27;#1f77b4&#x27;, fontweight=&#x27;bold&#x27;, ha=&#x27;center&#x27;)
+
+# Arrows from h_{t-1} to z_t, f, i
+for ty, mat in [(7, &#x27;W_{hz}&#x27;), (4, &#x27;W_{hf}&#x27;), (1, &#x27;W_{hi}&#x27;)]:
+    ax.annotate(&#x27;&#x27;, xy=(5.3, ty), xytext=(2.5, 2),
+                arrowprops=dict(arrowstyle=&#x27;-&gt;&#x27;, lw=2, color=&#x27;#9467bd&#x27;, alpha=0.8))
+    midx = (2.5 + 5.3) / 2
+    midy = (2 + ty) / 2
+    ax.text(midx, midy - 0.15, f&#x27;${mat}$&#x27;, fontsize=11, color=&#x27;#9467bd&#x27;, fontweight=&#x27;bold&#x27;, ha=&#x27;center&#x27;)
+
+# tanh arrow from z_t toward main memory
+ax.annotate(&#x27;&#x27;, xy=(10.5, 4.4), xytext=(8.7, 7),
+            arrowprops=dict(arrowstyle=&#x27;-&gt;&#x27;, lw=2.5, color=&#x27;#2ca02c&#x27;))
+ax.text(9.6, 5.9, r&#x27;$\tanh$&#x27;, fontsize=13, color=&#x27;#2ca02c&#x27;, fontweight=&#x27;bold&#x27;, ha=&#x27;center&#x27;)
+
+ax.set_xlim(0, 14)
+ax.set_ylim(-0.5, 8.5)
+ax.axis(&#x27;off&#x27;)
+plt.title(&#x27;Exercise 9 — Connections to $z_t$, $f$, $i$ with addition formulas&#x27;,
+          fontsize=15, fontweight=&#x27;bold&#x27;, pad=20)
+plt.tight_layout()
+plt.show()
+
+
+# %%
+# تمرین ۱۰: نمودار اختصاصی — ساخت حافظه جدید c_t
+fig, ax = plt.subplots(figsize=(14, 7))
+
+bbox_c_prev = dict(boxstyle=&#x27;round,pad=0.5&#x27;, facecolor=&#x27;#e377c2&#x27;, alpha=0.25)
+bbox_z = dict(boxstyle=&#x27;round,pad=0.5&#x27;, facecolor=&#x27;#2ca02c&#x27;, alpha=0.25)
+bbox_f = dict(boxstyle=&#x27;round,pad=0.5&#x27;, facecolor=&#x27;#d62728&#x27;, alpha=0.25)
+bbox_i = dict(boxstyle=&#x27;round,pad=0.5&#x27;, facecolor=&#x27;#ff7f0e&#x27;, alpha=0.25)
+bbox_ct = dict(boxstyle=&#x27;round,pad=0.6&#x27;, facecolor=&#x27;#e377c2&#x27;, alpha=0.45)
+bbox_op = dict(boxstyle=&#x27;circle,pad=0.3&#x27;, facecolor=&#x27;white&#x27;, edgecolor=&#x27;black&#x27;, linewidth=1.5)
+
+# Source spaces
+ax.text(1, 5.5, &#x27;$f$&#x27;, bbox=bbox_f, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
+ax.text(1, 3.0, &#x27;$c_{t-1}$&#x27;, bbox=bbox_c_prev, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
+ax.text(1, 0.5, &#x27;$i$&#x27;, bbox=bbox_i, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
+ax.text(1, -2.0, &#x27;$z_t$&#x27;, bbox=bbox_z, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
+
+# Sigmoid / tanh applied
+ax.text(4, 5.5, r&#x27;$\sigma(f)$&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=13,
+        bbox=dict(boxstyle=&#x27;round,pad=0.4&#x27;, facecolor=&#x27;#ffe0e0&#x27;))
+ax.text(4, 0.5, r&#x27;$\sigma(i)$&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=13,
+        bbox=dict(boxstyle=&#x27;round,pad=0.4&#x27;, facecolor=&#x27;#ffe5cc&#x27;))
+ax.text(4, -2.0, r&#x27;$\tanh(z_t)$&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=13,
+        bbox=dict(boxstyle=&#x27;round,pad=0.4&#x27;, facecolor=&#x27;#d4f4d4&#x27;))
+
+# Element-wise multiply nodes
+ax.text(6.8, 4.25, r&#x27;$\odot$&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=18,
+        bbox=bbox_op, fontweight=&#x27;bold&#x27;)
+ax.text(6.8, -0.75, r&#x27;$\odot$&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=18,
+        bbox=bbox_op, fontweight=&#x27;bold&#x27;)
+
+# Sum node
+ax.text(9.5, 1.75, r&#x27;$+$&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=20,
+        bbox=bbox_op, fontweight=&#x27;bold&#x27;)
+
+# Final c_t
+ax.text(12.5, 1.75,
+        &#x27;$c_t$\n$c_t = \\sigma(f)\\odot c_{t-1}$\n$+\\, \\sigma(i)\\odot \\tanh(z_t)$&#x27;,
+        bbox=bbox_ct, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+
+def arr(x1, y1, x2, y2, color=&#x27;black&#x27;, lw=1.8):
+    ax.annotate(&#x27;&#x27;, xy=(x2, y2), xytext=(x1, y1),
+                arrowprops=dict(arrowstyle=&#x27;-&gt;&#x27;, lw=lw, color=color))
+
+# f -&gt; sigmoid -&gt; mul (top)
+arr(1.6, 5.5, 3.3, 5.5, color=&#x27;#d62728&#x27;)
+arr(4.7, 5.5, 6.3, 4.5, color=&#x27;#d62728&#x27;)
+# c_{t-1} -&gt; mul (top)
+arr(1.7, 3.0, 6.3, 4.0, color=&#x27;#e377c2&#x27;)
+# i -&gt; sigmoid -&gt; mul (bottom)
+arr(1.6, 0.5, 3.3, 0.5, color=&#x27;#ff7f0e&#x27;)
+arr(4.7, 0.5, 6.3, -0.5, color=&#x27;#ff7f0e&#x27;)
+# z_t -&gt; tanh -&gt; mul (bottom)
+arr(1.6, -2.0, 3.3, -2.0, color=&#x27;#2ca02c&#x27;)
+arr(4.7, -2.0, 6.3, -1.0, color=&#x27;#2ca02c&#x27;)
+# muls -&gt; +
+arr(7.3, 4.25, 9.0, 2.0, color=&#x27;black&#x27;)
+arr(7.3, -0.75, 9.0, 1.5, color=&#x27;black&#x27;)
+# + -&gt; c_t
+arr(10.0, 1.75, 11.4, 1.75, color=&#x27;black&#x27;, lw=2.2)
+
+ax.set_xlim(-0.5, 15)
+ax.set_ylim(-3.5, 7)
+ax.axis(&#x27;off&#x27;)
+plt.title(&#x27;Exercise 10 — Building the new cell state $c_t$&#x27;,
+          fontsize=15, fontweight=&#x27;bold&#x27;, pad=20)
+plt.tight_layout()
+plt.show()
+
+
+# %%
+# تمرین ۱۱: نمودار اختصاصی — ساخت دروازه خروجی o و وضعیت پنهان جدید h_t
+fig, ax = plt.subplots(figsize=(14, 7))
+
+bbox_x = dict(boxstyle=&#x27;round,pad=0.5&#x27;, facecolor=&#x27;#1f77b4&#x27;, alpha=0.25)
+bbox_h_prev = dict(boxstyle=&#x27;round,pad=0.5&#x27;, facecolor=&#x27;#9467bd&#x27;, alpha=0.25)
+bbox_ct = dict(boxstyle=&#x27;round,pad=0.5&#x27;, facecolor=&#x27;#e377c2&#x27;, alpha=0.30)
+bbox_o = dict(boxstyle=&#x27;round,pad=0.5&#x27;, facecolor=&#x27;#8c564b&#x27;, alpha=0.25)
+bbox_ht = dict(boxstyle=&#x27;round,pad=0.6&#x27;, facecolor=&#x27;#9467bd&#x27;, alpha=0.45)
+bbox_op = dict(boxstyle=&#x27;circle,pad=0.3&#x27;, facecolor=&#x27;white&#x27;, edgecolor=&#x27;black&#x27;, linewidth=1.5)
+
+# Sources
+ax.text(1, 5.5, &#x27;$x_t$&#x27;, bbox=bbox_x, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
+ax.text(1, 3.0, &#x27;$h_{t-1}$&#x27;, bbox=bbox_h_prev, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
+ax.text(1, 0.5, &#x27;$c_t$&#x27;, bbox=bbox_ct, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
+
+# o space with addition formula
+ax.text(5.5, 4.25, &#x27;$o$\n$o = W_{xo}\\, x_t + W_{ho}\\, h_{t-1}$&#x27;,
+        bbox=bbox_o, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+
+# sigmoid(o) and tanh(c_t)
+ax.text(8.5, 4.25, r&#x27;$\sigma(o)$&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=13,
+        bbox=dict(boxstyle=&#x27;round,pad=0.4&#x27;, facecolor=&#x27;#e8d4c8&#x27;))
+ax.text(5.5, 0.5, r&#x27;$\tanh(c_t)$&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=13,
+        bbox=dict(boxstyle=&#x27;round,pad=0.4&#x27;, facecolor=&#x27;#fbe1ed&#x27;))
+
+# Element-wise multiply
+ax.text(11, 2.4, r&#x27;$\odot$&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=18,
+        bbox=bbox_op, fontweight=&#x27;bold&#x27;)
+
+# Final h_t
+ax.text(13.5, 2.4, &#x27;$h_t$\n$h_t = \\sigma(o) \\odot \\tanh(c_t)$&#x27;,
+        bbox=bbox_ht, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+
+def arr(x1, y1, x2, y2, color=&#x27;black&#x27;, lw=1.8, label=None, lx=None, ly=None, lcolor=None):
+    ax.annotate(&#x27;&#x27;, xy=(x2, y2), xytext=(x1, y1),
+                arrowprops=dict(arrowstyle=&#x27;-&gt;&#x27;, lw=lw, color=color))
+    if label is not None:
+        ax.text(lx, ly, label, fontsize=11, color=lcolor or color,
+                fontweight=&#x27;bold&#x27;, ha=&#x27;center&#x27;)
+
+# x_t -&gt; o   (W_xo)
+arr(1.5, 5.5, 4.4, 4.6, color=&#x27;#1f77b4&#x27;,
+    label=r&#x27;$W_{xo}$&#x27;, lx=2.9, ly=5.3, lcolor=&#x27;#1f77b4&#x27;)
+# h_{t-1} -&gt; o  (W_ho)
+arr(1.7, 3.0, 4.4, 4.0, color=&#x27;#9467bd&#x27;,
+    label=r&#x27;$W_{ho}$&#x27;, lx=2.9, ly=3.2, lcolor=&#x27;#9467bd&#x27;)
+# o -&gt; sigmoid(o)
+arr(7.2, 4.25, 7.9, 4.25, color=&#x27;#8c564b&#x27;)
+# sigmoid(o) -&gt; mul
+arr(9.1, 4.25, 10.55, 2.7, color=&#x27;#8c564b&#x27;)
+# c_t -&gt; tanh(c_t)
+arr(1.6, 0.5, 4.4, 0.5, color=&#x27;#e377c2&#x27;)
+# tanh(c_t) -&gt; mul
+arr(6.6, 0.5, 10.55, 2.1, color=&#x27;#e377c2&#x27;)
+# mul -&gt; h_t
+arr(11.4, 2.4, 12.5, 2.4, color=&#x27;black&#x27;, lw=2.2)
+
+ax.set_xlim(-0.5, 16)
+ax.set_ylim(-1, 7)
+ax.axis(&#x27;off&#x27;)
+plt.title(&#x27;Exercise 11 — Output gate $o_t$ and new hidden state $h_t$&#x27;,
+          fontsize=15, fontweight=&#x27;bold&#x27;, pad=20)
+plt.tight_layout()
+plt.show()
+
+
+# %%
+# تمرین ۱۲: نمودار کامل LSTM با گره‌های ⊙ و + به‌صورت صریح
+fig, ax = plt.subplots(figsize=(18, 9))
+
+bx = dict(boxstyle=&#x27;round,pad=0.5&#x27;, facecolor=&#x27;#1f77b4&#x27;, alpha=0.22)
+bh = dict(boxstyle=&#x27;round,pad=0.5&#x27;, facecolor=&#x27;#9467bd&#x27;, alpha=0.22)
+bc = dict(boxstyle=&#x27;round,pad=0.5&#x27;, facecolor=&#x27;#e377c2&#x27;, alpha=0.22)
+bz = dict(boxstyle=&#x27;round,pad=0.5&#x27;, facecolor=&#x27;#2ca02c&#x27;, alpha=0.22)
+bf = dict(boxstyle=&#x27;round,pad=0.5&#x27;, facecolor=&#x27;#d62728&#x27;, alpha=0.22)
+bi = dict(boxstyle=&#x27;round,pad=0.5&#x27;, facecolor=&#x27;#ff7f0e&#x27;, alpha=0.22)
+bo = dict(boxstyle=&#x27;round,pad=0.5&#x27;, facecolor=&#x27;#8c564b&#x27;, alpha=0.22)
+bct_new = dict(boxstyle=&#x27;round,pad=0.6&#x27;, facecolor=&#x27;#e377c2&#x27;, alpha=0.45)
+bht_new = dict(boxstyle=&#x27;round,pad=0.6&#x27;, facecolor=&#x27;#9467bd&#x27;, alpha=0.45)
+by_box = dict(boxstyle=&#x27;round,pad=0.6&#x27;, facecolor=&#x27;#bcbd22&#x27;, alpha=0.30)
+bop = dict(boxstyle=&#x27;circle,pad=0.25&#x27;, facecolor=&#x27;white&#x27;, edgecolor=&#x27;black&#x27;, linewidth=1.5)
+
+# Inputs
+ax.text(0.7, 6.5, &#x27;$x_t$&#x27;, bbox=bx, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+ax.text(0.7, 3.5, &#x27;$h_{t-1}$&#x27;, bbox=bh, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+ax.text(0.7, 0.5, &#x27;$c_{t-1}$&#x27;, bbox=bc, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+
+# Pre-activation / gate spaces
+ax.text(4.5, 7.5, &#x27;$z_t$\n$W_{xz}x_t + W_{hz}h_{t-1}$&#x27;,
+        bbox=bz, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=9.5, fontweight=&#x27;bold&#x27;)
+ax.text(4.5, 5.5, &#x27;$f$\n$W_{xf}x_t + W_{hf}h_{t-1}$&#x27;,
+        bbox=bf, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=9.5, fontweight=&#x27;bold&#x27;)
+ax.text(4.5, 3.5, &#x27;$i$\n$W_{xi}x_t + W_{hi}h_{t-1}$&#x27;,
+        bbox=bi, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=9.5, fontweight=&#x27;bold&#x27;)
+ax.text(4.5, 1.5, &#x27;$o$\n$W_{xo}x_t + W_{ho}h_{t-1}$&#x27;,
+        bbox=bo, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=9.5, fontweight=&#x27;bold&#x27;)
+
+# Activations
+ax.text(7.5, 7.5, r&#x27;$\tanh$&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12,
+        bbox=dict(boxstyle=&#x27;round,pad=0.3&#x27;, facecolor=&#x27;#d4f4d4&#x27;))
+ax.text(7.5, 5.5, r&#x27;$\sigma$&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12,
+        bbox=dict(boxstyle=&#x27;round,pad=0.3&#x27;, facecolor=&#x27;#ffe0e0&#x27;))
+ax.text(7.5, 3.5, r&#x27;$\sigma$&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12,
+        bbox=dict(boxstyle=&#x27;round,pad=0.3&#x27;, facecolor=&#x27;#ffe5cc&#x27;))
+ax.text(7.5, 1.5, r&#x27;$\sigma$&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12,
+        bbox=dict(boxstyle=&#x27;round,pad=0.3&#x27;, facecolor=&#x27;#e8d4c8&#x27;))
+
+# muls for forget and input
+ax.text(9.5, 4.5, r&#x27;$\odot$&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=15, bbox=bop, fontweight=&#x27;bold&#x27;)
+ax.text(9.5, 6.5, r&#x27;$\odot$&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=15, bbox=bop, fontweight=&#x27;bold&#x27;)
+
+# + node
+ax.text(11, 5.5, r&#x27;$+$&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=17, bbox=bop, fontweight=&#x27;bold&#x27;)
+
+# c_t
+ax.text(12.8, 5.5, &#x27;$c_t$&#x27;, bbox=bct_new, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+
+# tanh(c_t)
+ax.text(14.4, 5.5, r&#x27;$\tanh$&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12,
+        bbox=dict(boxstyle=&#x27;round,pad=0.3&#x27;, facecolor=&#x27;#fbe1ed&#x27;))
+
+# mul for output gate
+ax.text(15.7, 3.5, r&#x27;$\odot$&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=15, bbox=bop, fontweight=&#x27;bold&#x27;)
+
+# h_t
+ax.text(17.0, 3.5, &#x27;$h_t$&#x27;, bbox=bht_new, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+
+# y_t
+ax.text(17.0, 1.5, &#x27;$y_t$\n$\\mathrm{softmax}(W_{hy}\\, h_t)$&#x27;,
+        bbox=by_box, ha=&#x27;center&#x27;, va=&#x27;center&#x27;, fontsize=10, fontweight=&#x27;bold&#x27;)
+
+def arr(x1, y1, x2, y2, color=&#x27;black&#x27;, lw=1.5, alpha=1.0,
+        label=None, lx=None, ly=None, lcolor=None, lsize=10):
+    ax.annotate(&#x27;&#x27;, xy=(x2, y2), xytext=(x1, y1),
+                arrowprops=dict(arrowstyle=&#x27;-&gt;&#x27;, lw=lw, color=color, alpha=alpha))
+    if label is not None:
+        ax.text(lx, ly, label, fontsize=lsize, color=lcolor or color,
+                fontweight=&#x27;bold&#x27;, ha=&#x27;center&#x27;)
+
+# x_t -&gt; {z, f, i, o}
+for ty, mat in [(7.5, &#x27;W_{xz}&#x27;), (5.5, &#x27;W_{xf}&#x27;), (3.5, &#x27;W_{xi}&#x27;), (1.5, &#x27;W_{xo}&#x27;)]:
+    arr(1.2, 6.5, 3.0, ty, color=&#x27;#1f77b4&#x27;, alpha=0.7,
+        label=f&#x27;${mat}$&#x27;, lx=2.0, ly=(6.5+ty)/2 + 0.15, lcolor=&#x27;#1f77b4&#x27;, lsize=8)
+# h_{t-1} -&gt; {z, f, i, o}
+for ty, mat in [(7.5, &#x27;W_{hz}&#x27;), (5.5, &#x27;W_{hf}&#x27;), (3.5, &#x27;W_{hi}&#x27;), (1.5, &#x27;W_{ho}&#x27;)]:
+    arr(1.2, 3.5, 3.0, ty, color=&#x27;#9467bd&#x27;, alpha=0.7,
+        label=f&#x27;${mat}$&#x27;, lx=2.0, ly=(3.5+ty)/2 - 0.15, lcolor=&#x27;#9467bd&#x27;, lsize=8)
+
+# z_t -&gt; tanh
+arr(6.0, 7.5, 7.0, 7.5, color=&#x27;#2ca02c&#x27;)
+# f -&gt; sigma
+arr(6.0, 5.5, 7.0, 5.5, color=&#x27;#d62728&#x27;)
+# i -&gt; sigma
+arr(6.0, 3.5, 7.0, 3.5, color=&#x27;#ff7f0e&#x27;)
+# o -&gt; sigma
+arr(6.0, 1.5, 7.0, 1.5, color=&#x27;#8c564b&#x27;)
+
+# tanh(z_t) -&gt; mul input
+arr(8.0, 7.5, 9.2, 6.7, color=&#x27;#2ca02c&#x27;)
+# c_{t-1} -&gt; mul forget
+arr(1.2, 0.5, 9.2, 4.3, color=&#x27;#e377c2&#x27;, alpha=0.6)
+# sigma(f) -&gt; mul forget
+arr(8.0, 5.5, 9.2, 4.7, color=&#x27;#d62728&#x27;)
+# sigma(i) -&gt; mul input
+arr(8.0, 3.5, 9.2, 6.3, color=&#x27;#ff7f0e&#x27;, alpha=0.6)
+
+# mul forget -&gt; +
+arr(9.8, 4.5, 10.7, 5.3, color=&#x27;black&#x27;)
+# mul input -&gt; +
+arr(9.8, 6.5, 10.7, 5.7, color=&#x27;black&#x27;)
+# + -&gt; c_t
+arr(11.3, 5.5, 12.4, 5.5, color=&#x27;black&#x27;, lw=2)
+# c_t -&gt; tanh
+arr(13.2, 5.5, 14.0, 5.5, color=&#x27;#e377c2&#x27;)
+# tanh(c_t) -&gt; mul output
+arr(14.7, 5.2, 15.4, 3.8, color=&#x27;#e377c2&#x27;)
+# sigma(o) -&gt; mul output
+arr(8.0, 1.5, 15.4, 3.2, color=&#x27;#8c564b&#x27;, alpha=0.5)
+# mul output -&gt; h_t
+arr(16.05, 3.5, 16.6, 3.5, color=&#x27;black&#x27;, lw=2)
+# h_t -&gt; y_t
+arr(17.0, 3.0, 17.0, 2.0, color=&#x27;#bcbd22&#x27;, lw=2,
+    label=r&#x27;$W_{hy}, \mathrm{softmax}$&#x27;, lx=18.3, ly=2.5, lcolor=&#x27;#bcbd22&#x27;, lsize=9)
+
+ax.set_xlim(-0.5, 19.5)
+ax.set_ylim(-0.5, 9)
+ax.axis(&#x27;off&#x27;)
+plt.title(&#x27;Exercise 12 — Complete LSTM with explicit $\\odot$ and $+$ nodes&#x27;,
+          fontsize=15, fontweight=&#x27;bold&#x27;, pad=20)
+plt.tight_layout()
+plt.show()
+
+
+# %%
+# تمرین ۱۲: محاسبه عددی کامل LSTM
+
+# تعریف ماتریس‌ها
+lstm_W_xz = np.array([[0.4, 0.7], [-0.6, 0.3]])
+lstm_W_hz = np.array([[0.8, -0.2], [0.5, 0.6]])
+lstm_W_xf = np.array([[0.3, -0.5], [0.9, 0.2]])
+lstm_W_hf = np.array([[-0.4, 0.7], [0.1, 0.8]])
+lstm_W_xi = np.array([[0.6, 0.1], [-0.3, 0.9]])
+lstm_W_hi = np.array([[0.2, -0.6], [0.7, 0.4]])
+lstm_W_xo = np.array([[-0.2, 0.8], [0.5, -0.4]])
+lstm_W_ho = np.array([[0.3, 0.6], [-0.7, 0.1]])
+lstm_W_hy = np.array([[1.0, 0.3], [-0.5, 0.8]])
+
+# تابع sigmoid
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+# بردارهای ورودی (از تمرین ۶)
+lstm_inputs = [lstm_x1, lstm_x2, lstm_x3]
+
+# مقادیر اولیه
+h_t = lstm_h_prev.copy()
+c_t = lstm_c_prev.copy()
+
+print(&#x27;=&#x27; * 60)
+print(&#x27;پردازش مرحله‌به‌مرحله LSTM&#x27;)
+print(&#x27;=&#x27; * 60)
+print(f&#x27;h_0 = {h_t}&#x27;)
+print(f&#x27;c_0 = {c_t}&#x27;)
+print()
+
+for t, x_t in enumerate(lstm_inputs, 1):
+    print(f&#x27;--- مرحله {t} (x_{t} = {x_t}) ---&#x27;)
+    
+    # z_t (feature extraction)
+    z = lstm_W_xz @ x_t + lstm_W_hz @ h_t
+    print(f&#x27;  z = W_xz @ x + W_hz @ h = {z}&#x27;)
+    
+    # Forget gate
+    f = lstm_W_xf @ x_t + lstm_W_hf @ h_t
+    f_gate = sigmoid(f)
+    print(f&#x27;  f = W_xf @ x + W_hf @ h = {f}&#x27;)
+    print(f&#x27;  σ(f) = {f_gate}&#x27;)
+    
+    # Input gate
+    i = lstm_W_xi @ x_t + lstm_W_hi @ h_t
+    i_gate = sigmoid(i)
+    print(f&#x27;  i = W_xi @ x + W_hi @ h = {i}&#x27;)
+    print(f&#x27;  σ(i) = {i_gate}&#x27;)
+    
+    # Output gate
+    o = lstm_W_xo @ x_t + lstm_W_ho @ h_t
+    o_gate = sigmoid(o)
+    print(f&#x27;  o = W_xo @ x + W_ho @ h = {o}&#x27;)
+    print(f&#x27;  σ(o) = {o_gate}&#x27;)
+    
+    # New cell state
+    c_t = f_gate * c_t + i_gate * np.tanh(z)
+    print(f&#x27;  c_t = σ(f)⊙c_{t-1} + σ(i)⊙tanh(z) = {c_t}&#x27;)
+    
+    # New hidden state
+    h_t = o_gate * np.tanh(c_t)
+    print(f&#x27;  h_t = σ(o)⊙tanh(c_t) = {h_t}&#x27;)
+    print()
+
+# خروجی نهایی y_3
+logits = lstm_W_hy @ h_t
+y_final = softmax(logits)
+print(&#x27;--- خروجی نهایی ---&#x27;)
+print(f&#x27;W_hy @ h_3 = {logits}&#x27;)
+print(f&#x27;y_3 = softmax(W_hy @ h_3) = {y_final}&#x27;)
+print(f&#x27;مجموع y_3 = {y_final.sum():.6f}&#x27;)
+
+# %%
+# تمرین ۱۲ (ردیابی بصری): تحول حافظه (c_t) و وضعیت پنهان (h_t) در سه گام
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
+# بازسازی پردازش با ذخیره مقادیر در هر گام
+h_track = [lstm_h_prev.copy()]
+c_track = [lstm_c_prev.copy()]
+y_track = []
+all_gates = []
+
+h_t = lstm_h_prev.copy()
+c_t = lstm_c_prev.copy()
+for x_t in lstm_inputs:
+    z = lstm_W_xz @ x_t + lstm_W_hz @ h_t
+    f_pre = lstm_W_xf @ x_t + lstm_W_hf @ h_t
+    i_pre = lstm_W_xi @ x_t + lstm_W_hi @ h_t
+    o_pre = lstm_W_xo @ x_t + lstm_W_ho @ h_t
+    f_g = sigmoid(f_pre); i_g = sigmoid(i_pre); o_g = sigmoid(o_pre)
+    c_t = f_g * c_t + i_g * np.tanh(z)
+    h_t = o_g * np.tanh(c_t)
+    h_track.append(h_t.copy()); c_track.append(c_t.copy())
+    y_track.append(softmax(lstm_W_hy @ h_t))
+    all_gates.append((f_g.copy(), i_g.copy(), o_g.copy()))
+
+fig, axes = plt.subplots(1, 3, figsize=(20, 6))
+
+# Panel 1: cell state evolution
+ax0 = axes[0]
+ax0.axhline(0, color=&#x27;black&#x27;, lw=0.5, alpha=0.5)
+ax0.axvline(0, color=&#x27;black&#x27;, lw=0.5, alpha=0.5)
+colors_c = [&#x27;#888888&#x27;, &#x27;#ff7f0e&#x27;, &#x27;#2ca02c&#x27;, &#x27;#d62728&#x27;]
+labels_c = [&#x27;$c_0$&#x27;, &#x27;$c_1$&#x27;, &#x27;$c_2$&#x27;, &#x27;$c_3$&#x27;]
+for v, c, lbl in zip(c_track, colors_c, labels_c):
+    ax0.quiver(0, 0, v[0], v[1], angles=&#x27;xy&#x27;, scale_units=&#x27;xy&#x27;, scale=1,
+               color=c, width=0.012, label=f&#x27;{lbl} = [{v[0]:.3f}, {v[1]:.3f}]&#x27;)
+ax0.set_xlim(-1.5, 1.5); ax0.set_ylim(-1.5, 1.5); ax0.set_aspect(&#x27;equal&#x27;)
+ax0.grid(True, ls=&#x27;--&#x27;, alpha=0.5)
+ax0.set_title(&#x27;Cell State $c_t$ Evolution&#x27;, fontsize=13, fontweight=&#x27;bold&#x27;)
+ax0.legend(loc=&#x27;best&#x27;, fontsize=9)
+
+# Panel 2: hidden state evolution
+ax1 = axes[1]
+ax1.axhline(0, color=&#x27;black&#x27;, lw=0.5, alpha=0.5)
+ax1.axvline(0, color=&#x27;black&#x27;, lw=0.5, alpha=0.5)
+rect = mpatches.Rectangle((-1, -1), 2, 2, linewidth=1.5, edgecolor=&#x27;red&#x27;,
+                          facecolor=&#x27;none&#x27;, linestyle=&#x27;--&#x27;,
+                          label=r&#x27;$\tanh$ Bound $[-1, 1]$&#x27;)
+ax1.add_patch(rect)
+colors_h = [&#x27;#888888&#x27;, &#x27;#1f77b4&#x27;, &#x27;#9467bd&#x27;, &#x27;#e377c2&#x27;]
+labels_h = [&#x27;$h_0$&#x27;, &#x27;$h_1$&#x27;, &#x27;$h_2$&#x27;, &#x27;$h_3$&#x27;]
+for v, c, lbl in zip(h_track, colors_h, labels_h):
+    ax1.quiver(0, 0, v[0], v[1], angles=&#x27;xy&#x27;, scale_units=&#x27;xy&#x27;, scale=1,
+               color=c, width=0.012, label=f&#x27;{lbl} = [{v[0]:.3f}, {v[1]:.3f}]&#x27;)
+ax1.set_xlim(-1.2, 1.2); ax1.set_ylim(-1.2, 1.2); ax1.set_aspect(&#x27;equal&#x27;)
+ax1.grid(True, ls=&#x27;--&#x27;, alpha=0.5)
+ax1.set_title(&#x27;Hidden State $h_t$ Evolution&#x27;, fontsize=13, fontweight=&#x27;bold&#x27;)
+ax1.legend(loc=&#x27;best&#x27;, fontsize=9)
+
+# Panel 3: gate activations across time-steps
+ax2 = axes[2]
+gate_names = [r&#x27;$\sigma(f)$&#x27;, r&#x27;$\sigma(i)$&#x27;, r&#x27;$\sigma(o)$&#x27;]
+times = [&#x27;t=1&#x27;, &#x27;t=2&#x27;, &#x27;t=3&#x27;]
+data = np.zeros((3, 3))
+for ti, (fg, ig, og) in enumerate(all_gates):
+    data[0, ti] = fg.mean()
+    data[1, ti] = ig.mean()
+    data[2, ti] = og.mean()
+im = ax2.imshow(data, cmap=&#x27;RdYlGn&#x27;, vmin=0, vmax=1, aspect=&#x27;auto&#x27;)
+ax2.set_xticks(range(3)); ax2.set_xticklabels(times, fontsize=11)
+ax2.set_yticks(range(3)); ax2.set_yticklabels(gate_names, fontsize=12)
+for i in range(3):
+    for j in range(3):
+        ax2.text(j, i, f&#x27;{data[i, j]:.3f}&#x27;, ha=&#x27;center&#x27;, va=&#x27;center&#x27;,
+                 color=&#x27;black&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+plt.colorbar(im, ax=ax2, fraction=0.046, pad=0.04)
+ax2.set_title(&#x27;Mean Gate Activation per Time-step&#x27;, fontsize=13, fontweight=&#x27;bold&#x27;)
+
+plt.suptitle(&#x27;Exercise 12 — Numerical Trace Through LSTM&#x27;,
+             fontsize=15, fontweight=&#x27;bold&#x27;, y=1.02)
+plt.tight_layout()
+plt.show()
+
+# Print a compact summary
+print(&#x27;\n&#x27; + &#x27;=&#x27; * 60)
+print(&#x27;Final Summary&#x27;)
+print(&#x27;=&#x27; * 60)
+for t in range(1, 4):
+    print(f&#x27;t={t}:  c_{t} = {c_track[t]},   h_{t} = {h_track[t]}&#x27;)
+    print(f&#x27;       y_{t} = {y_track[t-1]},  sum = {y_track[t-1].sum():.6f}&#x27;)
+
+</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw1-language-models/">تمرین ۱: N-gram و Naive Bayes ←</a><a href="../hw2-embeddings/">تمرین ۲: Logistic Regression و Embedding ←</a><a href="../hw3-neural-models/">تمرین ۳: مدل‌های عصبی ←</a><a href="../hw4-attention/">تمرین ۴: Attention و Transformer ←</a><a href="../hw4-gpt2/">تمرین ۴: Fine-Tuning مدل GPT-2 ←</a><a href="../hw5-bert/">تمرین ۵: BERT برای Sentiment Analysis ←</a><a href="../hw5-post-training/">تمرین ۵: Post-Training با SFT و LoRA ←</a><a href="../hw6-rag-translation/">تمرین ۶: RAG و Machine Translation ←</a><a href="../study-notes/">یادداشت‌های مرور NLP ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

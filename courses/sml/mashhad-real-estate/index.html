@@ -1,0 +1,2111 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="پیش‌پردازش داده، EDA و بررسی مدل‌های پیش‌بینی برای داده‌های املاک."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>پروژهٔ داده‌های املاک مشهد · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">یادگیری ماشین آماری</a></nav><p class="eyebrow">پروژهٔ درسی</p><h1 class="work-title">پروژهٔ داده‌های املاک مشهد</h1><p class="course-lead">پیش‌پردازش داده، EDA و بررسی مدل‌های پیش‌بینی برای داده‌های املاک.</p><div class="topic-list"><bdi class="topic">EDA</bdi><bdi class="topic">Preprocessing</bdi><bdi class="topic">Regression</bdi></div><div class="work-note">دادهٔ خام املاک در آرشیو عمومی قرار نگرفته است.</div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/mashhad-real-estate" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/mashhad-real-estate/MHD-Real-State.ipynb" target="_blank" rel="noopener noreferrer"><bdi>MHD-Real-State.ipynb</bdi><span class="file-meta">20 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/mashhad-real-estate/MHD-Real-State_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>MHD-Real-State_notebook.py</bdi><span class="file-meta">9 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/mashhad-real-estate/MHD-Real-State.py" target="_blank" rel="noopener noreferrer"><bdi>MHD-Real-State.py</bdi><span class="file-meta">10 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/mashhad-real-estate/PreProcessing.ipynb" target="_blank" rel="noopener noreferrer"><bdi>PreProcessing.ipynb</bdi><span class="file-meta">5 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/mashhad-real-estate/PreProcessing_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>PreProcessing_notebook.py</bdi><span class="file-meta">2 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/mashhad-real-estate/pre-process.ipynb" target="_blank" rel="noopener noreferrer"><bdi>pre-process.ipynb</bdi><span class="file-meta">36 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/mashhad-real-estate/pre-process_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>pre-process_notebook.py</bdi><span class="file-meta">19 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/mashhad-real-estate/pre-process.py" target="_blank" rel="noopener noreferrer"><bdi>pre-process.py</bdi><span class="file-meta">19 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="notebook-notes"><summary>بخشی از توضیحات نوت‌بوک</summary><pre class="notes-preview"># Data prepration &amp;  EDA
+
+# EDA</pre></details><details class="source-file" open><summary><bdi>MHD-Real-State_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/mashhad-real-estate/MHD-Real-State_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Exported notebook code; may contain IPython commands.
+# %%
+import pandas as pd
+import numpy as np
+from matplotlib import pyplot as plt
+import seaborn as sns
+import re
+
+from sklearn.neighbors import KernelDensity
+pd.options.display.max_columns = None
+from sklearn import preprocessing
+
+from sklearn.model_selection import train_test_split, cross_validate
+from sklearn.linear_model import LinearRegression, Ridge  , LogisticRegression
+from sklearn.ensemble import GradientBoostingRegressor , RandomForestRegressor , HistGradientBoostingRegressor 
+from sklearn.metrics import mean_absolute_percentage_error , r2_score
+from sklearn.model_selection import train_test_split, cross_validate
+
+# from xgboost import XGBRegressor
+
+
+from sklearn.tree import DecisionTreeRegressor
+from geopy.geocoders import Nominatim
+from concurrent.futures import ThreadPoolExecutor
+
+# %%
+data= pd.read_csv(&#x27;train.csv&#x27;)
+data_test= pd.read_csv(&#x27;test.csv&#x27;)
+
+data
+
+# %%
+print(data.iloc[0][&#x27;description&#x27;])
+
+# %%
+data.info()
+
+# %%
+data[&#x27;price&#x27;]= data[&#x27;price&#x27;].apply(lambda x: re.sub(r&#x27;[^\d]&#x27;, &#x27;&#x27;, x))
+data[&#x27;price&#x27;]=data[&#x27;price&#x27;].replace(&#x27;&#x27; , &#x27;0&#x27;)
+data[&#x27;price&#x27;]=data[&#x27;price&#x27;].astype(&#x27;int64&#x27;)
+
+data[&#x27;age&#x27;]= data[&#x27;age&#x27;].apply(lambda x: 0 if  x==&#x27;تازه ساز&#x27; else x)
+data[&#x27;age&#x27;]=data[&#x27;age&#x27;].apply(lambda x: str(x).replace(&#x27;سال ساخت&#x27; , &#x27;&#x27;))
+data[&#x27;age&#x27;]=data[&#x27;age&#x27;].replace(&#x27;nan&#x27; , np.nan)
+data[&#x27;age&#x27;]=data[&#x27;age&#x27;].astype(&#x27;float64&#x27;)
+
+data[&#x27;floor&#x27;]=data[&#x27;floor&#x27;].apply(lambda x: str(x).replace(&#x27;همکف&#x27; , &#x27;0&#x27;))
+data[&#x27;floor&#x27;]=data[&#x27;floor&#x27;].astype(&#x27;int64&#x27;)
+
+# %%
+data.info()
+
+# %%
+#drop or fill 
+data=data.dropna(subset=[&#x27;bedrooms&#x27; , &#x27;latitude&#x27; , &#x27;longitude&#x27; , &#x27;age&#x27; , &#x27;neighborhood&#x27;])
+data.reset_index(inplace=True , drop=True)
+
+
+# %%
+data.info()
+
+# %%
+#خونه هایی هست که سرش مغازه داره! :)
+j=0
+for i in range(data.index.max()):
+    if &#x27;مغازه&#x27; in str(data[&#x27;description&#x27;][i]) and data[&#x27;floor&#x27;][i]==0:
+        print(data[&#x27;description&#x27;][i] + &#x27;=======&gt;&#x27; + str(i))
+        print(&#x27;///////////////////////////////////////////////////////////////////////////////////////////////////////&#x27;)
+        
+        j+=1
+        
+print(&#x27;sum of shop : &#x27;  + str(j))
+
+# %%
+#خونه هایی هست که سرش مغازه داره! :) in test data
+
+j=0
+for i in range(data_test.index.max()):
+    if &#x27;مغازه&#x27; in str(data_test[&#x27;description&#x27;][i]) and data[&#x27;floor&#x27;][i]==0 :
+        print(data_test[&#x27;description&#x27;][i] + &#x27;=======&gt;&#x27; + str(i))
+        print(&#x27;///////////////////////////////////////////////////////////////////////////////////////////////////////&#x27;)
+        
+        j+=1
+        
+print(&#x27;sum of shop : &#x27;  + str(j))
+
+# %%
+data.describe()
+
+# %%
+#cleaning &quot;age&quot; column
+data[&#x27;age&#x27;]=data[&#x27;age&#x27;].apply(lambda x: 1402-x if x&gt;100 else x)
+data[data[&#x27;age&#x27;]==98]=1402-1398
+
+# %%
+index = data[(data[&#x27;price&#x27;]%1000)!=0].index
+data.iloc[index]
+
+# %%
+j=0
+for i in data[(data[&#x27;price&#x27;]%1000)!=0][&#x27;price&#x27;].index:
+    print(str(data[&#x27;price&#x27;][i]) + &#x27;====&gt;&#x27; + str(i))
+    j+=1
+print(j)
+
+# %%
+data= data[~((data[&#x27;price&#x27;]%100000)!=0)]
+data.reset_index(inplace=True , drop=True)
+data
+
+# %%
+(data[data[&#x27;type&#x27;]==&#x27;فروش ویلایی&#x27;][&#x27;price&#x27;]==0).sum()
+
+# %%
+(data[&#x27;price&#x27;]==0).sum()
+
+# %%
+data[&#x27;type&#x27;].value_counts()
+
+# %%
+data= data[~(data[&#x27;price&#x27;]==0)]
+data.reset_index(inplace=True , drop=True)
+data
+
+# %%
+data[&#x27;price&#x27;].describe()
+
+# %%
+(data[data[&#x27;area&#x27;]&gt;=1000][&#x27;type&#x27;]==&#x27;فروش آپارتمان&#x27;).sum()
+
+# %%
+data.info()
+
+# %%
+#drop data with area value more than 1000 AND type is apartemani
+data = data[~((data[&#x27;area&#x27;] &gt;= 1000) &amp; (data[&#x27;type&#x27;] ==&#x27;فروش آپارتمان&#x27;))]
+data.reset_index(inplace=True , drop=True)
+data
+
+# %%
+#drop data with area value less than 30
+data= data[~(data[&#x27;area&#x27;]&lt; 30)]
+data.reset_index(inplace=True , drop=True)
+data
+
+# %%
+data.describe()
+
+# %%
+#extract 
+data[&#x27;region&#x27;]= data[&#x27;neighborhood&#x27;].apply(lambda x: (str(x).strip().split(&quot; &quot;)[1])  if (len(str(x).strip().split(&quot; &quot;)))&gt;1 else np.nan).astype(&#x27;float32&#x27;)
+
+# %%
+#drop record by region and price
+
+#data =data[~((data[&#x27;price&#x27;] &gt; data[&#x27;price&#x27;].quantile(0.999)) &amp; (data[&#x27;type&#x27;]==&#x27;فروش آپارتمان&#x27;) &amp; (data[&#x27;region&#x27;] != 9) &amp; (data[&#x27;region&#x27;] != 1))]
+data =data[~((data[&#x27;price&#x27;] &gt; data[&#x27;price&#x27;].quantile(0.99)))]
+#data =data[~((data[&#x27;price&#x27;] &gt; data[&#x27;price&#x27;].quantile(0.999)) &amp; (data[&#x27;type&#x27;]==&#x27;فروش آپارتمان&#x27;))]
+data.reset_index(inplace=True , drop=True)
+
+# %%
+data
+
+# %%
+#drop record by value &lt; 0 in floor
+data = data[~(data[&#x27;floor&#x27;]&lt;0)]
+data.reset_index(inplace=True , drop=True)
+data
+
+# %%
+data.describe()
+
+# %%
+#new feature
+data[&#x27;price_meter&#x27;]=data[&#x27;price&#x27;]/data[&#x27;area&#x27;]
+
+# %%
+data.describe()
+
+# %%
+data[&#x27;type&#x27;][0] 
+
+# %%
+# 1 : vilaea &amp; 0 : apartemani
+data[&#x27;type&#x27;]=data[&#x27;type&#x27;].apply(lambda x: 0 if x==&#x27;فروش آپارتمان&#x27; else 1)
+
+# %%
+data[&#x27;type&#x27;][0] 
+
+# %%
+plt.figure(figsize=(10,10))
+sns.scatterplot(data=data[data[&#x27;type&#x27;]==0], x=&quot;area&quot;, y=&quot;price&quot;, hue=&quot;region&quot; , legend=True)
+
+# %%
+plt.figure(figsize=(10,10))
+sns.scatterplot(data= data[(data[&#x27;type&#x27;]==1) &amp;  (data[&#x27;area&#x27;] &lt; data[&#x27;area&#x27;].quantile(0.99)) ] , x=&quot;area&quot;, y=&quot;price&quot;, hue=&quot;region&quot; , legend=True)
+
+# %%
+plt.figure(figsize=(10,10))
+sns.scatterplot(data=data[data[&#x27;type&#x27;]==0], x=&quot;age&quot;, y=&quot;price&quot;, hue=&quot;region&quot; , legend=True)
+
+# %%
+plt.figure(figsize=(10,10))
+sns.scatterplot(data= data[(data[&#x27;type&#x27;]==1) &amp;  (data[&#x27;area&#x27;] &lt; data[&#x27;area&#x27;].quantile(0.99)) ] , x=&quot;age&quot;, y=&quot;price&quot;, hue=&quot;region&quot; , legend=True)
+
+# %%
+plt.figure(figsize=(10,10))
+sns.scatterplot(data=data[data[&#x27;type&#x27;]==0], x=&quot;floor&quot;, y=&quot;price&quot;, hue=&quot;region&quot; , legend=True)
+
+# %%
+plt.figure(figsize=(10,10))
+sns.scatterplot(data= data[(data[&#x27;type&#x27;]==1) &amp;  (data[&#x27;area&#x27;] &lt; data[&#x27;area&#x27;].quantile(0.99)) ] , x=&quot;floor&quot;, y=&quot;price&quot;, hue=&quot;region&quot; , legend=True)
+
+# %%
+data.info()
+
+# %%
+data.head(1)
+
+# %%
+data[&#x27;area&#x27;].describe()
+
+# %%
+data[&#x27;type&#x27;].value_counts()
+
+# %%
+
+
+# %%
+data
+
+# %%
+X = data.drop([&#x27;price&#x27; , &#x27;description&#x27; , &#x27;neighborhood&#x27; , &#x27;price_meter&#x27; ], axis=1)
+#X = data.drop([&#x27;price&#x27; , &#x27;description&#x27; , &#x27;neighborhood&#x27;  ], axis=1)
+y = data[&#x27;price&#x27;]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.05, random_state=42)
+
+# %%
+def fit_and_evaluate(model, X_train, y_train, X_test, y_test, tolerance=0.2):
+    # Fit the model
+    model.fit(X_train, y_train)
+    
+    # Make predictions
+    y_pred = model.predict(X_test)
+    
+    # R2 Score
+    r2 = r2_score(y_test, y_pred)
+    
+    # Mean Absolute Percentage Error (MAPE)
+    mape= mean_absolute_percentage_error(y_test, y_pred)
+    
+    #range accuracy
+    correct_count = 0
+    total_count = len(y_test)
+
+    for true, predicted in zip(y_test, y_pred):
+        if abs(true - predicted) &lt;= tolerance*true:
+            correct_count += 1
+
+    accuracy = (correct_count / total_count)
+    
+    #Scatterplot
+    plt.scatter(y_test, y_pred)
+    plt.show()
+    
+    return r2, mape , accuracy
+
+# %%
+model = LinearRegression()
+
+r2, mape , accuracy = fit_and_evaluate(model, X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+
+# %%
+model = DecisionTreeRegressor(criterion=&#x27;absolute_error&#x27;,  max_depth=20 , random_state=5 )
+
+r2, mape , accuracy = fit_and_evaluate(model, X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+
+# %%
+model = DecisionTreeRegressor(criterion=&#x27;squared_error&#x27;,  max_depth=20 , random_state=5 )
+
+r2, mape , accuracy = fit_and_evaluate(model, X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+
+# %%
+model = GradientBoostingRegressor(loss=&#x27;huber&#x27; , n_estimators=250 ,  max_depth=10 , random_state=5 )
+
+r2, mape , accuracy = fit_and_evaluate(model, X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+
+# %%
+data_test
+
+# %%
+model = RandomForestRegressor(n_estimators=500 ,  max_depth=300 , random_state=5 , n_jobs=-1 )
+
+r2, mape , accuracy = fit_and_evaluate(model, X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+
+# %%
+
+
+# %%
+X_A = data[data[&#x27;type&#x27;]==0].drop([&#x27;price&#x27; , &#x27;description&#x27; , &#x27;neighborhood&#x27; , &#x27;price_meter&#x27; , &#x27;type&#x27; ], axis=1)
+y_A = data[data[&#x27;type&#x27;]==0][&#x27;price&#x27;]
+price_bin_A=pd.cut(data[data[&#x27;type&#x27;]==0][&#x27;price&#x27;] , 10)
+X_train_A, X_test_A, y_train_A, y_test_A = train_test_split(X_A , y_A , test_size=0.05, random_state=42 , stratify=price_bin_A)
+
+
+X_V = data[data[&#x27;type&#x27;]==1].drop([&#x27;price&#x27; , &#x27;description&#x27; , &#x27;neighborhood&#x27; , &#x27;price_meter&#x27; , &#x27;type&#x27;], axis=1)
+y_V = data[data[&#x27;type&#x27;]==1][&#x27;price&#x27;]
+price_bin_V=pd.cut(data[data[&#x27;type&#x27;]==1][&#x27;price&#x27;] , 10)
+X_train_V , X_test_V, y_train_V, y_test_V = train_test_split(X_V , y_V , test_size=0.05, random_state=42 , stratify=price_bin_V)
+
+
+
+# %%
+model_A = GradientBoostingRegressor(loss=&#x27;huber&#x27; , n_estimators=250 ,  max_depth=10 , random_state=5 ,  )
+model_V = GradientBoostingRegressor(loss=&#x27;huber&#x27; , n_estimators=250 ,  max_depth=10 , random_state=5 ,  )
+
+r2_A , mape_A , accuracy_A = fit_and_evaluate(model_A, X_train_A , y_train_A , X_test_A , y_test_A)
+r2_V , mape_V , accuracy_V = fit_and_evaluate(model_V, X_train_V , y_train_V , X_test_V , y_test_V )
+
+print(&quot;APARTEMAN R2 Score:&quot;, r2_A)
+print(&quot;APARTEMAN MAPE:&quot;, (1-mape_A))
+print(&quot;APARTEMAN acc:&quot;, accuracy_A)
+print(&#x27;APARTEMAN final score: &#x27; ,  (r2_A + (1-mape_A) + accuracy_A )/3)
+
+
+print(&quot;VILAEA R2 Score:&quot;, r2_V)
+print(&quot;VILAEA MAPE:&quot;, (1-mape_V))
+print(&quot;VILAEA acc:&quot;, accuracy_V)
+print(&#x27;VILAEA final score: &#x27; ,  (r2_V + (1-mape_V) + accuracy_V )/3)
+
+
+# %%
+X
+</code></pre></details><details class="source-file" ><summary><bdi>MHD-Real-State.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/mashhad-real-estate/MHD-Real-State.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># %%
+import pandas as pd
+import numpy as np
+from matplotlib import pyplot as plt
+import seaborn as sns
+import re
+
+from sklearn.neighbors import KernelDensity
+pd.options.display.max_columns = None
+from sklearn import preprocessing
+
+from sklearn.model_selection import train_test_split, cross_validate
+from sklearn.linear_model import LinearRegression, Ridge  , LogisticRegression
+from sklearn.ensemble import GradientBoostingRegressor , RandomForestRegressor , HistGradientBoostingRegressor 
+from sklearn.metrics import mean_absolute_percentage_error , r2_score
+from sklearn.model_selection import train_test_split, cross_validate
+
+# from xgboost import XGBRegressor
+
+
+from sklearn.tree import DecisionTreeRegressor
+from geopy.geocoders import Nominatim
+from concurrent.futures import ThreadPoolExecutor
+# %%
+data= pd.read_csv(&#x27;train.csv&#x27;)
+data_test= pd.read_csv(&#x27;test.csv&#x27;)
+
+data
+# %%
+print(data.iloc[0][&#x27;description&#x27;])
+# %%
+data.info()
+# %% [markdown]
+# # Data prepration &amp;  EDA
+# %%
+data[&#x27;price&#x27;]= data[&#x27;price&#x27;].apply(lambda x: re.sub(r&#x27;[^\d]&#x27;, &#x27;&#x27;, x))
+data[&#x27;price&#x27;]=data[&#x27;price&#x27;].replace(&#x27;&#x27; , &#x27;0&#x27;)
+data[&#x27;price&#x27;]=data[&#x27;price&#x27;].astype(&#x27;int64&#x27;)
+
+data[&#x27;age&#x27;]= data[&#x27;age&#x27;].apply(lambda x: 0 if  x==&#x27;تازه ساز&#x27; else x)
+data[&#x27;age&#x27;]=data[&#x27;age&#x27;].apply(lambda x: str(x).replace(&#x27;سال ساخت&#x27; , &#x27;&#x27;))
+data[&#x27;age&#x27;]=data[&#x27;age&#x27;].replace(&#x27;nan&#x27; , np.nan)
+data[&#x27;age&#x27;]=data[&#x27;age&#x27;].astype(&#x27;float64&#x27;)
+
+data[&#x27;floor&#x27;]=data[&#x27;floor&#x27;].apply(lambda x: str(x).replace(&#x27;همکف&#x27; , &#x27;0&#x27;))
+data[&#x27;floor&#x27;]=data[&#x27;floor&#x27;].astype(&#x27;int64&#x27;)
+# %%
+data.info()
+# %%
+#drop or fill 
+data=data.dropna(subset=[&#x27;bedrooms&#x27; , &#x27;latitude&#x27; , &#x27;longitude&#x27; , &#x27;age&#x27; , &#x27;neighborhood&#x27;])
+data.reset_index(inplace=True , drop=True)
+
+# %%
+data.info()
+# %%
+#خونه هایی هست که سرش مغازه داره! :)
+j=0
+for i in range(data.index.max()):
+    if &#x27;مغازه&#x27; in str(data[&#x27;description&#x27;][i]) and data[&#x27;floor&#x27;][i]==0:
+        print(data[&#x27;description&#x27;][i] + &#x27;=======&gt;&#x27; + str(i))
+        print(&#x27;///////////////////////////////////////////////////////////////////////////////////////////////////////&#x27;)
+        
+        j+=1
+        
+print(&#x27;sum of shop : &#x27;  + str(j))
+# %%
+#خونه هایی هست که سرش مغازه داره! :) in test data
+
+j=0
+for i in range(data_test.index.max()):
+    if &#x27;مغازه&#x27; in str(data_test[&#x27;description&#x27;][i]) and data[&#x27;floor&#x27;][i]==0 :
+        print(data_test[&#x27;description&#x27;][i] + &#x27;=======&gt;&#x27; + str(i))
+        print(&#x27;///////////////////////////////////////////////////////////////////////////////////////////////////////&#x27;)
+        
+        j+=1
+        
+print(&#x27;sum of shop : &#x27;  + str(j))
+# %%
+data.describe()
+# %%
+#cleaning &quot;age&quot; column
+data[&#x27;age&#x27;]=data[&#x27;age&#x27;].apply(lambda x: 1402-x if x&gt;100 else x)
+data[data[&#x27;age&#x27;]==98]=1402-1398
+# %%
+index = data[(data[&#x27;price&#x27;]%1000)!=0].index
+data.iloc[index]
+# %%
+j=0
+for i in data[(data[&#x27;price&#x27;]%1000)!=0][&#x27;price&#x27;].index:
+    print(str(data[&#x27;price&#x27;][i]) + &#x27;====&gt;&#x27; + str(i))
+    j+=1
+print(j)
+# %%
+data= data[~((data[&#x27;price&#x27;]%100000)!=0)]
+data.reset_index(inplace=True , drop=True)
+data
+# %%
+(data[data[&#x27;type&#x27;]==&#x27;فروش ویلایی&#x27;][&#x27;price&#x27;]==0).sum()
+# %%
+(data[&#x27;price&#x27;]==0).sum()
+# %%
+data[&#x27;type&#x27;].value_counts()
+# %%
+data= data[~(data[&#x27;price&#x27;]==0)]
+data.reset_index(inplace=True , drop=True)
+data
+# %%
+data[&#x27;price&#x27;].describe()
+# %%
+(data[data[&#x27;area&#x27;]&gt;=1000][&#x27;type&#x27;]==&#x27;فروش آپارتمان&#x27;).sum()
+# %%
+data.info()
+# %%
+#drop data with area value more than 1000 AND type is apartemani
+data = data[~((data[&#x27;area&#x27;] &gt;= 1000) &amp; (data[&#x27;type&#x27;] ==&#x27;فروش آپارتمان&#x27;))]
+data.reset_index(inplace=True , drop=True)
+data
+# %%
+#drop data with area value less than 30
+data= data[~(data[&#x27;area&#x27;]&lt; 30)]
+data.reset_index(inplace=True , drop=True)
+data
+# %%
+data.describe()
+# %%
+#extract 
+data[&#x27;region&#x27;]= data[&#x27;neighborhood&#x27;].apply(lambda x: (str(x).strip().split(&quot; &quot;)[1])  if (len(str(x).strip().split(&quot; &quot;)))&gt;1 else np.nan).astype(&#x27;float32&#x27;)
+# %%
+#drop record by region and price
+
+#data =data[~((data[&#x27;price&#x27;] &gt; data[&#x27;price&#x27;].quantile(0.999)) &amp; (data[&#x27;type&#x27;]==&#x27;فروش آپارتمان&#x27;) &amp; (data[&#x27;region&#x27;] != 9) &amp; (data[&#x27;region&#x27;] != 1))]
+data =data[~((data[&#x27;price&#x27;] &gt; data[&#x27;price&#x27;].quantile(0.99)))]
+#data =data[~((data[&#x27;price&#x27;] &gt; data[&#x27;price&#x27;].quantile(0.999)) &amp; (data[&#x27;type&#x27;]==&#x27;فروش آپارتمان&#x27;))]
+data.reset_index(inplace=True , drop=True)
+# %%
+data
+# %%
+#drop record by value &lt; 0 in floor
+data = data[~(data[&#x27;floor&#x27;]&lt;0)]
+data.reset_index(inplace=True , drop=True)
+data
+# %%
+data.describe()
+# %%
+#new feature
+data[&#x27;price_meter&#x27;]=data[&#x27;price&#x27;]/data[&#x27;area&#x27;]
+# %%
+data.describe()
+# %%
+data[&#x27;type&#x27;][0] 
+# %%
+# 1 : vilaea &amp; 0 : apartemani
+data[&#x27;type&#x27;]=data[&#x27;type&#x27;].apply(lambda x: 0 if x==&#x27;فروش آپارتمان&#x27; else 1)
+# %%
+data[&#x27;type&#x27;][0] 
+# %% [markdown]
+# # EDA
+# %%
+plt.figure(figsize=(10,10))
+sns.scatterplot(data=data[data[&#x27;type&#x27;]==0], x=&quot;area&quot;, y=&quot;price&quot;, hue=&quot;region&quot; , legend=True)
+# %%
+plt.figure(figsize=(10,10))
+sns.scatterplot(data= data[(data[&#x27;type&#x27;]==1) &amp;  (data[&#x27;area&#x27;] &lt; data[&#x27;area&#x27;].quantile(0.99)) ] , x=&quot;area&quot;, y=&quot;price&quot;, hue=&quot;region&quot; , legend=True)
+# %%
+plt.figure(figsize=(10,10))
+sns.scatterplot(data=data[data[&#x27;type&#x27;]==0], x=&quot;age&quot;, y=&quot;price&quot;, hue=&quot;region&quot; , legend=True)
+# %%
+plt.figure(figsize=(10,10))
+sns.scatterplot(data= data[(data[&#x27;type&#x27;]==1) &amp;  (data[&#x27;area&#x27;] &lt; data[&#x27;area&#x27;].quantile(0.99)) ] , x=&quot;age&quot;, y=&quot;price&quot;, hue=&quot;region&quot; , legend=True)
+# %%
+plt.figure(figsize=(10,10))
+sns.scatterplot(data=data[data[&#x27;type&#x27;]==0], x=&quot;floor&quot;, y=&quot;price&quot;, hue=&quot;region&quot; , legend=True)
+# %%
+plt.figure(figsize=(10,10))
+sns.scatterplot(data= data[(data[&#x27;type&#x27;]==1) &amp;  (data[&#x27;area&#x27;] &lt; data[&#x27;area&#x27;].quantile(0.99)) ] , x=&quot;floor&quot;, y=&quot;price&quot;, hue=&quot;region&quot; , legend=True)
+# %%
+data.info()
+# %%
+data.head(1)
+# %%
+data[&#x27;area&#x27;].describe()
+# %%
+data[&#x27;type&#x27;].value_counts()
+# %%
+
+# %% [markdown]
+# # Model Selection
+# %%
+data
+# %%
+X = data.drop([&#x27;price&#x27; , &#x27;description&#x27; , &#x27;neighborhood&#x27; , &#x27;price_meter&#x27; ], axis=1)
+#X = data.drop([&#x27;price&#x27; , &#x27;description&#x27; , &#x27;neighborhood&#x27;  ], axis=1)
+y = data[&#x27;price&#x27;]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.05, random_state=42)
+# %%
+def fit_and_evaluate(model, X_train, y_train, X_test, y_test, tolerance=0.2):
+    # Fit the model
+    model.fit(X_train, y_train)
+    
+    # Make predictions
+    y_pred = model.predict(X_test)
+    
+    # R2 Score
+    r2 = r2_score(y_test, y_pred)
+    
+    # Mean Absolute Percentage Error (MAPE)
+    mape= mean_absolute_percentage_error(y_test, y_pred)
+    
+    #range accuracy
+    correct_count = 0
+    total_count = len(y_test)
+
+    for true, predicted in zip(y_test, y_pred):
+        if abs(true - predicted) &lt;= tolerance*true:
+            correct_count += 1
+
+    accuracy = (correct_count / total_count)
+    
+    #Scatterplot
+    plt.scatter(y_test, y_pred)
+    plt.show()
+    
+    return r2, mape , accuracy
+# %% [markdown]
+# # Basic Model
+# %%
+model = LinearRegression()
+
+r2, mape , accuracy = fit_and_evaluate(model, X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+# %% [markdown]
+# # DecisionTree
+# %%
+model = DecisionTreeRegressor(criterion=&#x27;absolute_error&#x27;,  max_depth=20 , random_state=5 )
+
+r2, mape , accuracy = fit_and_evaluate(model, X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+# %%
+model = DecisionTreeRegressor(criterion=&#x27;squared_error&#x27;,  max_depth=20 , random_state=5 )
+
+r2, mape , accuracy = fit_and_evaluate(model, X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+# %% [markdown]
+# # Model 1
+# %%
+model = GradientBoostingRegressor(loss=&#x27;huber&#x27; , n_estimators=250 ,  max_depth=10 , random_state=5 )
+
+r2, mape , accuracy = fit_and_evaluate(model, X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+# %%
+data_test
+# %% [markdown]
+# # Model 2
+# %%
+model = RandomForestRegressor(n_estimators=500 ,  max_depth=300 , random_state=5 , n_jobs=-1 )
+
+r2, mape , accuracy = fit_and_evaluate(model, X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+# %%
+
+# %% [markdown]
+# # Type 2
+# %%
+X_A = data[data[&#x27;type&#x27;]==0].drop([&#x27;price&#x27; , &#x27;description&#x27; , &#x27;neighborhood&#x27; , &#x27;price_meter&#x27; , &#x27;type&#x27; ], axis=1)
+y_A = data[data[&#x27;type&#x27;]==0][&#x27;price&#x27;]
+price_bin_A=pd.cut(data[data[&#x27;type&#x27;]==0][&#x27;price&#x27;] , 10)
+X_train_A, X_test_A, y_train_A, y_test_A = train_test_split(X_A , y_A , test_size=0.05, random_state=42 , stratify=price_bin_A)
+
+
+X_V = data[data[&#x27;type&#x27;]==1].drop([&#x27;price&#x27; , &#x27;description&#x27; , &#x27;neighborhood&#x27; , &#x27;price_meter&#x27; , &#x27;type&#x27;], axis=1)
+y_V = data[data[&#x27;type&#x27;]==1][&#x27;price&#x27;]
+price_bin_V=pd.cut(data[data[&#x27;type&#x27;]==1][&#x27;price&#x27;] , 10)
+X_train_V , X_test_V, y_train_V, y_test_V = train_test_split(X_V , y_V , test_size=0.05, random_state=42 , stratify=price_bin_V)
+
+
+# %%
+model_A = GradientBoostingRegressor(loss=&#x27;huber&#x27; , n_estimators=250 ,  max_depth=10 , random_state=5 ,  )
+model_V = GradientBoostingRegressor(loss=&#x27;huber&#x27; , n_estimators=250 ,  max_depth=10 , random_state=5 ,  )
+
+r2_A , mape_A , accuracy_A = fit_and_evaluate(model_A, X_train_A , y_train_A , X_test_A , y_test_A)
+r2_V , mape_V , accuracy_V = fit_and_evaluate(model_V, X_train_V , y_train_V , X_test_V , y_test_V )
+
+print(&quot;APARTEMAN R2 Score:&quot;, r2_A)
+print(&quot;APARTEMAN MAPE:&quot;, (1-mape_A))
+print(&quot;APARTEMAN acc:&quot;, accuracy_A)
+print(&#x27;APARTEMAN final score: &#x27; ,  (r2_A + (1-mape_A) + accuracy_A )/3)
+
+
+print(&quot;VILAEA R2 Score:&quot;, r2_V)
+print(&quot;VILAEA MAPE:&quot;, (1-mape_V))
+print(&quot;VILAEA acc:&quot;, accuracy_V)
+print(&#x27;VILAEA final score: &#x27; ,  (r2_V + (1-mape_V) + accuracy_V )/3)
+
+# %%
+X</code></pre></details><details class="source-file" ><summary><bdi>PreProcessing_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/mashhad-real-estate/PreProcessing_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Exported notebook code; may contain IPython commands.
+# %%
+!pip install pandas numpy
+
+# %%
+import pandas as pd
+import numpy as np
+import re
+
+# %%
+PERSIAN_DIGITS = str.maketrans(&quot;۰۱۲۳۴۵۶۷۸۹&quot;, &quot;0123456789&quot;)
+
+def normalize_text(x):
+    if pd.isna(x):
+        return &quot;&quot;
+    s = str(x)
+    s = s.translate(PERSIAN_DIGITS)
+    s = s.replace(&quot;ي&quot;, &quot;ی&quot;).replace(&quot;ك&quot;, &quot;ک&quot;)
+    return re.sub(r&quot;\s+&quot;, &quot; &quot;, s).strip()
+
+def clean_price(x):
+    s = normalize_text(x)
+    s = re.sub(r&quot;[^\d]&quot;, &quot;&quot;, s)
+    return pd.to_numeric(s, errors=&quot;coerce&quot;)
+
+def clean_age(x):
+    s = normalize_text(x)
+    if &quot;تازه&quot; in s:
+        return 0
+    s = s.replace(&quot;سال ساخت&quot;, &quot;&quot;)
+    return pd.to_numeric(s, errors=&quot;coerce&quot;)
+
+def clean_floor(x):
+    s = normalize_text(x)
+    if &quot;همکف&quot; in s:
+        return 0
+    return pd.to_numeric(s, errors=&quot;coerce&quot;)
+
+# %%
+def extract_features(desc):
+    s = normalize_text(desc)
+
+    return pd.Series({
+        &quot;parking&quot;: int(&quot;پارکینگ&quot; in s and &quot;ندارد&quot; not in s),
+        &quot;anbari&quot;: int(&quot;انباری&quot; in s and &quot;ندارد&quot; not in s),
+        &quot;asansor&quot;: int(&quot;آسانسور&quot; in s and &quot;ندارد&quot; not in s),
+        &quot;renovated&quot;: int(&quot;نوساز&quot; in s or &quot;بازسازی&quot; in s),
+        &quot;shop&quot;: int(&quot;مغازه&quot; in s),
+        &quot;south&quot;: int(&quot;جنوبی&quot; in s),
+        &quot;north&quot;: int(&quot;شمالی&quot; in s),
+    })
+
+# %%
+train = pd.read_csv(&quot;train.csv&quot;)
+test = pd.read_csv(&quot;test.csv&quot;)
+
+train.head()
+
+# %%
+train[&quot;price&quot;] = train[&quot;price&quot;].apply(clean_price)
+train[&quot;age&quot;] = train[&quot;age&quot;].apply(clean_age)
+train[&quot;floor&quot;] = train[&quot;floor&quot;].apply(clean_floor)
+
+train[&quot;type&quot;] = train[&quot;type&quot;].apply(lambda x: 0 if &quot;آپارتمان&quot; in str(x) else 1)
+
+train[&quot;region&quot;] = train[&quot;neighborhood&quot;].apply(
+    lambda x: int(str(x).split()[1]) if len(str(x).split()) &gt; 1 else np.nan
+)
+
+# %%
+features = train[&quot;description&quot;].fillna(&quot;&quot;).apply(extract_features)
+train = pd.concat([train, features], axis=1)
+
+train.head()
+
+# %%
+train = train.dropna(subset=[&quot;price&quot;, &quot;area&quot;, &quot;bedrooms&quot;, &quot;latitude&quot;, &quot;longitude&quot;])
+train = train.reset_index(drop=True)
+
+# %%
+train.to_csv(&quot;train_processed.csv&quot;, index=False)
+print(&quot;Saved!&quot;)
+
+# %%
+
+
+# %%
+
+</code></pre></details><details class="source-file" ><summary><bdi>pre-process_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/mashhad-real-estate/pre-process_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Exported notebook code; may contain IPython commands.
+# %%
+!pip install pandas matplotlib seaborn scikit-learn
+
+# %%
+import pandas as pd
+import numpy as np
+from matplotlib import pyplot as plt
+import seaborn as sns
+
+from sklearn.neighbors import KernelDensity
+pd.options.display.max_columns = None
+from sklearn import preprocessing
+
+from sklearn.model_selection import train_test_split, cross_validate 
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.linear_model import LinearRegression, Ridge  , LogisticRegression , QuantileRegressor
+from sklearn.ensemble import GradientBoostingRegressor , RandomForestRegressor , HistGradientBoostingRegressor 
+from sklearn.metrics import mean_absolute_percentage_error , r2_score
+from sklearn.model_selection import train_test_split, cross_validate
+
+# %%
+df_test=pd.read_csv(&#x27;test.csv&#x27;)
+
+# %%
+df_test
+
+# %%
+# df.drop(columns=[&quot;Unnamed: 0&quot;],inplace=True)
+
+# %%
+df_test[&#x27;description&#x27;].fillna(&#x27;&#x27;, inplace=True)
+
+# %%
+df_test[&#x27;description&#x27;].fillna(&#x27;&#x27;, inplace=True)
+
+# %%
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;آسانسور ندارد&quot;,&quot; &quot;)
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;سانسور ندارد&quot;,&quot; &quot;)
+
+# %%
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;آسانسور ندارد&quot;,&quot; &quot;)
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;سانسور ندارد&quot;,&quot; &quot;)
+
+# %%
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;پارکینگ ندارد&quot;,&quot; &quot;)
+
+# %%
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;پارکینگ ندارد&quot;,&quot; &quot;)
+
+# %%
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;انباری ندارد&quot;,&quot; &quot;)
+
+# %%
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;انباری ندارد&quot;,&quot; &quot;)
+
+# %%
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;تراس ندارد&quot;,&quot; &quot;)
+
+# %%
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;تراس ندارد&quot;,&quot; &quot;)
+
+# %%
+df_test.columns
+
+# %%
+df_test.drop(columns=[&#x27;advantage&#x27;,&#x27;anbari&#x27;,&#x27;parking&#x27;,&#x27;asansor&#x27;],inplace=True)
+
+# %%
+df_test.drop(&#x27;price_meter&#x27;,axis=1,inplace=True)
+
+# %%
+def print_random_des(feature):
+    i=np.random.randint(len(df_test))
+    print(df_test.iloc[i][feature])
+    return i
+print_random_des(&#x27;description&#x27;)
+
+
+# %%
+import re
+
+def remove_emojis(data):
+    emoj = re.compile(&quot;[&quot;
+        u&quot;\U0001F600-\U0001F64F&quot;  # emoticons
+        u&quot;\U0001F300-\U0001F5FF&quot;  # symbols &amp; pictographs
+        u&quot;\U0001F680-\U0001F6FF&quot;  # transport &amp; map symbols
+        u&quot;\U0001F1E0-\U0001F1FF&quot;  # flags (iOS)
+        u&quot;\U00002500-\U00002BEF&quot;  # chinese char
+        u&quot;\U00002702-\U000027B0&quot;
+        u&quot;\U00002702-\U000027B0&quot;
+        u&quot;\U000024C2-\U0001F251&quot;
+        u&quot;\U0001f926-\U0001f937&quot;
+        u&quot;\U00010000-\U0010ffff&quot;
+        u&quot;\u2640-\u2642&quot; 
+        u&quot;\u2600-\u2B55&quot;
+        u&quot;\u200d&quot;
+        u&quot;\u23cf&quot;
+        u&quot;\u23e9&quot;
+        u&quot;\u231a&quot;
+        u&quot;\ufe0f&quot;  # dingbats
+        u&quot;\u3030&quot;
+                      &quot;]+&quot;, re.UNICODE)
+    return re.sub(emoj, &#x27; &#x27;, data)
+
+def remove_parentheses(text):
+    return re.sub(r&#x27;[()]&#x27;, &#x27; &#x27;,text)
+
+def remove_links(data):
+    return re.sub(&quot;https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&amp;\\/=]*)&quot;, &#x27; &#x27;, data)
+
+def normalizing_lines(text):          
+    return re.sub(r&#x27;(\n)+&#x27;, r&#x27; &#x27;,text)
+
+def normalizing_punctuations(text):
+    text = re.sub(&#x27;[`~@#$%^&amp;*\-_=+/\\|\[\]&lt;&gt;{}\&#x27;«»&quot;]&#x27;, &#x27; &#x27;, text)
+    text=text.strip()
+    return re.sub(r&#x27;([:!?,;،.])+&#x27;, r&#x27; &#x27;, text)
+
+def normalize_whitespaces(data):
+    data = re.sub(&quot;\n+&quot;, &quot; &quot;, data)
+    data = re.sub(&quot;  +&quot;, &#x27; &#x27;, data)
+    data = re.sub(&quot;\t+&quot;, &quot; &quot;, data)
+    data = re.sub(&quot;\r+&quot;, &quot; &quot;, data)
+    data = re.sub(&quot;\v+&quot;, &quot; &quot;, data)
+    data = re.sub(&quot;\f+&quot;, &quot; &quot;, data)
+    return data
+
+def preprocessing_pipeline(text):
+    text=remove_emojis(text)
+    text=remove_links(text)
+    text=remove_parentheses(text)
+    text=normalizing_lines(text)
+    text=normalize_whitespaces(text)
+    text=normalizing_punctuations(text)
+    return text
+
+# %%
+#not_nan_val=df[&#x27;description&#x27;].isna().values
+df_test[&#x27;description_cleaned&#x27;]=df_test[&#x27;description&#x27;].apply(preprocessing_pipeline)
+
+# %%
+df_test[&#x27;description_cleaned&#x27;]=df_test[&#x27;description&#x27;].apply(preprocessing_pipeline)
+
+# %%
+print_random_des(&#x27;description_cleaned&#x27;)
+
+# %%
+from hazm import *
+
+# %%
+normalizer=Normalizer()
+df[&#x27;description_cleaned&#x27;]=df[&#x27;description_cleaned&#x27;].apply(normalizer.normalize)
+
+# %%
+df_test[&#x27;description_cleaned&#x27;]=df_test[&#x27;description_cleaned&#x27;].apply(normalizer.normalize)
+
+# %%
+print_random_des(&#x27;description_cleaned&#x27;)
+
+
+# %%
+df[&#x27;final_description&#x27;]=df[&#x27;description_cleaned&#x27;].apply(lambda x: &#x27; &#x27;.join([word for word in word_tokenize(x) if word not in stopwords_list()]))
+
+# %%
+df_test[&#x27;final_description&#x27;]=df_test[&#x27;description_cleaned&#x27;].apply(lambda x: &#x27; &#x27;.join([word for word in word_tokenize(x) if word not in stopwords_list()]))
+
+# %%
+df.to_csv(&#x27;final_cvs&#x27;)
+
+# %%
+df_test.to_csv(&#x27;test_final_cvs&#x27;)
+
+# %%
+print_random_des(&#x27;final_description&#x27;)
+
+
+# %%
+print(df[&#x27;description&#x27;].iloc[25938])
+
+# %%
+import pandas as pd
+import numpy as np
+from matplotlib import pyplot as plt
+import seaborn as sns
+
+from sklearn.neighbors import KernelDensity
+pd.options.display.max_columns = None
+from sklearn import preprocessing
+
+from sklearn.model_selection import train_test_split, cross_validate 
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.linear_model import LinearRegression, Ridge  , LogisticRegression , QuantileRegressor
+from sklearn.ensemble import GradientBoostingRegressor , RandomForestRegressor , HistGradientBoostingRegressor 
+from sklearn.metrics import mean_absolute_percentage_error , r2_score
+from sklearn.model_selection import train_test_split, cross_validate
+
+# %%
+df=pd.read_csv(&#x27;final_cvs.csv&#x27;)
+df.drop(columns=[&quot;Unnamed: 0&quot;],inplace=True)
+df_test=pd.read_csv(&#x27;test_final_cvs.csv&#x27;)
+df_test.drop(columns=[&quot;Unnamed: 0&quot;],inplace=True)
+
+# %%
+df
+
+# %%
+import plotly.express as px
+px.scatter(df , x=&quot;longitude&quot;, y=&quot;latitude&quot;, hover_name=&quot;neighborhood&quot;, width=400, height=400)
+
+# %%
+df.columns
+
+# %%
+df.info()
+
+# %%
+df.describe()
+
+# %%
+df[&#x27;type&#x27;]=df[&#x27;type&#x27;].astype(&#x27;int8&#x27;)
+df[&#x27;floor&#x27;]=df[&#x27;floor&#x27;].astype(&#x27;int8&#x27;)
+df[&#x27;bedrooms&#x27;]=df[&#x27;bedrooms&#x27;].astype(&#x27;int16&#x27;)
+df[&#x27;sanad&#x27;]=df[&#x27;sanad&#x27;].astype(&#x27;int8&#x27;)
+
+
+# %%
+shuffle_indices = np.random.choice(np.arange(df.shape[0]), size=100, replace=False)
+df_shuffled = df.iloc[shuffle_indices].reset_index(drop=True)
+
+# %%
+df_shuffled
+
+# %%
+import pandas as pd
+import networkx as nx
+from geopy.distance import geodesic
+
+G = nx.Graph()
+
+for index, row in df_shuffled.iterrows():
+    G.add_node(index, pos=(row[&#x27;latitude&#x27;], row[&#x27;longitude&#x27;]), Type=row[&#x27;type&#x27;], area=row[&#x27;area&#x27;], neighborhood=row[&#x27;neighborhood&#x27;] ,
+               description=row[&#x27;description&#x27;] , age=row[&#x27;age&#x27;] , floor=row[&#x27;floor&#x27;] , bedrooms=row[&#x27;bedrooms&#x27;] ,price=row[&#x27;price&#x27;] ,
+              region=row[&#x27;region&#x27;] , sanad=row[&#x27;sanad&#x27;] , final_description=row[&#x27;final_description&#x27;] )
+
+
+
+# %%
+from scipy.spatial import cKDTree
+
+coords = np.radians(df_shuffled[[&#x27;latitude&#x27;, &#x27;longitude&#x27;]].values)
+tree = cKDTree(coords)
+
+radius = 1 / 6371.0
+
+pairs = tree.query_pairs(radius)
+
+# %%
+from tqdm import tqdm
+
+for i, j in tqdm(pairs):
+    coord1 = (df_shuffled.loc[i, &#x27;latitude&#x27;], df_shuffled.loc[i, &#x27;longitude&#x27;])
+    coord2 = (df_shuffled.loc[j, &#x27;latitude&#x27;], df_shuffled.loc[j, &#x27;longitude&#x27;])
+    distance = geodesic(coord1, coord2).kilometers
+    G.add_edge(i, j, weight=distance)
+
+# %%
+for node in G.nodes(data=True):
+    print(f&quot;Node {node[0]}: {node[1]}&quot;)
+
+for edge in G.edges(data=True):
+    print(f&quot;Edge {edge[0]}-{edge[1]}: {edge[2]}&quot;)
+
+# %%
+G.nodes[0]
+
+# %%
+adj_matrix = nx.adjacency_matrix(G).todense()
+
+print(&quot;Adjacency Matrix:&quot;)
+print(adj_matrix)
+
+# %%
+G.adj[0]
+
+# %%
+import matplotlib.pyplot as plt
+import networkx as nx
+
+
+pos = nx.spring_layout(G, seed=42) 
+
+plt.figure(figsize=(12, 10)) 
+nx.draw(
+    G,
+    pos,
+    with_labels=True,
+    node_size=100, 
+    node_color=&quot;skyblue&quot;, 
+    edge_color=&quot;gray&quot;,  
+    font_size=10,  
+    font_color=&quot;black&quot;,  
+    font_weight=&quot;bold&quot;, 
+    width=1.0, 
+    alpha=0.7  
+)
+
+plt.title(&quot;Real Estate Network Graph&quot;, fontsize=15, fontweight=&#x27;bold&#x27;)
+plt.xlabel(&quot;X Coordinate&quot;, fontsize=12)
+plt.ylabel(&quot;Y Coordinate&quot;, fontsize=12)
+
+# نمایش پلات
+plt.show()
+
+
+# %%
+# Save graph to GraphML file
+nx.write_gml(G, &quot;real_estate_network.gml&quot;)
+
+# %%
+# import networkx as nx
+# import matplotlib.pyplot as plt
+
+# # Read the graph from a GML file
+# G = nx.read_gml(&quot;real_estate_network.gml&quot;)
+
+# # Print basic information about the graph
+# print(&quot;Number of nodes:&quot;, G.number_of_nodes())
+# print(&quot;Number of edges:&quot;, G.number_of_edges())
+
+# # Print some nodes and their attributes
+# print(&quot;\nNodes and their attributes:&quot;)
+# for node in list(G.nodes(data=True))[:5]:  # Show first 5 nodes
+#     print(node)
+
+# # Print some edges and their attributes
+# print(&quot;\nEdges and their attributes:&quot;)
+# for edge in list(G.edges(data=True))[:5]:  # Show first 5 edges
+#     print(edge)
+
+# # Draw the graph
+# pos = nx.spring_layout(G, seed=42)  # Use a layout algorithm
+# plt.figure(figsize=(12, 10))
+# nx.draw(G, pos, with_labels=True, node_size=100, node_color=&quot;skyblue&quot;, edge_color=&quot;gray&quot;, font_size=8, width=0.5)
+# plt.title(&quot;Loaded Real Estate Network&quot;)
+# plt.show()
+
+
+# %%
+import networkx as nx
+import pandas as pd
+
+# Read the graph from the GML file
+G = nx.read_gml(&quot;real_estate_network.gml&quot;)
+
+# Convert nodes to DataFrame
+nodes_data = pd.DataFrame.from_dict(dict(G.nodes(data=True)), orient=&#x27;index&#x27;)
+nodes_data.reset_index(inplace=True)
+nodes_data.rename(columns={&#x27;index&#x27;: &#x27;node_id&#x27;}, inplace=True)
+
+# Convert edges to DataFrame
+edges_data = pd.DataFrame(list(G.edges(data=True)), columns=[&#x27;source&#x27;, &#x27;target&#x27;, &#x27;attributes&#x27;])
+
+# Expand attributes dictionary into separate columns
+edges_data = pd.concat([edges_data.drop([&#x27;attributes&#x27;], axis=1), edges_data[&#x27;attributes&#x27;].apply(pd.Series)], axis=1)
+
+
+edges_data
+
+# %%
+import networkx as nx
+import pandas as pd
+
+# Read the graph from the GML file
+G = nx.read_gml(&quot;real_estate_network.gml&quot;)
+
+# Convert nodes to DataFrame
+nodes_data = pd.DataFrame.from_dict(dict(G.nodes(data=True)), orient=&#x27;index&#x27;)
+nodes_data.reset_index(inplace=True)
+nodes_data.rename(columns={&#x27;index&#x27;: &#x27;node_id&#x27;}, inplace=True)
+
+# Convert edges to DataFrame
+edges_data = pd.DataFrame(list(G.edges(data=True)), columns=[&#x27;source&#x27;, &#x27;target&#x27;, &#x27;attributes&#x27;])
+edges_data = pd.concat([edges_data.drop([&#x27;attributes&#x27;], axis=1), edges_data[&#x27;attributes&#x27;].apply(pd.Series)], axis=1)
+
+# # Print columns before merging
+# print(&quot;Columns before merging:&quot;)
+# print(edges_data.columns)
+# print(nodes_data.columns)
+
+# Merge node attributes into edges DataFrame
+edges_data = edges_data \
+    .merge(nodes_data, left_on=&#x27;source&#x27;, right_on=&#x27;node_id&#x27;, suffixes=(&#x27;&#x27;, &#x27;_source&#x27;)) \
+    .merge(nodes_data, left_on=&#x27;target&#x27;, right_on=&#x27;node_id&#x27;, suffixes=(&#x27;&#x27;, &#x27;_target&#x27;))
+
+# Print columns after merging
+print(&quot;\nColumns after merging:&quot;)
+print(edges_data.columns)
+
+# Drop redundant columns
+edges_data = edges_data.drop(columns=[&#x27;node_id_source&#x27;, &#x27;node_id_target&#x27;], errors=&#x27;ignore&#x27;)
+
+# Print the merged DataFrame for inspection
+print(&quot;\nMerged DataFrame:&quot;)
+edges_data
+
+
+# %%
+nodes_data
+
+# %%
+import pandas as pd
+import numpy as np
+from scipy.spatial import cKDTree
+from geopy.distance import geodesic
+import networkx as nx
+from tqdm import tqdm
+import matplotlib.pyplot as plt
+import geopandas as gpd
+from shapely.geometry import Point
+import contextily as ctx
+
+# Assuming df_shuffled and G have been created previously
+
+# Create a GeoDataFrame for use with contextily
+gdf = gpd.GeoDataFrame(df_shuffled, 
+                       geometry=gpd.points_from_xy(df_shuffled.longitude, df_shuffled.latitude),
+                       crs=&quot;EPSG:4326&quot;)
+
+# Convert CRS to a metric coordinate system (e.g., &quot;EPSG:3857&quot;)
+gdf = gdf.to_crs(epsg=3857)
+
+# Create the plot and axes
+fig, ax = plt.subplots(figsize=(12, 10))
+
+# Plot the base map
+gdf.plot(ax=ax, color=&#x27;red&#x27;, markersize=10, alpha=0.7, edgecolor=&#x27;k&#x27;)
+
+# Draw the graph
+pos = nx.get_node_attributes(G, &#x27;pos&#x27;)
+
+# Convert geographic coordinates to metric coordinates
+pos_metric = {k: (v[1], v[0]) for k, v in pos.items()}  # Switch latitude and longitude
+
+# Draw the graph with enhanced settings
+nx.draw(G, pos=pos_metric, ax=ax, with_labels=True, node_size=100, node_color=&quot;skyblue&quot;, edge_color=&quot;gray&quot;, font_size=8, width=0.5, alpha=0.7)
+
+# Add the OpenStreetMap basemap with a suitable zoom level
+ctx.add_basemap(ax, crs=gdf.crs.to_string(), zoom=10, alpha=0.3)
+
+# Display the plot
+plt.title(&quot;Real Estate Locations and Their Connections&quot;)
+plt.xlabel(&quot;Longitude&quot;)
+plt.ylabel(&quot;Latitude&quot;)
+plt.show()
+
+# %%
+# !pip install geopandas -U
+# !pip show geopandas
+
+# %%
+!pip install contextily
+
+# %%
+!pip install shapely
+
+# %%
+df[&#x27;price&#x27;]=np.log(df[&#x27;price&#x27;])
+df[&#x27;price&#x27;].skew()
+df[&#x27;area&#x27;]=np.log(df[&#x27;area&#x27;])
+df[&#x27;area&#x27;].skew()
+
+# %%
+df[&#x27;final_description&#x27;].fillna(&quot;&quot;,inplace=True)
+df_test[&#x27;final_description&#x27;].fillna(&quot;&quot;,inplace=True)
+
+# %%
+
+
+# %%
+from sklearn.feature_extraction.text import CountVectorizer
+
+# %%
+bow=CountVectorizer(min_df=0.01)
+x_docTerm=bow.fit_transform(df[&#x27;final_description&#x27;])
+
+# %%
+x_docTerm.shape
+
+# %%
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+# %%
+tf=TfidfVectorizer(min_df=0.01)
+x_docTerm_tf=tf.fit_transform(df[&#x27;final_description&#x27;])
+
+# %%
+def fit_and_evaluate(model, X_train, y_train, X_test, y_test, tolerance=0.2):
+    # Fit the model
+    model.fit(X_train, y_train)
+    
+    # Make predictions
+    y_pred = model.predict(X_test)
+    
+    # R2 Score
+    r2 = r2_score(y_test, y_pred)
+    
+    # Mean Absolute Percentage Error (MAPE)
+    mape= mean_absolute_percentage_error(y_test, y_pred)
+    
+    #range accuracy
+    correct_count = 0
+    total_count = len(y_test)
+
+    for true, predicted in zip(y_test, y_pred):
+        if abs(true - predicted) &lt;= tolerance*true:
+            correct_count += 1
+
+    accuracy = (correct_count / total_count)
+    
+    #Scatterplot
+    plt.scatter(y_test, y_pred)
+    plt.show()
+    
+    return r2, mape , accuracy
+
+# %%
+region_bin=pd.cut(df[&#x27;region&#x27;] ,6)
+price_bin=pd.cut(df[&#x27;price&#x27;] , 2)
+area_bin=pd.cut(df[&#x27;area&#x27;] , 2)
+type_bin=pd.cut(df[&#x27;type&#x27;] , 2)
+
+df[&#x27;price_bin&#x27;]=price_bin
+df[&#x27;region_bin&#x27;]=region_bin
+df[&#x27;type_bin&#x27;]=type_bin
+df[&#x27;area_bin&#x27;]=area_bin
+X = df.drop([&#x27;price&#x27; , &#x27;description&#x27; , &#x27;neighborhood&#x27; , &#x27;price_bin&#x27; , &#x27;region_bin&#x27; , &#x27;type_bin&#x27; , &#x27;area_bin&#x27;,&#x27;description_cleaned&#x27;,&#x27;final_description&#x27;], axis=1).values
+y = df[&#x27;price&#x27;].values
+
+# %%
+X_bow=np.hstack((X,x_docTerm.toarray()))
+
+# %%
+X_tf=np.hstack((X,x_docTerm_tf.toarray()))
+
+# %%
+X_train, X_test, y_train, y_test = train_test_split(X_bow, y, test_size=0.05, stratify=df[[&#x27;region_bin&#x27; , &#x27;price_bin&#x27; , &#x27;type_bin&#x27; , &#x27;area_bin&#x27;]] ,random_state=42)
+
+# %%
+model = LinearRegression()
+
+r2, mape , accuracy = fit_and_evaluate(model, X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+
+# %%
+model = DecisionTreeRegressor(criterion=&#x27;absolute_error&#x27;,  max_depth=10 , random_state=5 )
+
+r2, mape , accuracy = fit_and_evaluate(model, X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+
+# %%
+model_1 = GradientBoostingRegressor(loss=&#x27;huber&#x27; , n_estimators=250 ,  max_depth=10 , random_state=5  )
+
+r2, mape , accuracy = fit_and_evaluate(model_1,X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+
+# %%
+hist_1 = HistGradientBoostingRegressor ( loss=&#x27;absolute_error&#x27; , learning_rate=0.5 , max_depth=150 , random_state=5 , max_leaf_nodes=100 
+                                        , min_samples_leaf=5)
+
+r2, mape , accuracy = fit_and_evaluate(hist_1 ,  X_train , y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+
+# %%
+model_2 = GradientBoostingRegressor(loss=&#x27;squared_error&#x27; , n_estimators=250 ,  max_depth=10 , random_state=5 )
+
+r2, mape , accuracy = fit_and_evaluate(model_2,X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+
+# %%
+from sklearn.svm import SVR
+
+
+# %%
+model_3 = SVR(kernel=&#x27;linear&#x27;)
+
+r2, mape , accuracy = fit_and_evaluate(model_3,X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+
+# %%
+from xgboost import XGBRegressor
+
+
+# %%
+model_4 = XGBRegressor(n_estimators=500 , learning_rate=0.01 , gamma=0, subsample=0.75 ,max_depth=10,random_state=5,
+                   min_child_weight=1,colsample_bytree=0.8)
+
+r2, mape , accuracy = fit_and_evaluate(model_4, X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+
+# %%
+def config_test_data(data):
+    
+    #fillna
+    data=data.fillna(&#x27;&#x27;)
+    
+    #extract 
+    data[&#x27;region&#x27;]= data[&#x27;neighborhood&#x27;].apply(lambda x: (str(x).strip().split(&quot; &quot;)[1])  if (len(str(x).strip().split(&quot; &quot;)))&gt;1 else np.nan).astype(&#x27;float32&#x27;)
+    
+    # 1 : vilaea &amp; 0 : apartemani
+    data[&#x27;type&#x27;]=data[&#x27;type&#x27;].apply(lambda x: 0 if x==&#x27;فروش آپارتمان&#x27; else 1)
+    
+
+    
+    #extract sanad
+    data[&#x27;sanad&#x27;]=0
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&#x27;سند&#x27;)].index]=1
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&#x27;سند آماده&#x27;)].index]=1
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&#x27;تک‌برگ&#x27;)].index]=1
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&#x27;سند تک&#x27;)].index]=1
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&quot;قول نامه ای&quot;)].index]=2
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&quot;قول نامه&quot;)].index]=2
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&quot;قولنامه&quot;)].index]=2
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&quot;قولنامه‌ای&quot;)].index]=2
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&quot;قول‌نامه‌ای&quot;)].index]=2
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&#x27;سند تک‌برگ&#x27;)].index]=1
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&#x27;سند‌تک‌برگ&#x27;)].index]=1
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&#x27;سند : سایر&#x27;)].index]=3
+    
+    data[&#x27;area&#x27;]=np.log(data[&#x27;area&#x27;])    #neww
+
+    data=data.drop([&#x27;description&#x27; , &#x27;neighborhood&#x27;,&quot;description_cleaned&quot;] , axis=1)
+
+    return data    
+
+# %%
+df_test=config_test_data(df_test)
+
+# %%
+df_test
+
+# %%
+x_docTerm_test=bow.transform(df_test[&#x27;final_description&#x27;])
+
+# %%
+x_test=df_test.drop(columns=[&quot;final_description&quot;,&quot;price&quot;]).values
+
+# %%
+x_test=np.hstack((x_test,x_docTerm_test.toarray()))
+
+# %%
+y_pred = model_1.predict(x_test)
+
+# %%
+data_predict={&quot;price&quot; : np.exp(y_pred)}
+
+# %%
+a=pd.DataFrame(data_predict)
+a
+
+# %%
+
+
+# %%
+model_1 = GradientBoostingRegressor(loss=&#x27;huber&#x27; , n_estimators=250 ,  max_depth=10 , random_state=5  )
+
+
+# Fit the model
+model_1.fit(X_bow , y)
+
+
+# %%
+
+</code></pre></details><details class="source-file" ><summary><bdi>pre-process.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/sml/mashhad-real-estate/pre-process.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># %%
+!pip install pandas matplotlib seaborn scikit-learn
+# %%
+import pandas as pd
+import numpy as np
+from matplotlib import pyplot as plt
+import seaborn as sns
+
+from sklearn.neighbors import KernelDensity
+pd.options.display.max_columns = None
+from sklearn import preprocessing
+
+from sklearn.model_selection import train_test_split, cross_validate 
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.linear_model import LinearRegression, Ridge  , LogisticRegression , QuantileRegressor
+from sklearn.ensemble import GradientBoostingRegressor , RandomForestRegressor , HistGradientBoostingRegressor 
+from sklearn.metrics import mean_absolute_percentage_error , r2_score
+from sklearn.model_selection import train_test_split, cross_validate
+# %%
+df_test=pd.read_csv(&#x27;test.csv&#x27;)
+# %%
+df_test
+# %%
+# df.drop(columns=[&quot;Unnamed: 0&quot;],inplace=True)
+# %% [markdown]
+# ## Description preprocessing
+# %%
+df_test[&#x27;description&#x27;].fillna(&#x27;&#x27;, inplace=True)
+# %%
+df_test[&#x27;description&#x27;].fillna(&#x27;&#x27;, inplace=True)
+# %%
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;آسانسور ندارد&quot;,&quot; &quot;)
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;سانسور ندارد&quot;,&quot; &quot;)
+# %%
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;آسانسور ندارد&quot;,&quot; &quot;)
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;سانسور ندارد&quot;,&quot; &quot;)
+# %%
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;پارکینگ ندارد&quot;,&quot; &quot;)
+# %%
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;پارکینگ ندارد&quot;,&quot; &quot;)
+# %%
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;انباری ندارد&quot;,&quot; &quot;)
+# %%
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;انباری ندارد&quot;,&quot; &quot;)
+# %%
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;تراس ندارد&quot;,&quot; &quot;)
+# %%
+df_test[&#x27;description&#x27;]=df_test.description.str.replace(&quot;تراس ندارد&quot;,&quot; &quot;)
+# %%
+df_test.columns
+# %%
+df_test.drop(columns=[&#x27;advantage&#x27;,&#x27;anbari&#x27;,&#x27;parking&#x27;,&#x27;asansor&#x27;],inplace=True)
+# %%
+df_test.drop(&#x27;price_meter&#x27;,axis=1,inplace=True)
+# %%
+def print_random_des(feature):
+    i=np.random.randint(len(df_test))
+    print(df_test.iloc[i][feature])
+    return i
+print_random_des(&#x27;description&#x27;)
+
+# %%
+import re
+
+def remove_emojis(data):
+    emoj = re.compile(&quot;[&quot;
+        u&quot;\U0001F600-\U0001F64F&quot;  # emoticons
+        u&quot;\U0001F300-\U0001F5FF&quot;  # symbols &amp; pictographs
+        u&quot;\U0001F680-\U0001F6FF&quot;  # transport &amp; map symbols
+        u&quot;\U0001F1E0-\U0001F1FF&quot;  # flags (iOS)
+        u&quot;\U00002500-\U00002BEF&quot;  # chinese char
+        u&quot;\U00002702-\U000027B0&quot;
+        u&quot;\U00002702-\U000027B0&quot;
+        u&quot;\U000024C2-\U0001F251&quot;
+        u&quot;\U0001f926-\U0001f937&quot;
+        u&quot;\U00010000-\U0010ffff&quot;
+        u&quot;\u2640-\u2642&quot; 
+        u&quot;\u2600-\u2B55&quot;
+        u&quot;\u200d&quot;
+        u&quot;\u23cf&quot;
+        u&quot;\u23e9&quot;
+        u&quot;\u231a&quot;
+        u&quot;\ufe0f&quot;  # dingbats
+        u&quot;\u3030&quot;
+                      &quot;]+&quot;, re.UNICODE)
+    return re.sub(emoj, &#x27; &#x27;, data)
+
+def remove_parentheses(text):
+    return re.sub(r&#x27;[()]&#x27;, &#x27; &#x27;,text)
+
+def remove_links(data):
+    return re.sub(&quot;https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&amp;\\/=]*)&quot;, &#x27; &#x27;, data)
+
+def normalizing_lines(text):          
+    return re.sub(r&#x27;(\n)+&#x27;, r&#x27; &#x27;,text)
+
+def normalizing_punctuations(text):
+    text = re.sub(&#x27;[`~@#$%^&amp;*\-_=+/\\|\[\]&lt;&gt;{}\&#x27;«»&quot;]&#x27;, &#x27; &#x27;, text)
+    text=text.strip()
+    return re.sub(r&#x27;([:!?,;،.])+&#x27;, r&#x27; &#x27;, text)
+
+def normalize_whitespaces(data):
+    data = re.sub(&quot;\n+&quot;, &quot; &quot;, data)
+    data = re.sub(&quot;  +&quot;, &#x27; &#x27;, data)
+    data = re.sub(&quot;\t+&quot;, &quot; &quot;, data)
+    data = re.sub(&quot;\r+&quot;, &quot; &quot;, data)
+    data = re.sub(&quot;\v+&quot;, &quot; &quot;, data)
+    data = re.sub(&quot;\f+&quot;, &quot; &quot;, data)
+    return data
+
+def preprocessing_pipeline(text):
+    text=remove_emojis(text)
+    text=remove_links(text)
+    text=remove_parentheses(text)
+    text=normalizing_lines(text)
+    text=normalize_whitespaces(text)
+    text=normalizing_punctuations(text)
+    return text
+# %%
+#not_nan_val=df[&#x27;description&#x27;].isna().values
+df_test[&#x27;description_cleaned&#x27;]=df_test[&#x27;description&#x27;].apply(preprocessing_pipeline)
+# %%
+df_test[&#x27;description_cleaned&#x27;]=df_test[&#x27;description&#x27;].apply(preprocessing_pipeline)
+# %%
+print_random_des(&#x27;description_cleaned&#x27;)
+# %% [markdown]
+# ### hazm
+# 
+# %%
+from hazm import *
+# %%
+normalizer=Normalizer()
+df[&#x27;description_cleaned&#x27;]=df[&#x27;description_cleaned&#x27;].apply(normalizer.normalize)
+# %%
+df_test[&#x27;description_cleaned&#x27;]=df_test[&#x27;description_cleaned&#x27;].apply(normalizer.normalize)
+# %%
+print_random_des(&#x27;description_cleaned&#x27;)
+
+# %%
+df[&#x27;final_description&#x27;]=df[&#x27;description_cleaned&#x27;].apply(lambda x: &#x27; &#x27;.join([word for word in word_tokenize(x) if word not in stopwords_list()]))
+# %%
+df_test[&#x27;final_description&#x27;]=df_test[&#x27;description_cleaned&#x27;].apply(lambda x: &#x27; &#x27;.join([word for word in word_tokenize(x) if word not in stopwords_list()]))
+# %%
+df.to_csv(&#x27;final_cvs&#x27;)
+# %%
+df_test.to_csv(&#x27;test_final_cvs&#x27;)
+# %%
+print_random_des(&#x27;final_description&#x27;)
+
+# %%
+print(df[&#x27;description&#x27;].iloc[25938])
+# %% [markdown]
+# # import preprocessed dataFrame 
+# %%
+import pandas as pd
+import numpy as np
+from matplotlib import pyplot as plt
+import seaborn as sns
+
+from sklearn.neighbors import KernelDensity
+pd.options.display.max_columns = None
+from sklearn import preprocessing
+
+from sklearn.model_selection import train_test_split, cross_validate 
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.linear_model import LinearRegression, Ridge  , LogisticRegression , QuantileRegressor
+from sklearn.ensemble import GradientBoostingRegressor , RandomForestRegressor , HistGradientBoostingRegressor 
+from sklearn.metrics import mean_absolute_percentage_error , r2_score
+from sklearn.model_selection import train_test_split, cross_validate
+# %%
+df=pd.read_csv(&#x27;final_cvs.csv&#x27;)
+df.drop(columns=[&quot;Unnamed: 0&quot;],inplace=True)
+df_test=pd.read_csv(&#x27;test_final_cvs.csv&#x27;)
+df_test.drop(columns=[&quot;Unnamed: 0&quot;],inplace=True)
+# %% [markdown]
+# ### Make Graph
+# %%
+df
+# %%
+import plotly.express as px
+px.scatter(df , x=&quot;longitude&quot;, y=&quot;latitude&quot;, hover_name=&quot;neighborhood&quot;, width=400, height=400)
+# %%
+df.columns
+# %%
+df.info()
+# %%
+df.describe()
+# %%
+df[&#x27;type&#x27;]=df[&#x27;type&#x27;].astype(&#x27;int8&#x27;)
+df[&#x27;floor&#x27;]=df[&#x27;floor&#x27;].astype(&#x27;int8&#x27;)
+df[&#x27;bedrooms&#x27;]=df[&#x27;bedrooms&#x27;].astype(&#x27;int16&#x27;)
+df[&#x27;sanad&#x27;]=df[&#x27;sanad&#x27;].astype(&#x27;int8&#x27;)
+
+# %%
+shuffle_indices = np.random.choice(np.arange(df.shape[0]), size=100, replace=False)
+df_shuffled = df.iloc[shuffle_indices].reset_index(drop=True)
+# %%
+df_shuffled
+# %%
+import pandas as pd
+import networkx as nx
+from geopy.distance import geodesic
+
+G = nx.Graph()
+
+for index, row in df_shuffled.iterrows():
+    G.add_node(index, pos=(row[&#x27;latitude&#x27;], row[&#x27;longitude&#x27;]), Type=row[&#x27;type&#x27;], area=row[&#x27;area&#x27;], neighborhood=row[&#x27;neighborhood&#x27;] ,
+               description=row[&#x27;description&#x27;] , age=row[&#x27;age&#x27;] , floor=row[&#x27;floor&#x27;] , bedrooms=row[&#x27;bedrooms&#x27;] ,price=row[&#x27;price&#x27;] ,
+              region=row[&#x27;region&#x27;] , sanad=row[&#x27;sanad&#x27;] , final_description=row[&#x27;final_description&#x27;] )
+
+
+# %%
+from scipy.spatial import cKDTree
+
+coords = np.radians(df_shuffled[[&#x27;latitude&#x27;, &#x27;longitude&#x27;]].values)
+tree = cKDTree(coords)
+
+radius = 1 / 6371.0
+
+pairs = tree.query_pairs(radius)
+# %%
+from tqdm import tqdm
+
+for i, j in tqdm(pairs):
+    coord1 = (df_shuffled.loc[i, &#x27;latitude&#x27;], df_shuffled.loc[i, &#x27;longitude&#x27;])
+    coord2 = (df_shuffled.loc[j, &#x27;latitude&#x27;], df_shuffled.loc[j, &#x27;longitude&#x27;])
+    distance = geodesic(coord1, coord2).kilometers
+    G.add_edge(i, j, weight=distance)
+# %%
+for node in G.nodes(data=True):
+    print(f&quot;Node {node[0]}: {node[1]}&quot;)
+
+for edge in G.edges(data=True):
+    print(f&quot;Edge {edge[0]}-{edge[1]}: {edge[2]}&quot;)
+# %%
+G.nodes[0]
+# %%
+adj_matrix = nx.adjacency_matrix(G).todense()
+
+print(&quot;Adjacency Matrix:&quot;)
+print(adj_matrix)
+# %%
+G.adj[0]
+# %%
+import matplotlib.pyplot as plt
+import networkx as nx
+
+
+pos = nx.spring_layout(G, seed=42) 
+
+plt.figure(figsize=(12, 10)) 
+nx.draw(
+    G,
+    pos,
+    with_labels=True,
+    node_size=100, 
+    node_color=&quot;skyblue&quot;, 
+    edge_color=&quot;gray&quot;,  
+    font_size=10,  
+    font_color=&quot;black&quot;,  
+    font_weight=&quot;bold&quot;, 
+    width=1.0, 
+    alpha=0.7  
+)
+
+plt.title(&quot;Real Estate Network Graph&quot;, fontsize=15, fontweight=&#x27;bold&#x27;)
+plt.xlabel(&quot;X Coordinate&quot;, fontsize=12)
+plt.ylabel(&quot;Y Coordinate&quot;, fontsize=12)
+
+# نمایش پلات
+plt.show()
+
+# %%
+# Save graph to GraphML file
+nx.write_gml(G, &quot;real_estate_network.gml&quot;)
+# %%
+# import networkx as nx
+# import matplotlib.pyplot as plt
+
+# # Read the graph from a GML file
+# G = nx.read_gml(&quot;real_estate_network.gml&quot;)
+
+# # Print basic information about the graph
+# print(&quot;Number of nodes:&quot;, G.number_of_nodes())
+# print(&quot;Number of edges:&quot;, G.number_of_edges())
+
+# # Print some nodes and their attributes
+# print(&quot;\nNodes and their attributes:&quot;)
+# for node in list(G.nodes(data=True))[:5]:  # Show first 5 nodes
+#     print(node)
+
+# # Print some edges and their attributes
+# print(&quot;\nEdges and their attributes:&quot;)
+# for edge in list(G.edges(data=True))[:5]:  # Show first 5 edges
+#     print(edge)
+
+# # Draw the graph
+# pos = nx.spring_layout(G, seed=42)  # Use a layout algorithm
+# plt.figure(figsize=(12, 10))
+# nx.draw(G, pos, with_labels=True, node_size=100, node_color=&quot;skyblue&quot;, edge_color=&quot;gray&quot;, font_size=8, width=0.5)
+# plt.title(&quot;Loaded Real Estate Network&quot;)
+# plt.show()
+
+# %%
+import networkx as nx
+import pandas as pd
+
+# Read the graph from the GML file
+G = nx.read_gml(&quot;real_estate_network.gml&quot;)
+
+# Convert nodes to DataFrame
+nodes_data = pd.DataFrame.from_dict(dict(G.nodes(data=True)), orient=&#x27;index&#x27;)
+nodes_data.reset_index(inplace=True)
+nodes_data.rename(columns={&#x27;index&#x27;: &#x27;node_id&#x27;}, inplace=True)
+
+# Convert edges to DataFrame
+edges_data = pd.DataFrame(list(G.edges(data=True)), columns=[&#x27;source&#x27;, &#x27;target&#x27;, &#x27;attributes&#x27;])
+
+# Expand attributes dictionary into separate columns
+edges_data = pd.concat([edges_data.drop([&#x27;attributes&#x27;], axis=1), edges_data[&#x27;attributes&#x27;].apply(pd.Series)], axis=1)
+
+
+edges_data
+# %%
+import networkx as nx
+import pandas as pd
+
+# Read the graph from the GML file
+G = nx.read_gml(&quot;real_estate_network.gml&quot;)
+
+# Convert nodes to DataFrame
+nodes_data = pd.DataFrame.from_dict(dict(G.nodes(data=True)), orient=&#x27;index&#x27;)
+nodes_data.reset_index(inplace=True)
+nodes_data.rename(columns={&#x27;index&#x27;: &#x27;node_id&#x27;}, inplace=True)
+
+# Convert edges to DataFrame
+edges_data = pd.DataFrame(list(G.edges(data=True)), columns=[&#x27;source&#x27;, &#x27;target&#x27;, &#x27;attributes&#x27;])
+edges_data = pd.concat([edges_data.drop([&#x27;attributes&#x27;], axis=1), edges_data[&#x27;attributes&#x27;].apply(pd.Series)], axis=1)
+
+# # Print columns before merging
+# print(&quot;Columns before merging:&quot;)
+# print(edges_data.columns)
+# print(nodes_data.columns)
+
+# Merge node attributes into edges DataFrame
+edges_data = edges_data \
+    .merge(nodes_data, left_on=&#x27;source&#x27;, right_on=&#x27;node_id&#x27;, suffixes=(&#x27;&#x27;, &#x27;_source&#x27;)) \
+    .merge(nodes_data, left_on=&#x27;target&#x27;, right_on=&#x27;node_id&#x27;, suffixes=(&#x27;&#x27;, &#x27;_target&#x27;))
+
+# Print columns after merging
+print(&quot;\nColumns after merging:&quot;)
+print(edges_data.columns)
+
+# Drop redundant columns
+edges_data = edges_data.drop(columns=[&#x27;node_id_source&#x27;, &#x27;node_id_target&#x27;], errors=&#x27;ignore&#x27;)
+
+# Print the merged DataFrame for inspection
+print(&quot;\nMerged DataFrame:&quot;)
+edges_data
+
+# %%
+nodes_data
+# %%
+import pandas as pd
+import numpy as np
+from scipy.spatial import cKDTree
+from geopy.distance import geodesic
+import networkx as nx
+from tqdm import tqdm
+import matplotlib.pyplot as plt
+import geopandas as gpd
+from shapely.geometry import Point
+import contextily as ctx
+
+# Assuming df_shuffled and G have been created previously
+
+# Create a GeoDataFrame for use with contextily
+gdf = gpd.GeoDataFrame(df_shuffled, 
+                       geometry=gpd.points_from_xy(df_shuffled.longitude, df_shuffled.latitude),
+                       crs=&quot;EPSG:4326&quot;)
+
+# Convert CRS to a metric coordinate system (e.g., &quot;EPSG:3857&quot;)
+gdf = gdf.to_crs(epsg=3857)
+
+# Create the plot and axes
+fig, ax = plt.subplots(figsize=(12, 10))
+
+# Plot the base map
+gdf.plot(ax=ax, color=&#x27;red&#x27;, markersize=10, alpha=0.7, edgecolor=&#x27;k&#x27;)
+
+# Draw the graph
+pos = nx.get_node_attributes(G, &#x27;pos&#x27;)
+
+# Convert geographic coordinates to metric coordinates
+pos_metric = {k: (v[1], v[0]) for k, v in pos.items()}  # Switch latitude and longitude
+
+# Draw the graph with enhanced settings
+nx.draw(G, pos=pos_metric, ax=ax, with_labels=True, node_size=100, node_color=&quot;skyblue&quot;, edge_color=&quot;gray&quot;, font_size=8, width=0.5, alpha=0.7)
+
+# Add the OpenStreetMap basemap with a suitable zoom level
+ctx.add_basemap(ax, crs=gdf.crs.to_string(), zoom=10, alpha=0.3)
+
+# Display the plot
+plt.title(&quot;Real Estate Locations and Their Connections&quot;)
+plt.xlabel(&quot;Longitude&quot;)
+plt.ylabel(&quot;Latitude&quot;)
+plt.show()
+# %%
+# !pip install geopandas -U
+# !pip show geopandas
+# %%
+!pip install contextily
+# %%
+!pip install shapely
+# %% [markdown]
+# ### BOW
+# %% [markdown]
+# log transform
+# %%
+df[&#x27;price&#x27;]=np.log(df[&#x27;price&#x27;])
+df[&#x27;price&#x27;].skew()
+df[&#x27;area&#x27;]=np.log(df[&#x27;area&#x27;])
+df[&#x27;area&#x27;].skew()
+# %%
+df[&#x27;final_description&#x27;].fillna(&quot;&quot;,inplace=True)
+df_test[&#x27;final_description&#x27;].fillna(&quot;&quot;,inplace=True)
+# %%
+
+# %%
+from sklearn.feature_extraction.text import CountVectorizer
+# %%
+bow=CountVectorizer(min_df=0.01)
+x_docTerm=bow.fit_transform(df[&#x27;final_description&#x27;])
+# %%
+x_docTerm.shape
+# %% [markdown]
+# ### Tf-idf
+# %%
+from sklearn.feature_extraction.text import TfidfVectorizer
+# %%
+tf=TfidfVectorizer(min_df=0.01)
+x_docTerm_tf=tf.fit_transform(df[&#x27;final_description&#x27;])
+# %% [markdown]
+# ## Model training
+# %%
+def fit_and_evaluate(model, X_train, y_train, X_test, y_test, tolerance=0.2):
+    # Fit the model
+    model.fit(X_train, y_train)
+    
+    # Make predictions
+    y_pred = model.predict(X_test)
+    
+    # R2 Score
+    r2 = r2_score(y_test, y_pred)
+    
+    # Mean Absolute Percentage Error (MAPE)
+    mape= mean_absolute_percentage_error(y_test, y_pred)
+    
+    #range accuracy
+    correct_count = 0
+    total_count = len(y_test)
+
+    for true, predicted in zip(y_test, y_pred):
+        if abs(true - predicted) &lt;= tolerance*true:
+            correct_count += 1
+
+    accuracy = (correct_count / total_count)
+    
+    #Scatterplot
+    plt.scatter(y_test, y_pred)
+    plt.show()
+    
+    return r2, mape , accuracy
+# %% [markdown]
+# ### feature selection
+# %%
+region_bin=pd.cut(df[&#x27;region&#x27;] ,6)
+price_bin=pd.cut(df[&#x27;price&#x27;] , 2)
+area_bin=pd.cut(df[&#x27;area&#x27;] , 2)
+type_bin=pd.cut(df[&#x27;type&#x27;] , 2)
+
+df[&#x27;price_bin&#x27;]=price_bin
+df[&#x27;region_bin&#x27;]=region_bin
+df[&#x27;type_bin&#x27;]=type_bin
+df[&#x27;area_bin&#x27;]=area_bin
+X = df.drop([&#x27;price&#x27; , &#x27;description&#x27; , &#x27;neighborhood&#x27; , &#x27;price_bin&#x27; , &#x27;region_bin&#x27; , &#x27;type_bin&#x27; , &#x27;area_bin&#x27;,&#x27;description_cleaned&#x27;,&#x27;final_description&#x27;], axis=1).values
+y = df[&#x27;price&#x27;].values
+# %%
+X_bow=np.hstack((X,x_docTerm.toarray()))
+# %%
+X_tf=np.hstack((X,x_docTerm_tf.toarray()))
+# %%
+X_train, X_test, y_train, y_test = train_test_split(X_bow, y, test_size=0.05, stratify=df[[&#x27;region_bin&#x27; , &#x27;price_bin&#x27; , &#x27;type_bin&#x27; , &#x27;area_bin&#x27;]] ,random_state=42)
+# %% [markdown]
+# ## Basic model
+# %%
+model = LinearRegression()
+
+r2, mape , accuracy = fit_and_evaluate(model, X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+# %% [markdown]
+# ## DecisionTree
+# %%
+model = DecisionTreeRegressor(criterion=&#x27;absolute_error&#x27;,  max_depth=10 , random_state=5 )
+
+r2, mape , accuracy = fit_and_evaluate(model, X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+# %% [markdown]
+# #### Model 1
+# %%
+model_1 = GradientBoostingRegressor(loss=&#x27;huber&#x27; , n_estimators=250 ,  max_depth=10 , random_state=5  )
+
+r2, mape , accuracy = fit_and_evaluate(model_1,X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+# %% [markdown]
+# ### hist
+# %%
+hist_1 = HistGradientBoostingRegressor ( loss=&#x27;absolute_error&#x27; , learning_rate=0.5 , max_depth=150 , random_state=5 , max_leaf_nodes=100 
+                                        , min_samples_leaf=5)
+
+r2, mape , accuracy = fit_and_evaluate(hist_1 ,  X_train , y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+# %% [markdown]
+# #### Model 2
+# %%
+model_2 = GradientBoostingRegressor(loss=&#x27;squared_error&#x27; , n_estimators=250 ,  max_depth=10 , random_state=5 )
+
+r2, mape , accuracy = fit_and_evaluate(model_2,X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+# %% [markdown]
+# ### Model 3
+# %%
+from sklearn.svm import SVR
+
+# %%
+model_3 = SVR(kernel=&#x27;linear&#x27;)
+
+r2, mape , accuracy = fit_and_evaluate(model_3,X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+# %% [markdown]
+# ### Model 4
+# %%
+from xgboost import XGBRegressor
+
+# %%
+model_4 = XGBRegressor(n_estimators=500 , learning_rate=0.01 , gamma=0, subsample=0.75 ,max_depth=10,random_state=5,
+                   min_child_weight=1,colsample_bytree=0.8)
+
+r2, mape , accuracy = fit_and_evaluate(model_4, X_train, y_train, X_test, y_test)
+
+print(&quot;R2 Score:&quot;, r2)
+print(&quot;MAPE:&quot;, (1-mape))
+print(&quot;acc:&quot;, accuracy)
+print(&#x27;final score: &#x27; ,  (r2+(1-mape)+accuracy)/3)
+# %% [markdown]
+# ## Prediction
+# %%
+def config_test_data(data):
+    
+    #fillna
+    data=data.fillna(&#x27;&#x27;)
+    
+    #extract 
+    data[&#x27;region&#x27;]= data[&#x27;neighborhood&#x27;].apply(lambda x: (str(x).strip().split(&quot; &quot;)[1])  if (len(str(x).strip().split(&quot; &quot;)))&gt;1 else np.nan).astype(&#x27;float32&#x27;)
+    
+    # 1 : vilaea &amp; 0 : apartemani
+    data[&#x27;type&#x27;]=data[&#x27;type&#x27;].apply(lambda x: 0 if x==&#x27;فروش آپارتمان&#x27; else 1)
+    
+
+    
+    #extract sanad
+    data[&#x27;sanad&#x27;]=0
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&#x27;سند&#x27;)].index]=1
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&#x27;سند آماده&#x27;)].index]=1
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&#x27;تک‌برگ&#x27;)].index]=1
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&#x27;سند تک&#x27;)].index]=1
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&quot;قول نامه ای&quot;)].index]=2
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&quot;قول نامه&quot;)].index]=2
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&quot;قولنامه&quot;)].index]=2
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&quot;قولنامه‌ای&quot;)].index]=2
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&quot;قول‌نامه‌ای&quot;)].index]=2
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&#x27;سند تک‌برگ&#x27;)].index]=1
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&#x27;سند‌تک‌برگ&#x27;)].index]=1
+    data[&#x27;sanad&#x27;].iloc[data[data.description.str.contains(&#x27;سند : سایر&#x27;)].index]=3
+    
+    data[&#x27;area&#x27;]=np.log(data[&#x27;area&#x27;])    #neww
+
+    data=data.drop([&#x27;description&#x27; , &#x27;neighborhood&#x27;,&quot;description_cleaned&quot;] , axis=1)
+
+    return data    
+# %%
+df_test=config_test_data(df_test)
+# %%
+df_test
+# %%
+x_docTerm_test=bow.transform(df_test[&#x27;final_description&#x27;])
+# %%
+x_test=df_test.drop(columns=[&quot;final_description&quot;,&quot;price&quot;]).values
+# %%
+x_test=np.hstack((x_test,x_docTerm_test.toarray()))
+# %% [markdown]
+# #### Prediction 1
+# %%
+y_pred = model_1.predict(x_test)
+# %%
+data_predict={&quot;price&quot; : np.exp(y_pred)}
+# %%
+a=pd.DataFrame(data_predict)
+a
+# %%
+
+# %% [markdown]
+# # 100% train
+# %%
+model_1 = GradientBoostingRegressor(loss=&#x27;huber&#x27; , n_estimators=250 ,  max_depth=10 , random_state=5  )
+
+
+# Fit the model
+model_1.fit(X_bow , y)
+
+# %%
+</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw1-naive-bayes/">تمرین ۱: Gaussian Naive Bayes ←</a><a href="../hw3-image-denoising/">تمرین ۳: کاهش نویز تصویر با Sparse Coding ←</a><a href="../hw4-kernel-kmeans/">تمرین ۴: Kernel K-Means ←</a><a href="../study-notes/">یادداشت‌های مرور SML ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

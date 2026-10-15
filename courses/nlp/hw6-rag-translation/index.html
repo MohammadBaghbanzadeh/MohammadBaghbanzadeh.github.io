@@ -1,0 +1,1309 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="ساخت مسیر بازیابی با FAISS و تولید پاسخ، همراه با بخش ترجمهٔ ماشینی."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>تمرین ۶: RAG و Machine Translation · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">پردازش زبان طبیعی</a></nav><p class="eyebrow">نوت‌بوک</p><h1 class="work-title">تمرین ۶: RAG و Machine Translation</h1><p class="course-lead">ساخت مسیر بازیابی با FAISS و تولید پاسخ، همراه با بخش ترجمهٔ ماشینی.</p><div class="topic-list"><bdi class="topic">RAG</bdi><bdi class="topic">FAISS</bdi><bdi class="topic">Machine Translation</bdi></div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw6-rag-translation" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw6-rag-translation/rag_and_translation.ipynb" target="_blank" rel="noopener noreferrer"><bdi>rag_and_translation.ipynb</bdi><span class="file-meta">111 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw6-rag-translation/rag_and_translation_notebook.py" target="_blank" rel="noopener noreferrer"><bdi>rag_and_translation_notebook.py</bdi><span class="file-meta">43 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="notebook-notes"><summary>بخشی از توضیحات نوت‌بوک</summary><pre class="notes-preview">
+
+# تکالیف دوره NLP سری ۶: RAG-Powered Q&amp;A و Machine Translation
+
+**اطلاعات دانشجو:**
+- **نام:** محمد باغبان زاده
+- **درس:** NLP (HW6)
+- **شماره دانشجویی:** شناسهٔ دانشجو
+
+---
+
+## فهرست مطالب
+1. **[بخش ۱: دستیار پرسش و پاسخ RAG](#part-1)**
+   - 1.1 راه اندازی و Importها
+   - 1.2 بارگذاری Knowledge Base و Chunking
+   - 1.3 Embedding و FAISS Indexing
+   - 1.4 راه اندازی Generator (distilgpt2)
+   - 1.5 تابع پاسخ RAG
+   - 1.6 تست و مقایسه (RAG در مقابل LLM)
+   - 1.7 ارزیابی کمی
+   - 1.8 مصورسازی‌ها
+   - 1.9 گزارش و تحلیل
+2. **[بخش ۲: Machine Translation](#part-2)**
+   - 2.1 راه اندازی و تولید Dataset
+   - 2.2 دسته بندی داده‌ها (collate_fn)
+   - 2.3 Attention Masking
+   - 2.4 معماری مدل
+   - 2.5 حلقه Training
+   - 2.6 مصورسازی Training
+   - 2.7 Autoregressive Decoding
+   - 2.8 ارزیابی روی Test Set
+   - 2.9 Ablation و تحلیل
+   - 2.10 گزارش و تحلیل
+3. **[نتیجه گیری و مراجع](#conclusion)
+
+
+
+
+
+# بخش ۱: دستیار پرسش و پاسخ RAG
+
+## 1.1 راه اندازی و بارگذاری Knowledge Base
+ما کار را با بارگذاری `knowledge_database.txt` آغاز می‌کنیم و آمارهای متن خام آن را نمایش می‌دهیم (تعداد کل کاراکترها و تعداد پاراگراف‌ها) تا فرمت داده‌های اولیه خود را درک کنیم.
+
+</pre></details><details class="source-file" open><summary><bdi>rag_and_translation_notebook.py</bdi><span>کد</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw6-rag-translation/rag_and_translation_notebook.py" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code># Exported notebook code; may contain IPython commands.
+# %%
+import os
+import random
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import torch
+import transformers
+import sentence_transformers
+import faiss
+
+# Set global random seeds for reproducibility
+def set_seed(seed=42):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)
+    # Ensure deterministic behavior in PyTorch if applicable
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
+set_seed(42)
+
+# Set matplotlib defaults for high-quality plotting
+plt.rcParams[&#x27;figure.dpi&#x27;] = 150
+plt.rcParams[&#x27;savefig.dpi&#x27;] = 150
+sns.set_theme(style=&quot;whitegrid&quot;)
+
+print(&quot;Environment setup completed. Seed set to 42.&quot;)
+
+# %%
+import sys
+print(f&quot;Python version: {sys.version}&quot;)
+print(f&quot;PyTorch version: {torch.__version__}&quot;)
+print(f&quot;Transformers version: {transformers.__version__}&quot;)
+print(f&quot;Sentence Transformers version: {sentence_transformers.__version__}&quot;)
+print(f&quot;FAISS version: {faiss.__version__}&quot;)
+print(f&quot;NumPy version: {np.__version__}&quot;)
+print(f&quot;Pandas version: {pd.__version__}&quot;)
+
+# %%
+KB_PATH = &quot;knowledge_database.txt&quot;
+
+with open(KB_PATH, &quot;r&quot;, encoding=&quot;utf-8&quot;) as f:
+    raw_kb_content = f.read()
+
+print(f&quot;Knowledge Base Loaded Successfully.&quot;)
+print(f&quot;Total Characters: {len(raw_kb_content)}&quot;)
+print(f&quot;Number of Raw Lines: {len(raw_kb_content.splitlines())}&quot;)
+
+# Display the first few lines of the Knowledge Base
+print(&quot;\n--- Preview of Knowledge Base (First 500 characters) ---&quot;)
+print(raw_kb_content[:500] + &quot;...&quot;)
+
+# %%
+# Paragraphs are separated by double-newlines
+paragraphs = [p.strip() for p in raw_kb_content.split(&quot;\n\n&quot;) if p.strip()]
+
+# Let&#x27;s count statistics
+chunk_lengths = [len(p) for p in paragraphs]
+avg_length = sum(chunk_lengths) / len(paragraphs)
+min_length = min(chunk_lengths)
+max_length = max(chunk_lengths)
+
+print(f&quot;Number of Paragraph Chunks: {len(paragraphs)}&quot;)
+print(f&quot;Average Chunk Length: {avg_length:.2f} characters&quot;)
+print(f&quot;Min Chunk Length: {min_length} characters&quot;)
+print(f&quot;Max Chunk Length: {max_length} characters&quot;)
+
+# Display the list of chunks
+print(&quot;\n--- Listing All Chunks ---&quot;)
+for idx, chunk in enumerate(paragraphs):
+    print(f&quot;\n[Chunk {idx + 1}] (Length: {len(chunk)} chars):&quot;)
+    print(chunk)
+
+# %%
+import re
+
+# Sentence splitter: handles common abbreviations (Mr./Mrs./Dr./St.) and closing quotes
+SENT_PATTERN = (
+    r&#x27;(?&lt;!\bMr\.)(?&lt;!\bMrs\.)(?&lt;!\bDr\.)(?&lt;!\bSt\.)(?&lt;=[.!?])\s+&#x27;
+    r&#x27;|&#x27;
+    r&#x27;(?&lt;!\bMr\.)(?&lt;!\bMrs\.)(?&lt;!\bDr\.)(?&lt;!\bSt\.)(?&lt;=[.!?][&quot;\&#x27;])\s+&#x27;
+)
+
+def sentence_split(text: str) -&gt; list[str]:
+    &quot;&quot;&quot;Split a paragraph into individual sentences, respecting abbreviations.&quot;&quot;&quot;
+    return [s.strip() for s in re.split(SENT_PATTERN, text) if s.strip()]
+
+def sliding_window_chunks(paragraphs: list[str], window: int = 3, step: int = 2) -&gt; list[str]:
+    &quot;&quot;&quot;
+    Create overlapping sentence-level chunks.
+
+    Args:
+        paragraphs: List of paragraph strings.
+        window: Number of sentences per chunk.
+        step:   Advance this many sentences between chunks (overlap = window - step).
+
+    Returns:
+        List of chunk strings.
+    &quot;&quot;&quot;
+    chunks = []
+    for p in paragraphs:
+        sents = sentence_split(p)
+        if len(sents) &lt;= window:
+            # Short paragraph: keep as single chunk
+            chunks.append(&#x27; &#x27;.join(sents))
+        else:
+            for i in range(0, len(sents), step):
+                chunk = sents[i:i + window]
+                if len(chunk) &gt; 1:          # skip orphan single sentences at the end
+                    chunks.append(&#x27; &#x27;.join(chunk))
+    return chunks
+
+# Build sliding-window chunks (window=3 sentences, overlap=1)
+kb_chunks = sliding_window_chunks(paragraphs, window=3, step=2)
+
+# ── Stats comparison table ──────────────────────────────────────────────────
+sw_lengths = [len(c) for c in kb_chunks]
+print(&quot;═&quot; * 55)
+print(f&quot;{&#x27;Strategy&#x27;:&lt;30} {&#x27;Count&#x27;:&gt;6}  {&#x27;Avg len&#x27;:&gt;8}&quot;)
+print(&quot;─&quot; * 55)
+print(f&quot;{&#x27;Paragraph-based&#x27;:&lt;30} {len(paragraphs):&gt;6}  {sum(chunk_lengths)/len(paragraphs):&gt;7.1f}c&quot;)
+print(f&quot;{&#x27;Sliding-window (w=3, step=2)&#x27;:&lt;30} {len(kb_chunks):&gt;6}  {sum(sw_lengths)/len(kb_chunks):&gt;7.1f}c&quot;)
+print(&quot;═&quot; * 55)
+
+print(f&quot;\nFirst 5 sliding-window chunks:&quot;)
+for i, chunk in enumerate(kb_chunks[:5]):
+    print(f&quot;\n  [SW-Chunk {i+1}]&quot;)
+    print(f&quot;  {chunk}&quot;)
+
+# %%
+from sentence_transformers import SentenceTransformer
+
+EMBEDDING_MODEL_NAME = &quot;sentence-transformers/all-MiniLM-L6-v2&quot;
+
+# local_files_only=True avoids network round-trips after first download
+embedder = SentenceTransformer(EMBEDDING_MODEL_NAME, local_files_only=True)
+
+embedding_dim = embedder.get_embedding_dimension()
+param_count   = sum(p.numel() for p in embedder.parameters())
+
+print(f&quot;Model        : {EMBEDDING_MODEL_NAME}&quot;)
+print(f&quot;Embedding dim: {embedding_dim}&quot;)
+print(f&quot;Parameters   : {param_count:,}&quot;)
+print(f&quot;Device       : {embedder.device}&quot;)
+
+# %%
+import numpy as np
+
+print(f&quot;Encoding {len(kb_chunks)} chunks ...&quot;)
+chunk_embeddings = embedder.encode(
+    kb_chunks,
+    normalize_embeddings=True,   # unit-normalize → cosine ≡ inner product
+    show_progress_bar=True,
+    batch_size=32
+)
+
+print(f&quot;\nEmbedding matrix shape : {chunk_embeddings.shape}  (chunks × dim)&quot;)
+print(f&quot;dtype                  : {chunk_embeddings.dtype}&quot;)
+
+norms = np.linalg.norm(chunk_embeddings, axis=1)
+print(f&quot;All norms ≈ 1.0        : {np.allclose(norms, 1.0, atol=1e-5)}&quot;)
+print(f&quot;Norm range             : [{norms.min():.6f}, {norms.max():.6f}]&quot;)
+
+# %%
+import faiss
+import numpy as np
+
+EMBEDDING_DIM = chunk_embeddings.shape[1]
+
+# IndexFlatIP: exact inner-product search (= cosine similarity for unit vectors)
+faiss_index = faiss.IndexFlatIP(EMBEDDING_DIM)
+faiss_index.add(chunk_embeddings.astype(np.float32))
+
+print(&quot;FAISS Index Summary&quot;)
+print(&quot;═&quot; * 40)
+print(f&quot;  Index type    : IndexFlatIP&quot;)
+print(f&quot;  Embedding dim : {EMBEDDING_DIM}&quot;)
+print(f&quot;  Vectors stored: {faiss_index.ntotal}&quot;)
+print(f&quot;  Exact search  : True (brute-force)&quot;)
+
+# %%
+def retrieve(query: str, top_k: int = 3) -&gt; list[dict]:
+    &quot;&quot;&quot;
+    Retrieve the top-k most semantically similar KB chunks for a query.
+
+    Args:
+        query:  Natural-language question string.
+        top_k:  Number of chunks to return (default 3).
+
+    Returns:
+        List of dicts, each with: &#x27;rank&#x27;, &#x27;score&#x27; (cosine), &#x27;chunk_id&#x27;, &#x27;chunk&#x27;.
+    &quot;&quot;&quot;
+    # Embed and normalise the query (same pipeline as the KB chunks)
+    query_vec = embedder.encode([query], normalize_embeddings=True).astype(np.float32)
+
+    # Search FAISS: returns (scores, indices) arrays of shape (1, top_k)
+    scores, indices = faiss_index.search(query_vec, top_k)
+
+    results = []
+    for rank, (score, idx) in enumerate(zip(scores[0], indices[0]), start=1):
+        results.append({
+            &quot;rank&quot;:     rank,
+            &quot;score&quot;:    float(score),   # cosine similarity ∈ [-1, 1], higher is better
+            &quot;chunk_id&quot;: int(idx),
+            &quot;chunk&quot;:    kb_chunks[idx]
+        })
+    return results
+
+print(&quot;retrieve() defined — ready for use.&quot;)
+
+# %%
+import pandas as pd
+
+test_queries_retrieval = [
+    &quot;Who founded the Quantum Nexus Corporation?&quot;,
+    &quot;What is the capital of Aquatica?&quot;,
+    &quot;Where does the Lumis plant grow?&quot;,
+]
+
+for q in test_queries_retrieval:
+    results = retrieve(q, top_k=3)
+    print(f&quot;\n{&#x27;═&#x27;*72}&quot;)
+    print(f&quot;  Query: {q}&quot;)
+    print(f&quot;{&#x27;─&#x27;*72}&quot;)
+    for r in results:
+        # Truncate chunk for display
+        preview = r[&#x27;chunk&#x27;][:110] + (&quot;...&quot; if len(r[&#x27;chunk&#x27;]) &gt; 110 else &quot;&quot;)
+        print(f&quot;  [{r[&#x27;rank&#x27;]}] Score={r[&#x27;score&#x27;]:.4f}  |  {preview}&quot;)
+
+print(f&quot;\n{&#x27;═&#x27;*72}&quot;)
+print(&quot;\nObservation: Top-1 retrieval scores are &gt;0.72 for all queries,&quot;)
+print(&quot;indicating the embedder finds the correct KB paragraph confidently.&quot;)
+
+# %%
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
+
+GENERATOR_MODEL_NAME = &quot;distilgpt2&quot;
+MODEL_PATH = &quot;/path/to/user/.cache/huggingface/hub/models--distilbert--distilgpt2/snapshots/main&quot;
+
+# Load tokenizer and model locally
+tokenizer = GPT2Tokenizer.from_pretrained(MODEL_PATH, local_files_only=True)
+# distilgpt2 has no pad token by default — set it to eos_token
+tokenizer.pad_token = tokenizer.eos_token
+
+generator = GPT2LMHeadModel.from_pretrained(MODEL_PATH, local_files_only=True)
+generator.eval()
+
+# Print details
+vocab_size = tokenizer.vocab_size
+param_count = sum(p.numel() for p in generator.parameters())
+layers = generator.config.n_layer
+heads = generator.config.n_head
+hidden_size = generator.config.n_embd
+
+print(f&quot;Generator Model Name : {GENERATOR_MODEL_NAME}&quot;)
+print(f&quot;Vocabulary Size      : {vocab_size}&quot;)
+print(f&quot;Total Parameters     : {param_count:,}&quot;)
+print(f&quot;Number of Layers     : {layers}&quot;)
+print(f&quot;Number of Heads      : {heads}&quot;)
+print(f&quot;Hidden Size (d_model): {hidden_size}&quot;)
+print(f&quot;PAD Token ID         : {tokenizer.pad_token_id}&quot;)
+
+# %%
+import torch
+
+def answer_question(question: str, use_retrieval: bool = True, top_k: int = 3) -&gt; tuple[str, list[dict]]:
+    &quot;&quot;&quot;
+    Generate an answer to a question using the LLM, optionally grounded in retrieved context.
+
+    Args:
+        question:      Natural-language query.
+        use_retrieval: If True, retrieve context from FAISS and insert it into the prompt.
+        top_k:         Number of context chunks to retrieve.
+
+    Returns:
+        A tuple of (generated_answer_string, list_of_retrieved_chunk_dicts).
+    &quot;&quot;&quot;
+    retrieved_docs = []
+    
+    if use_retrieval:
+        # Retrieve nearest chunks
+        retrieved_docs = retrieve(question, top_k=top_k)
+        if retrieved_docs and retrieved_docs[0][&#x27;score&#x27;] &lt; 0.35:
+            return &quot;I don&#x27;t know the answer based on my current knowledge base.&quot;, retrieved_docs
+            
+        # Build context block
+        context_str = &quot;\n&quot;.join([f&quot;- {r[&#x27;chunk&#x27;]}&quot; for r in retrieved_docs])
+        prompt = f&quot;Context:\n{context_str}\n\nQuestion: {question}\nAnswer:&quot;
+    else:
+        # Pure-LLM prompt (no context)
+        prompt = f&quot;Question: {question}\nAnswer:&quot;
+        
+    # Truncate context if it&#x27;s too long for the model
+    inputs = tokenizer(prompt, return_tensors=&quot;pt&quot;)
+    if inputs[&quot;input_ids&quot;].shape[1] &gt; generator.config.n_ctx:
+        prompt = prompt[:generator.config.n_ctx * 3] # naive char heuristic
+        inputs = tokenizer(prompt, return_tensors=&quot;pt&quot;)
+    input_length = inputs[&quot;input_ids&quot;].shape[1]
+    input_length = inputs[&quot;input_ids&quot;].shape[1]
+    
+    # Generate tokens autoregressively (greedy decoding)
+    with torch.no_grad():
+        output = generator.generate(
+            **inputs,
+            max_new_tokens=50,
+            pad_token_id=tokenizer.eos_token_id,
+            num_return_sequences=1,
+            do_sample=False  # Greedy decoding for consistent, deterministic behavior
+        )
+        
+    # Decode only the newly generated tokens
+    new_tokens = output[0][input_length:]
+    answer = tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
+    
+    return answer, retrieved_docs
+
+print(&quot;answer_question() function successfully defined.&quot;)
+
+# %%
+# T2.3 Define the evaluation dataset with gold answers
+evaluation_set = [
+    {
+        &quot;id&quot;: &quot;Q1&quot;,
+        &quot;question&quot;: &quot;Who founded the Quantum Nexus Corporation?&quot;,
+        &quot;gold_answer&quot;: &quot;Dr. Aris Thorne founded the Quantum Nexus Corporation in 2012.&quot;
+    },
+    {
+        &quot;id&quot;: &quot;Q2&quot;,
+        &quot;question&quot;: &quot;What is the capital of Aquatica?&quot;,
+        &quot;gold_answer&quot;: &quot;The city of Neo-Veridia is the capital of Aquatica.&quot;
+    },
+    {
+        &quot;id&quot;: &quot;Q3&quot;,
+        &quot;question&quot;: &quot;Where does the Lumis plant grow?&quot;,
+        &quot;gold_answer&quot;: &quot;The rare Lumis plant only grows in the caverns of Mount Cinder.&quot;
+    },
+    {
+        &quot;id&quot;: &quot;Q4&quot;,
+        &quot;question&quot;: &quot;What is the primary currency of the galactic federation?&quot;,
+        &quot;gold_answer&quot;: &quot;The galactic federation&#x27;s primary currency is the StarCredit.&quot;
+    },
+    {
+        &quot;id&quot;: &quot;Q5&quot;,
+        &quot;question&quot;: &quot;Who invented the sport of Aero-Ball?&quot;,
+        &quot;gold_answer&quot;: &quot;The sport of Aero-Ball was invented by zero-gravity workers on the Luna-7 station.&quot;
+    },
+    {
+        &quot;id&quot;: &quot;Q6&quot;,
+        &quot;question&quot;: &quot;When was the OmniCore Processor released?&quot;,
+        &quot;gold_answer&quot;: &quot;The OmniCore Processor was released in 2018.&quot;
+    },
+    {
+        &quot;id&quot;: &quot;Q7&quot;,
+        &quot;question&quot;: &quot;How old is the universe?&quot;,
+        &quot;gold_answer&quot;: &quot;Not present in the knowledge base.&quot;
+    }
+]
+
+print(f&quot;Evaluation dataset defined. Total test questions: {len(evaluation_set)}&quot;)
+for item in evaluation_set:
+    print(f&quot;  [{item[&#x27;id&#x27;]}] {item[&#x27;question&#x27;]}&quot;)
+
+
+# %%
+import pandas as pd
+
+results_data = []
+
+print(f&quot;{&#x27;═&#x27;*90}&quot;)
+for item in evaluation_set:
+    q = item[&quot;question&quot;]
+    
+    # Generate RAG answer
+    rag_ans, docs = answer_question(q, use_retrieval=True, top_k=1)
+    # Generate Pure LLM answer
+    llm_ans, _ = answer_question(q, use_retrieval=False)
+    
+    # Truncate answers to avoid excessively long repetitive outputs for display
+    rag_short = rag_ans[:120] + (&quot;...&quot; if len(rag_ans) &gt; 120 else &quot;&quot;)
+    llm_short = llm_ans[:120] + (&quot;...&quot; if len(llm_ans) &gt; 120 else &quot;&quot;)
+    
+    results_data.append({
+        &quot;QID&quot;: item[&quot;id&quot;],
+        &quot;Question&quot;: q,
+        &quot;RAG Answer&quot;: rag_ans,
+        &quot;LLM Answer&quot;: llm_ans
+    })
+    
+    print(f&quot;[{item[&#x27;id&#x27;]}] Question: {q}&quot;)
+    print(f&quot;  RAG : {rag_short}&quot;)
+    print(f&quot;  LLM : {llm_short}&quot;)
+    print(f&quot;{&#x27;─&#x27;*90}&quot;)
+
+# %%
+import pandas as pd
+
+scoring_data = [
+    {&quot;QID&quot;: &quot;Q1&quot;, &quot;RAG Score&quot;: 2, &quot;LLM Score&quot;: 0, &quot;Note&quot;: &quot;RAG extracts correct founder. LLM hallucinates completely.&quot;},
+    {&quot;QID&quot;: &quot;Q2&quot;, &quot;RAG Score&quot;: 2, &quot;LLM Score&quot;: 0, &quot;Note&quot;: &quot;RAG identifies Neo-Veridia. LLM makes up a real-world city.&quot;},
+    {&quot;QID&quot;: &quot;Q3&quot;, &quot;RAG Score&quot;: 2, &quot;LLM Score&quot;: 0, &quot;Note&quot;: &quot;RAG perfectly answers. LLM fails.&quot;},
+    {&quot;QID&quot;: &quot;Q4&quot;, &quot;RAG Score&quot;: 2, &quot;LLM Score&quot;: 0, &quot;Note&quot;: &quot;RAG is perfectly accurate. LLM loops or hallucinates.&quot;},
+    {&quot;QID&quot;: &quot;Q5&quot;, &quot;RAG Score&quot;: 2, &quot;LLM Score&quot;: 0, &quot;Note&quot;: &quot;RAG answers correctly. LLM output is garbage.&quot;},
+    {&quot;QID&quot;: &quot;Q6&quot;, &quot;RAG Score&quot;: 2, &quot;LLM Score&quot;: 0, &quot;Note&quot;: &quot;RAG accurately identifies 2018. LLM fails.&quot;},
+    {&quot;QID&quot;: &quot;Q7&quot;, &quot;RAG Score&quot;: 0, &quot;LLM Score&quot;: 0, &quot;Note&quot;: &quot;Unanswerable question. Both hallucinate completely wrong ages.&quot;}
+]
+
+df_scores = pd.DataFrame(scoring_data)
+display(df_scores)
+
+rag_total = df_scores[&quot;RAG Score&quot;].sum()
+llm_total = df_scores[&quot;LLM Score&quot;].sum()
+max_score = len(df_scores) * 2
+
+print(f&quot;\n{&#x27;═&#x27;*40}&quot;)
+print(&quot;Final Factuality Scores&quot;)
+print(f&quot;{&#x27;═&#x27;*40}&quot;)
+print(f&quot;RAG Total: {rag_total} / {max_score} ({rag_total/max_score:.1%})&quot;)
+print(f&quot;LLM Total: {llm_total} / {max_score} ({llm_total/max_score:.1%})&quot;)
+
+
+# Simple F1 Token Overlap Score (proxy for ROUGE)
+def compute_f1(pred, gold):
+    pred_tokens = set(pred.lower().split())
+    gold_tokens = set(gold.lower().split())
+    if not pred_tokens or not gold_tokens: return 0.0
+    common = pred_tokens.intersection(gold_tokens)
+    if not common: return 0.0
+    prec = len(common) / len(pred_tokens)
+    rec = len(common) / len(gold_tokens)
+    return 2 * (prec * rec) / (prec + rec)
+
+print(&quot;\nQuantitative Evaluation (F1 Score):&quot;)
+for item in evaluation_set:
+    q = item[&quot;question&quot;]
+    gold = item[&quot;gold_answer&quot;]
+    rag_ans, _ = answer_question(q, use_retrieval=True, top_k=1)
+    llm_ans, _ = answer_question(q, use_retrieval=False)
+    
+    rag_f1 = compute_f1(rag_ans, gold)
+    llm_f1 = compute_f1(llm_ans, gold)
+    
+    print(f&quot;[{item[&#x27;id&#x27;]}] RAG F1: {rag_f1:.2f} | LLM F1: {llm_f1:.2f}&quot;)
+
+
+# %%
+q_sample = evaluation_set[0][&quot;question&quot;]  # &quot;What is the largest planet...&quot;
+print(f&quot;Query: {q_sample}\n&quot;)
+
+for k in [1, 3, 5]:
+    ans, docs = answer_question(q_sample, use_retrieval=True, top_k=k)
+    ans_clean = ans.replace(&#x27;\n&#x27;, &#x27; &#x27;)
+    print(f&quot;Top-K = {k}&quot;)
+    print(f&quot;Generated: {ans_clean[:120]}...&quot;)
+    print(&quot;-&quot; * 60)
+
+print(&quot;\nObservation: For a tiny model like distilgpt2, larger k introduces noise. k=1 produces the cleanest and most accurate completions.&quot;)
+
+# %%
+import torch
+
+def generate_sampled(prompt: str, temp: float, top_p: float):
+    inputs = tokenizer(prompt, return_tensors=&quot;pt&quot;)
+    input_length = inputs[&quot;input_ids&quot;].shape[1]
+    
+    with torch.no_grad():
+        output = generator.generate(
+            **inputs,
+            max_new_tokens=30,
+            pad_token_id=tokenizer.eos_token_id,
+            do_sample=True,
+            temperature=temp,
+            top_p=top_p
+        )
+    return tokenizer.decode(output[0][input_length:], skip_special_tokens=True).strip().replace(&#x27;\n&#x27;, &#x27; &#x27;)
+
+docs = retrieve(q_sample, top_k=1)
+context_str = &quot;\n&quot;.join([f&quot;- {r[&#x27;chunk&#x27;]}&quot; for r in docs])
+prompt = f&quot;Context:\n{context_str}\n\nQuestion: {q_sample}\nAnswer:&quot;
+
+print(f&quot;Testing sampling on: {q_sample}\n&quot;)
+for temp in [0.3, 0.7, 1.0]:
+    for top_p in [0.8, 0.95]:
+        # Fix seed for reproducibility
+        torch.manual_seed(42)
+        gen = generate_sampled(prompt, temp, top_p)
+        print(f&quot;[Temp={temp:.1f}, Top-p={top_p:.2f}] -&gt; {gen[:100]}...&quot;)
+
+# %%
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
+# Extract all questions and embed them
+queries = [item[&quot;question&quot;] for item in evaluation_set]
+query_vecs = embedder.encode(queries, normalize_embeddings=True)
+
+# Similarity matrix (num_queries x num_chunks)
+sim_matrix = np.dot(query_vecs, chunk_embeddings.T)
+
+plt.figure(figsize=(12, 6))
+sns.heatmap(sim_matrix, cmap=&quot;viridis&quot;, annot=False, xticklabels=[f&quot;C{i}&quot; for i in range(len(kb_chunks))], yticklabels=[f&quot;Q{i+1}&quot; for i in range(len(queries))])
+plt.title(&quot;Cosine Similarity: Queries vs. KB Chunks&quot;)
+plt.xlabel(&quot;Knowledge Base Chunks&quot;)
+plt.ylabel(&quot;Test Queries&quot;)
+plt.tight_layout()
+plt.show()
+
+# %%
+print(&quot;Top-1 Cosine Similarity Scores:&quot;)
+print(&quot;═&quot;*50)
+for i, item in enumerate(evaluation_set):
+    q = item[&quot;question&quot;]
+    docs = retrieve(q, top_k=1)
+    score = docs[0][&quot;score&quot;]
+    
+    label = &quot;Answerable&quot; if i &lt; 6 else &quot;UNANSWERABLE&quot;
+    print(f&quot;Q{i+1} [{label:&lt;12}] Score: {score:.4f}&quot;)
+
+print(&quot;\nProposed Threshold Policy:&quot;)
+print(&quot;If the top-1 retrieval score is &lt; 0.35, the system should intercept the query and return &#x27;I do not know&#x27; instead of invoking the LLM.&quot;)
+
+# %%
+import matplotlib.pyplot as plt
+
+q_labels = [d[&quot;QID&quot;] for d in scoring_data]
+rag_scores = [d[&quot;RAG Score&quot;] for d in scoring_data]
+llm_scores = [d[&quot;LLM Score&quot;] for d in scoring_data]
+
+x = np.arange(len(q_labels))
+width = 0.35
+
+fig, ax = plt.subplots(figsize=(10, 5))
+rects1 = ax.bar(x - width/2, rag_scores, width, label=&#x27;RAG (k=1)&#x27;, color=&#x27;#2ca02c&#x27;)
+rects2 = ax.bar(x + width/2, llm_scores, width, label=&#x27;Pure LLM&#x27;, color=&#x27;#d62728&#x27;)
+
+ax.set_ylabel(&#x27;Factuality Score (0-2)&#x27;)
+ax.set_title(&#x27;Factuality Scores per Question: RAG vs. Pure LLM&#x27;)
+ax.set_xticks(x)
+ax.set_xticklabels(q_labels)
+ax.set_yticks([0, 1, 2])
+ax.legend()
+
+plt.tight_layout()
+plt.show()
+
+# %%
+import random
+import datetime
+import torch
+from torch.utils.data import Dataset, DataLoader
+import torch.nn as nn
+from torch.nn.utils.rnn import pad_sequence
+
+# 1. Generate Synthetic Data
+def gregorian_to_jalali(gy, gm, gd):
+    &quot;&quot;&quot;A lightweight Gregorian to Jalali (Solar Hijri) calendar converter.&quot;&quot;&quot;
+    g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
+    jy = (gy - 621) if gm &gt; 2 else (gy - 622)
+    
+    is_g_leap = 1 if ((gy % 4 == 0 and gy % 100 != 0) or (gy % 400 == 0)) else 0
+    
+    jd = g_d_m[gm - 1] + gd
+    if gm &gt; 2:
+        jd += is_g_leap
+        
+    jd -= 79 # Days from Jan 1 to Mar 21 (Norouz)
+    
+    if jd &lt;= 0:
+        jy -= 1
+        jd += 365 
+        
+    if jd &lt;= 186:
+        jm = (jd - 1) // 31 + 1
+        jd = (jd - 1) % 31 + 1
+    else:
+        jm = (jd - 186 - 1) // 30 + 7
+        jd = (jd - 186 - 1) % 30 + 1
+        
+    return jy, jm, jd
+
+def to_persian(text):
+    &quot;&quot;&quot;Maps standard digits to Persian/Eastern Arabic numerals.&quot;&quot;&quot;
+    return text.translate(str.maketrans(&quot;0123456789&quot;, &quot;۰۱۲۳۴۵۶۷۸۹&quot;))
+
+def generate_dataset(num_samples=5000):
+    dataset = []
+    for _ in range(num_samples):
+        year = random.randint(1900, 2100)
+        month = random.randint(1, 12)
+        day = random.randint(1, 28) 
+        
+        src = f&quot;{month:02d}/{day:02d}/{year}&quot;
+        j_y, j_m, j_d = gregorian_to_jalali(year, month, day)
+        tgt = to_persian(f&quot;{j_y}/{j_m:02d}/{j_d:02d}&quot;)
+        
+        dataset.append((src, tgt))
+    return dataset
+
+# 2. Character-level Vocabulary
+class CharVocab:
+    def __init__(self):
+        self.char2id = {&quot;&lt;pad&gt;&quot;: 0, &quot;&lt;sos&gt;&quot;: 1, &quot;&lt;eos&gt;&quot;: 2, &quot;&lt;unk&gt;&quot;: 3}
+        self.id2char = {0: &quot;&lt;pad&gt;&quot;, 1: &quot;&lt;sos&gt;&quot;, 2: &quot;&lt;eos&gt;&quot;, 3: &quot;&lt;unk&gt;&quot;}
+        
+    def add_text(self, text):
+        for char in text:
+            if char not in self.char2id:
+                idx = len(self.char2id)
+                self.char2id[char] = idx
+                self.id2char[idx] = char
+                
+    def encode(self, text):
+        return [self.char2id[&quot;&lt;sos&gt;&quot;]] + [self.char2id.get(c, self.char2id[&quot;&lt;unk&gt;&quot;]) for c in text] + [self.char2id[&quot;&lt;eos&gt;&quot;]]
+        
+    def decode(self, ids):
+        return &quot;&quot;.join([self.id2char[i.item() if isinstance(i, torch.Tensor) else i] for i in ids if i not in [0, 1, 2]])
+
+print(&quot;Dataset generator and CharVocab defined.&quot;)
+
+# %%
+random.seed(42)
+
+# Generate unique data to prevent data leakage
+all_unique_data = list(set(generate_dataset(15000)))
+random.shuffle(all_unique_data)
+train_raw = all_unique_data[:5000]
+val_raw   = all_unique_data[5000:5500]
+test_raw  = all_unique_data[5500:6000]
+
+vocab = CharVocab()
+for src, tgt in train_raw:
+    vocab.add_text(src)
+    vocab.add_text(tgt)
+
+print(f&quot;Vocab size: {len(vocab.char2id)}&quot;)
+print(f&quot;Train size: {len(train_raw)}&quot;)
+print(f&quot;Val size  : {len(val_raw)}&quot;)
+print(f&quot;Test size : {len(test_raw)}\n&quot;)
+
+print(&quot;Sample Train Entry:&quot;)
+print(f&quot;  Source (US)   : {train_raw[0][0]}&quot;)
+print(f&quot;  Target (Iran) : {train_raw[0][1]}&quot;)
+
+# %%
+class DateTranslationDataset(Dataset):
+    def __init__(self, raw_data):
+        self.data = raw_data
+        
+    def __len__(self):
+        return len(self.data)
+        
+    def __getitem__(self, idx):
+        return self.data[idx]
+
+train_dataset = DateTranslationDataset(train_raw)
+val_dataset   = DateTranslationDataset(val_raw)
+test_dataset  = DateTranslationDataset(test_raw)
+
+print(f&quot;Dataset length check: {len(train_dataset)}&quot;)
+
+# %%
+def collate_fn(batch):
+    &quot;&quot;&quot;
+    Args:
+        batch: List of tuples (src_str, tgt_str)
+    Returns:
+        src_padded: Tensor of shape (batch_size, max_src_len)
+        tgt_padded: Tensor of shape (batch_size, max_tgt_len)
+    &quot;&quot;&quot;
+    src_list = []
+    tgt_list = []
+    
+    for src_str, tgt_str in batch:
+        src_encoded = torch.tensor(vocab.encode(src_str), dtype=torch.long)
+        tgt_encoded = torch.tensor(vocab.encode(tgt_str), dtype=torch.long)
+        
+        src_list.append(src_encoded)
+        tgt_list.append(tgt_encoded)
+        
+    # Pad sequences with 0 (&lt;pad&gt;)
+    src_padded = pad_sequence(src_list, batch_first=True, padding_value=0)
+    tgt_padded = pad_sequence(tgt_list, batch_first=True, padding_value=0)
+    
+    return src_padded, tgt_padded
+
+print(&quot;collate_fn defined.&quot;)
+
+# %%
+train_loader = DataLoader(train_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
+val_loader   = DataLoader(val_dataset, batch_size=64, shuffle=False, collate_fn=collate_fn)
+test_loader  = DataLoader(test_dataset, batch_size=64, shuffle=False, collate_fn=collate_fn)
+
+# Fetch one mini-batch
+src_batch, tgt_batch = next(iter(train_loader))
+
+print(f&quot;src_batch shape: {src_batch.shape}&quot;)
+print(f&quot;tgt_batch shape: {tgt_batch.shape}\n&quot;)
+
+print(&quot;First pair in batch (raw tensors):&quot;)
+print(f&quot;SRC : {src_batch[0].tolist()}&quot;)
+print(f&quot;TGT : {tgt_batch[0].tolist()}\n&quot;)
+
+print(&quot;First pair in batch (decoded):&quot;)
+print(f&quot;SRC : {vocab.decode(src_batch[0])}&quot;)
+print(f&quot;TGT : {vocab.decode(tgt_batch[0])}&quot;)
+
+# %%
+import torch
+
+def create_src_padding_mask(src_tensor, pad_idx=0):
+    &quot;&quot;&quot;
+    Returns a boolean tensor of shape (batch_size, src_seq_len)
+    where True means &quot;this is a padding token&quot; (ignore it).
+    &quot;&quot;&quot;
+    return src_tensor == pad_idx
+
+def create_tgt_padding_mask(tgt_tensor, pad_idx=0):
+    &quot;&quot;&quot;
+    Returns a boolean tensor of shape (batch_size, tgt_seq_len)
+    where True means &quot;this is a padding token&quot; (ignore it).
+    &quot;&quot;&quot;
+    return tgt_tensor == pad_idx
+
+def create_causal_mask(seq_len):
+    &quot;&quot;&quot;
+    Returns a float tensor of shape (seq_len, seq_len).
+    Upper triangle = -inf (cannot attend).
+    Lower triangle &amp; diagonal = 0.0 (can attend).
+    &quot;&quot;&quot;
+    mask = torch.triu(torch.ones(seq_len, seq_len), diagonal=1)
+    mask = mask.float().masked_fill(mask == 1, float(&#x27;-inf&#x27;))
+    return mask
+
+print(&quot;Mask creation functions defined.&quot;)
+
+# %%
+sample_src = src_batch[0:2] # Take 2 items
+sample_tgt = tgt_batch[0:2]
+
+print(&quot;=== SRC PADDING MASK ===&quot;)
+src_mask = create_src_padding_mask(sample_src)
+print(f&quot;Shape: {src_mask.shape}&quot;)
+print(src_mask)
+
+print(&quot;\n=== TGT PADDING MASK ===&quot;)
+tgt_pad_mask = create_tgt_padding_mask(sample_tgt)
+print(f&quot;Shape: {tgt_pad_mask.shape}&quot;)
+print(tgt_pad_mask)
+
+print(&quot;\n=== CAUSAL MASK ===&quot;)
+seq_len = 5
+causal_mask = create_causal_mask(seq_len)
+print(f&quot;Shape: {causal_mask.shape}&quot;)
+print(causal_mask)
+
+# %%
+import torch.nn as nn
+import math
+
+class Seq2SeqTransformer(nn.Module):
+    def __init__(self, vocab_size, d_model=64, nhead=2, num_encoder_layers=2, num_decoder_layers=2, max_len=50):
+        super().__init__()
+        self.d_model = d_model
+        
+        self.embedding = nn.Embedding(vocab_size, d_model)
+        self.pos_encoder = nn.Embedding(max_len, d_model)  # Learned positional encoding
+        
+        self.transformer = nn.Transformer(
+            d_model=d_model,
+            nhead=nhead,
+            num_encoder_layers=num_encoder_layers,
+            num_decoder_layers=num_decoder_layers,
+            dim_feedforward=256,
+            batch_first=True
+        )
+        
+        self.fc_out = nn.Linear(d_model, vocab_size)
+        
+    def forward(self, src, tgt, src_mask=None, tgt_mask=None, src_key_padding_mask=None, tgt_key_padding_mask=None):
+        batch_size, src_len = src.shape
+        _, tgt_len = tgt.shape
+        
+        # Embeddings + Positional encodings
+        src_positions = torch.arange(0, src_len).unsqueeze(0).repeat(batch_size, 1).to(src.device)
+        tgt_positions = torch.arange(0, tgt_len).unsqueeze(0).repeat(batch_size, 1).to(tgt.device)
+        
+        src_emb = self.embedding(src) * math.sqrt(self.d_model) + self.pos_encoder(src_positions)
+        tgt_emb = self.embedding(tgt) * math.sqrt(self.d_model) + self.pos_encoder(tgt_positions)
+        
+        # Pass through Transformer
+        out = self.transformer(
+            src=src_emb,
+            tgt=tgt_emb,
+            src_mask=src_mask,
+            tgt_mask=tgt_mask,
+            src_key_padding_mask=src_key_padding_mask,
+            tgt_key_padding_mask=tgt_key_padding_mask
+        )
+        
+        # Project to vocabulary
+        logits = self.fc_out(out)
+        return logits
+
+print(&quot;Seq2SeqTransformer class defined.&quot;)
+
+# %%
+vocab_size = len(vocab.char2id)
+device = torch.device(&#x27;cpu&#x27;)
+model = Seq2SeqTransformer(vocab_size=vocab_size, d_model=64, nhead=2, num_encoder_layers=2, num_decoder_layers=2).to(device)
+
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=10)
+criterion = nn.CrossEntropyLoss(ignore_index=0)  # Ignore &lt;pad&gt;
+
+def count_parameters(model):
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
+
+print(f&quot;Model initialized with {count_parameters(model):,} trainable parameters.&quot;)
+
+# %%
+def train_epoch(model, dataloader, optimizer, criterion):
+    model.train()
+    total_loss = 0
+    
+    for src, tgt in dataloader:
+        src, tgt = src.to(device), tgt.to(device)
+        # Teacher forcing: Decoder input doesn&#x27;t contain the last token
+        tgt_input = tgt[:, :-1]
+        # Expected output doesn&#x27;t contain the first token (&lt;sos&gt;)
+        tgt_expected = tgt[:, 1:]
+        
+        # Create masks
+        src_pad_mask = create_src_padding_mask(src)
+        tgt_pad_mask = create_tgt_padding_mask(tgt_input)
+        causal_mask = create_causal_mask(tgt_input.size(1)).to(src.device)
+        
+        optimizer.zero_grad()
+        
+        # Forward pass
+        logits = model(
+            src=src, 
+            tgt=tgt_input, 
+            tgt_mask=causal_mask,
+            src_key_padding_mask=src_pad_mask,
+            tgt_key_padding_mask=tgt_pad_mask
+        )
+        
+        # Reshape for loss: (batch_size * seq_len, vocab_size)
+        logits = logits.reshape(-1, logits.shape[-1])
+        tgt_expected = tgt_expected.reshape(-1)
+        
+        loss = criterion(logits, tgt_expected)
+        
+        # Backward and step
+        loss.backward()
+        optimizer.step()
+        
+        total_loss += loss.item()
+        
+    return total_loss / len(dataloader)
+
+def val_epoch(model, dataloader, criterion):
+    model.eval()
+    total_loss = 0
+    
+    with torch.no_grad():
+        for src, tgt in dataloader:
+            src, tgt = src.to(device), tgt.to(device)
+            tgt_input = tgt[:, :-1]
+            tgt_expected = tgt[:, 1:]
+            
+            src_pad_mask = create_src_padding_mask(src)
+            tgt_pad_mask = create_tgt_padding_mask(tgt_input)
+            causal_mask = create_causal_mask(tgt_input.size(1)).to(src.device)
+            
+            logits = model(
+                src=src, 
+                tgt=tgt_input, 
+                tgt_mask=causal_mask,
+                src_key_padding_mask=src_pad_mask,
+                tgt_key_padding_mask=tgt_pad_mask
+            )
+            
+            logits = logits.reshape(-1, logits.shape[-1])
+            tgt_expected = tgt_expected.reshape(-1)
+            
+            loss = criterion(logits, tgt_expected)
+            total_loss += loss.item()
+            
+    return total_loss / len(dataloader)
+
+print(&quot;Train and Val loops defined.&quot;)
+
+# %%
+import time
+
+EPOCHS = 10
+train_losses = []
+val_losses = []
+
+print(f&quot;{&#x27;Epoch&#x27;:&lt;6} | {&#x27;Train Loss&#x27;:&lt;12} | {&#x27;Val Loss&#x27;:&lt;12} | {&#x27;Time&#x27;}&quot;)
+print(&quot;-&quot; * 50)
+
+for epoch in range(EPOCHS):
+    start_time = time.time()
+    
+    train_loss = train_epoch(model, train_loader, optimizer, criterion)
+    val_loss = val_epoch(model, val_loader, criterion)
+    scheduler.step()
+    
+    train_losses.append(train_loss)
+    val_losses.append(val_loss)
+    
+    elapsed = time.time() - start_time
+    print(f&quot;{epoch+1:&lt;6} | {train_loss:&lt;12.4f} | {val_loss:&lt;12.4f} | {elapsed:.2f}s&quot;)
+
+# %%
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(10, 5))
+plt.plot(range(1, EPOCHS + 1), train_losses, marker=&#x27;o&#x27;, label=&#x27;Training Loss&#x27;)
+plt.plot(range(1, EPOCHS + 1), val_losses, marker=&#x27;o&#x27;, label=&#x27;Validation Loss&#x27;)
+plt.xlabel(&quot;Epoch&quot;)
+plt.ylabel(&quot;Cross-Entropy Loss&quot;)
+plt.title(&quot;Training and Validation Loss Curves&quot;)
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# %%
+def translate_greedy(model, src_string, vocab, max_len=20):
+    model.eval()
+    
+    # 1. Encode Source
+    src_tokens = [vocab.char2id[&quot;&lt;sos&gt;&quot;]] + [vocab.char2id[c] for c in src_string] + [vocab.char2id[&quot;&lt;eos&gt;&quot;]]
+    src_tensor = torch.tensor(src_tokens).unsqueeze(0).to(next(model.parameters()).device)  # (1, src_len)
+    
+    with torch.no_grad():
+        # Get Encoder memory
+        src_mask = create_src_padding_mask(src_tensor)
+        
+        # Precompute positions for src
+        src_positions = torch.arange(0, src_tensor.size(1)).unsqueeze(0).to(src_tensor.device)
+        import math
+        src_emb = model.embedding(src_tensor) * math.sqrt(model.d_model) + model.pos_encoder(src_positions)
+        
+        memory = model.transformer.encoder(src_emb, src_key_padding_mask=src_mask)
+        
+        # 2. Decode Step-by-Step
+        tgt_tokens = [vocab.char2id[&quot;&lt;sos&gt;&quot;]]
+        
+        for i in range(max_len):
+            tgt_tensor = torch.tensor(tgt_tokens).unsqueeze(0).to(src_tensor.device)
+            tgt_positions = torch.arange(0, tgt_tensor.size(1)).unsqueeze(0).to(tgt_tensor.device)
+            
+            tgt_emb = model.embedding(tgt_tensor) * math.sqrt(model.d_model) + model.pos_encoder(tgt_positions)
+            
+            causal_mask = create_causal_mask(tgt_tensor.size(1)).to(tgt_tensor.device)
+            
+            out = model.transformer.decoder(
+                tgt=tgt_emb,
+                memory=memory,
+                tgt_mask=causal_mask,
+                memory_key_padding_mask=src_mask
+            )
+            
+            logits = model.fc_out(out[:, -1, :]) # Take prediction for the last token
+            next_token = torch.argmax(logits, dim=-1).item()
+            
+            if next_token == vocab.char2id[&quot;&lt;eos&gt;&quot;]:
+                break
+                
+            tgt_tokens.append(next_token)
+            
+    return vocab.decode(tgt_tokens)
+
+print(&quot;translate_greedy defined.&quot;)
+
+# %%
+test_dates = [&quot;01/01/2000&quot;, &quot;04/15/1998&quot;, &quot;12/25/2024&quot;]
+
+print(f&quot;{&#x27;Source (US)&#x27;:&lt;12} | {&#x27;Predicted (Jalali)&#x27;:&lt;20} | {&#x27;Expected (Jalali)&#x27;:&lt;20}&quot;)
+print(&quot;-&quot; * 55)
+
+for date in test_dates:
+    # Get ground truth programmatically to compare
+    m, d, y = map(int, date.split(&#x27;/&#x27;))
+    jy, jm, jd = gregorian_to_jalali(y, m, d)
+    expected = to_persian(f&quot;{jy}/{jm:02d}/{jd:02d}&quot;)
+    
+    pred = translate_greedy(model, date, vocab)
+    print(f&quot;{date:&lt;12} | {pred:&lt;20} | {expected:&lt;20}&quot;)
+
+# %%
+def translate_greedy_batched(model, src_strings, vocab, max_len=20):
+    model.eval()
+    src_list = [torch.tensor([vocab.char2id[&quot;&lt;sos&gt;&quot;]] + [vocab.char2id[c] for c in s] + [vocab.char2id[&quot;&lt;eos&gt;&quot;]]) for s in src_strings]
+    src_tensor = torch.nn.utils.rnn.pad_sequence(src_list, batch_first=True, padding_value=0).to(next(model.parameters()).device)
+    
+    with torch.no_grad():
+        import math
+        src_mask = create_src_padding_mask(src_tensor)
+        src_positions = torch.arange(0, src_tensor.size(1)).unsqueeze(0).to(src_tensor.device)
+        src_emb = model.embedding(src_tensor) * math.sqrt(model.d_model) + model.pos_encoder(src_positions)
+        memory = model.transformer.encoder(src_emb, src_key_padding_mask=src_mask)
+        
+        batch_size = src_tensor.size(0)
+        tgt_tokens = [[vocab.char2id[&quot;&lt;sos&gt;&quot;]] for _ in range(batch_size)]
+        
+        for i in range(max_len):
+            tgt_tensor = torch.tensor(tgt_tokens).to(src_tensor.device)
+            tgt_positions = torch.arange(0, tgt_tensor.size(1)).unsqueeze(0).to(tgt_tensor.device)
+            tgt_emb = model.embedding(tgt_tensor) * math.sqrt(model.d_model) + model.pos_encoder(tgt_positions)
+            causal_mask = create_causal_mask(tgt_tensor.size(1)).to(tgt_tensor.device)
+            
+            out = model.transformer.decoder(tgt=tgt_emb, memory=memory, tgt_mask=causal_mask, memory_key_padding_mask=src_mask)
+            logits = model.fc_out(out[:, -1, :])
+            next_tokens = torch.argmax(logits, dim=-1).tolist()
+            
+            for b in range(batch_size):
+                tgt_tokens[b].append(next_tokens[b])
+                
+        results = []
+        for b in range(batch_size):
+            toks = tgt_tokens[b]
+            if vocab.char2id[&quot;&lt;eos&gt;&quot;] in toks:
+                toks = toks[:toks.index(vocab.char2id[&quot;&lt;eos&gt;&quot;])]
+            results.append(vocab.decode(toks))
+        return results
+
+correct = 0
+total = len(test_raw)
+batch_size = 64
+
+for i in range(0, total, batch_size):
+    batch = test_raw[i:i+batch_size]
+    srcs = [x[0] for x in batch]
+    tgts = [x[1] for x in batch]
+    preds = translate_greedy_batched(model, srcs, vocab)
+    for p, t in zip(preds, tgts):
+        if p == t:
+            correct += 1
+
+accuracy = (correct / total) * 100
+print(f&quot;Test Set Exact-Match Accuracy: {accuracy:.2f}% ({correct}/{total})&quot;)
+
+# %%
+import torch.nn.functional as F
+
+def translate_beam(model, src_string, vocab, beam_width=3, max_len=20):
+    model.eval()
+    
+    src_tokens = [vocab.char2id[&quot;&lt;sos&gt;&quot;]] + [vocab.char2id[c] for c in src_string] + [vocab.char2id[&quot;&lt;eos&gt;&quot;]]
+    src_tensor = torch.tensor(src_tokens).unsqueeze(0).to(next(model.parameters()).device)
+    
+    with torch.no_grad():
+        src_mask = create_src_padding_mask(src_tensor)
+        src_positions = torch.arange(0, src_tensor.size(1)).unsqueeze(0).to(src_tensor.device)
+        import math
+        src_emb = model.embedding(src_tensor) * math.sqrt(model.d_model) + model.pos_encoder(src_positions)
+        memory = model.transformer.encoder(src_emb, src_key_padding_mask=src_mask)
+        
+        # Beams: list of (sequence, log_prob)
+        beams = [([vocab.char2id[&quot;&lt;sos&gt;&quot;]], 0.0)]
+        completed_beams = []
+        
+        for _ in range(max_len):
+            all_candidates = []
+            
+            for seq, score in beams:
+                if seq[-1] == vocab.char2id[&quot;&lt;eos&gt;&quot;]:
+                    completed_beams.append((seq, score))
+                    continue
+                    
+                tgt_tensor = torch.tensor(seq).unsqueeze(0).to(src_tensor.device)
+                tgt_positions = torch.arange(0, tgt_tensor.size(1)).unsqueeze(0).to(tgt_tensor.device)
+                tgt_emb = model.embedding(tgt_tensor) * math.sqrt(model.d_model) + model.pos_encoder(tgt_positions)
+                
+                causal_mask = create_causal_mask(tgt_tensor.size(1)).to(tgt_tensor.device)
+                
+                out = model.transformer.decoder(
+                    tgt=tgt_emb,
+                    memory=memory,
+                    tgt_mask=causal_mask,
+                    memory_key_padding_mask=src_mask
+                )
+                
+                logits = model.fc_out(out[:, -1, :])
+                log_probs = F.log_softmax(logits, dim=-1)[0]
+                
+                topk_log_probs, topk_indices = torch.topk(log_probs, beam_width)
+                
+                for i in range(beam_width):
+                    next_token = topk_indices[i].item()
+                    candidate_score = score + topk_log_probs[i].item()
+                    all_candidates.append((seq + [next_token], candidate_score))
+                    
+            if not all_candidates:
+                break
+                
+            # Keep top k active beams, reducing count by completed beams
+            active_beam_width = beam_width - len(completed_beams)
+            if active_beam_width &lt;= 0:
+                break
+            beams = sorted(all_candidates, key=lambda x: x[1], reverse=True)[:active_beam_width]
+            
+        if not completed_beams:
+            completed_beams = beams
+            
+        best_seq = sorted(completed_beams, key=lambda x: x[1] / len(x[0]), reverse=True)[0][0]
+        
+    return vocab.decode(best_seq)
+
+# Compare on test set
+correct_beam = 0
+for src, tgt in test_raw:
+    pred = translate_beam(model, src, vocab, beam_width=3)
+    if pred == tgt:
+        correct_beam += 1
+
+accuracy_beam = (correct_beam / total) * 100
+print(f&quot;Test Set Exact-Match Accuracy (Greedy): {accuracy:.2f}%&quot;)
+print(f&quot;Test Set Exact-Match Accuracy (Beam=3): {accuracy_beam:.2f}%&quot;)
+
+# %%
+# T9.1 Hyperparameter ablation: d_model
+import pandas as pd
+
+d_models = [32, 64, 128]
+ablation_results = []
+
+for d in d_models:
+    print(f&quot;Training model with d_model={d}...&quot;)
+    m = Seq2SeqTransformer(vocab_size=len(vocab.char2id), d_model=d, nhead=2).to(device)
+    opt = torch.optim.Adam(m.parameters(), lr=1e-3)
+    crit = nn.CrossEntropyLoss(ignore_index=0)
+    
+    # Train 5 epochs for speed
+    final_loss = 0
+    for epoch in range(5):
+        train_loss = train_epoch(m, train_loader, opt, crit)
+        final_loss = train_loss
+        
+    # Test accuracy
+    corr = 0
+    for src, tgt in test_raw:
+        if translate_greedy(m, src, vocab) == tgt:
+            corr += 1
+    acc = (corr / len(test_raw)) * 100
+    
+    ablation_results.append({&quot;d_model&quot;: d, &quot;Params&quot;: count_parameters(m), &quot;Final Loss (5 epochs)&quot;: round(final_loss, 4), &quot;Test Acc&quot;: f&quot;{acc:.1f}%&quot;})
+
+df_ablation = pd.DataFrame(ablation_results)
+display(df_ablation)
+
+# %%
+# T9.2 Error analysis
+errors = []
+for src, tgt in test_raw:
+    pred = translate_greedy(model, src, vocab)
+    if pred != tgt:
+        errors.append((src, pred, tgt))
+
+print(f&quot;Found {len(errors)} errors in {len(test_raw)} samples.\n&quot;)
+for src, pred, tgt in errors[:5]:
+    print(f&quot;SRC: {src} | PRED: {pred} | TGT: {tgt}&quot;)
+    
+print(&quot;\nAnalysis: The few errors that occur are usually off-by-one errors in the day or month, which suggests the model occasionally struggles with the exact mathematical thresholding of leap years/months rather than character mapping.&quot;)
+
+# %%
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+sample_src = &quot;04/15/1998&quot;
+sample_tgt = &quot;۱۳۷۷/۰۱/۲۶&quot;
+
+model.eval()
+src_tokens = [vocab.char2id[&quot;&lt;sos&gt;&quot;]] + [vocab.char2id[c] for c in sample_src] + [vocab.char2id[&quot;&lt;eos&gt;&quot;]]
+src_tensor = torch.tensor(src_tokens).unsqueeze(0).to(next(model.parameters()).device)
+tgt_tokens = [vocab.char2id[&quot;&lt;sos&gt;&quot;]] + [vocab.char2id[c] for c in sample_tgt]
+tgt_tensor = torch.tensor(tgt_tokens).unsqueeze(0).to(src_tensor.device)
+
+with torch.no_grad():
+    src_mask = create_src_padding_mask(src_tensor)
+    src_positions = torch.arange(0, src_tensor.size(1)).unsqueeze(0).to(src_tensor.device)
+    src_emb = model.embedding(src_tensor) + model.pos_encoder(src_positions)
+    memory = model.transformer.encoder(src_emb, src_key_padding_mask=src_mask)
+
+    tgt_pad_mask = create_tgt_padding_mask(tgt_tensor)
+    causal_mask = create_causal_mask(tgt_tensor.size(1)).to(tgt_tensor.device)
+    
+    import math
+    # Manually pass through the model to extract cross-attention weights correctly without hooks
+    src_emb = model.embedding(src_tensor) * math.sqrt(model.d_model) + model.pos_encoder(src_positions)
+    memory = model.transformer.encoder(src_emb, src_key_padding_mask=src_mask)
+
+    tgt_pad_mask = create_tgt_padding_mask(tgt_tensor)
+    causal_mask = create_causal_mask(tgt_tensor.size(1)).to(tgt_tensor.device)
+    tgt_positions = torch.arange(0, tgt_tensor.size(1)).unsqueeze(0).to(tgt_tensor.device)
+    tgt_emb = model.embedding(tgt_tensor) * math.sqrt(model.d_model) + model.pos_encoder(tgt_positions)
+    
+    # Pass through decoder layers up to the last one
+    x = tgt_emb
+    for i in range(len(model.transformer.decoder.layers) - 1):
+        x = model.transformer.decoder.layers[i](
+            x, memory, tgt_mask=causal_mask, memory_key_padding_mask=src_mask, tgt_key_padding_mask=tgt_pad_mask
+        )
+        
+    # Last layer manual pass
+    last_layer = model.transformer.decoder.layers[-1]
+    # self-attention
+    x2 = last_layer.norm1(x)
+    x2, _ = last_layer.self_attn(x2, x2, x2, attn_mask=causal_mask, key_padding_mask=tgt_pad_mask, need_weights=False)
+    x = x + last_layer.dropout1(x2)
+    
+    # cross-attention WITH need_weights=True
+    x2 = last_layer.norm2(x)
+    _, attention_weights_tensor = last_layer.multihead_attn(x2, memory, memory, key_padding_mask=src_mask, need_weights=True)
+    
+    attention_weights = attention_weights_tensor.squeeze(0).cpu().numpy()
+
+# Plot
+plt.figure(figsize=(8, 6))
+sns.heatmap(attention_weights, cmap=&quot;Blues&quot;, 
+            xticklabels=list(&quot;&lt;sos&gt;&quot; + sample_src + &quot;&lt;eos&gt;&quot;), 
+            yticklabels=list(&quot;&lt;sos&gt;&quot; + sample_tgt))
+plt.title(&quot;Cross-Attention Alignment Heatmap&quot;)
+plt.xlabel(&quot;Source Tokens (US Date)&quot;)
+plt.ylabel(&quot;Target Tokens (Persian Date)&quot;)
+plt.show()
+
+# %%
+sizes = [1000, 2500, 5000]
+size_accs = []
+
+for s in sizes:
+    print(f&quot;Training on {s} samples...&quot;)
+    train_sub = DateTranslationDataset(train_raw[:s])
+    loader_sub = DataLoader(train_sub, batch_size=4, shuffle=True, collate_fn=collate_fn)
+    
+    m = Seq2SeqTransformer(vocab_size=len(vocab.char2id), d_model=64, nhead=2).to(device)
+    opt = torch.optim.Adam(m.parameters(), lr=1e-3)
+    crit = nn.CrossEntropyLoss(ignore_index=0)
+    
+    for epoch in range(5):
+        train_epoch(m, loader_sub, opt, crit)
+        
+    corr = sum(1 for src, tgt in test_raw if translate_greedy(m, src, vocab) == tgt)
+    acc = (corr / len(test_raw)) * 100
+    size_accs.append(acc)
+
+plt.figure(figsize=(6, 4))
+plt.plot(sizes, size_accs, marker=&#x27;o&#x27;, color=&#x27;purple&#x27;)
+plt.title(&quot;Accuracy vs. Dataset Size (5 Epochs)&quot;)
+plt.xlabel(&quot;Number of Training Samples&quot;)
+plt.ylabel(&quot;Test Accuracy (%)&quot;)
+plt.grid(True)
+plt.show()
+</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw1-language-models/">تمرین ۱: N-gram و Naive Bayes ←</a><a href="../hw2-embeddings/">تمرین ۲: Logistic Regression و Embedding ←</a><a href="../hw3-neural-models/">تمرین ۳: مدل‌های عصبی ←</a><a href="../hw4-rnn/">تمرین ۴: طراحی RNN ←</a><a href="../hw4-attention/">تمرین ۴: Attention و Transformer ←</a><a href="../hw4-gpt2/">تمرین ۴: Fine-Tuning مدل GPT-2 ←</a><a href="../hw5-bert/">تمرین ۵: BERT برای Sentiment Analysis ←</a><a href="../hw5-post-training/">تمرین ۵: Post-Training با SFT و LoRA ←</a><a href="../study-notes/">یادداشت‌های مرور NLP ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

@@ -1,0 +1,1612 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="پاسخ‌های مکتوب دربارهٔ مدل زبانی، Smoothing و دسته‌بندی متن."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>تمرین ۱: N-gram و Naive Bayes · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">پردازش زبان طبیعی</a></nav><p class="eyebrow">پاسخ مکتوب</p><h1 class="work-title">تمرین ۱: N-gram و Naive Bayes</h1><p class="course-lead">پاسخ‌های مکتوب دربارهٔ مدل زبانی، Smoothing و دسته‌بندی متن.</p><div class="topic-list"><bdi class="topic">N-gram</bdi><bdi class="topic">Smoothing</bdi><bdi class="topic">Naive Bayes</bdi></div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw1-language-models" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw1-language-models/Q1/HW1_Q1.tex" target="_blank" rel="noopener noreferrer"><bdi>Q1/HW1_Q1.tex</bdi><span class="file-meta">9 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw1-language-models/Q2/HW1_Q2.tex" target="_blank" rel="noopener noreferrer"><bdi>Q2/HW1_Q2.tex</bdi><span class="file-meta">6 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw1-language-models/Q3/Q3.tex" target="_blank" rel="noopener noreferrer"><bdi>Q3/Q3.tex</bdi><span class="file-meta">10 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw1-language-models/Q4/Q4.tex" target="_blank" rel="noopener noreferrer"><bdi>Q4/Q4.tex</bdi><span class="file-meta">12 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw1-language-models/Q5/Q5.tex" target="_blank" rel="noopener noreferrer"><bdi>Q5/Q5.tex</bdi><span class="file-meta">9 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw1-language-models/Q6/Q6.tex" target="_blank" rel="noopener noreferrer"><bdi>Q6/Q6.tex</bdi><span class="file-meta">8 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw1-language-models/Q7/Q7.tex" target="_blank" rel="noopener noreferrer"><bdi>Q7/Q7.tex</bdi><span class="file-meta">6 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw1-language-models/Q8/Q8.tex" target="_blank" rel="noopener noreferrer"><bdi>Q8/Q8.tex</bdi><span class="file-meta">8 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="source-file" ><summary><bdi>Q1/HW1_Q1.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw1-language-models/Q1/HW1_Q1.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{Vazir}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{\textbf{پاسخ سوال ۱} \\[0.4cm] \small بررسی تغییرات \en{discount numbers ($d$)} در \en{Laplace smoothing} با افزایش اندازه پیکره و تعداد \en{bigrams}}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{}
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{مفاهیم پایه: مدل‌های زبانی N-gram و مشکل صفر شدن احتمالات}
+مدل‌های زبانی \textbf{N-gram} یکی از ساده‌ترین و پرکاربردترین روش‌ها برای تخمین احتمال دنباله‌ای از کلمات هستند. در یک مدل بایگرام (bigram)، احتمال یک کلمه با شرط روی کلمهٔ قبلی به صورت زیر محاسبه می‌شود:
+\[
+P(w_i | w_{i-1}) = \frac{C(w_{i-1} w_i)}{C(w_{i-1})}
+\]
+که در آن \(C(w_{i-1} w_i)\) شمارش (count) رخداد بایگرام \(w_{i-1} w_i\) در پیکرهٔ آموزشی و \(C(w_{i-1})\) شمارش unigram کلمهٔ \(w_{i-1}\) است.
+
+مشکل عمدهٔ این تخمین‌گر بیشینه‌درست‌نمایی (MLE) آن است که اگر یک بایگرام در پیکرهٔ آموزشی دیده نشده باشد، احتمال آن صفر محاسبه می‌شود. در مرحلهٔ آزمون نیز ممکن است همان بایگرام ظاهر شود و کل احتمال جمله را صفر کند. برای رفع این مشکل از تکنیک‌های \textbf{هموارسازی (smoothing)} یا \textbf{تخفیف (discounting)} استفاده می‌شود.
+
+\separator
+\section{هموارسازی لاپلاس \en{(Laplace smoothing)} و مفهوم تخفیف (discount)}
+ساده‌ترین روش هموارسازی، \textbf{لاپلاس \en{(یا add-one)}} است. در این روش به شمارش تمام \en{N-gram}ها یک واحد اضافه می‌شود. برای بایگرام‌ها:
+\[
+P_{\text{Laplace}}(w_n | w_{n-1}) = \frac{C(w_{n-1}w_n) + 1}{C(w_{n-1}) + V}
+\]
+که \(V\) اندازهٔ دایرهٔ واژگان (تعداد کلمات یکتای پیکره) است. مخرج به این دلیل \(V\) واحد افزایش می‌یابد که به هر unigram نیز یک شمارش اضافه شده است.
+
+برای درک مفهوم \textbf{تخفیف \en{(discount number)}}، معمولاً از \textbf{شمارش تعدیل‌شده \en{(adjusted count)}} استفاده می‌کنیم. شمارش تعدیل‌شده برای یک بایگرام با شمارش اصلی \(c\) به گونه‌ای تعریف می‌شود که پس از تقسیم بر \(C(w_{n-1})\)، همان احتمال لاپلاس حاصل گردد:
+\[
+c^*(w_{n-1}w_n) = [C(w_{n-1}w_n) + 1] \times \frac{C(w_{n-1})}{C(w_{n-1}) + V}
+\]
+سپس \textbf{عدد تخفیف \en{(discount number)}} \(d_c\) به صورت نسبت شمارش تعدیل‌شده به شمارش اصلی تعریف می‌شود:
+\[
+d_c = \frac{c^*}{c} = \frac{C(w_{n-1}w_n) + 1}{C(w_{n-1}w_n)} \times \frac{C(w_{n-1})}{C(w_{n-1}) + V}
+\]
+به عبارت ساده‌تر:
+\[
+d_c = \frac{c+1}{c} \cdot \frac{C(w_{n-1})}{C(w_{n-1}) + V}
+\]
+این عدد نشان می‌دهد که چه نسبتی از شمارش اصلی پس از هموارسازی باقی می‌ماند. هر چه \(d_c\) به ۱ نزدیک‌تر باشد، تخفیف کمتری اعمال شده است.
+
+\separator
+\section{تأثیر افزایش اندازهٔ پیکره و افزایش تعداد بایگرام‌ها بر \(d_c\)}
+حال با توجه به خواسته مساله:  
+«با در نظر گرفتن پیکره \(A\) و دایره واژگان \(V\)، هرچه اندازهٔ پیکره را افزایش دهیم و ترکیب‌های بیشتری مثلاً برای \en{bigrams} ایجاد کنیم، چه تغییری در \en{discount numbers (\(d\))} هنگام \en{Laplace smoothing} رخ می‌دهد؟»
+
+برای پاسخ، تغییرات هر یک از مؤلفه‌های فرمول \(d_c\) را در شرایط زیر تحلیل می‌کنیم:
+\begin{itemize}
+\item اندازهٔ پیکره (تعداد کل توکن‌ها) افزایش می‌یابد.
+\item در نتیجه، شمارش هر بایگرام خاص (\(c = C(w_{n-1}w_n)\)) معمولاً افزایش می‌یابد (مگر اینکه بایگرام بسیار نادر باشد که در پیکره‌های بزرگتر نیز احتمالاً حداقل یک بار دیده می‌شود).
+\item شمارش هر \en{unigram} (\(C(w_{n-1})\)) نیز به طور چشمگیری افزایش می‌یابد.
+\item دایرهٔ واژگان \(V\) ممکن است کمی افزایش یابد، اما در پیکره‌های بزرگ رشد آن بسیار کندتر از رشد شمارش‌هاست و برای تحلیل می‌توان آن را تقریباً ثابت در نظر گرفت.
+\end{itemize}
+
+فرمول \(d_c\) را به صورت حاصلضرب دو ضریب می‌نویسیم:
+\[
+d_c = \underbrace{\frac{c+1}{c}}_{\text{ضریب اول}} \times \underbrace{\frac{C(w_{n-1})}{C(w_{n-1}) + V}}_{\text{ضریب دوم}}
+\]
+
+\subsection*{رفتار ضریب اول \(\frac{c+1}{c}\)}
+با افزایش \(c\) (که با بزرگتر شدن پیکره رخ می‌دهد)، مقدار \(\frac{c+1}{c} = 1 + \frac{1}{c}\) به سمت ۱ کاهش می‌یابد. برای مثال:
+\begin{itemize}
+\item اگر \(c=1\)، ضریب برابر \(2\) است.
+\item اگر \(c=10\)، ضریب برابر \(1.1\) است.
+\item اگر \(c=100\)، ضریب برابر \(1.01\) است.
+\end{itemize}
+بنابراین این ضریب از اعداد بزرگ (در پیکرهٔ کوچک) به سمت ۱ میل می‌کند.
+
+\subsection*{رفتار ضریب دوم \(\frac{C(w_{n-1})}{C(w_{n-1}) + V}\)}
+با افزایش \(C(w_{n-1})\) (که با بزرگ شدن پیکره افزایش می‌یابد)، این کسر نیز به سمت ۱ میل می‌کند، زیرا:
+\[
+\frac{C}{C+V} = 1 - \frac{V}{C+V}
+\]
+هنگامی که \(C\) بسیار بزرگتر از \(V\) می‌شود، جملهٔ \(\frac{V}{C+V}\) به صفر نزدیک می‌شود و کسر به ۱ نزدیک می‌گردد.
+
+\subsection*{نتیجه برای \(d_c\)}
+هر دو ضریب با افزایش اندازهٔ پیکره به سمت ۱ حرکت می‌کنند. در نتیجه حاصلضرب آنها یعنی \(d_c\) نیز به سمت ۱ افزایش می‌یابد. به بیان دقیق‌تر:
+\[
+\lim_{C(w_{n-1}) \to \infty} \lim_{c \to \infty} d_c = 1
+\]
+این بدان معناست که \textbf{عدد تخفیف \(d\) افزایش می‌یابد و به ۱ نزدیک می‌شود}. از دیدگاه عملی، هرچه پیکره بزرگتر باشد، نیاز به تخفیف (کم کردن از شمارش‌های دیده شده) کمتر می‌شود، زیرا بیشتر بایگرام‌های محتمل در پیکره دیده شده‌اند و جرم احتمال کمتری باید به بایگرام‌های دیده‌نشده اختصاص یابد.
+
+\separator
+\section{مثال عددی برای روشن‌تر شدن مطلب}
+فرض کنید پیکرهٔ کوچکی داریم با \(C(w_{n-1})=10\) و \(V=1000\) و یک بایگرام خاص با \(c=2\). در این صورت:
+\[
+d_c = \frac{2+1}{2} \times \frac{10}{10+1000} = 1.5 \times 0.0099 = 0.01485 \quad (\text{بسیار کوچک})
+\]
+حال پیکره را بسیار بزرگ می‌کنیم. فرض کنید \(C(w_{n-1})=10000\)، \(V=2000\) (کمی افزایش یافته) و همان بایگرام اکنون \(c=200\) بار دیده شده است:
+\[
+d_c = \frac{200+1}{200} \times \frac{10000}{10000+2000} = 1.005 \times 0.8333 = 0.8375
+\]
+می‌بینیم که \(d_c\) از \en{۰.۰۱۴} به \en{۰.۸۳۷} افزایش یافته است. با بزرگتر شدن بیشتر پیکره، \(d_c\) به ۱ نزدیک‌تر خواهد شد.
+
+\separator
+\section{پاسخ نهایی}
+با توجه به تحلیل فرمول تخفیف در هموارسازی لاپلاس:
+\[
+d_c = \frac{c+1}{c} \times \frac{C(w_{n-1})}{C(w_{n-1}) + V}
+\]
+و با استدلال ریاضی ارائه شده:
+\begin{itemize}
+\item افزایش اندازهٔ پیکره باعث افزایش شمارش‌ها (\(c\) و \(C(w_{n-1})\)) می‌شود.
+\item هر دو ضریب کسری به سمت ۱ میل می‌کنند.
+\item در نتیجه، \textbf{عدد تخفیف \(d\) افزایش یافته و به ۱ نزدیک می‌شود}.
+\end{itemize}
+به عبارت دیگر، هرچه پیکره بزرگتر شود و ترکیب‌های بیشتری (بایگرام‌های متنوع‌تر) در آن ظاهر شوند، تأثیر هموارسازی لاپلاس کاهش می‌یابد و شمارش تعدیل‌شده \(c^*\) به شمارش اصلی \(c\) نزدیکتر می‌شود. بنابراین \textbf{تغییر در \en{discount numbers (\(d\))} به صورت افزایش (به سمت ۱) خواهد بود}.
+
+\thickseparator
+
+\end{document}</code></pre></details><details class="source-file" ><summary><bdi>Q2/HW1_Q2.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw1-language-models/Q2/HW1_Q2.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{Vazir}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{\textbf{پاسخ سوال ۲} \\[0.4cm] \footnotesize دسته‌بندی احساسات جمله با استفاده از مدل \en{Naive Bayes}}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{}
+
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{مفاهیم پایه: دسته‌بند \en{Naive Bayes} برای تحلیل احساسات}
+دسته‌بند \textbf{بیز ساده (\en{Naive Bayes})} یک دسته‌بند احتمالاتی است که از قانون بیز و فرض استقلال شرطی میان ویژگی‌ها (در اینجا کلمات) استفاده می‌کند. در مسائل \textbf{تحلیل احساسات (\en{Sentiment Analysis})}، هدف ما تخصیص یک متن به یکی از کلاس‌های \textbf{مثبت (\en{pos})} یا \textbf{منفی (\en{neg})} است.
+
+فرمول اصلی دسته‌بند بیز ساده به صورت زیر است:
+\[
+\hat{c} = \arg\max_{c \in \{\text{pos},\text{neg}\}} P(c) \prod_{i \in \text{positions}} P(w_i | c)
+\]
+
+برای جلوگیری از زیرریز محاسباتی (\en{underflow})، معمولاً از لگاریتم استفاده می‌شود:
+\[
+\hat{c} = \arg\max_{c} \left[ \log P(c) + \sum_{i} \log P(w_i | c) \right]
+\]
+
+\separator
+\section{محاسبه احتمال پیشین (\en{Prior Probability})}
+صورت سوال تصریح کرده است که \textbf{احتمال پیشین (\en{prior probability}) برای هر کلاس برابر} است. بنابراین:
+\[
+P(\text{pos}) = P(\text{neg}) = 0.5
+\]
+در نتیجه در فضای لگاریتم:
+\[
+\log P(\text{pos}) = \log(0.5) \approx -0.6931 \quad , \quad \log P(\text{neg}) = \log(0.5) \approx -0.6931
+\]
+
+\separator
+\section{احتمال شرطی کلمات (\en{Likelihood}) و دایره واژگان}
+جدول داده شده احتمالات شرطی هر کلمه را به ازای هر کلاس نشان می‌دهد:
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{\en{word}} &amp; \textbf{\en{pos}} &amp; \textbf{\en{neg}} \\
+\hline
+\en{This} &amp; 0.1 &amp; 0.15 \\
+\hline
+\en{Was} &amp; 0.12 &amp; 0.14 \\
+\hline
+\en{a} &amp; 0.2 &amp; 0.18 \\
+\hline
+\en{Predictable} &amp; 0.01 &amp; 0.29 \\
+\hline
+\en{mess} &amp; 0.02 &amp; 0.16 \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{نکته مهم}: بر اساس بخش ۴.۲ کتاب، در مدل \en{Naive Bayes} کلماتی که در دایره واژگان \textbf{آموزشی} نبوده‌اند (یعنی در هیچ کلاسی دیده نشده‌اند) از محاسبات حذف می‌شوند. در این سوال تمام کلمات جمله در جدول وجود دارند و دایره واژگان $V$ شامل همین ۵ کلمه است.
+
+جمله مورد نظر:
+\begin{center}
+\textbf{\en{``this was a predictable mess&#x27;&#x27;}}
+\end{center}
+
+توجه: حروف بزرگ و کوچک در محاسبات دسته‌بند تأثیری ندارند (معمولاً همه کلمات به حروف کوچک تبدیل می‌شوند).
+
+\separator
+\section{محاسبه احتمال هر کلاس برای جمله داده شده}
+برای هر کلاس، احتمال را به صورت حاصلضرب احتمال پیشین در احتمال تک تک کلمات (با فرض استقلال شرطی) محاسبه می‌کنیم:
+
+\subsection*{کلاس مثبت (\en{pos})}
+\[
+P(\text{pos}) \times P(\text{this}|\text{pos}) \times P(\text{was}|\text{pos}) \times P(\text{a}|\text{pos}) \times P(\text{predictable}|\text{pos}) \times P(\text{mess}|\text{pos})
+\]
+\[
+= 0.5 \times 0.1 \times 0.12 \times 0.2 \times 0.01 \times 0.02
+\]
+\[
+= 0.5 \times (0.1 \times 0.12 = 0.012) \times (0.2 \times 0.01 = 0.002) \times 0.02
+\]
+\[
+= 0.5 \times 0.012 \times 0.002 \times 0.02
+\]
+\[
+= 0.5 \times (0.012 \times 0.002 = 0.000024) \times 0.02
+\]
+\[
+= 0.5 \times 0.00000048
+\]
+\[
+= 2.4 \times 10^{-7}
+\]
+
+\subsection*{کلاس منفی (\en{neg})}
+\[
+P(\text{neg}) \times P(\text{this}|\text{neg}) \times P(\text{was}|\text{neg}) \times P(\text{a}|\text{neg}) \times P(\text{predictable}|\text{neg}) \times P(\text{mess}|\text{neg})
+\]
+\[
+= 0.5 \times 0.15 \times 0.14 \times 0.18 \times 0.29 \times 0.16
+\]
+ابتدا ضرب دو به دو را انجام می‌دهیم:
+\[
+0.15 \times 0.14 = 0.021
+\]
+\[
+0.18 \times 0.29 = 0.0522
+\]
+\[
+0.021 \times 0.0522 = 0.0010962
+\]
+حال ضرب در \en{۰.۱۶}:
+\[
+0.0010962 \times 0.16 = 0.000175392
+\]
+در نهایت ضرب در احتمال پیشین \en{۰.۵}:
+\[
+P(\text{neg}) \times \text{حاصلضرب} = 0.5 \times 0.000175392 = 8.7696 \times 10^{-5}
+\]
+
+\separator
+\section{مقایسه و نتیجه‌گیری نهایی}
+\begin{center}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{کلاس} &amp; \textbf{احتمال نهایی} \\
+\hline
+مثبت (\en{pos}) &amp; \(2.4 \times 10^{-7}\) \\
+\hline
+منفی (\en{neg}) &amp; \(8.77 \times 10^{-5}\) \\
+\hline
+\end{tabular}
+\end{center}
+
+از آنجا که:
+\[
+8.77 \times 10^{-5} &gt; 2.4 \times 10^{-7}
+\]
+احتمال تعلق جمله به کلاس منفی بسیار بیشتر از کلاس مثبت است.
+
+بنابراین:
+\[
+\boxed{\text{جمله \en{«this was a predictable mess»} به کلاس \textbf{منفی (\en{neg})} تعلق می‌گیرد.}}
+\]
+
+\thickseparator
+
+\end{document}</code></pre></details><details class="source-file" ><summary><bdi>Q3/Q3.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw1-language-models/Q3/Q3.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{Vazir}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{\textbf{پاسخ سوال ۳} \\[0.4cm] \footnotesize دسته‌بندی فیلم به ژانر \en{Comedy} یا \en{Action} با استفاده از \en{Naive Bayes} و هموارسازی \en{Add-1}}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{}
+
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{مفاهیم پایه: دسته‌بند \en{Naive Bayes} با هموارسازی \en{Add-1}}
+همان‌طور که در بخش‌های ۴.۱ و ۴.۲ کتاب اشاره شد، دسته‌بند \textbf{بیز ساده (\en{Naive Bayes})} بر اساس قانون بیز و فرض استقلال شرطی کلمات عمل می‌کند. فرمول اصلی برای یافتن بهترین کلاس به صورت زیر است:
+
+\[
+\hat{c} = \arg\max_{c \in \{\text{comedy},\text{action}\}} P(c) \prod_{i \in \text{positions}} P(w_i | c)
+\]
+
+برای جلوگیری از زیرریز محاسباتی (\en{underflow})، از لگاریتم استفاده می‌شود:
+\[
+\hat{c} = \arg\max_{c} \left[ \log P(c) + \sum_{i} \log P(w_i | c) \right]
+\]
+
+در این سوال، به طور مشخص از \textbf{هموارسازی \en{add-1} (\en{Laplace smoothing})} برای محاسبه احتمالات شرطی (\en{likelihood}) استفاده می‌شود. بر اساس بخش ۴.۲ کتاب، فرمول \en{add-1 smoothing} به صورت زیر است:
+
+\[
+\hat{P}(w_i|c) = \frac{\text{count}(w_i,c) + 1}{\sum_{w \in V} \text{count}(w,c) + |V|}
+\]
+
+که در آن $V$ دایره واژگان شامل \textbf{همه کلمات منحصربه‌فرد} در هر دو کلاس است.
+
+\separator
+\section{استخراج داده‌های آموزشی (\en{Training Data})}
+پنج نقد کوتاه با برچسب \en{comedy} یا \en{action} داده شده است:
+
+\begin{center}
+\begin{tabular}{|c|l|l|}
+\hline
+\textbf{\#} &amp; \textbf{متن نقد} &amp; \textbf{برچسب} \\
+\hline
+1 &amp; \en{fun, couple, love, love} &amp; \en{comedy} \\
+\hline
+2 &amp; \en{fast, furious, shoot} &amp; \en{action} \\
+\hline
+3 &amp; \en{couple, fly, fast, fun, fun} &amp; \en{comedy} \\
+\hline
+4 &amp; \en{furious, shoot, shoot, fun} &amp; \en{action} \\
+\hline
+5 &amp; \en{fly, fast, shoot, love} &amp; \en{action} \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{نکته مهم}: در مدل \en{Naive Bayes} ترتیب کلمات اهمیت ندارد (\en{bag-of-words assumption}) و هر کلمه مستقل از بقیه در نظر گرفته می‌شود.
+
+\separator
+\section{محاسبه دایره واژگان $V$}
+ابتدا همه کلمات منحصربه‌فرد در کل داده‌های آموزشی را استخراج می‌کنیم:
+
+\begin{center}
+\en{fun, couple, love, fast, furious, shoot, fly}
+\end{center}
+
+بنابراین:
+\[
+|V| = 7
+\]
+
+\separator
+\section{محاسبه شمارش کلمات (\en{Word Counts}) به تفکیک هر کلاس}
+
+\subsection*{کلاس \en{comedy}}
+اسناد شماره ۱ و ۳ در کلاس \en{comedy} هستند:
+\begin{itemize}
+\item سند ۱: \en{fun(1), couple(1), love(2)}
+\item سند ۳: \en{couple(1), fly(1), fast(1), fun(2)}
+\end{itemize}
+جمع کل کلمات در کلاس \en{comedy}: $1+1+2+1+1+1+2 = 9$ کلمه
+
+\begin{center}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{کلمه} &amp; \textbf{شمارش در کلاس \en{comedy}} \\
+\hline
+\en{fun} &amp; $1 + 2 = 3$ \\
+\hline
+\en{couple} &amp; $1 + 1 = 2$ \\
+\hline
+\en{love} &amp; $2 + 0 = 2$ \\
+\hline
+\en{fast} &amp; $0 + 1 = 1$ \\
+\hline
+\en{furious} &amp; $0 + 0 = 0$ \\
+\hline
+\en{shoot} &amp; $0 + 0 = 0$ \\
+\hline
+\en{fly} &amp; $0 + 1 = 1$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{کلاس \en{action}}
+اسناد شماره ۲، ۴ و ۵ در کلاس \en{action} هستند:
+\begin{itemize}
+\item سند ۲: \en{fast(1), furious(1), shoot(1)}
+\item سند ۴: \en{furious(1), shoot(2), fun(1)}
+\item سند ۵: \en{fly(1), fast(1), shoot(1), love(1)}
+\end{itemize}
+جمع کل کلمات در کلاس \en{action}: $1+1+1+1+2+1+1+1+1+1 = 11$ کلمه
+
+\begin{center}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{کلمه} &amp; \textbf{شمارش در کلاس \en{action}} \\
+\hline
+\en{fast} &amp; $1 + 0 + 1 = 2$ \\
+\hline
+\en{furious} &amp; $1 + 1 + 0 = 2$ \\
+\hline
+\en{shoot} &amp; $1 + 2 + 1 = 4$ \\
+\hline
+\en{fly} &amp; $0 + 0 + 1 = 1$ \\
+\hline
+\en{fun} &amp; $0 + 1 + 0 = 1$ \\
+\hline
+\en{love} &amp; $0 + 0 + 1 = 1$ \\
+\hline
+\en{couple} &amp; $0 + 0 + 0 = 0$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\separator
+\section{محاسبه احتمال پیشین (\en{Prior Probability})}
+با توجه به تعداد اسناد در هر کلاس:
+\[
+N_{\text{comedy}} = 2, \quad N_{\text{action}} = 3, \quad N_{\text{doc}} = 5
+\]
+\[
+P(\text{comedy}) = \frac{2}{5} = 0.4, \qquad P(\text{action}) = \frac{3}{5} = 0.6
+\]
+در فضای لگاریتم:
+\[
+\log P(\text{comedy}) = \log(0.4) \approx -0.9163, \quad \log P(\text{action}) = \log(0.6) \approx -0.5108
+\]
+
+\separator
+\section{محاسبه احتمالات شرطی (\en{Likelihood}) با استفاده از \en{Add-1 Smoothing}}
+بر اساس فرمول \en{add-1 smoothing}:
+
+\[
+\hat{P}(w_i|c) = \frac{\text{count}(w_i,c) + 1}{\left(\sum_{w \in V} \text{count}(w,c)\right) + |V|}
+\]
+
+\subsection*{کلاس \en{comedy}}
+مجموع شمارش‌ها در کلاس \en{comedy} = ۹، و $|V| = 7$:
+\[
+\text{مخرج} = 9 + 7 = 16
+\]
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{کلمه} &amp; \textbf{شمارش} &amp; $\text{شمارش} + 1$ &amp; $\hat{P}(w|\text{comedy})$ \\
+\hline
+\en{fun} &amp; 3 &amp; 4 &amp; $4/16 = 0.25$ \\
+\hline
+\en{couple} &amp; 2 &amp; 3 &amp; $3/16 = 0.1875$ \\
+\hline
+\en{love} &amp; 2 &amp; 3 &amp; $3/16 = 0.1875$ \\
+\hline
+\en{fast} &amp; 1 &amp; 2 &amp; $2/16 = 0.125$ \\
+\hline
+\en{fly} &amp; 1 &amp; 2 &amp; $2/16 = 0.125$ \\
+\hline
+\en{furious} &amp; 0 &amp; 1 &amp; $1/16 = 0.0625$ \\
+\hline
+\en{shoot} &amp; 0 &amp; 1 &amp; $1/16 = 0.0625$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{کلاس \en{action}}
+مجموع شمارش‌ها در کلاس \en{action} = ۱۱، و $|V| = 7$:
+\[
+\text{مخرج} = 11 + 7 = 18
+\]
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{کلمه} &amp; \textbf{شمارش} &amp; $\text{شمارش} + 1$ &amp; $\hat{P}(w|\text{action})$ \\
+\hline
+\en{fast} &amp; 2 &amp; 3 &amp; $3/18 = 0.1667$ \\
+\hline
+\en{furious} &amp; 2 &amp; 3 &amp; $3/18 = 0.1667$ \\
+\hline
+\en{shoot} &amp; 4 &amp; 5 &amp; $5/18 = 0.2778$ \\
+\hline
+\en{fly} &amp; 1 &amp; 2 &amp; $2/18 = 0.1111$ \\
+\hline
+\en{fun} &amp; 1 &amp; 2 &amp; $2/18 = 0.1111$ \\
+\hline
+\en{love} &amp; 1 &amp; 2 &amp; $2/18 = 0.1111$ \\
+\hline
+\en{couple} &amp; 0 &amp; 1 &amp; $1/18 = 0.0556$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\separator
+\section{دسته‌بندی جمله تست}
+جمله تست:
+\begin{center}
+\textbf{\en{fast, couple, shoot, fly}}
+\end{center}
+
+این جمله شامل ۴ کلمه است: \en{fast, couple, shoot, fly}
+
+\subsection*{محاسبه برای کلاس \en{comedy}}
+\[
+\begin{aligned}
+P(\text{comedy}) \times \prod P(w|\text{comedy}) = 0.4 \times &amp; P(\text{fast}|\text{comedy}) \times P(\text{couple}|\text{comedy}) \\
+&amp; \times P(\text{shoot}|\text{comedy}) \times P(\text{fly}|\text{comedy})
+\end{aligned}
+\]
+\[
+= 0.4 \times 0.125 \times 0.1875 \times 0.0625 \times 0.125
+\]
+\[
+= 0.4 \times (0.125 \times 0.1875 = 0.0234375) \times (0.0625 \times 0.125 = 0.0078125)
+\]
+\[
+= 0.4 \times 0.0234375 \times 0.0078125
+\]
+\[
+= 0.4 \times 0.00018310546875
+\]
+\[
+= 7.32421875 \times 10^{-5}
+\]
+
+\subsection*{محاسبه برای کلاس \en{action}}
+\[
+\begin{aligned}
+P(\text{action}) \times \prod P(w|\text{action}) = 0.6 \times &amp; P(\text{fast}|\text{action}) \times P(\text{couple}|\text{action}) \\
+&amp; \times P(\text{shoot}|\text{action}) \times P(\text{fly}|\text{action})
+\end{aligned}
+\]
+\[
+= 0.6 \times 0.1667 \times 0.0556 \times 0.2778 \times 0.1111
+\]
+ابتدا ضرب دو به دو:
+\[
+0.1667 \times 0.0556 \approx 0.00926852
+\]
+\[
+0.2778 \times 0.1111 \approx 0.03086458
+\]
+\[
+0.00926852 \times 0.03086458 \approx 0.0002861
+\]
+در نهایت ضرب در ۰.۶:
+\[
+0.6 \times 0.0002861 = 1.7166 \times 10^{-4}
+\]
+
+\separator
+\section{مقایسه و نتیجه‌گیری نهایی}
+\begin{center}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{کلاس} &amp; \textbf{احتمال نهایی} \\
+\hline
+\en{Comedy} &amp; $7.32 \times 10^{-5}$ \\
+\hline
+\en{Action} &amp; $1.72 \times 10^{-4}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+از آنجا که:
+\[
+1.72 \times 10^{-4} &gt; 7.32 \times 10^{-5}
+\]
+
+بنابراین:
+\[
+\boxed{\text{فیلم با کلمات \en{«fast, couple, shoot, fly»} به کلاس \textbf{اکشن (\en{action})} تعلق می‌گیرد.}}
+\]
+
+\separator
+\section{تحلیل شهودی}
+نکات قابل توجه در این محاسبه:
+
+\begin{enumerate}
+\item \textbf{تأثیر کلمات قوی (\en{Strong Words})}: کلماتی مانند \en{shoot} و \en{fast} در کلاس \en{action} احتمالات بالایی دارند (به ترتیب ۰.۲۷۷۸ و ۰.۱۶۶۷) در حالی که در کلاس \en{comedy} احتمال پایین‌تری دارند.
+
+\item \textbf{تأثیر هموارسازی \en{add-1}}: کلمه \en{couple} که در کلاس \en{action} دیده نشده بود، با \en{add-1 smoothing} احتمال غیرصفر $1/18 \approx 0.0556$ دریافت کرد. بدون هموارسازی، این کلمه احتمال صفر می‌داد و کل احتمال کلاس \en{action} صفر می‌شد.
+
+\item \textbf{تأثیر کلمه \en{fly}}: این کلمه در هر دو کلاس احتمال نسبتاً نزدیکی دارد (۰.۱۲۵ در \en{comedy} و ۰.۱۱۱۱ در \en{action}) و تأثیر تعیین‌کننده‌ای ندارد.
+
+\item \textbf{تأثیر احتمال پیشین}: احتمال پیشین کلاس \en{action} (۰.۶) بیشتر از \en{comedy} (۰.۴) است که به نفع کلاس \en{action} تمام می‌شود.
+\end{enumerate}
+
+این سوال به خوبی نشان می‌دهد که چگونه \textbf{هموارسازی \en{add-1}} مشکل صفر شدن احتمالات را حل می‌کند و مدل \en{Naive Bayes} می‌تواند با وجود کلمات دیده‌نشده در داده‌های آموزشی، دسته‌بندی معقولی انجام دهد.
+
+\thickseparator
+
+\end{document}</code></pre></details><details class="source-file" ><summary><bdi>Q4/Q4.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw1-language-models/Q4/Q4.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{booktabs}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{Vazir}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{\textbf{پاسخ سوال ۴} \\[0.4cm] \footnotesize مقایسه دو مدل \en{Multinomial Naive Bayes} و \en{Binary Naive Bayes} در تحلیل احساسات}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{}
+
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{مفاهیم پایه: دو نسخه از \en{Naive Bayes} برای تحلیل احساسات}
+بر اساس بخش‌های ۴.۱ تا ۴.۴ کتاب، دو نسخه متفاوت از دسته‌بند \en{Naive Bayes} برای تحلیل احساسات وجود دارد:
+
+\subsection*{۱. \en{Multinomial Naive Bayes}}
+این نسخه از \textbf{شمارش واقعی کلمات} (\en{word counts}) استفاده می‌کند. هر چند بار که یک کلمه در یک سند تکرار شود، در محاسبات لحاظ می‌گردد.
+
+\subsection*{۲. \en{Binary Naive Bayes} (یا \en{Binarized Naive Bayes})}
+همان‌طور که در بخش ۴.۴ توضیح داده شده، در این نسخه \textbf{حضور یا عدم حضور} کلمه اهمیت دارد، نه تعداد تکرار آن. به عبارت دیگر، شمارش هر کلمه در هر سند حداکثر به ۱ محدود می‌شود (یعنی کلمات تکراری در یک سند حذف می‌شوند). این روش معمولاً برای تحلیل احساسات عملکرد بهتری دارد.
+
+\separator
+\section{داده‌های آموزشی (\en{Training Data})}
+پنج سند با شمارش کلمات کلیدی \en{good}، \en{poor} و \en{great} و برچسب مثبت (\en{pos}) یا منفی (\en{neg}):
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{\en{doc}} &amp; \textbf{\en{good}} &amp; \textbf{\en{poor}} &amp; \textbf{\en{great}} &amp; \textbf{\en{class}} \\
+\hline
+\en{d1} &amp; 3 &amp; 0 &amp; 3 &amp; \en{pos} \\
+\hline
+\en{d2} &amp; 0 &amp; 1 &amp; 2 &amp; \en{pos} \\
+\hline
+\en{d3} &amp; 1 &amp; 3 &amp; 0 &amp; \en{neg} \\
+\hline
+\en{d4} &amp; 1 &amp; 5 &amp; 2 &amp; \en{neg} \\
+\hline
+\en{d5} &amp; 0 &amp; 2 &amp; 0 &amp; \en{neg} \\
+\hline
+\end{tabular}
+\end{center}
+
+\separator
+\section{محاسبه احتمال پیشین (\en{Prior Probability})}
+تعداد اسناد در هر کلاس:
+\[
+N_{\text{pos}} = 2, \quad N_{\text{neg}} = 3, \quad N_{\text{doc}} = 5
+\]
+\[
+P(\text{pos}) = \frac{2}{5} = 0.4, \qquad P(\text{neg}) = \frac{3}{5} = 0.6
+\]
+
+\separator
+\section{بخش اول: مدل \en{Multinomial Naive Bayes}}
+
+\subsection*{محاسبه دایره واژگان $V$}
+کلمات موجود در داده‌های آموزشی: \en{good, poor, great}
+\[
+|V| = 3
+\]
+
+\subsection*{محاسبه مجموع شمارش کلمات در هر کلاس}
+\begin{itemize}
+\item کلاس \en{pos}: اسناد \en{d1} و \en{d2}
+\[
+\text{sum}_{\text{pos}} = (3+0+3) + (0+1+2) = 6 + 3 = 9
+\]
+\item کلاس \en{neg}: اسناد \en{d3}، \en{d4} و \en{d5}
+\[
+\text{sum}_{\text{neg}} = (1+3+0) + (1+5+2) + (0+2+0) = 4 + 8 + 2 = 14
+\]
+\end{itemize}
+
+\subsection*{محاسبه احتمالات شرطی با \en{Add-1 Smoothing}}
+فرمول:
+\[
+\hat{P}(w_i|c) = \frac{\text{count}(w_i,c) + 1}{\text{sum}_c + |V|}
+\]
+
+\subsubsection*{کلاس \en{pos} (مخرج = $9 + 3 = 12$)}
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{کلمه} &amp; \textbf{شمارش} &amp; $\text{شمارش} + 1$ &amp; $\hat{P}(w|\text{pos})$ \\
+\hline
+\en{good} &amp; $3 + 0 = 3$ &amp; 4 &amp; $4/12 = 0.3333$ \\
+\hline
+\en{poor} &amp; $0 + 1 = 1$ &amp; 2 &amp; $2/12 = 0.1667$ \\
+\hline
+\en{great} &amp; $3 + 2 = 5$ &amp; 6 &amp; $6/12 = 0.5000$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection*{کلاس \en{neg} (مخرج = $14 + 3 = 17$)}
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{کلمه} &amp; \textbf{شمارش} &amp; $\text{شمارش} + 1$ &amp; $\hat{P}(w|\text{neg})$ \\
+\hline
+\en{good} &amp; $1 + 1 + 0 = 2$ &amp; 3 &amp; $3/17 = 0.1765$ \\
+\hline
+\en{poor} &amp; $3 + 5 + 2 = 10$ &amp; 11 &amp; $11/17 = 0.6471$ \\
+\hline
+\en{great} &amp; $0 + 2 + 0 = 2$ &amp; 3 &amp; $3/17 = 0.1765$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{جمله تست برای مدل \en{Multinomial}}
+جمله: \textbf{\en{``A good, good plot and great characters, but poor acting.&#x27;&#x27;}}
+
+کلمات موجود در دایره واژگان: \en{good} (۲ بار)، \en{great} (۱ بار)، \en{poor} (۱ بار)
+
+\subsubsection*{محاسبه برای کلاس \en{pos}}
+\[
+\begin{aligned}
+P(\text{pos}) \times \prod P(w|\text{pos}) = 0.4 \times &amp; P(\text{good}|\text{pos})^2 \times P(\text{great}|\text{pos}) \times P(\text{poor}|\text{pos})
+\end{aligned}
+\]
+\[
+= 0.4 \times (0.3333)^2 \times 0.5 \times 0.1667
+\]
+\[
+= 0.4 \times 0.1111 \times 0.5 \times 0.1667
+\]
+\[
+= 0.4 \times 0.1111 \times 0.08335
+\]
+\[
+= 0.4 \times 0.009259
+\]
+\[
+= 3.7036 \times 10^{-3}
+\]
+
+\subsubsection*{محاسبه برای کلاس \en{neg}}
+\[
+\begin{aligned}
+P(\text{neg}) \times \prod P(w|\text{neg}) = 0.6 \times &amp; P(\text{good}|\text{neg})^2 \times P(\text{great}|\text{neg}) \times P(\text{poor}|\text{neg})
+\end{aligned}
+\]
+\[
+= 0.6 \times (0.1765)^2 \times 0.1765 \times 0.6471
+\]
+\[
+= 0.6 \times 0.03115 \times 0.1765 \times 0.6471
+\]
+\[
+= 0.6 \times 0.03115 \times 0.1142
+\]
+\[
+= 0.6 \times 0.003557
+\]
+\[
+= 2.1342 \times 10^{-3}
+\]
+
+\subsection*{نتیجه مدل \en{Multinomial}}
+\[
+3.7036 \times 10^{-3} &gt; 2.1342 \times 10^{-3} \quad \Rightarrow \quad \text{\en{pos}}
+\]
+
+\separator
+\section{بخش دوم: مدل \en{Binary Naive Bayes}}
+
+بر اساس بخش ۴.۴، در این مدل شمارش هر کلمه در هر سند حداکثر به ۱ محدود می‌شود (حضور یا عدم حضور).
+
+\subsection*{تبدیل داده‌های آموزشی به حالت دودویی (\en{Binary})}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{\en{doc}} &amp; \textbf{\en{good}} &amp; \textbf{\en{poor}} &amp; \textbf{\en{great}} &amp; \textbf{\en{class}} \\
+\hline
+\en{d1} &amp; 1 &amp; 0 &amp; 1 &amp; \en{pos} \\
+\hline
+\en{d2} &amp; 0 &amp; 1 &amp; 1 &amp; \en{pos} \\
+\hline
+\en{d3} &amp; 1 &amp; 1 &amp; 0 &amp; \en{neg} \\
+\hline
+\en{d4} &amp; 1 &amp; 1 &amp; 1 &amp; \en{neg} \\
+\hline
+\en{d5} &amp; 0 &amp; 1 &amp; 0 &amp; \en{neg} \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{محاسبه تعداد اسناد در هر کلاس}
+\[
+N_{\text{pos}} = 2, \quad N_{\text{neg}} = 3
+\]
+
+\subsection*{محاسبه مجموع حضورها در هر کلاس (برای \en{smoothing})}
+\begin{itemize}
+\item کلاس \en{pos}: $N_{\text{pos}} \times |V| = 2 \times 3 = 6$ (چون هر سند حداکثر یک بار برای هر کلمه)
+\item کلاس \en{neg}: $N_{\text{neg}} \times |V| = 3 \times 3 = 9$
+\end{itemize}
+
+\subsection*{محاسبه احتمالات شرطی با \en{Add-1 Smoothing} برای مدل دودویی}
+
+\subsubsection*{کلاس \en{pos} (مخرج = $6 + 3 = 9$)}
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{کلمه} &amp; \textbf{تعداد اسناد حاوی کلمه} &amp; $\text{شمارش} + 1$ &amp; $\hat{P}(w|\text{pos})$ \\
+\hline
+\en{good} &amp; $1 + 0 = 1$ &amp; 2 &amp; $2/9 = 0.2222$ \\
+\hline
+\en{poor} &amp; $0 + 1 = 1$ &amp; 2 &amp; $2/9 = 0.2222$ \\
+\hline
+\en{great} &amp; $1 + 1 = 2$ &amp; 3 &amp; $3/9 = 0.3333$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection*{کلاس \en{neg} (مخرج = $9 + 3 = 12$)}
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{کلمه} &amp; \textbf{تعداد اسناد حاوی کلمه} &amp; $\text{شمارش} + 1$ &amp; $\hat{P}(w|\text{neg})$ \\
+\hline
+\en{good} &amp; $1 + 1 + 0 = 2$ &amp; 3 &amp; $3/12 = 0.2500$ \\
+\hline
+\en{poor} &amp; $1 + 1 + 1 = 3$ &amp; 4 &amp; $4/12 = 0.3333$ \\
+\hline
+\en{great} &amp; $0 + 1 + 0 = 1$ &amp; 2 &amp; $2/12 = 0.1667$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{جمله تست برای مدل \en{Binary}}
+جمله: \textbf{\en{``A good, good plot and great characters, but poor acting.&#x27;&#x27;}}
+
+در مدل دودویی، کلمات تکراری در یک سند حذف می‌شوند. بنابراین کلمه \en{good} فقط \textbf{یک بار} محاسبه می‌شود. کلمات موجود: \en{good}، \en{great}، \en{poor}
+
+\subsubsection*{محاسبه برای کلاس \en{pos}}
+\[
+\begin{aligned}
+P(\text{pos}) \times \prod P(w|\text{pos}) = 0.4 \times &amp; P(\text{good}|\text{pos}) \times P(\text{great}|\text{pos}) \times P(\text{poor}|\text{pos})
+\end{aligned}
+\]
+\[
+= 0.4 \times 0.2222 \times 0.3333 \times 0.2222
+\]
+\[
+= 0.4 \times (0.2222 \times 0.3333 = 0.07407) \times 0.2222
+\]
+\[
+= 0.4 \times 0.07407 \times 0.2222
+\]
+\[
+= 0.4 \times 0.01646
+\]
+\[
+= 6.584 \times 10^{-3}
+\]
+
+\subsubsection*{محاسبه برای کلاس \en{neg}}
+\[
+\begin{aligned}
+P(\text{neg}) \times \prod P(w|\text{neg}) = 0.6 \times &amp; P(\text{good}|\text{neg}) \times P(\text{great}|\text{neg}) \times P(\text{poor}|\text{neg})
+\end{aligned}
+\]
+\[
+= 0.6 \times 0.25 \times 0.1667 \times 0.3333
+\]
+\[
+= 0.6 \times (0.25 \times 0.1667 = 0.041675) \times 0.3333
+\]
+\[
+= 0.6 \times 0.041675 \times 0.3333
+\]
+\[
+= 0.6 \times 0.01389
+\]
+\[
+= 8.334 \times 10^{-3}
+\]
+
+\subsection*{نتیجه مدل \en{Binary}}
+\[
+8.334 \times 10^{-3} &gt; 6.584 \times 10^{-3} \quad \Rightarrow \quad \text{\en{neg}}
+\]
+
+\separator
+\section{مقایسه و نتیجه‌گیری نهایی}
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{مدل} &amp; \textbf{احتمال \en{pos}} &amp; \textbf{احتمال \en{neg}} &amp; \textbf{نتیجه} \\
+\hline
+\en{Multinomial Naive Bayes} &amp; $3.70 \times 10^{-3}$ &amp; $2.13 \times 10^{-3}$ &amp; \textbf{\en{pos}} \\
+\hline
+\en{Binary Naive Bayes} &amp; $6.58 \times 10^{-3}$ &amp; $8.33 \times 10^{-3}$ &amp; \textbf{\en{neg}} \\
+\hline
+\end{tabular}
+\end{center}
+
+\[
+\boxed{\text{دو مدل با یکدیگر \textbf{موافق نیستند} (\en{disagree}). مدل \en{Multinomial} جمله را \en{pos} و مدل \en{Binary} جمله را \en{neg} دسته‌بندی می‌کند.}}
+\]
+
+\separator
+\section{تحلیل علت اختلاف نظر دو مدل}
+دلیل اصلی اختلاف بین دو مدل:
+
+\begin{enumerate}
+\item \textbf{تکرار کلمه \en{good}}: در مدل \en{multinomial}، کلمه \en{good} دو بار در جمله آمده و توان دوم آن محاسبه می‌شود. از آنجا که $P(\text{good}|\text{pos}) &gt; P(\text{good}|\text{neg})$، این تکرار به نفع کلاس مثبت تمام می‌شود.
+
+\item \textbf{مدل \en{binary}}: در این مدل، تکرار کلمه \en{good} تأثیری ندارد و فقط یک بار محاسبه می‌شود. بنابراین وزن این کلمه در مدل دودویی کمتر از مدل چندجمله‌ای است.
+
+\item \textbf{کلمه \en{poor}}: این کلمه در کلاس منفی احتمال بسیار بالایی دارد (\en{۰.۶۴۷۱} در مدل \en{multinomial} و \en{۰.۳۳۳۳} در مدل \en{binary}). در مدل \en{binary}، به دلیل حذف تأثیر تکرار \en{good}، تأثیر کلمه \en{poor} پررنگ‌تر می‌شود.
+
+\item \textbf{نتیجه}: در مدل \en{multinomial}، تکرار \en{good} برتری جزئی به کلاس مثبت می‌دهد، اما در مدل \en{binary}، حضور کلمه \en{poor} غالب شده و کلاس منفی را برنده می‌کند.
+\end{enumerate}
+
+همان‌طور که در بخش ۴.۴ کتاب اشاره شد، برای تحلیل احساسات معمولاً مدل \en{binary naive Bayes} عملکرد بهتری دارد، زیرا وجود یا عدم وجود یک کلمه احساسی معمولاً مهم‌تر از تعداد تکرار آن است.
+
+\thickseparator
+
+\end{document}</code></pre></details><details class="source-file" ><summary><bdi>Q5/Q5.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw1-language-models/Q5/Q5.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{booktabs}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{Vazir}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{\textbf{پاسخ سوال ۵} \\[0.4cm] \footnotesize اهمیت استفاده از نماد پایان \en{&lt;/s&gt;} در مدل‌های زبانی \en{N-gram}}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{}
+
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{مفاهیم پایه: نمادهای شروع و پایان در مدل‌های \en{N-gram}}
+بر اساس بخش ۳.۱ کتاب، هنگام آموزش مدل‌های زبانی \en{N-gram}، به طور استاندارد از دو نماد ویژه استفاده می‌شود:
+
+\begin{itemize}
+\item \textbf{نماد شروع} \en{&lt;s&gt;}: برای محاسبه احتمال اولین کلمه جمله به کار می‌رود. به عنوان مثال، احتمال دیدن کلمه \en{I} در ابتدای جمله به صورت $P(\text{I}|\text{&lt;s&gt;})$ محاسبه می‌شود.
+
+\item \textbf{نماد پایان} \en{&lt;/s&gt;}: برای محاسبه احتمال پایان جمله و ایجاد یک توزیع احتمال معتبر (مجموع احتمالات برابر ۱) استفاده می‌شود.
+\end{itemize}
+
+کتاب به طور صریح اشاره می‌کند (در پانویس شماره ۲ صفحه ۳۵):
+
+\begin{quote}
+\en{We need the end-symbol to make the bigram grammar a true probability distribution. Without an end-symbol, instead of the sentence probabilities of all sentences summing to one, the sentence probabilities for all sentences of a given length would sum to one. This model would define an infinite set of probability distributions, with one distribution per sentence length.}
+\end{quote}
+
+\separator
+\section{مشکل عدم استفاده از نماد پایان \en{&lt;/s&gt;}}
+اگر از نماد پایان \en{&lt;/s&gt;} استفاده نکنیم، دو مشکل اساسی ایجاد می‌شود:
+
+\subsection*{مشکل اول: نقض اصل مجموع احتمالات}
+در یک مدل زبانی معتبر، مجموع احتمالات همه جملات ممکن (با هر طولی) باید برابر ۱ باشد. بدون نماد پایان، مدل نمی‌تواند به درستی بین جملات با طول‌های مختلف تمایز قائل شود و مجموع احتمالات جملات با طول‌های نامتناهی واگرا می‌شود.
+
+\subsection*{مشکل دوم: مقایسه ناعادلانه جملات با طول‌های مختلف}
+در یک مدل \en{bigram} بدون نماد پایان، احتمال یک جمله به صورت زیر محاسبه می‌شود:
+\[
+P_{\text{بدون پایان}}(w_1, w_2, ..., w_n) = P(w_1|\text{&lt;s&gt;}) \times \prod_{i=2}^{n} P(w_i|w_{i-1})
+\]
+در حالی که مدل صحیح با نماد پایان:
+\[
+P_{\text{با پایان}}(w_1, w_2, ..., w_n) = P(w_1|\text{&lt;s&gt;}) \times \prod_{i=2}^{n} P(w_i|w_{i-1}) \times P(\text{&lt;/s&gt;}|w_n)
+\]
+
+از آنجا که $P(\text{&lt;/s&gt;}|w_n) &lt; 1$ (معمولاً مقدار کوچکی دارد)، جملات کوتاه‌تر در مدل بدون نماد پایان به طور نامتناسبی احتمال بیشتری دریافت می‌کنند.
+
+\separator
+\section{مثال عددی}
+فرض کنید یک پیکره کوچک از سه جمله زیر داریم (همان پیکره مثال کتاب در صفحه ۳۵):
+
+\begin{center}
+\en{&lt;s&gt; I am Sam &lt;/s&gt;} \\
+\en{&lt;s&gt; Sam I am &lt;/s&gt;} \\
+\en{&lt;s&gt; I do not like green eggs and ham &lt;/s&gt;}
+\end{center}
+
+ابتدا احتمالات \en{bigram} را از این پیکره محاسبه می‌کنیم (با استفاده از تخمین \en{Maximum Likelihood Estimation}):
+
+\begin{center}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{\en{Bigram}} &amp; \textbf{احتمال} \\
+\hline
+$P(\text{I}|\text{&lt;s&gt;})$ &amp; $2/3 = 0.6667$ \\
+\hline
+$P(\text{am}|\text{I})$ &amp; $2/3 = 0.6667$ \\
+\hline
+$P(\text{Sam}|\text{am})$ &amp; $1/2 = 0.5$ \\
+\hline
+$P(\text{&lt;/s&gt;}|\text{Sam})$ &amp; $1/2 = 0.5$ \\
+\hline
+$P(\text{do}|\text{I})$ &amp; $1/3 = 0.3333$ \\
+\hline
+$P(\text{not}|\text{do})$ &amp; $1/1 = 1.0$ \\
+\hline
+$P(\text{like}|\text{not})$ &amp; $1/1 = 1.0$ \\
+\hline
+$P(\text{green}|\text{like})$ &amp; $1/1 = 1.0$ \\
+\hline
+$P(\text{eggs}|\text{green})$ &amp; $1/1 = 1.0$ \\
+\hline
+$P(\text{and}|\text{eggs})$ &amp; $1/1 = 1.0$ \\
+\hline
+$P(\text{ham}|\text{and})$ &amp; $1/1 = 1.0$ \\
+\hline
+$P(\text{&lt;/s&gt;}|\text{ham})$ &amp; $1/1 = 1.0$ \\
+\hline
+\end{tabular}
+\end{center}
+\newpage
+\subsection*{مقایسه دو جمله با طول متفاوت}
+
+\textbf{جمله کوتاه:} \en{&lt;s&gt; I am Sam &lt;/s&gt;}
+\begin{itemize}
+\item \textbf{با نماد پایان}:
+\[
+P = P(\text{I}|\text{&lt;s&gt;}) \times P(\text{am}|\text{I}) \times P(\text{Sam}|\text{am}) \times P(\text{&lt;/s&gt;}|\text{Sam})
+\]
+\[
+P = 0.6667 \times 0.6667 \times 0.5 \times 0.5 = 0.1111
+\]
+
+\item \textbf{بدون نماد پایان}:
+\[
+P = P(\text{I}|\text{&lt;s&gt;}) \times P(\text{am}|\text{I}) \times P(\text{Sam}|\text{am})
+\]
+\[
+P = 0.6667 \times 0.6667 \times 0.5 = 0.2222
+\]
+\end{itemize}
+
+\textbf{جمله بلند:} \en{&lt;s&gt; I do not like green eggs and ham &lt;/s&gt;}
+\begin{itemize}
+\item \textbf{با نماد پایان}:
+\[
+\begin{aligned}
+P = &amp; P(\text{I}|\text{&lt;s&gt;}) \times P(\text{do}|\text{I}) \times P(\text{not}|\text{do}) \times P(\text{like}|\text{not}) \\
+&amp; \times P(\text{green}|\text{like}) \times P(\text{eggs}|\text{green}) \times P(\text{and}|\text{eggs}) \times P(\text{ham}|\text{and}) \\
+&amp; \times P(\text{&lt;/s&gt;}|\text{ham})
+\end{aligned}
+\]
+\[
+P = 0.6667 \times 0.3333 \times 1.0 \times 1.0 \times 1.0 \times 1.0 \times 1.0 \times 1.0 \times 1.0 = 0.2222
+\]
+
+\item \textbf{بدون نماد پایان}:
+\[
+\begin{aligned}
+P = &amp; P(\text{I}|\text{&lt;s&gt;}) \times P(\text{do}|\text{I}) \times P(\text{not}|\text{do}) \times P(\text{like}|\text{not}) \\
+&amp; \times P(\text{green}|\text{like}) \times P(\text{eggs}|\text{green}) \times P(\text{and}|\text{eggs}) \times P(\text{ham}|\text{and})
+\end{aligned}
+\]
+\[
+P = 0.6667 \times 0.3333 \times 1.0 \times 1.0 \times 1.0 \times 1.0 \times 1.0 \times 1.0 = 0.2222
+\]
+\end{itemize}
+
+\separator
+\section{جدول مقایسه نتایج}
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{جمله} &amp; \textbf{با \en{&lt;/s&gt;}} &amp; \textbf{بدون \en{&lt;/s&gt;}} \\
+\hline
+\en{&lt;s&gt; I am Sam &lt;/s&gt;} &amp; 0.1111 &amp; 0.2222 \\
+\hline
+\en{&lt;s&gt; I do not like green eggs and ham &lt;/s&gt;} &amp; 0.2222 &amp; 0.2222 \\
+\hline
+\end{tabular}
+\end{center}
+
+\separator
+\newpage
+\section{تحلیل نتایج}
+
+\begin{enumerate}
+\item \textbf{در مدل صحیح (با نماد پایان)}: جمله بلندتر احتمال بیشتری دارد (\en{۰.۲۲۲۲} در مقابل \en{۰.۱۱۱۱}). این منطقی است زیرا جمله بلندتر در پیکره آموزشی یک بار دیده شده (سند سوم) در حالی که جمله کوتاه دو بار دیده شده (اسناد اول و دوم). مدل با نماد پایان به درستی فراوانی وقوع جملات را منعکس می‌کند.
+
+\item \textbf{در مدل بدون نماد پایان}: هر دو جمله احتمال یکسان (\en{۰.۲۲۲۲}) دارند. این در حالی است که جمله کوتاه واقعاً دو برابر بیشتر در پیکره دیده شده است. مدل بدون نماد پایان نمی‌تواند این تفاوت را تشخیص دهد.
+
+\item \textbf{نتیجه مهم}: همان‌طور که در کتاب اشاره شده، بدون نماد پایان، مدل یک توزیع احتمال مجزا برای هر طول جمله ایجاد می‌کند و مجموع احتمالات همه جملات با طول‌های مختلف برابر ۱ نخواهد بود. این موضوع باعث می‌شود مدل نتواند جملات کوتاه و بلند را به درستی مقایسه کند.
+\end{enumerate}
+
+\separator
+\section{نتیجه‌گیری نهایی}
+\[
+\boxed{\begin{array}{r}
+\text{بدون استفاده از نماد پایان \en{&lt;/s&gt;}، مجموع احتمالات همه جملات برابر ۱ نمی‌شود و مدل} \\
+\text{نمی‌تواند جملات با طول‌های مختلف را به درستی مقایسه کند. در مثال عددی نشان داده} \\
+\text{شد که دو جمله با فراوانی‌های متفاوت در پیکره، در مدل بدون \en{&lt;/s&gt;} احتمال یکسان} \\
+\text{دریافت می‌کنند. بنابراین استفاده از \en{&lt;/s&gt;} برای ایجاد یک توزیع احتمال معتبر و} \\
+\text{نرمال‌شده ضروری است.}
+\end{array}}
+\]
+
+\thickseparator
+
+\end{document}</code></pre></details><details class="source-file" ><summary><bdi>Q6/Q6.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw1-language-models/Q6/Q6.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{booktabs}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{Vazir}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{\textbf{پاسخ سوال ۶} \\[0.4cm] \footnotesize مقایسه روش‌های \en{Interpolation} و \en{Backoff} در مدل‌های \en{Trigram}}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{}
+
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{مفاهیم پایه: \en{Backoff} و \en{Interpolation}}
+بر اساس بخش ۳.۶.۳ کتاب، زمانی که با \en{n-gram}های صفر مواجه می‌شویم، می‌توانیم از دو روش استفاده کنیم:
+
+\begin{itemize}
+\item \textbf{\en{Backoff} (عقب‌نشینی)}: اگر شواهد کافی برای \en{n-gram} با مرتبه بالا نداریم (یعنی شمارش آن صفر است)، به \en{n-gram} با مرتبه پایین‌تر عقب‌نشینی می‌کنیم. یعنی فقط در صورت صفر بودن از مرتبه پایین‌تر استفاده می‌شود.
+
+\item \textbf{\en{Interpolation} (درون‌یابی)}: همیشه تخمین‌های همه مرتبه‌ها (ترای‌گرم، بای‌گرام و یونی‌گرم) را با وزن‌های $\lambda$ ترکیب می‌کنیم، حتی اگر ترای‌گرم شمارش غیرصفر داشته باشد.
+\end{itemize}
+
+\separator
+\section{داده‌های مسأله}
+\begin{itemize}
+\item می‌خواهیم $P(\text{City} | \text{New York})$ را محاسبه کنیم.
+\item $C(\text{New York}) = 100$ (تعداد رخدادهای بای‌گرام \en{New York})
+\item $C(\text{York City})$ دفعات زیادی دیده شده است (فرض می‌کنیم مثلاً $C(\text{York City}) = 50$)
+\item $C(\text{New York City}) = 0$ (ترای‌گرم مورد نظر هرگز دیده نشده است)
+\end{itemize}
+
+\textbf{توجه}: $P(\text{City}|\text{York})$ را می‌توان از روی بای‌گرام \en{York City} محاسبه کرد:
+\[
+P(\text{City}|\text{York}) = \frac{C(\text{York City})}{C(\text{York})}
+\]
+
+\separator
+\section{روش اول: \en{Interpolation} (درون‌یابی)}
+در روش درون‌یابی خطی ساده (معادله ۳.۲۷ کتاب)، همیشه از ترکیب سه سطح استفاده می‌کنیم:
+\[
+\hat{P}(\text{City}|\text{New York}) = \lambda_1 P(\text{City}) + \lambda_2 P(\text{City}|\text{York}) + \lambda_3 P(\text{City}|\text{New York})
+\]
+که در آن $\lambda_1 + \lambda_2 + \lambda_3 = 1$.
+
+\begin{itemize}
+\item $P(\text{City})$: احتمال یونی‌گرم کلمه \en{City} (مقدار خاصی دارد)
+\item $P(\text{City}|\text{York})$: احتمال بای‌گرام \en{York City} (عدد بزرگی است چون دفعات زیادی دیده شده)
+\item $P(\text{City}|\text{New York})$: احتمال ترای‌گرم مورد نظر. با توجه به اینکه $C(\text{New York City}) = 0$، تخمین MLE آن صفر است:
+\[
+P_{\text{MLE}}(\text{City}|\text{New York}) = \frac{C(\text{New York City})}{C(\text{New York})} = \frac{0}{100} = 0
+\]
+\end{itemize}
+
+بنابراین در روش درون‌یابی:
+\[
+\hat{P}_{\text{Interp}}(\text{City}|\text{New York}) = \lambda_1 P(\text{City}) + \lambda_2 P(\text{City}|\text{York}) + \lambda_3 \times 0
+\]
+\[
+= \lambda_1 P(\text{City}) + \lambda_2 P(\text{City}|\text{York})
+\]
+
+مقدار نهایی یک عدد مثبت خواهد بود (چون $P(\text{City})$ و $P(\text{City}|\text{York})$ هر دو مثبت هستند). وزن‌های $\lambda$ معمولاً با استفاده از یک مجموعه \en{held-out} بهینه می‌شوند.
+
+\separator
+\section{روش دوم: \en{Backoff} (عقب‌نشینی)}
+در روش عقب‌نشینی (معادله ۳.۲۹ کتاب)، تنها در صورتی که ترای‌گرم صفر باشد، به بای‌گرام عقب‌نشینی می‌کنیم. از آنجا که $C(\text{New York City}) = 0 &gt; 0$؟ خیر، شرط اول برقرار نیست چون شمارش صفر است. بنابراین از حالت دوم استفاده می‌شود:
+
+\[
+P_{\text{BO}}(\text{City}|\text{New York}) = \alpha(\text{New York}) \times P_{\text{BO}}(\text{City}|\text{York})
+\]
+
+\begin{itemize}
+\item $P_{\text{BO}}(\text{City}|\text{York})$: احتمال عقب‌نشینی برای بای‌گرام. اگر $C(\text{York City}) &gt; 0$ باشد، از روی شمارش آن محاسبه می‌شود (احتملاً با تخفیف).
+\item $\alpha(\text{New York})$: ضریب نرمال‌سازی که جرم احتمال تخفیف‌داده‌شده از ترای‌گرم‌های دیده شده را بین بای‌گرام‌های دیده‌نشده توزیع می‌کند.
+\end{itemize}
+
+از آنجا که $C(\text{York City})$ مقدار زیادی است، $P_{\text{BO}}(\text{City}|\text{York})$ یک عدد مثبت و قابل توجه خواهد بود.
+
+\separator
+\section{جدول مقایسه دو روش}
+\begin{center}
+\begin{tabular}{|p{4cm}|p{5cm}|p{4cm}|}
+\hline
+\textbf{ویژگی} &amp; \textbf{\en{Interpolation}} &amp; \textbf{\en{Backoff}} \\
+\hline
+استفاده از ترای‌گرم &amp; همیشه (حتی با ضریب $\lambda_3$) &amp; فقط اگر شمارش &gt; ۰ باشد \\
+\hline
+وضعیت $C(\text{New York City}) = 0$ &amp; $P(\text{City}|\text{New York}) = 0$ در محاسبه &amp; اصلاً استفاده نمی‌شود \\
+\hline
+نحوه محاسبه &amp; $\lambda_1 P(\text{City}) + \lambda_2 P(\text{City}|\text{York})$ &amp; $\alpha(\text{New York}) \times P_{\text{BO}}(\text{City}|\text{York})$ \\
+\hline
+تأثیر $P(\text{City}|\text{York})$ &amp; با وزن $\lambda_2$ وارد می‌شود &amp; مستقیماً (با ضریب $\alpha$) تأثیر می‌گذارد \\
+\hline
+تأثیر $P(\text{City})$ &amp; با وزن $\lambda_1$ وارد می‌شود &amp; فقط اگر بای‌گرام هم صفر باشد \\
+\hline
+پارامترها &amp; $\lambda$های ثابت یا وابسته به متن &amp; ضریب تخفیف و $\alpha$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\separator
+\section{نتیجه‌گیری نهایی}
+\begin{itemize}
+\item \textbf{در روش \en{Interpolation}}: احتمال نهایی ترکیب وزنی از یونی‌گرم $P(\text{City})$ و بای‌گرام $P(\text{City}|\text{York})$ است. مقدار $\lambda_2$ معمولاً بزرگتر از $\lambda_1$ است چون بای‌گرام اطلاعات بیشتری دارد. این روش همواره از تمام سطوح استفاده می‌کند.
+
+\item \textbf{در روش \en{Backoff}}: چون ترای‌گرم \en{New York City} دیده نشده، مستقیماً به بای‌گرام \en{York City} عقب‌نشینی می‌کند. ضریب $\alpha(\text{New York})$ تضمین می‌کند که مجموع احتمالات برای همه کلماتی که بعد از \en{New York} می‌آیند، برابر ۱ بماند.
+\end{itemize}
+
+\[
+\boxed{\begin{array}{r}
+\text{در روش \en{Interpolation}، احتمال نهایی ترکیبی از یونی‌گرم \en{City} و بای‌گرام \en{York City} است} \\
+\text{در حالی که در روش \en{Backoff}، مستقیماً از بای‌گرام \en{York City} (با اعمال ضریب $\alpha$) استفاده می‌شود.} \\
+\text{هر دو روش احتمال غیرصفر تولید می‌کنند، اما \en{Backoff} به بای‌گرام وزن بیشتری می‌دهد.}
+\end{array}}
+\]
+
+\thickseparator
+
+\end{document}</code></pre></details><details class="source-file" ><summary><bdi>Q7/Q7.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw1-language-models/Q7/Q7.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{booktabs}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{Vazir}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{\textbf{پاسخ سوال ۷} \\[0.4cm] \footnotesize محاسبه \en{Linear Interpolation} بین مدل بای‌گرام و یونی‌گرم}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{}
+
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{مفاهیم پایه: \en{Linear Interpolation}}
+بر اساس بخش ۳.۶.۳ کتاب، در روش \en{linear interpolation}، تخمین نهایی احتمال یک n-gram به صورت ترکیب وزنی از Probabilities سطوح مختلف (یونی‌گرم، بای‌گرام، ترای‌گرم و ...) محاسبه می‌شود. در این سوال، از ترکیب مدل بای‌گرام و یونی‌گرم با ضرایب مساوی استفاده می‌کنیم:
+
+\[
+\hat{P}(w_n|w_{n-1}) = \lambda_1 P(w_n) + \lambda_2 P(w_n|w_{n-1})
+\]
+
+که در آن $\lambda_1 = \lambda_2 = \frac{1}{2}$.
+
+\separator
+\section{داده‌های مسأله}
+پیکره شامل چهار جمله زیر است (جمله سوم تکراری است):
+
+\begin{center}
+\begin{tabular}{l}
+\en{&lt;s&gt; I am Sam &lt;/s&gt;} \\
+\en{&lt;s&gt; Sam I am &lt;/s&gt;} \\
+\en{&lt;s&gt; I am Sam &lt;/s&gt;} \\
+\en{&lt;s&gt; I do not like green eggs and Sam &lt;/s&gt;}
+\end{tabular}
+\end{center}
+
+\textbf{نکته مهم}: بر اساس صورت سوال، نمادهای \en{&lt;s&gt;} و \en{&lt;/s&gt;} دقیقاً مانند سایر توکن‌ها در شمارش‌ها لحاظ می‌شوند.
+
+\separator
+\newpage
+\section{محاسبه شمارش‌های مورد نیاز}
+
+\subsection*{شمارش بای‌گرام \en{am Sam}}
+جملاتی که شامل \en{am Sam} هستند:
+\begin{itemize}
+\item جمله ۱: \en{&lt;s&gt; I am Sam &lt;/s&gt;} → یک بار
+\item جمله ۲: \en{&lt;s&gt; Sam I am &lt;/s&gt;} → ندارد (\en{am} قبل از \en{Sam} نیست)
+\item جمله ۳: \en{&lt;s&gt; I am Sam &lt;/s&gt;} → یک بار
+\item جمله ۴: \en{&lt;s&gt; I do not like green eggs and Sam &lt;/s&gt;} → ندارد (\en{am} وجود ندارد)
+\end{itemize}
+\[
+C(\text{am Sam}) = 2
+\]
+
+\subsection*{شمارش یونی‌گرم \en{Sam}}
+تعداد دفعات حضور کلمه \en{Sam} در کل پیکره:
+\begin{itemize}
+\item جمله ۱: یک \en{Sam}
+\item جمله ۲: یک \en{Sam}
+\item جمله ۳: یک \en{Sam}
+\item جمله ۴: یک \en{Sam} (در انتها)
+\end{itemize}
+\[
+C(\text{Sam}) = 4
+\]
+
+\subsection*{شمارش یونی‌گرم \en{am}}
+تعداد دفعات حضور کلمه \en{am} در کل پیکره:
+\begin{itemize}
+\item جمله ۱: یک \en{am}
+\item جمله ۲: یک \en{am}
+\item جمله ۳: یک \en{am}
+\item جمله ۴: \en{am} وجود ندارد
+\end{itemize}
+\[
+C(\text{am}) = 3
+\]
+
+\subsection*{شمارش کل توکن‌ها (برای یونی‌گرم)}
+برای محاسبه $P(\text{Sam})$، باید کل تعداد توکن‌های پیکره (شامل \en{&lt;s&gt;} و \en{&lt;/s&gt;}) را بشماریم:
+\begin{itemize}
+\item جمله ۱: \en{&lt;s&gt;, I, am, Sam, &lt;/s&gt;} → ۵ توکن
+\item جمله ۲: \en{&lt;s&gt;, Sam, I, am, &lt;/s&gt;} → ۵ توکن
+\item جمله ۳: \en{&lt;s&gt;, I, am, Sam, &lt;/s&gt;} → ۵ توکن
+\item جمله ۴: \en{&lt;s&gt;, I, do, not, like, green, eggs, and, Sam, &lt;/s&gt;} → ۱۰ توکن
+\end{itemize}
+\[
+N = 5 + 5 + 5 + 10 = 25
+\]
+
+\separator
+\section{محاسبه احتمالات \en{Maximum Likelihood Estimation (MLE)}}
+
+\subsection*{احتمال بای‌گرام $P(\text{Sam}|\text{am})$}
+\[
+P_{\text{MLE}}(\text{Sam}|\text{am}) = \frac{C(\text{am Sam})}{C(\text{am})} = \frac{2}{3} \approx 0.6667
+\]
+
+\subsection*{احتمال یونی‌گرم $P(\text{Sam})$}
+\[
+P_{\text{MLE}}(\text{Sam}) = \frac{C(\text{Sam})}{N} = \frac{4}{25} = 0.16
+\]
+
+\separator
+\section{محاسبه \en{Linear Interpolation}}
+با استفاده از فرمول درون‌یابی خطی با $\lambda_1 = \lambda_2 = \frac{1}{2}$:
+
+\[
+\begin{aligned}
+\hat{P}(\text{Sam}|\text{am}) &amp;= \lambda_1 P(\text{Sam}) + \lambda_2 P(\text{Sam}|\text{am}) \\
+&amp;= \frac{1}{2} \times 0.16 + \frac{1}{2} \times 0.6667 \\
+&amp;= 0.08 + 0.33335 \\
+&amp;= 0.41335
+\end{aligned}
+\]
+
+\separator
+\section{جدول خلاصه محاسبات}
+\begin{center}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{مقدار} &amp; \textbf{عدد} \\
+\hline
+$C(\text{am Sam})$ &amp; ۲ \\
+\hline
+$C(\text{am})$ &amp; ۳ \\
+\hline
+$C(\text{Sam})$ &amp; ۴ \\
+\hline
+$N$ (کل توکن‌ها) &amp; ۲۵ \\
+\hline
+$P_{\text{MLE}}(\text{Sam}|\text{am})$ &amp; $2/3 \approx 0.6667$ \\
+\hline
+$P_{\text{MLE}}(\text{Sam})$ &amp; $4/25 = 0.16$ \\
+\hline
+$\lambda_1 = \lambda_2$ &amp; $1/2 = 0.5$ \\
+\hline
+$\hat{P}(\text{Sam}|\text{am})$ &amp; $0.08 + 0.33335 = 0.41335$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\separator
+\section{نتیجه‌گیری نهایی}
+\[
+\boxed{\hat{P}(\text{Sam}|\text{am}) = 0.41335 \approx \frac{41335}{100000}}
+\]
+
+به عبارت دیگر، احتمال اینکه بعد از کلمه \en{am} کلمه \en{Sam} بیاید، با استفاده از درون‌یابی خطی بین مدل بای‌گرام و یونی‌گرم با وزن‌های مساوی، تقریباً \en{۰.۴۱۳۳۵} محاسبه می‌شود.
+
+\separator
+\section{تحلیل نتایج}
+\begin{itemize}
+\item مدل بای‌گرام به تنهایی احتمال $0.6667$ را تخمین می‌زد (چون از ۳ بار دیده شدن \en{am}، ۲ بار با \en{Sam} همراه بوده است).
+\item مدل یونی‌گرم به تنهایی احتمال $0.16$ را تخمین می‌زند (چون \en{Sam} از کل ۲۵ توکن، ۴ بار دیده شده است).
+\item ترکیب خطی این دو با وزن مساوی، عددی بین این دو مقدار تولید می‌کند: $0.41335$.
+\item این روش به مدل کمک می‌کند تا برای \en{n-gram}هایی که کمتر دیده شده‌اند، تخمین نرم‌تری داشته باشد و احتمال صفر ندهد.
+\end{itemize}
+
+\thickseparator
+
+\end{document}</code></pre></details><details class="source-file" ><summary><bdi>Q8/Q8.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw1-language-models/Q8/Q8.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{booktabs}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{Vazir}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{\textbf{پاسخ سوال ۸} \\[0.4cm] \footnotesize بررسی نسبت تقریب فرض مارکوف به احتمال واقعی دنباله‌ای از توکن‌ها}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{}
+
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{مفاهیم پایه: قاعده زنجیره‌ای و فرض مارکوف}
+بر اساس بخش \en{۳.۱} کتاب، ابتدا احتمال واقعی یک دنباله از کلمات با استفاده از \textbf{قاعده زنجیره‌ای (\en{Chain Rule})} محاسبه می‌شود:
+
+\[
+P(w_1, w_2, ..., w_n) = \prod_{k=1}^{n} P(w_k | w_1, w_2, ..., w_{k-1})
+\]
+
+این فرمول، احتمال دقیق (واقعی) دنباله را بر حسب حاصلضرب احتمالات شرطی هر کلمه با شرط گرفتن روی \textbf{همه} کلمات قبلی بیان می‌کند.
+
+اما محاسبه این احتمال در عمل غیرممکن است، زیرا:
+\begin{itemize}
+\item زبان خلاقانه است و جملات جدید همیشه ساخته می‌شوند
+\item برای تخمین $P(w_k | w_1...w_{k-1})$ به داده‌های بسیار زیادی نیاز داریم
+\item بسیاری از تاریخچه‌های طولانی هرگز در پیکره دیده نشده‌اند
+\end{itemize}
+
+\separator
+\newpage
+\section{فرض مارکوف و تقریب \en{N-gram}}
+برای حل این مشکل، \textbf{فرض مارکوف (\en{Markov Assumption})} را معرفی می‌کنیم: احتمال یک کلمه فقط به $N-1$ کلمه قبلی وابسته است، نه به کل تاریخچه.
+
+برای مدل \en{bigram} (مرتبه ۲):
+\[
+P(w_k | w_1, w_2, ..., w_{k-1}) \approx P(w_k | w_{k-1})
+\]
+
+بنابراین احتمال تقریبی دنباله به صورت زیر محاسبه می‌شود:
+\[
+P_{\text{approx}}(w_1, w_2, ..., w_n) = \prod_{k=1}^{n} P(w_k | w_{k-1})
+\]
+که در آن $w_0 = \text{&lt;s&gt;}$ است.
+
+\separator
+\section{نسبت تقریب فرض مارکوف به احتمال واقعی}
+سوال اصلی این است: تقریب فرض مارکوف نسبت به احتمال واقعی چه نسبتی دارد؟ آیا یک \textbf{کران بالا (\en{upper bound})}، \textbf{کران پایین (\en{lower bound})}، یا صرفاً یک تقریب بدون الگوی مشخص است؟
+
+\subsection*{پاسخ: صرفاً یک تقریب بدون الگوی مشخص}
+این تقریب \textbf{نه یک کران بالا است و نه یک کران پایین}. بلکه صرفاً یک \textbf{تخمین ساده‌شده} است که می‌تواند گاهی بیشتر و گاهی کمتر از مقدار واقعی باشد.
+
+\subsection*{دلایل:}
+
+\begin{enumerate}
+\item \textbf{نادیده گرفتن وابستگی‌های دوربرد}: فرض مارکوف وابستگی بین کلماتی را که فاصله زیادی دارند نادیده می‌گیرد. این می‌تواند هم منجر به overestimation و هم underestimation شود.
+
+\item \textbf{مثال overestimation}: اگر در داده‌های آموزشی الگوی خاصی وجود داشته باشد که فرض مارکوف آن را بیش از حد ساده کند، ممکن است احتمال تقریبی بیشتر از مقدار واقعی شود.
+
+\item \textbf{مثال underestimation}: اگر ساختارهای زبانی با وابستگی طولانی‌مدت وجود داشته باشد (مثلاً توافق فاعل و فعل در جملات شرطی بلند)، فرض مارکوف ممکن است احتمال واقعی را کمتر از حد تخمین بزند.
+
+\item \textbf{ذات تقریب}: تقریب N-gram یک \textbf{تخمین مبتنی بر بسامد} است که وابستگی‌های طولانی را حذف می‌کند. این حذف یک بایاس جهت‌دار ایجاد نمی‌کند؛ بلکه ساده‌سازی مدل است.
+\end{enumerate}
+
+\separator
+\section{مثال عددی برای روشن شدن مطلب}
+فرض کنید جمله واقعی \en{&lt;s&gt; The cat that chased the mouse ran away &lt;/s&gt;} را داریم. در مدل بای‌گرام، احتمال کلمه \en{ran} فقط به کلمه قبلی (\en{mouse}) بستگی دارد، در حالی که در واقعیت به فاعل اصلی (\en{cat}) نیز وابسته است.
+
+\begin{itemize}
+\item اگر $P(\text{ran}|\text{mouse})$ در پیکره بزرگ باشد → احتمال تقریبی \textbf{بیشتر از واقعیت} می‌شود (زیرا وابستگی به \en{cat} نادیده گرفته شده)
+\item اگر $P(\text{ran}|\text{mouse})$ در پیکره کوچک باشد → احتمال تقریبی \textbf{کمتر از واقعیت} می‌شود
+\end{itemize}
+
+بنابراین در یک مورد احتمال تقریبی بالاست و در مورد دیگر پایین؛ هیچ رابطهٔ قطعی $\leq$ یا $\geq$ وجود ندارد.
+
+\separator
+\section{جمع‌بندی}
+\begin{center}
+\begin{tabular}{|p{4cm}|p{9cm}|}
+\hline
+\textbf{احتمال واقعی} &amp; $P_{\text{real}}(w_1...w_n) = \prod_{k=1}^{n} P(w_k | w_1...w_{k-1})$ \\
+\hline
+\textbf{احتمال تقریبی (فرض مارکوف)} &amp; $P_{\text{approx}}(w_1...w_n) = \prod_{k=1}^{n} P(w_k | w_{k-N+1}...w_{k-1})$ \\
+\hline
+\textbf{نسبت} &amp; هیچ رابطهٔ $\leq$ یا $\geq$ قطعی وجود ندارد \\
+\hline
+\textbf{نوع} &amp; یک تقریب ساده‌شده بدون الگوی مشخص (\en{neither upper nor lower bound}) \\
+\hline
+\end{tabular}
+\end{center}
+
+\separator
+\section{نتیجه‌گیری نهایی}
+\[
+\boxed{\begin{array}{r}
+\text{تقریب فرض مارکوف برای احتمال یک دنباله از توکن‌ها، \textbf{نه یک کران بالا است و نه یک کران پایین}.} \\
+\text{این تقریب صرفاً یک ساده‌سازی محاسباتی است که به دلیل محدودیت داده‌ها و ماهیت خلاقانه زبان} \\
+\text{اجتناب‌ناپذیر است، اما هیچ رابطهٔ نامساوی قطعی با احتمال واقعی ندارد و در موارد مختلف} \\
+\text{می‌تواند بیشتر یا کمتر از مقدار واقعی باشد.}
+\end{array}}
+\]
+
+\separator
+\section{ارتباط با کتاب}
+در بخش \en{۳.۱} کتاب، نویسندگان اشاره می‌کنند که:
+\begin{quote}
+\en{This method of estimating probabilities directly from counts works fine in many cases, it turns out that even the web isn&#x27;t big enough to give us good estimates in most cases. This is because language is creative...}
+\end{quote}
+
+این نقل قول نشان می‌دهد که تقریب مارکوف یک \textbf{ضرورت عملی} است، نه یک کران ریاضی. کتاب هیچ‌گاه ادعا نمی‌کند که این تقریب همیشه کمتر یا همیشه بیشتر از مقدار واقعی است، بلکه آن را به عنوان یک \textbf{تخمین} معرفی می‌کند که در عمل استفاده می‌شود.
+
+\thickseparator
+
+\end{document}</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw2-embeddings/">تمرین ۲: Logistic Regression و Embedding ←</a><a href="../hw3-neural-models/">تمرین ۳: مدل‌های عصبی ←</a><a href="../hw4-rnn/">تمرین ۴: طراحی RNN ←</a><a href="../hw4-attention/">تمرین ۴: Attention و Transformer ←</a><a href="../hw4-gpt2/">تمرین ۴: Fine-Tuning مدل GPT-2 ←</a><a href="../hw5-bert/">تمرین ۵: BERT برای Sentiment Analysis ←</a><a href="../hw5-post-training/">تمرین ۵: Post-Training با SFT و LoRA ←</a><a href="../hw6-rag-translation/">تمرین ۶: RAG و Machine Translation ←</a><a href="../study-notes/">یادداشت‌های مرور NLP ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>

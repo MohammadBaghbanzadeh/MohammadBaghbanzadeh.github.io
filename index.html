@@ -9,12 +9,14 @@
   <title>محمد باغبان‌زاده · پژوهش و کد</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/courses.css">
+  <script src="assets/courses.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">رفتن به محتوا</a>
   <header class="site-header wrap">
     <a class="brand" href="./" aria-label="صفحهٔ اصلی"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a>
-    <nav aria-label="منوی اصلی"><a href="#about">دربارهٔ من</a><a href="#work">ارائه‌ها</a><a href="vault.html" class="nav-private">پایان‌نامه <span aria-hidden="true">↗</span></a></nav>
+    <nav aria-label="منوی اصلی"><a href="#about">دربارهٔ من</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="courses/">همهٔ درس‌ها</a><a href="courses/sml/">یادگیری ماشین آماری</a><a href="courses/nlp/">پردازش زبان طبیعی</a><a href="courses/optimization/">بهینه‌سازی ترکیبی</a><a href="courses/database/">پایگاه داده</a><a href="courses/data-mining/">داده‌کاوی</a><a href="courses/graph-mining/">گراف‌کاوی</a><a href="courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="#work">ارائه‌ها</a><a href="vault.html" class="nav-private">پایان‌نامه <span aria-hidden="true">↗</span></a></nav>
   </header>
   <main id="main">
     <section class="hero wrap" id="about">
@@ -39,11 +41,12 @@
       </div>
     </section>
     <div class="topic-strip"><div class="wrap"><span>حوزه‌های مورد علاقه</span><bdi>Machine Learning</bdi><span class="strip-dot">/</span><bdi>Graphs</bdi><span class="strip-dot">/</span><bdi>Algorithms</bdi><span class="strip-dot">/</span><bdi>Scientific Computing</bdi></div></div>
+<section class="section wrap home-course-section" id="courses"><div class="section-heading"><div><p class="eyebrow mono" dir="ltr">COURSEWORK</p><h2>هر درس، یک مسیر یادگیری.</h2></div><a class="text-link" href="courses/">همهٔ درس‌ها و کدها ←</a></div><div class="home-course-grid"><a href="courses/sml/"><span>یادگیری ماشین آماری</span><bdi>Statistical Machine Learning</bdi><small>۵ مطلب ←</small></a><a href="courses/nlp/"><span>پردازش زبان طبیعی</span><bdi>Natural Language Processing</bdi><small>۱۰ مطلب ←</small></a><a href="courses/optimization/"><span>بهینه‌سازی ترکیبی</span><bdi>Combinatorial Optimization</bdi><small>۹ مطلب ←</small></a><a href="courses/database/"><span>پایگاه داده</span><bdi>Database Systems</bdi><small>۲ مطلب ←</small></a><a href="courses/data-mining/"><span>داده‌کاوی</span><bdi>Data Mining</bdi><small>۲ مطلب ←</small></a><a href="courses/graph-mining/"><span>گراف‌کاوی</span><bdi>Graph Mining</bdi><small>۱ مطلب ←</small></a><a href="courses/algorithms/"><span>الگوریتم‌های پیشرفته</span><bdi>Advanced Algorithms</bdi><small>۱ مطلب ←</small></a></div></section>
     <section class="section wrap" id="work">
       <div class="section-heading"><div><p class="eyebrow mono" dir="ltr">SELECTED NOTES & TALKS</p><h2>از دفتر یادداشت تا ارائه.</h2></div><p>مطالب دانشگاهی، با توضیح، مثال و کد.</p></div>
       <div class="work-grid">
-        <a class="work-card graph-card" href="GML/GPP.html"><div class="card-top"><span class="tag">گراف‌کاوی</span><span class="card-arrow" aria-hidden="true">↗</span></div><div class="card-visual graph-symbol" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><i></i><i></i><i></i></div><div class="card-content"><p class="mono card-kicker" dir="ltr">GRAPH MINING</p><h3>پیش‌پردازش داده‌های گرافی</h3><p>از نمایش و آماده‌سازی گراف تا بهینه‌سازی محاسبات؛ همراه با مثال‌های برنامه‌نویسی.</p><span class="card-bottom">خواندن ارائه <span aria-hidden="true">←</span></span></div></a>
-        <a class="work-card algo-card" href="AmortizedAnalysis/PotentialMethod.html"><div class="card-top"><span class="tag">تحلیل الگوریتم</span><span class="card-arrow" aria-hidden="true">↗</span></div><div class="card-visual formula-visual" dir="ltr" aria-hidden="true">Φ(D)<span>ĉᵢ = cᵢ + ΔΦ</span></div><div class="card-content"><p class="mono card-kicker" dir="ltr">ALGORITHMS</p><h3>تحلیل سرشکن به روش پتانسیل</h3><p>نگاهی قدم‌به‌قدم به هزینهٔ عملیات، تابع پتانسیل و تحلیل ساختمان داده‌ها.</p><span class="card-bottom">خواندن یادداشت <span aria-hidden="true">←</span></span></div></a>
+        <a class="work-card graph-card" href="courses/graph-mining/graph-preprocessing/"><div class="card-top"><span class="tag">گراف‌کاوی</span><span class="card-arrow" aria-hidden="true">↗</span></div><div class="card-visual graph-symbol" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><i></i><i></i><i></i></div><div class="card-content"><p class="mono card-kicker" dir="ltr">GRAPH MINING</p><h3>پیش‌پردازش داده‌های گرافی</h3><p>از نمایش و آماده‌سازی گراف تا بهینه‌سازی محاسبات؛ همراه با مثال‌های برنامه‌نویسی.</p><span class="card-bottom">خواندن ارائه <span aria-hidden="true">←</span></span></div></a>
+        <a class="work-card algo-card" href="courses/algorithms/potential-method/"><div class="card-top"><span class="tag">تحلیل الگوریتم</span><span class="card-arrow" aria-hidden="true">↗</span></div><div class="card-visual formula-visual" dir="ltr" aria-hidden="true">Φ(D)<span>ĉᵢ = cᵢ + ΔΦ</span></div><div class="card-content"><p class="mono card-kicker" dir="ltr">ALGORITHMS</p><h3>تحلیل سرشکن به روش پتانسیل</h3><p>نگاهی قدم‌به‌قدم به هزینهٔ عملیات، تابع پتانسیل و تحلیل ساختمان داده‌ها.</p><span class="card-bottom">خواندن یادداشت <span aria-hidden="true">←</span></span></div></a>
       </div>
     </section>
     <section class="private-banner wrap" aria-labelledby="private-title"><div class="lock-emblem" aria-hidden="true">⌑</div><div><p class="eyebrow mono" dir="ltr">PRIVATE WORKSPACE</p><h2 id="private-title">بخش خصوصی پایان‌نامه</h2><p>برای مشاهدهٔ مطالب این بخش، رمز دسترسی لازم است.</p></div><a class="button outline" href="vault.html">ورود به بخش خصوصی <span aria-hidden="true">←</span></a></section>

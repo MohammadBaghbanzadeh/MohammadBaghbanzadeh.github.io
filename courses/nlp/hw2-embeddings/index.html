@@ -1,0 +1,1259 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="پاسخ‌های مکتوب دربارهٔ دسته‌بندی متن و نمایش برداری واژه‌ها."><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>تمرین ۲: Logistic Regression و Embedding · محمد باغبان‌زاده</title><link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/courses.css"><script src="../../../assets/courses.js" defer></script></head><body><a class="skip-link" href="#main">رفتن به محتوا</a><header class="site-header wrap"><a class="brand" href="../../../"><span class="brand-mark" dir="ltr">mb.</span><span>محمد باغبان‌زاده</span></a><nav aria-label="منوی اصلی"><a href="../../../">صفحهٔ اصلی</a><details class="course-menu"><summary>درس‌ها</summary><div><a href="../../../courses/sml/">یادگیری ماشین آماری</a><a href="../../../courses/nlp/">پردازش زبان طبیعی</a><a href="../../../courses/optimization/">بهینه‌سازی ترکیبی</a><a href="../../../courses/database/">پایگاه داده</a><a href="../../../courses/data-mining/">داده‌کاوی</a><a href="../../../courses/graph-mining/">گراف‌کاوی</a><a href="../../../courses/algorithms/">الگوریتم‌های پیشرفته</a></div></details><a href="../../../vault.html" class="nav-private">پایان‌نامه ↗</a></nav></header><main id="main" class="wrap course-main"><nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">درس‌ها</a><span>/</span><a href="../">پردازش زبان طبیعی</a></nav><p class="eyebrow">پاسخ مکتوب</p><h1 class="work-title">تمرین ۲: Logistic Regression و Embedding</h1><p class="course-lead">پاسخ‌های مکتوب دربارهٔ دسته‌بندی متن و نمایش برداری واژه‌ها.</p><div class="topic-list"><bdi class="topic">Logistic Regression</bdi><bdi class="topic">Word2Vec</bdi><bdi class="topic">Embedding</bdi></div><div class="work-actions"><a class="button outline" href="https://github.com/MohammadBaghbanzadeh/MasterCourses/tree/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw2-embeddings" target="_blank" rel="noopener noreferrer">پوشهٔ کدها در GitHub ↗</a></div><div class="work-layout"><aside class="file-panel"><h2>فایل‌های این کار</h2><ul class="file-list"><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw2-embeddings/Q2/Q2.tex" target="_blank" rel="noopener noreferrer"><bdi>Q2/Q2.tex</bdi><span class="file-meta">6 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw2-embeddings/Q3/Q3.tex" target="_blank" rel="noopener noreferrer"><bdi>Q3/Q3.tex</bdi><span class="file-meta">8 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw2-embeddings/Q4/Q4.tex" target="_blank" rel="noopener noreferrer"><bdi>Q4/Q4.tex</bdi><span class="file-meta">12 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw2-embeddings/Q5/Q5.tex" target="_blank" rel="noopener noreferrer"><bdi>Q5/Q5.tex</bdi><span class="file-meta">7 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw2-embeddings/Q6/Q6.tex" target="_blank" rel="noopener noreferrer"><bdi>Q6/Q6.tex</bdi><span class="file-meta">6 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw2-embeddings/Q7/Q7.tex" target="_blank" rel="noopener noreferrer"><bdi>Q7/Q7.tex</bdi><span class="file-meta">11 KB ↗</span></a></li><li><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw2-embeddings/Q8/Q8.tex" target="_blank" rel="noopener noreferrer"><bdi>Q8/Q8.tex</bdi><span class="file-meta">10 KB ↗</span></a></li></ul></aside><section class="source-panel" aria-label="توضیحات و کد"><h2>مرور کد و مستندات</h2><p class="source-context">فایل‌های Jupyter از لینک GitHub قابل مشاهده‌اند. کد استخراج‌شده و متن گزارش‌ها در ادامه آمده‌اند. آرشیوسازی به معنی اجرای مجدد یا تأیید نتایج نیست.</p><details class="source-file" ><summary><bdi>Q2/Q2.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw2-embeddings/Q2/Q2.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{XB Niloofar}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{\textbf{پاسخ سوال ۲} \\[0.4cm] \small رگرسیون لجستیک برای تحلیل احساسات}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{}
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{مفاهیم پایه: رگرسیون لجستیک برای تحلیل احساسات}
+
+\subsection{رگرسیون لجستیک و تابع سیگموئید}
+در مسائل رده‌بندی دودویی (مانند تشخیص مثبت یا منفی بودن احساسات یک متن)، مدل رگرسیون لجستیک احتمال تعلق نمونه به کلاس مثبت (معمولاً \(y=1\)) را محاسبه می‌کند. این کار با استفاده از \textbf{تابع سیگموئید} انجام می‌شود:
+
+\[
+\sigma(z) = \frac{1}{1 + e^{-z}}
+\]
+
+که در آن \(z\) ترکیب خطی ویژگی‌ها و وزن‌ها به اضافهٔ بایاس است:
+
+\[
+z = w \cdot x + b = \sum_{j=1}^{n} w_j x_j + b
+\]
+
+بنابراین خروجی مدل (احتمال کلاس مثبت) برابر است با:
+
+\[
+\hat{y} = P(y=1|x) = \sigma(w \cdot x + b)
+\]
+
+\subsection{آستانه تصمیم‌گیری \en{(Decision Boundary)}}
+برای تبدیل این احتمال به یک تصمیم رده‌بندی، از یک \textbf{آستانه} استفاده می‌شود. رایج‌ترین مقدار آستانه، \(0.5\) است:
+
+\[
+\text{کلاس پیش‌بینی‌شده} = 
+\begin{cases} 
+1 &amp; \text{\en{if }} \hat{y} \ge 0.5 \\
+0 &amp; \text{\en{if }} \hat{y} &lt; 0.5
+\end{cases}
+\]
+
+این قاعده در بخش \textbf{۴.۳ کتاب} تحت عنوان \en{Classification with Logistic Regression} توضیح داده شده است. در مثال کتاب (شکل ۴.۲)، برای یک نمونه با \(\hat{y}=0.70\)، تصمیم به کلاس \(1\) (احساس مثبت) گرفته شده است.
+
+\subsection{تابع هزینهٔ کراس-آنتروپی \en{(Cross-Entropy Loss)}}
+برای اندازه‌گیری خطای مدل، از \textbf{تابع هزینهٔ کراس-آنتروپی} استفاده می‌شود. این تابع در بخش \textbf{۴.۵ کتاب} به تفصیل معرفی شده است. فرمول آن برای یک نمونه \((x, y)\) به صورت زیر است:
+
+\[
+L_{CE}(\hat{y}, y) = -[y \log \hat{y} + (1-y) \log(1-\hat{y})]
+\]
+
+\begin{itemize}
+    \item اگر \(y=1\) (نمونه مثبت)، فرمول ساده می‌شود به \(L = -\log \hat{y}\)
+    \item اگر \(y=0\) (نمونه منفی)، فرمول ساده می‌شود به \(L = -\log(1-\hat{y})\)
+\end{itemize}
+
+همان‌طور که در مثال کتاب دیده می‌شود، هرچه \(\hat{y}\) به \(y\) نزدیک‌تر باشد، مقدار loss کوچک‌تر خواهد بود. برای نمونهٔ کتاب با \(\hat{y}=0.70\) و \(y=1\)، مقدار loss برابر \(-\log(0.70) \approx 0.36\) محاسبه شده است.
+
+\thickseparator
+
+\section{حل گام‌به‌گام مسأله}
+
+\subsection{داده‌های مسأله}
+\begin{align*}
+w &amp;= [1.2,\ -0.8,\ 2.5,\ -1.1] \\
+b &amp;= 0.3 \\
+x &amp;= [2,\ 1,\ 0,\ 3] \quad \text{(شمارش وقوع کلمات: \en{terrible, masterpiece, excellent, boring})}
+\end{align*}
+
+\subsection{گام ۱: محاسبهٔ خروجی مدل (احتمال کلاس مثبت)}
+ابتدا مقدار \(z\) را محاسبه می‌کنیم:
+
+\[
+z = w \cdot x + b = (1.2 \times 2) + (-0.8 \times 1) + (2.5 \times 0) + (-1.1 \times 3) + 0.3
+\]
+
+\[
+z = 2.4 - 0.8 + 0 - 3.3 + 0.3 = (2.4 - 0.8) = 1.6, \quad 1.6 - 3.3 = -1.7, \quad -1.7 + 0.3 = -1.4
+\]
+
+\[
+z = -1.4
+\]
+
+حال تابع سیگموئید را اعمال می‌کنیم:
+
+\[
+\hat{y} = \sigma(-1.4) = \frac{1}{1 + e^{-(-1.4)}} = \frac{1}{1 + e^{1.4}}
+\]
+
+مقدار \(e^{1.4}\) را تقریب می‌زنیم (\(e^{1.4} \approx 4.0552\)):
+
+\[
+\hat{y} \approx \frac{1}{1 + 4.0552} = \frac{1}{5.0552} \approx 0.1978
+\]
+
+\subsection{گام ۲: تعیین کلاس نمونه با آستانه \(0.5\)}
+از آنجا که \(\hat{y} \approx 0.1978\) و این مقدار از \(0.5\) کوچک‌تر است، طبق قاعدهٔ تصمیم‌گیری:
+
+\[
+\text{کلاس پیش‌بینی‌شده} = 0
+\]
+
+بنابراین مدل این سند را به \textbf{کلاس منفی (احساس منفی)} تعلق می‌دهد.
+
+\separator
+\subsection{گام ۳: محاسبهٔ مقدار Loss با فرض برچسب واقعی منفی (\(y=0\))}
+در سوال گفته شده: «اگر برچسب واقعی این سند منفی است». بنابراین \(y = 0\).
+
+برای \(y=0\)، فرمول کراس-آنتروپی ساده می‌شود به:
+
+\[
+L_{CE}(\hat{y}, y=0) = -\log(1-\hat{y})
+\]
+
+مقدار \(\hat{y} \approx 0.1978\) را جایگذاری می‌کنیم:
+
+\[
+1 - \hat{y} = 1 - 0.1978 = 0.8022
+\]
+
+\[
+L = -\log(0.8022)
+\]
+
+با استفاده از لگاریتم طبیعی (همان‌طور که در مثال کتاب از \(\log\) طبیعی استفاده شده است):
+
+\[
+\log(0.8022) \approx -0.2204
+\]
+
+بنابراین:
+
+\[
+L = -(-0.2204) = 0.2204
+\]
+
+\separator
+\section{جمع‌بندی و پاسخ نهایی}
+
+\begin{itemize}
+    \item \textbf{کلاس پیش‌بینی‌شده برای نمونه \(x = [2,1,0,3]\):}  
+    با توجه به \(\hat{y} \approx 0.1978 &lt; 0.5\)، نمونه به \textbf{کلاس ۰ (منفی)} تعلق دارد.
+    
+    \item \textbf{مقدار Loss با فرض برچسب واقعی \(y = 0\):}  
+    \[
+    L_{CE} \approx 0.2204
+    \]
+\end{itemize}
+
+% \thickseparator
+% \begin{center}
+% \fbox{\parbox{0.9\linewidth}{\centering
+% \textbf{پاسخ نهایی:} \\
+% ۱) کلاس پیش‌بینی‌شده: \(0\) (منفی) \\
+% ۲) مقدار \en{Loss}: \(0.2204\)
+% }}
+% \end{center}
+
+\thickseparator
+
+\end{document}</code></pre></details><details class="source-file" ><summary><bdi>Q3/Q3.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw2-embeddings/Q3/Q3.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{XB Niloofar}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{\textbf{پاسخ سوال ۳} \\[0.4cm] \small مدل Skip-Gram با نمونه‌گیری منفی (SGNS)}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{}
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{مفاهیم پایه: مدل Skip-Gram با نمونه‌گیری منفی (SGNS)}
+
+\subsection{معرفی مدل Word2vec و Skip-Gram}
+در بخش \textbf{۵.۵ کتاب}، مدل \textbf{word2vec} به عنوان روشی برای تولید بردارهای کلمه (embeddings) با ابعاد کم و متراکم معرفی شده است. برخلاف روش‌های مبتنی بر شمارش ساده (بخش ۵.۳) که بردارهای بسیار طویل و پراکنده (sparse) تولید می‌کنند، word2vec بردارهایی با ابعاد \(d\) (معمولاً بین ۵۰ تا ۱۰۰۰) تولید می‌کند که مقادیر آنها حقیقی و می‌توانند منفی باشند.
+
+الگوریتم \textbf{Skip-Gram} یکی از دو الگوریتم موجود در word2vec است. ایده اصلی آن به این صورت است:
+
+\begin{itemize}
+    \item به ازای هر کلمه هدف \(w\)، کلمات همسایه آن در پنجره‌ای به طول \(L\) را به عنوان \textbf{نمونه‌های مثبت} در نظر می‌گیریم.
+    \item کلمات تصادفی از دایره واژگان را به عنوان \textbf{نمونه‌های منفی} انتخاب می‌کنیم.
+    \item یک طبقه‌بند Logistic Regression آموزش می‌دهیم تا بین این دو دسته تمایز قائل شود.
+    \item وزن‌های یادگرفته شده توسط این طبقه‌بند، همان بردارهای کلمه (embeddings) خواهند بود.
+\end{itemize}
+
+\subsection{نمونه‌گیری منفی \en{(Negative Sampling)}}
+در بخش \textbf{۵.۵.۲ کتاب}، روش \textbf{نمونه‌گیری منفی \en{(Negative Sampling)}} توضیح داده شده است. به ازای هر نمونه مثبت \((w, c_{pos})\)، تعداد \(k\) نمونه منفی \((w, c_{neg})\) از دایره واژگان نمونه‌برداری می‌شود. احتمال انتخاب هر کلمه به عنوان نمونه منفی، متناسب با بسامد آن کلمه به توان \(\alpha = 0.75\) است:
+
+\[
+P_\alpha(w) = \frac{\text{count}(w)^\alpha}{\sum_{w&#x27;} \text{count}(w&#x27;)^\alpha}
+\]
+
+\subsection{تابع هزینه \en{(Loss Function)}}
+طبق \textbf{معادله \en{۵-۲۱} کتاب}، تابع هزینه برای یک جفت \((w, c_{pos})\) و \(k\) نمونه منفی \(c_{neg_1}, ..., c_{neg_k}\) به صورت زیر تعریف می‌شود:
+
+\[
+L(w, c_{pos}, c_{neg_1..k}) = -\log P(+|w, c_{pos}) - \sum_{i=1}^{k} \log P(-|w, c_{neg_i})
+\]
+
+با جایگذاری تعاریف \(P(+|w,c) = \sigma(c \cdot w)\) و \(P(-|w,c) = \sigma(-c \cdot w)\):
+
+\[
+\boxed{L = -\log \sigma(c_{pos} \cdot w) - \sum_{i=1}^{k} \log \sigma(-c_{neg_i} \cdot w)}
+\]
+
+هدف الگوریتم، کمینه کردن این تابع هزینه است؛ یعنی بیشینه کردن تشابه (دترمین داخلی) بین بردار کلمه هدف و بردار کلمات زمینه واقعی، و کمینه کردن تشابه بین بردار کلمه هدف و بردار نمونه‌های منفی.
+
+\thickseparator
+
+\section{حل گام‌به‌گام مسأله}
+
+\subsection{داده‌های مسأله}
+\begin{align*}
+\text{:بردار کلمه هدف \en{(Target word)}} \quad v_w &amp;= [0.4, \; 0.3] \\
+\text{:بردار کلمه زمینه واقعی \en{(True Context)}} \quad v_c &amp;= [0.5, \; 0.5] \\
+\text{:نمونه منفی ۱} \quad v_{n_1} &amp;= [0.2, \; 0.1] \\
+\text{:نمونه منفی ۲} \quad v_{n_2} &amp;= [0.1, \; -0.3] \\
+\text{:تعداد نمونه‌های منفی} \quad k &amp;= 2
+\end{align*}
+
+\subsection{گام ۱: محاسبه دترمین داخلی \en{(Dot Product)} برای هر جفت}
+دترمین داخلی دو بردار \(a = [a_1, a_2]\) و \(b = [b_1, b_2]\) به صورت \(a \cdot b = a_1b_1 + a_2b_2\) محاسبه می‌شود.
+
+\begin{align*}
+v_c \cdot v_w &amp;= (0.5 \times 0.4) + (0.5 \times 0.3) = 0.20 + 0.15 = 0.35 \\[4pt]
+v_{n_1} \cdot v_w &amp;= (0.2 \times 0.4) + (0.1 \times 0.3) = 0.08 + 0.03 = 0.11 \\[4pt]
+v_{n_2} \cdot v_w &amp;= (0.1 \times 0.4) + (-0.3 \times 0.3) = 0.04 - 0.09 = -0.05
+\end{align*}
+
+\subsection{گام ۲: اعمال تابع سیگموئید \(\sigma(x) = \frac{1}{1+e^{-x}}\)}
+برای محاسبه \(\sigma(c_{pos} \cdot w) = \sigma(0.35)\) و \(\sigma(-c_{neg} \cdot w)\) به مقادیر زیر نیاز داریم:
+
+ابتدا \(e^{-0.35}\) و \(e^{0.35}\) را تقریب می‌زنیم (\(e^{0.35} \approx 1.419\) و \(e^{-0.35} \approx 0.7047\)):
+
+\[
+\sigma(0.35) = \frac{1}{1 + e^{-0.35}} = \frac{1}{1 + 0.7047} = \frac{1}{1.7047} \approx 0.5866
+\]
+
+برای \(\sigma(-v_{n_1} \cdot v_w) = \sigma(-0.11)\) و \(\sigma(-v_{n_2} \cdot v_w) = \sigma(0.05)\):
+
+\[
+\sigma(-0.11) = \frac{1}{1 + e^{0.11}} \quad,\quad e^{0.11} \approx 1.1163 \quad,\quad \sigma(-0.11) = \frac{1}{2.1163} \approx 0.4725
+\]
+
+\[
+\sigma(0.05) = \frac{1}{1 + e^{-0.05}} \quad,\quad e^{-0.05} \approx 0.9512 \quad,\quad \sigma(0.05) = \frac{1}{1.9512} \approx 0.5125
+\]
+
+\subsection{گام ۳: محاسبه لگاریتم طبیعی \en{(Natural Logarithm)}}
+با استفاده از \(\log\) طبیعی (مبنای \(e\)):
+
+\[
+\log \sigma(0.35) = \log(0.5866) \approx -0.5335
+\]
+
+\[
+\log \sigma(-0.11) = \log(0.4725) \approx -0.7495
+\]
+
+\[
+\log \sigma(0.05) = \log(0.5125) \approx -0.6685
+\]
+
+\subsection{گام ۴: محاسبه نهایی \en{Loss} با استفاده از فرمول معادله \en{۵-۲۱}}
+\begin{align*}
+L &amp;= -\log \sigma(c_{pos} \cdot w) - \sum_{i=1}^{k} \log \sigma(-c_{neg_i} \cdot w) \\
+&amp;= -(\log \sigma(0.35)) - \big[ \log \sigma(-0.11) + \log \sigma(0.05) \big] \\
+&amp;= -(-0.5335) - \big[ (-0.7495) + (-0.6685) \big] \\
+&amp;= 0.5335 - \big[ -1.4180 \big] \\
+&amp;= 0.5335 + 1.4180 \\
+&amp;= 1.9515
+\end{align*}
+
+\separator
+\section{جمع‌بندی و پاسخ نهایی}
+
+\begin{itemize}
+    \item \textbf{دترمین داخلی‌ها:} \(v_c \cdot v_w = 0.35\)، \(v_{n_1} \cdot v_w = 0.11\)، \(v_{n_2} \cdot v_w = -0.05\)
+    \item \textbf{مقادیر سیگموئید:} \(\sigma(0.35) \approx 0.5866\)، \(\sigma(-0.11) \approx 0.4725\)، \(\sigma(0.05) \approx 0.5125\)
+    \item \textbf{لگاریتم مقادیر:} \(\log\sigma(0.35) \approx -0.5335\)، \(\log\sigma(-0.11) \approx -0.7495\)، \(\log\sigma(0.05) \approx -0.6685\)
+\end{itemize}
+
+\thickseparator
+\begin{center}
+\fbox{\parbox{0.85\linewidth}{\centering
+\textbf{پاسخ نهایی:} \\
+مقدار \en{Loss} برای این نمونه آموزشی برابر است با:
+\[
+\boxed{L \approx 1.9515}
+\]
+}}
+\end{center}
+
+\thickseparator
+
+\section{نکته: ارتباط با فرمول کتاب}
+طبق \textbf{معادله \en{۵-۲۱}} در کتاب:
+
+\[
+L(w, c_{pos}, c_{neg_1..k}) = -\log \sigma(c_{pos} \cdot w) - \sum_{i=1}^{k} \log \sigma(-c_{neg_i} \cdot w)
+\]
+
+همانطور که مشاهده می‌شود، جمله اول (\(-\log \sigma(c_{pos} \cdot w)\)) سعی می‌کند تشابه بین \(v_w\) و \(v_c\) را بیشینه کند (زیرا هرچه این تشابه بیشتر باشد، \(\sigma\) به ۱ نزدیک‌تر و \(-\log\sigma\) به صفر نزدیک‌تر می‌شود). جمله دوم (\(-\sum \log \sigma(-c_{neg} \cdot w)\)) سعی می‌کند تشابه بین \(v_w\) و نمونه‌های منفی را کمینه کند (زیرا هرچه این تشابه کمتر باشد، \(-c_{neg} \cdot w\) بزرگتر، \(\sigma\) به ۱ نزدیک‌تر و \(-\log\sigma\) به صفر نزدیک‌تر می‌شود). مقدار محاسبه‌شده \(L \approx 1.95\) نشان‌دهنده این است که مدل هنوز فاصله زیادی با وضعیت بهینه دارد.
+
+\thickseparator
+
+\end{document}</code></pre></details><details class="source-file" ><summary><bdi>Q4/Q4.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw2-embeddings/Q4/Q4.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{XB Niloofar}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{\textbf{پاسخ سوال ۴} \\[0.4cm] \small چالش چندمعنایی (\en{Polysemy}) در مدل‌های \en{Static Embedding}}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{}
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{مفاهیم پایه: چندمعنایی و نقش آن در مدل‌های معنایی برداری}
+
+\subsection{چندمعنایی (\en{Polysemy}) در معناشناسی واژگانی}
+در بخش \textbf{\en{۵-۱} کتاب} (\en{Lexical Semantics})، مفهوم \textbf{چندمعنایی} به عنوان یکی از ویژگی‌های اساسی زبان معرفی شده است. یک \textbf{\en{lemma}} (مانند \en{mouse} در مثال کتاب یا \en{bank} در سوال ما) می‌تواند دارای \textbf{معانی متعدد (\en{word senses})} باشد. کتاب به صراحت اشاره می‌کند:
+
+\begin{quote}
+\en{``Each lemma can have multiple meanings; the lemma mouse can refer to the rodent or the cursor control device. We call each of these aspects of the meaning of mouse a word sense. The fact that lemmas can be polysemous can make interpretation difficult.&#x27;&#x27;}
+\end{quote}
+
+کلمه \textbf{\en{bank}} دقیقاً چنین وضعیتی دارد:
+\begin{itemize}
+    \item \textbf{معنی ۱ (موسسه مالی):} \en{``I need to go to the bank to deposit a check&#x27;&#x27;}
+    \item \textbf{معنی ۲ (کنار رودخانه):} \en{``children played on the bank of the river&#x27;&#x27;}
+    \item \textbf{معنی ۳ (ذخیره‌سازی/انتقال داده):} \en{``we need to bank the data securely&#x27;&#x27;}
+\end{itemize}
+
+\subsection{مدل‌های \en{Static Embedding} (مانند \en{Word2Vec} و \en{GloVe})}
+در بخش \textbf{\en{۵-۵} کتاب} (\en{Word2vec})، مدل‌های \textbf{استاتیک امبدینگ} معرفی شده‌اند. کتاب با صراحت بیان می‌کند:
+
+\begin{quote}
+\en{``Word2vec embeddings are \textbf{static embeddings}, meaning that the method learns \textbf{one fixed embedding for each word} in the vocabulary.&#x27;&#x27;}
+\end{quote}
+
+این بدان معناست که صرف‌نظر از اینکه کلمه \en{bank} در چه \en{context}ای ظاهر شود (موسسه مالی، کنار رودخانه، یا ذخیره‌سازی داده)، مدل \textbf{فقط یک بردار} به آن نسبت می‌دهد. این بردار حاصل \textbf{ترکیب (میانگین یا جمع)} تمام \en{context}‌های متفاوتی است که کلمه در پیکره آموزشی با آنها دیده شده است.
+
+\thickseparator
+
+\section{تحلیل رفتار مدل \en{Static Embedding} برای کلمه \en{bank}}
+
+\subsection{تعداد بردارهای ساخته‌شده برای کلمه \en{bank}}
+\textbf{پاسخ مستقیم:} در یک مدل \en{Static Embedding} (چه \en{Word2Vec} و چه \en{GloVe})، برای کلمه \en{bank} \textbf{فقط یک بردار} ساخته می‌شود.
+
+این بردار منفرد، نمایشی از \textbf{همه معانی} کلمه به صورت توأمان است. به عبارت دیگر، مدل قادر به تفکیک معانی مختلف نیست و مجبور است تمام \en{context}‌های متفاوت را در یک نقطه از فضای برداری جمع کند.
+
+\subsection{تعامل بردار با معانی متفاوت (چگونه یک بردار حاصل می‌شود؟)}
+فرآیند یادگیری در الگوریتم‌هایی مانند \en{Skip-Gram with Negative Sampling (SGNS)} که در بخش \textbf{\en{۵-۵-۲} کتاب} توضیح داده شده، به این صورت است:
+
+\begin{enumerate}
+    \item مدل با بردارهای تصادفی برای هر کلمه آغاز می‌شود.
+    \item در حین پردازش پیکره، هر بار که کلمه \en{bank} ظاهر می‌شود:
+    \begin{itemize}
+        \item اگر در \en{context} \textbf{موسسه مالی} باشد (با کلماتی مانند \en{money, deposit, check, account})، مدل سعی می‌کند بردار \en{bank} را به بردار این کلمات نزدیک کند.
+        \item اگر در \en{context} \textbf{کنار رودخانه} باشد (با کلماتی مانند \en{river, water, flow, shore})، مدل سعی می‌کند بردار \en{bank} را به بردار این کلمات نزدیک کند.
+        \item اگر در \en{context} \textbf{ذخیره‌سازی داده} باشد (با کلماتی مانند \en{data, storage, secure, backup})، مدل سعی می‌کند بردار \en{bank} را به بردار این کلمات نزدیک کند.
+    \end{itemize}
+    \item در نهایت، بردار نهایی \en{bank} در نقطه‌ای از فضای برداری قرار می‌گیرد که \textbf{نزدیک به همه} این گروه‌های کلمات است، اما \textbf{دقیقاً به هیچ‌کدام نزدیک نیست}.
+\end{enumerate}
+
+این وضعیت مشابه مفهوم \textbf{\en{first-order co-occurrence} در مقابل \en{second-order co-occurrence}} است که در بخش \textbf{\en{۵-۷} کتاب} (\en{Semantic properties of embeddings}) توضیح داده شده: \en{context}‌های متفاوت، بردار نهایی را به جهات مختلف می‌کشند.
+
+\separator
+\newpage
+\section{چالش‌های مدل \en{Static Embedding} برای تحلیل‌های بعدی}
+
+\subsection{چالش در \en{Sentiment Analysis} (تحلیل احساسات)}
+فرض کنید یک سیستم \en{Sentiment Analysis} داریم که از امبدینگ کلمه \en{bank} استفاده می‌کند. جمله زیر را در نظر بگیرید:
+
+\begin{quote}
+\en{``The bank was ruined after the flood destroyed its records and the river overflowed.&#x27;&#x27;}
+\end{quote}
+
+در این جمله، کلمه \en{bank} به هر دو معنی اشاره دارد. اما مدل \en{Static Embedding} \textbf{نمی‌تواند تشخیص دهد کدام معنی منظور است}. چالش‌ها به شرح زیر است:
+
+\begin{enumerate}
+    \item \textbf{ابهام در قطبیت احساسات (\en{Sentiment Polarity Ambiguity}):}
+    \begin{itemize}
+        \item معنی \textbf{موسسه مالی} در جملات مثبت (مانند \en{``The bank gave me a loan with low interest&#x27;&#x27;}) و منفی (مانند \en{``The bank went bankrupt&#x27;&#x27;}) ظاهر می‌شود.
+        \item معنی \textbf{کنار رودخانه} اغلب در جملات خنثی یا توصیفی ظاهر می‌شود.
+        \item مدل \en{Static} نمی‌تواند بداند در جمله مورد نظر، کدام معنی مدنظر است، بنابراین برآورد احساسات آن نادرست خواهد بود.
+    \end{itemize}
+    
+    \item \textbf{افزایش خطا در طبقه‌بندی (\en{Classification Error}):}
+    \begin{itemize}
+        \item از آنجا که بردار \en{bank} به همه معانی نزدیک است، ممکن است به اشتباه در \en{context}‌هایی که به معنی دیگر اشاره دارد، فعال شود.
+        \item این موضوع می‌تواند منجر به \textbf{نویز (\en{noise})} در ویژگی‌های ورودی مدل \en{Sentiment Analysis} شود.
+    \end{itemize}
+    
+    \item \textbf{از دست دادن اطلاعات \en{context}ای (\en{Loss of Contextual Information}):}
+    \begin{itemize}
+        \item در بخش \textbf{\en{۵-۷} کتاب} اشاره شده که پنجره‌های \en{context}ای کوتاه، اطلاعات نحوی و پنجره‌های بلند، اطلاعات موضوعی را \textbf{جذب} می‌کنند. اما در هر دو حالت، مدل \en{Static} قادر به تفکیک معانی نیست.
+        \item برای تحلیل احساسات، نیاز به درک دقیق معنی کلمه در \en{context} خاص داریم؛ چیزی که امبدینگ‌های استاتیک ارائه نمی‌کنند.
+    \end{itemize}
+\end{enumerate}
+
+\subsection{چالش‌های دیگر در آنالیزهای پایین‌دستی}
+\begin{itemize}
+    \item \textbf{پرسش و پاسخ (\en{Question Answering}):} اگر کاربر بپرسد \en{``Where can I deposit money?&#x27;&#x27;} و مدل به دلیل نزدیکی بردار \en{bank} به \en{river}، پاسخ اشتباه \en{``On the river bank&#x27;&#x27;} را بدهد.
+    \item \textbf{خلاصه‌سازی متن (\en{Text Summarization}):} ممکن است سیستم به اشتباه معنای نادرستی را در خلاصه لحاظ کند.
+    \item \textbf{ترجمه ماشینی (\en{Machine Translation}):} ترجمه کلمه \en{bank} به فارسی بسته به معنی می‌تواند \textbf{بانک}، \textbf{کنار رودخانه} یا \textbf{ذخیره کردن} باشد. مدل \en{Static} نمی‌تواند انتخاب درستی داشته باشد.
+\end{itemize}
+
+\separator
+\section{راهکارهای پیشنهادی در ادبیات (ارتباط با فصل ۹ کتاب)}
+کتاب در انتهای بخش \textbf{\en{۵-۵}} اشاره می‌کند که مدل‌های \textbf{\en{Static Embeddings}} در مقابل \textbf{\en{Dynamic Contextual Embeddings}} (مانند \en{BERT} که در فصل ۹ معرفی می‌شود) قرار می‌گیرند:
+
+\begin{quote}
+\en{``In Chapter 9 we&#x27;ll introduce methods for learning dynamic contextual embeddings like the popular family of BERT representations, in which the vector for each word is \textbf{different in different contexts}.&#x27;&#x27;}
+\end{quote}
+
+راهکار اصلی برای حل مشکل چندمعنایی، استفاده از \textbf{امبدینگ‌های متنی (\en{Contextual Embeddings})} است که به ازای هر بار ظهور کلمه، بردار متفاوتی بر اساس \en{context} اطراف تولید می‌کنند.
+
+\thickseparator
+\section{جمع‌بندی و پاسخ نهایی}
+
+\begin{center}
+\fbox{\parbox{0.95\linewidth}{\centering
+\textbf{پاسخ خلاصه‌شده به سه پرسش سوال:}
+\begin{itemize}
+    \item \textbf{تعداد بردارها:} در مدل \en{Static Embedding}، برای کلمه \en{bank} \textbf{فقط یک بردار} ساخته می‌شود.
+    \item \textbf{نحوه تعامل با معانی متفاوت:} مدل بردار نهایی را از \textbf{ترکیب (میانگین)} تمام \en{context}‌های مختلف یاد می‌گیرد. این بردار در فضای برداری در نقطه‌ای قرار می‌گیرد که به همه معانی نزدیک است اما به هیچ معنی خاصی نزدیک نیست.
+    \item \textbf{چالش‌ها برای \en{Sentiment Analysis}:} 
+    \begin{itemize}
+        \item ابهام در تشخیص قطبیت احساسات (چون معانی مختلف می‌توانند احساسات متفاوتی داشته باشند)
+        \item افزایش خطای طبقه‌بندی به دلیل نویز در ویژگی‌ها
+        \item از دست دادن اطلاعات \en{context}ای که برای تعیین معنی دقیق ضروری است
+    \end{itemize}
+\end{itemize}
+}}
+\end{center}
+
+\thickseparator
+
+\end{document}</code></pre></details><details class="source-file" ><summary><bdi>Q5/Q5.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw2-embeddings/Q5/Q5.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{XB Niloofar}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{\textbf{پاسخ سوال ۵} \\[0.4cm] \small تحلیل احساسات با استفاده از \en{Word2Vec Embeddings} و رگرسیون لجستیک}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{}
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{مفاهیم پایه: ترکیب \en{Embeddings} و رگرسیون لجستیک برای تحلیل احساسات}
+
+\subsection{نمایش کلمات با \en{Word2Vec Embeddings} (بخش \en{۵-۵} کتاب)}
+در بخش \textbf{\en{۵-۵}} کتاب، مدل \en{Word2Vec} معرفی شده است که برای هر کلمه، یک بردار با ابعاد کم و متراکم (\en{dense vector}) تولید می‌کند. در این سوال، چنین بردارهایی برای کلمات زیر به صورت از پیش آموزش‌دیده داده شده است:
+
+\begin{align*}
+\text{\en{amazing}} &amp;\rightarrow [0.7,\; 0.3,\; -0.1,\; 0.2] \\
+\text{\en{film}} &amp;\rightarrow [0.2,\; 0.1,\; 0.3,\; 0.1] \\
+\text{\en{but}} &amp;\rightarrow [0.0,\; 0.0,\; 0.0,\; 0.0] \quad \text{(کلمات توقف، بردار صفر)} \\
+\text{\en{slow}} &amp;\rightarrow [-0.4,\; 0.1,\; 0.2,\; -0.3] \\
+\text{\en{boring}} &amp;\rightarrow [-0.6,\; 0.0,\; 0.1,\; 0.1] \\
+\text{\en{plot}} &amp;\rightarrow [0.1,\; 0.2,\; 0.1,\; 0.0]
+\end{align*}
+
+\subsection{نمایش یک سند با میانگین بردارهای کلمات (بخش \en{۵-۳} کتاب)}
+در بخش \textbf{\en{۵-۳}} کتاب (\en{Simple count-based embeddings})، روش میانگین گرفتن از بردارهای کلمات برای نمایش یک سند توضیح داده شده است. طبق صورت سوال، بردار سند به صورت \textbf{میانگین حسابی} بردارهای کلمات آن سند (پس از حذف کلمات توقف) محاسبه می‌شود.
+
+\subsection{رده‌بندی با رگرسیون لجستیک (بخش \en{۴-۳} کتاب)}
+در بخش \textbf{\en{۴-۳}} کتاب (\en{Classification with Logistic Regression})، فرمول محاسبه احتمال تعلق یک نمونه به کلاس مثبت به صورت زیر معرفی شده است:
+
+\[
+P(\text{\en{positive}}|x) = \sigma(w \cdot x + b) = \frac{1}{1 + e^{-(w \cdot x + b)}}
+\]
+
+که در آن \(x\) بردار ویژگی‌های نمونه (در اینجا بردار سند)، \(w\) بردار وزن‌های مدل و \(b\) مقدار بایاس است.
+
+\thickseparator
+
+\section{حل گام‌به‌گام مسأله}
+
+\subsection{داده‌های مسأله}
+\begin{align*}
+\text{:جمله مورد نظر} &amp;\quad \text{\en{``amazing film but slow boring plot&#x27;&#x27;}} \\
+\text{:بردار وزن‌های مدل} &amp;\quad w = [0.6,\; -0.2,\; 0.3,\; 0.1] \\
+\text{:مقدار بایاس} &amp;\quad b = -0.05
+\end{align*}
+
+\subsection{گام ۱: حذف کلمات توقف (\en{Stop Words Removal})}
+طبق صورت سوال، کلمه \en{but} (که بردار آن صفر است) به عنوان کلمه توقف محسوب می‌شود و باید حذف گردد. بنابراین کلمات مؤثر در جمله عبارتند از:
+
+\[
+\text{\en{amazing}},\; \text{\en{film}},\; \text{\en{slow}},\; \text{\en{boring}},\; \text{\en{plot}}
+\]
+
+\subsection{گام ۲: محاسبه بردار سند با روش میانگین حسابی}
+برای هر بعد \(i\) از بردار سند، میانگین مقادیر آن بعد را در بین تمام کلمات محاسبه می‌کنیم:
+
+\[
+v_{\text{doc}}[i] = \frac{1}{n} \sum_{j=1}^{n} v_{\text{word}_j}[i]
+\]
+
+که در اینجا \(n = 5\) (تعداد کلمات پس از حذف کلمات توقف).
+
+\textbf{بعد اول:}
+\[
+\frac{0.7 + 0.2 + (-0.4) + (-0.6) + 0.1}{5} = \frac{0.7 + 0.2 - 0.4 - 0.6 + 0.1}{5} = \frac{0.0}{5} = 0.0
+\]
+
+\textbf{بعد دوم:}
+\[
+\frac{0.3 + 0.1 + 0.1 + 0.0 + 0.2}{5} = \frac{0.7}{5} = 0.14
+\]
+
+\textbf{بعد سوم:}
+\[
+\frac{-0.1 + 0.3 + 0.2 + 0.1 + 0.1}{5} = \frac{0.6}{5} = 0.12
+\]
+
+\textbf{بعد چهارم:}
+\[
+\frac{0.2 + 0.1 + (-0.3) + 0.1 + 0.0}{5} = \frac{0.2 + 0.1 - 0.3 + 0.1 + 0.0}{5} = \frac{0.1}{5} = 0.02
+\]
+
+بنابراین بردار سند برابر است با:
+
+\[
+x = v_{\text{doc}} = [0.0,\; 0.14,\; 0.12,\; 0.02]
+\]
+
+\subsection{گام ۳: محاسبه مقدار خطی \(z = w \cdot x + b\)}
+
+\[
+w \cdot x = (0.6 \times 0.0) + (-0.2 \times 0.14) + (0.3 \times 0.12) + (0.1 \times 0.02)
+\]
+
+\[
+w \cdot x = 0.0 + (-0.028) + 0.036 + 0.002 = 0.010
+\]
+
+\[
+z = w \cdot x + b = 0.010 + (-0.05) = -0.04
+\]
+
+\subsection{گام ۴: اعمال تابع سیگموئید برای محاسبه احتمال}
+
+\[
+P(\text{\en{positive}}|x) = \sigma(z) = \frac{1}{1 + e^{-z}} = \frac{1}{1 + e^{-(-0.04)}} = \frac{1}{1 + e^{0.04}}
+\]
+
+مقدار \(e^{0.04}\) را تقریب می‌زنیم (\(e^{0.04} \approx 1.0408\)):
+
+\[
+P(\text{\en{positive}}|x) = \frac{1}{1 + 1.0408} = \frac{1}{2.0408} \approx 0.4900
+\]
+
+\separator
+\section{جمع‌بندی و پاسخ نهایی}
+
+\begin{itemize}
+    \item \textbf{بردار سند (پس از میانگین گرفتن):} \(x = [0.0,\; 0.14,\; 0.12,\; 0.02]\)
+    \item \textbf{مقدار خطی \(z = w \cdot x + b\):} \(z = -0.04\)
+    \item \textbf{احتمال مثبت بودن سند:} \(P(\text{\en{positive}}|x) \approx 0.4900\)
+\end{itemize}
+
+\thickseparator
+\begin{center}
+\fbox{\parbox{0.85\linewidth}{\centering
+\textbf{پاسخ نهایی:} \\
+\[
+\boxed{P(\text{positive} | \text{amazing film but slow boring plot}) \approx 0.4900}
+\]
+}}
+\end{center}
+
+\thickseparator
+
+\section{تفسیر نتیجه}
+مقدار احتمال محاسبه‌شده \((\approx 0.49)\) کمی کمتر از آستانه \(0.5\) است. بنابراین اگر بخواهیم با آستانه \(0.5\) تصمیم‌گیری کنیم (طبق بخش \en{۴-۳} کتاب)، این سند به کلاس \textbf{منفی (\en{negative})} تعلق خواهد گرفت. این نتیجه با توجه به حضور کلمات منفی مانند \en{slow} و \en{boring} در جمله، منطقی به نظر می‌رسد.
+
+\thickseparator
+
+\end{document}</code></pre></details><details class="source-file" ><summary><bdi>Q6/Q6.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw2-embeddings/Q6/Q6.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{XB Niloofar}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{\textbf{پاسخ سوال ۶} \\[0.4cm] \small محاسبه شباهت معنایی با استفاده از معیار کسینوس}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{}
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{مفاهیم پایه: معیار شباهت کسینوس (بخش \en{۵-۴} کتاب)}
+
+در بخش \textbf{\en{۵-۴}} کتاب (\en{Cosine for measuring similarity})، فرمول شباهت کسینوس به عنوان رایج‌ترین معیار برای اندازه‌گیری شباهت معنایی بین دو بردار کلمه معرفی شده است. این معیار بر اساس زاویه بین دو بردار در فضای برداری عمل می‌کند و مقدار آن بین \(0\) (بدون شباهت) تا \(1\) (بیشترین شباهت) قرار دارد.
+
+فرمول شباهت کسینوس برای دو بردار \(v\) و \(w\) به صورت زیر است (معادله \en{۵-۱۰} کتاب):
+
+\[
+\text{\en{cosine}}(v,w) = \frac{v \cdot w}{|v||w|} = \frac{\sum_{i=1}^{N} v_i w_i}{\sqrt{\sum_{i=1}^{N} v_i^2} \cdot \sqrt{\sum_{i=1}^{N} w_i^2}}
+\]
+
+ضرب داخلی (دات پروداکت) دو بردار نیز به صورت زیر محاسبه می‌شود:
+
+\[
+v \cdot w = v_1 w_1 + v_2 w_2 + \dots + v_N w_N
+\]
+
+و اندازه (طول) یک بردار از رابطه زیر به دست می‌آید:
+
+\[
+|v| = \sqrt{v_1^2 + v_2^2 + \dots + v_N^2}
+\]
+
+\thickseparator
+
+\section{داده‌های مسأله}
+
+بردارهای داده شده در صورت سوال:
+
+\begin{align*}
+\vec{v}_{\text{\en{king}}} &amp;= [0.8,\; 0.6] \\
+\vec{v}_{\text{\en{queen}}} &amp;= [0.6,\; 0.8] \\
+\vec{v}_{\text{\en{table}}} &amp;= [0.1,\; 0.05]
+\end{align*}
+
+\thickseparator
+
+\section{محاسبه شباهت کسینوس برای هر جفت واژه}
+
+\subsection{گام ۱: محاسبه اندازه (طول) هر بردار}
+
+\noindent\textbf{طول بردار \en{king}:}
+\[
+|\vec{v}_{\text{\en{king}}}| = \sqrt{(0.8)^2 + (0.6)^2} = \sqrt{0.64 + 0.36} = \sqrt{1.00} = 1.00
+\]
+
+\noindent\textbf{طول بردار \en{queen}:}
+\[
+|\vec{v}_{\text{\en{queen}}}| = \sqrt{(0.6)^2 + (0.8)^2} = \sqrt{0.36 + 0.64} = \sqrt{1.00} = 1.00
+\]
+
+\noindent\textbf{طول بردار \en{table}:}
+\[
+|\vec{v}_{\text{\en{table}}}| = \sqrt{(0.1)^2 + (0.05)^2} = \sqrt{0.01 + 0.0025} = \sqrt{0.0125} \approx 0.1118
+\]
+
+\subsection{گام ۲: محاسبه شباهت (\en{king}, \en{queen})}
+
+\noindent\textbf{ابتدا ضرب داخلی:}
+\[
+\vec{v}_{\text{\en{king}}} \cdot \vec{v}_{\text{\en{queen}}} = (0.8 \times 0.6) + (0.6 \times 0.8) = 0.48 + 0.48 = 0.96
+\]
+
+\noindent\textbf{سپس شباهت کسینوس:}
+\[
+\text{\en{cosine}}(\text{\en{king}}, \text{\en{queen}}) = \frac{0.96}{|\vec{v}_{\text{\en{king}}}| \times |\vec{v}_{\text{\en{queen}}}|} = \frac{0.96}{1.00 \times 1.00} = 0.96
+\]
+
+\subsection{گام ۳: محاسبه شباهت (\en{king}, \en{table})}
+
+\noindent\textbf{ضرب داخلی:}
+\[
+\vec{v}_{\text{\en{king}}} \cdot \vec{v}_{\text{\en{table}}} = (0.8 \times 0.1) + (0.6 \times 0.05) = 0.08 + 0.03 = 0.11
+\]
+
+\noindent\textbf{شباهت کسینوس:}
+\[
+\text{\en{cosine}}(\text{\en{king}}, \text{\en{table}}) = \frac{0.11}{1.00 \times 0.1118} = \frac{0.11}{0.1118} \approx 0.9839
+\]
+
+\subsection{گام ۴: محاسبه شباهت (\en{queen}, \en{table})}
+
+\noindent\textbf{ضرب داخلی:}
+\[
+\vec{v}_{\text{\en{queen}}} \cdot \vec{v}_{\text{\en{table}}} = (0.6 \times 0.1) + (0.8 \times 0.05) = 0.06 + 0.04 = 0.10
+\]
+
+\noindent\textbf{شباهت کسینوس:}
+\[
+\text{\en{cosine}}(\text{\en{queen}}, \text{\en{table}}) = \frac{0.10}{1.00 \times 0.1118} = \frac{0.10}{0.1118} \approx 0.8945
+\]
+
+\separator
+\section{مقایسه نتایج}
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{جفت واژه} &amp; \textbf{شباهت کسینوس} \\
+\hline
+(\en{king}, \en{queen}) &amp; \(0.96\) \\
+\hline
+(\en{king}, \en{table}) &amp; \(0.9839\) \\
+\hline
+(\en{queen}, \en{table}) &amp; \(0.8945\) \\
+\hline
+\end{tabular}
+\end{center}
+
+\separator
+\section{پاسخ نهایی}
+
+با توجه به محاسبات انجام شده:
+
+\begin{itemize}
+    \item شباهت (\en{king}, \en{queen}) برابر با \(0.96\)
+    \item شباهت (\en{king}, \en{table}) برابر با \(0.9839\)
+    \item شباهت (\en{queen}, \en{table}) برابر با \(0.8945\)
+\end{itemize}
+
+بنابراین \textbf{جفت (\en{king}, \en{table}) با مقدار تقریبی \(0.9839\) بیشترین شباهت کسینوس} را در بین سه جفت دارد.
+
+\thickseparator
+\section{نکته}
+
+در این مثال خاص، اعداد به گونه‌ای انتخاب شده‌اند که بردار \en{table} در امتداد نزدیکی به \en{king} قرار گرفته است. در عمل و در مدل‌های \en{embedding} واقعی (مانند \en{Word2Vec} یا \en{GloVe})، کلمات \en{king} و \en{queen} که از نظر معنایی مرتبط‌تر هستند، شباهت بسیار بیشتری نسبت به (\en{king}, \en{table}) خواهند داشت. اما پاسخ سوال بر اساس داده‌های عددی مسأله، (\en{king}, \en{table}) است.
+
+\thickseparator
+\begin{center}
+\fbox{\parbox{0.9\linewidth}{\centering
+\textbf{پاسخ نهایی:} \\
+بر اساس محاسبات معیار کسینوس:
+\begin{itemize}
+    \item شباهت (\en{king}, \en{queen}) = \(0.96\)
+    \item شباهت (\en{king}, \en{table}) \(\approx 0.9839\)
+    \item شباهت (\en{queen}, \en{table}) \(\approx 0.8945\)
+\end{itemize}
+\textbf{\en{king} و \en{table} بیشترین شباهت را دارند.}
+}}
+\end{center}
+
+\thickseparator
+
+\end{document}</code></pre></details><details class="source-file" ><summary><bdi>Q7/Q7.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw2-embeddings/Q7/Q7.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{XB Niloofar}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{\textbf{پاسخ سوال ۱} \\[0.4cm] \small مقایسه مدل \en{Naive Bayes} و رگرسیون لجستیک}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{}
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{مفاهیم پایه: دو دسته مدل‌های تولیدی و تفکیکی}
+
+در یادگیری ماشین نظارت‌شده، مدل‌های طبقه‌بندی به دو دسته کلی تقسیم می‌شوند:
+
+\begin{itemize}
+    \item \textbf{مدل‌های تولیدی (\en{Generative Models})}: این مدل‌ها توزیع توأم \(P(x,y)\) را یاد می‌گیرند و سپس با استفاده از قانون بیز، \(P(y|x)\) را محاسبه می‌کنند.
+    \item \textbf{مدل‌های تفکیکی (\en{Discriminative Models})}: این مدل‌ها مستقیماً توزیع شرطی \(P(y|x)\) را مدل می‌کنند و سعی در بهینه‌سازی آن دارند.
+\end{itemize}
+
+\separator
+\section{مدل \en{Naive Bayes} (مدل تولیدی)}
+
+\subsection{فرض استقلال شرطی}
+مدل \en{Naive Bayes} یک مدل تولیدی است که بر اساس قانون بیز عمل می‌کند:
+
+\[
+P(y|x) = \frac{P(y) P(x|y)}{P(x)} \propto P(y) \prod_{i=1}^{n} P(x_i|y)
+\]
+
+فرض اساسی در این مدل، \textbf{استقلال شرطی} ویژگی‌ها (\(x_i\)) به شرط برچسب \(y\) است. یعنی:
+
+\[
+P(x|y) = \prod_{i=1}^{n} P(x_i|y)
+\]
+
+\newpage
+\subsection{بهینه‌سازی چه احتمالی؟}
+مدل \textbf{\en{Naive Bayes}} به عنوان یک مدل تولیدی (\en{Generative Model})، توزیع توأم \(P(x,y)\) را با بیشینه‌سازی درست‌نمایی (\en{Maximum Likelihood Estimation}) یاد می‌گیرد و سپس با استفاده از قانون بیز، \(P(y|x)\) را محاسبه می‌کند. معادل است با:
+
+\[
+\hat{y} = \arg\max_{y} P(y) \prod_{i=1}^{n} P(x_i|y)
+\]
+
+در عمل، مدل با استفاده از \textbf{بیشینه‌سازی درست‌نمایی (\en{MLE})} پارامترهای \(P(y)\) و \(P(x_i|y)\) را از روی داده‌های آموزشی تخمین می‌زند.
+
+\separator
+\section{رگرسیون لجستیک (مدل تفکیکی)}
+
+\subsection{فرمول مدل}
+بر اساس فصل \textbf{۴ کتاب} (بخش‌های \en{۴-۲} و \en{۴-۳})، رگرسیون لجستیک مستقیماً \(P(y|x)\) را مدل می‌کند:
+
+\[
+P(y=1|x) = \sigma(w \cdot x + b) = \frac{1}{1 + \exp(-(w \cdot x + b))}
+\]
+
+\[
+P(y=0|x) = 1 - \sigma(w \cdot x + b) = \sigma(-(w \cdot x + b))
+\]
+
+\subsection{بهینه‌سازی چه احتمالی؟}
+بر اساس بخش \textbf{\en{۴-۵} کتاب} (تابع هزینه کراس-آنتروپی)، رگرسیون لجستیک سعی در \textbf{بیشینه‌سازی احتمال شرطی \(P(y|x)\)} به صورت مستقیم دارد. تابع هزینه کراس-آنتروپی برای یک نمونه به صورت زیر است:
+
+\[
+L_{CE}(\hat{y}, y) = -[y \log \hat{y} + (1-y) \log(1-\hat{y})]
+\]
+
+که معادل \textbf{منفی لگاریتم درست‌نمایی شرطی (\en{Negative Conditional Log-Likelihood})} است. بنابراین مدل سعی در کمینه کردن این تابع هزینه (و در نتیجه بیشینه کردن \(P(y|x)\)) دارد.
+
+\separator
+\section{تفاوت کلیدی در بهینه‌سازی (بر اساس مقاله \en{Ng \&amp; Jordan 2002})}
+
+\begin{itemize}
+    \item \textbf{\en{Naive Bayes}:} بیشینه‌سازی \textbf{احتمال توأم \(P(x,y)\)} (تحت فرض استقلال شرطی ویژگی‌ها)
+    \item \textbf{رگرسیون لجستیک:} بیشینه‌سازی \textbf{احتمال شرطی \(P(y|x)\)} به صورت مستقیم
+\end{itemize}
+
+این تفاوت اساسی، همان نکته کلیدی مقاله \en{Ng \&amp; Jordan (2002)} است.
+
+\separator
+\section{مقایسه مدل‌ها بر اساس مقاله \en{Ng and Jordan 2002}}
+
+مقاله \en{Ng and Jordan (2002)} با عنوان \en{\en{On Discriminative vs. Generative Classifiers: A comparison of logistic regression and naive Bayes}} به مقایسه این دو مدل پرداخته است. نتایج اصلی مقاله به شرح زیر است:
+
+\subsection{عملکرد در حجم داده‌های کم}
+در حجم داده‌های آموزشی کم، مدل \en{Naive Bayes} (تولیدی) عملکرد بهتری نسبت به رگرسیون لجستیک (تفکیکی) دارد. دلیل آن این است که مدل‌های تولیدی با فرضیات قوی‌تر (مانند استقلال شرطی) به داده‌های کمتری برای تخمین پارامترها نیاز دارند و واریانس کمتری دارند.
+
+\subsection{عملکرد در حجم داده‌های زیاد}
+با افزایش حجم داده‌های آموزشی، \textbf{رگرسیون لجستیک عملکرد بهتری نسبت به \en{Naive Bayes} پیدا می‌کند}. دلیل این پدیده را در ادامه تحلیل می‌کنیم.
+
+\separator
+\section{دلیل عملکرد بهتر رگرسیون لجستیک با افزایش داده‌ها}
+
+\subsection{نقطه نظر ۱: فرضیات مدل}
+
+\begin{itemize}
+    \item \textbf{\en{Naive Bayes}:} فرض \textbf{استقلال شرطی} بین ویژگی‌ها را می‌کند. این فرض در بسیاری از مسائل دنیای واقعی (مانند تحلیل احساسات که کلمات با یکدیگر هم‌بستگی دارند) \textbf{نادرست} است. وقتی داده کم است، این فرض به مدل کمک می‌کند (کاهش واریانس)، اما با زیاد شدن داده، \textbf{بایاس} ناشی از فرض نادرست به یک مشکل جدی تبدیل می‌شود و مدل نمی‌تواند از داده‌های بیشتر برای بهبود عملکرد استفاده کند.
+
+    \item \textbf{رگرسیون لجستیک:} \textbf{هیچ فرض استقلالی} بین ویژگی‌ها نمی‌کند. مدل به داده اجازه می‌دهد تا وابستگی‌های بین ویژگی‌ها را خودش یاد بگیرد. با افزایش داده، مدل می‌تواند این وابستگی‌ها را دقیق‌تر تخمین بزند و \textbf{بایاس} آن کاهش یابد. از آنجا که واریانس مدل با افزایش داده کنترل می‌شود، در نهایت عملکرد آن بهتر می‌شود.
+\end{itemize}
+
+\subsection{نقطه نظر ۲: نرخ همگرایی ( \en{Convergence Rate})}
+
+مقاله \en{Ng and Jordan} نشان می‌دهد که:
+
+\begin{itemize}
+    \item نرخ همگرایی \en{Naive Bayes} از مرتبه \(O(\log m)\) است (نیاز به داده لگاریتمی)
+    \item نرخ همگرایی رگرسیون لجستیک از مرتبه \(O(m)\) است (نیاز به داده خطی)
+\end{itemize}
+
+بنابراین \en{Naive Bayes} \textbf{خیلی سریع‌تر همگرا می‌شود}، اما \textbf{خطای مجانبی (\en{Asymptotic Error}) آن بالاتر از رگرسیون لجستیک} است. به عبارت دیگر، برای رسیدن به یک خطای ثابت، \en{Naive Bayes} به داده بسیار کمتری نیاز دارد، اما \textbf{خطای مجانبی رگرسیون لجستیک کمتر} است. با \(m \to \infty\)، رگرسیون لجستیک به خطای بیز (بهینه‌ترین خطای ممکن) نزدیک می‌شود، در حالی که \en{Naive Bayes} به دلیل بایاس ناشی از فرض استقلال، به خطایی بزرگتر از خطای بیز همگرا می‌شود.
+
+\subsection{نقطه نظر ۳: انعطاف‌پذیری}
+
+رگرسیون لجستیک یک مدل \textbf{پارامتریک با مرز تصمیم خطی} است که می‌تواند با استفاده از \textbf{تبدیل ویژگی‌ها (\en{Feature Transformation})} و \textbf{تعامل ویژگی‌ها (\en{Feature Interactions})} مرزهای تصمیم غیرخطی را نیز تقریب بزند. \en{Naive Bayes} به دلیل فرض استقلال، قادر به مدل کردن تعاملات بین ویژگی‌ها نیست.
+
+\separator
+\section{جمع‌بندی و پاسخ نهایی}
+
+\begin{center}
+\fbox{\parbox{0.95\linewidth}{\centering
+\textbf{پاسخ خلاصه‌شده به سه پرسش سوال:}
+\begin{itemize}
+    \item \textbf{\en{Naive Bayes} چه احتمالی را بهینه می‌کند؟}  
+    بیشینه‌سازی \(P(y) \prod P(x_i|y)\) \textbf{تحت فرض استقلال شرطی ویژگی‌ها} که معادل بیشینه‌سازی \(P(x,y)\) است.
+    
+    \item \textbf{رگرسیون لجستیک چه احتمالی را بهینه می‌کند؟}  
+    بیشینه‌سازی مستقیم \(P(y|x)\) (احتمال شرطی) با استفاده از تابع سیگموئید و کمینه‌سازی کراس-آنتروپی.
+    
+    \item \textbf{دلیل عملکرد بهتر رگرسیون لجستیک با افزایش داده (بر اساس مقاله \en{Ng and Jordan 2002}) چیست؟}  
+    \begin{enumerate}
+        \item رگرسیون لجستیک فرض استقلال نادرست \en{Naive Bayes} را ندارد، بنابراین بایاس آن با افزایش داده به صفر میل می‌کند.
+        \item نرخ همگرایی رگرسیون لجستیک \(O(m)\) است در حالی که \en{Naive Bayes} به \(O(\log m)\) زودتر همگرا می‌شود اما خطای مجانبی بزرگتری دارد.
+        \item با \(m \to \infty\)، رگرسیون لجستیک به خطای بیز همگرا می‌شود، اما \en{Naive Bayes} به دلیل فرض استقلال به خطایی بزرگتر از خطای بیز محدود می‌ماند.
+    \end{enumerate}
+\end{itemize}
+}}
+\end{center}
+
+\thickseparator
+
+\section{منابع}
+\begin{itemize}
+    \item فصل ۴ کتاب: \en{Logistic Regression and Text Classification} (بخش‌های \en{۴-۲}، \en{۴-۳}، \en{۴-۵})
+    \item \en{Ng, A. Y., \&amp; Jordan, M. I. (2002). On Discriminative vs. Generative Classifiers: A comparison of logistic regression and naive Bayes. In NIPS.}
+\end{itemize}
+
+\thickseparator
+
+\end{document}</code></pre></details><details class="source-file" ><summary><bdi>Q8/Q8.tex</bdi><span>متن منبع</span></summary><div class="source-toolbar"><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses/blob/3038db988ade61f86b4ae9151befa8406b9af6f8/courses/nlp/hw2-embeddings/Q8/Q8.tex" target="_blank" rel="noopener noreferrer">مشاهده در GitHub ↗</a><button type="button" class="copy-code">کپی متن</button></div><pre class="code-block" dir="ltr"><code>% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{geometry}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\setdefaultlanguage{persian}
+\setotherlanguage{english}
+\setmainfont{XB Niloofar}
+
+\newcommand{\en}[1]{\textenglish{#1}}
+\newcommand{\separator}{\vspace{1em}\noindent\rule{\linewidth}{0.4pt}\vspace{1em}}
+\newcommand{\thickseparator}{\vspace{1em}\noindent\rule{\linewidth}{1pt}\vspace{1em}}
+
+\title{\textbf{پاسخ سوال ۲} \\[0.4cm] \small آموزش رگرسیون لجستیک با \en{Regularization} های \en{L1} و \en{L2}}
+\author{محمد باغبان زاده \\ شماره دانشجویی: شناسهٔ دانشجو}
+\date{}
+\linespread{1.35}
+
+\begin{document}
+
+\maketitle
+\thickseparator
+
+\section{مفاهیم پایه: \en{Regularization} در رگرسیون لجستیک (بخش \en{۴-۱۴} کتاب)}
+
+در بخش \textbf{\en{۴-۱۴}} کتاب (\en{Advanced: Regularization})، مفهوم \textbf{منظم‌سازی (\en{Regularization})} به عنوان راهکاری برای جلوگیری از \textbf{بیش‌برازش (\en{overfitting})} معرفی شده است. زمانی که مدل بیش از حد به داده‌های آموزشی منطبق می‌شود، ممکن است نویزهای تصادفی را نیز یاد بگیرد و در نتیجه عملکرد خوبی روی داده‌های تست نداشته باشد. برای حل این مشکل، یک عبارت منظم‌سازی \(R(\theta)\) به تابع هزینه اضافه می‌شود.
+
+بر اساس معادله \en{۴-۴۹} کتاب، تابع هزینه با \en{Regularization} به صورت زیر است (به صورت کمینه‌سازی تابع هزینه منفی لگاریتم درست‌نمایی):
+
+\[
+\hat{\theta} = \arg\min_{\theta} \left( -\sum_{i=1}^{m} \log P(y^{(i)}|x^{(i)};\theta) + \alpha R(\theta) \right)
+\]
+
+دو نوع رایج منظم‌سازی در کتاب معرفی شده است:
+
+\subsection{منظم‌سازی \en{L2} ( \en{Ridge} )}
+طبق معادله \en{۴-۵۰} و \en{۴-۵۱} کتاب:
+
+\[
+R(\theta) = \|\theta\|_2^2 = \sum_{j=1}^{n} w_j^2
+\]
+
+تابع هزینه منظم‌شده:
+\[
+\hat{\theta} = \arg\min_{\theta} \left( -\sum_{i=1}^{m} \log P(y^{(i)}|x^{(i)};\theta) + \alpha \sum_{j=1}^{n} w_j^2 \right)
+\]
+
+مشتق عبارت منظم‌سازی نسبت به \(w_j\):
+\[
+\frac{\partial}{\partial w_j} (\alpha w_j^2) = 2\alpha w_j
+\]
+
+\newpage
+\subsection{منظم‌سازی \en{L1} ( \en{LASSO} )}
+طبق معادله \en{۴-۵۲} و \en{۴-۵۳} کتاب:
+
+\[
+R(\theta) = \|\theta\|_1 = \sum_{j=1}^{n} |w_j|
+\]
+
+تابع هزینه منظم‌شده:
+\[
+\hat{\theta} = \arg\min_{\theta} \left( -\sum_{i=1}^{m} \log P(y^{(i)}|x^{(i)};\theta) + \alpha \sum_{j=1}^{n} |w_j| \right)
+\]
+
+مشتق عبارت منظم‌سازی نسبت به \(w_j\) (به جز در نقطه صفر):
+\[
+\frac{\partial}{\partial w_j} (\alpha |w_j|) = \alpha \cdot \text{sign}(w_j)
+\]
+
+که در آن تابع علامت به صورت زیر تعریف می‌شود:
+\[
+\text{sign}(w_j) = 
+\begin{cases} 
++1 &amp; \text{\en{if }} w_j &gt; 0 \\
+-1 &amp; \text{\en{if }} w_j &lt; 0 \\
+\text{تعریف‌نشده} &amp; \text{\en{if }} w_j = 0
+\end{cases}
+\]
+
+\separator
+\section{داده‌های مسأله}
+
+\begin{align*}
+\text{:بردار ویژگی} &amp;\quad x = [2,\; -1] \\
+\text{:برچسب واقعی} &amp;\quad y = 1 \\
+\text{:وزن‌های فعلی} &amp;\quad w = [0.5,\; -0.25] \\
+\text{:مقدار بایاس} &amp;\quad b = 0 \\
+\text{:پارامتر منظم‌سازی} &amp;\quad \lambda = \alpha = 0.1
+\end{align*}
+
+\separator
+\section{گام ۱: محاسبه خروجی مدل و خطا}
+
+ابتدا مقدار \(z = w \cdot x + b\) را محاسبه می‌کنیم:
+
+\[
+z = (0.5 \times 2) + (-0.25 \times -1) + 0 = 1 + 0.25 = 1.25
+\]
+
+سپس خروجی مدل (احتمال کلاس مثبت) را با تابع سیگموئید محاسبه می‌کنیم:
+
+\[
+\hat{y} = \sigma(z) = \frac{1}{1 + e^{-1.25}}
+\]
+
+مقدار \(e^{-1.25} \approx 0.2865\)، بنابراین:
+
+\[
+\hat{y} \approx \frac{1}{1 + 0.2865} = \frac{1}{1.2865} \approx 0.7773
+\]
+
+خطای مدل (تفاوت بین خروجی و برچسب واقعی):
+
+\[
+\hat{y} - y = 0.7773 - 1 = -0.2227
+\]
+
+\separator
+\section{گام ۲: محاسبه گرادیان بدون \en{Regularization}}
+
+بر اساس بخش \textbf{\en{۴-۶-۱} کتاب} (معادله \en{۴-۲۶})، گرادیان تابع هزینه کراس-آنتروپی نسبت به هر وزن \(w_j\) به صورت زیر است:
+
+\[
+\frac{\partial L}{\partial w_j} = (\hat{y} - y) \cdot x_j
+\]
+
+بنابراین:
+
+\[
+\frac{\partial L}{\partial w_1} = (\hat{y} - y) \cdot x_1 = (-0.2227) \times 2 = -0.4454
+\]
+
+\[
+\frac{\partial L}{\partial w_2} = (\hat{y} - y) \cdot x_2 = (-0.2227) \times (-1) = 0.2227
+\]
+
+\begin{center}
+\fbox{\parbox{0.7\linewidth}{\centering
+\textbf{گرادیان بدون \en{Regularization}:} \\
+\[
+\nabla L = [-0.4454,\; 0.2227]
+\]
+}}
+\end{center}
+
+\separator
+\section{گام ۳: محاسبه گرادیان با \en{L2 Regularization} ( \en{Ridge} )}
+
+در منظم‌سازی \en{L2}، عبارت منظم‌سازی به صورت \(\lambda \sum w_j^2\) به تابع هزینه اضافه می‌شود. مشتق این عبارت نسبت به \(w_j\) برابر با \(2\lambda w_j\) است. بنابراین گرادیان کل به صورت زیر محاسبه می‌شود:
+
+\[
+\frac{\partial L_{L2}}{\partial w_j} = \frac{\partial L}{\partial w_j} + 2\lambda w_j
+\]
+
+\begin{align*}
+\frac{\partial L_{L2}}{\partial w_1} &amp;= -0.4454 + 2 \times 0.1 \times 0.5 = -0.4454 + 0.1 = -0.3454 \\[4pt]
+\frac{\partial L_{L2}}{\partial w_2} &amp;= 0.2227 + 2 \times 0.1 \times (-0.25) = 0.2227 - 0.05 = 0.1727
+\end{align*}
+
+\begin{center}
+\fbox{\parbox{0.7\linewidth}{\centering
+\textbf{گرادیان با \en{L2 Regularization}:} \\
+\[
+\nabla L_{L2} = [-0.3454,\; 0.1727]
+\]
+}}
+\end{center}
+
+\separator
+\section{گام ۴: محاسبه گرادیان با \en{L1 Regularization} ( \en{LASSO} )}
+
+در منظم‌سازی \en{L1}، عبارت منظم‌سازی به صورت \(\lambda \sum |w_j|\) به تابع هزینه اضافه می‌شود. مشتق این عبارت نسبت به \(w_j\) برابر با \(\lambda \cdot \text{sign}(w_j)\) است. بنابراین گرادیان کل به صورت زیر محاسبه می‌شود:
+
+\[
+\frac{\partial L_{L1}}{\partial w_j} = \frac{\partial L}{\partial w_j} + \lambda \cdot \text{sign}(w_j)
+\]
+
+برای \(w_1 = 0.5 &gt; 0\)، علامت \(w_1\) برابر \(+1\) است.
+برای \(w_2 = -0.25 &lt; 0\)، علامت \(w_2\) برابر \(-1\) است.
+
+\begin{align*}
+\frac{\partial L_{L1}}{\partial w_1} &amp;= -0.4454 + 0.1 \times (+1) = -0.4454 + 0.1 = -0.3454 \\[4pt]
+\frac{\partial L_{L1}}{\partial w_2} &amp;= 0.2227 + 0.1 \times (-1) = 0.2227 - 0.1 = 0.1227
+\end{align*}
+
+\begin{center}
+\fbox{\parbox{0.7\linewidth}{\centering
+\textbf{گرادیان با \en{L1 Regularization}:} \\
+\[
+\nabla L_{L1} = [-0.3454,\; 0.1227]
+\]
+}}
+\end{center}
+
+\separator
+\section{مقایسه سه گرادیان محاسبه‌شده}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{وزن} &amp; \textbf{بدون \en{Reg}} &amp; \textbf{\en{L2 Ridge}} &amp; \textbf{\en{L1 LASSO}} \\
+\hline
+\(w_1 = 0.5\) &amp; \(-0.4454\) &amp; \(-0.3454\) &amp; \(-0.3454\) \\
+\hline
+\(w_2 = -0.25\) &amp; \(0.2227\) &amp; \(0.1727\) &amp; \(0.1227\) \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{تحلیل مقایسه‌ای}
+
+\begin{enumerate}
+    \item \textbf{تأثیر روی \(w_1\) (وزن مثبت):}
+    \begin{itemize}
+        \item هر دو نوع منظم‌سازی، مقدار گرادیان را \textbf{افزایش} دادند (از \(-0.4454\) به \(-0.3454\)).
+        \item دلیل: عبارت منظم‌سازی \(2\lambda w_1\) برای \en{L2} و \(\lambda\) برای \en{L1} هر دو مثبت هستند و به گرادیان منفی اضافه می‌شوند.
+        \item در این مثال خاص، هر دو منظم‌سازی مقدار یکسانی برای \(w_1\) تولید کردند.
+    \end{itemize}
+    
+    \item \textbf{تأثیر روی \(w_2\) (وزن منفی):}
+    \begin{itemize}
+        \item در \en{L2}: گرادیان از \(0.2227\) به \(0.1727\) \textbf{کاهش} یافت (چون \(2\lambda w_2\) منفی بود).
+        \item در \en{L1}: گرادیان از \(0.2227\) به \(0.1227\) \textbf{کاهش بیشتری} یافت (چون \(\lambda \cdot \text{sign}(w_2) = -0.1\)).
+        \item \textbf{نکته مهم:} در منظم‌سازی \en{L1}، تأثیر روی وزن‌های منفی بیشتر است زیرا علامت \(\text{sign}(w_2) = -1\) است.
+    \end{itemize}
+    
+    \item \textbf{تفاوت کلیدی بین \en{L1} و \en{L2}:}
+    \begin{itemize}
+        \item مطابق با بخش \textbf{\en{۴-۱۴} کتاب}: منظم‌سازی \en{L2} وزن‌ها را به سمت صفر میل می‌دهد اما به ندرت دقیقاً صفر می‌کند (وزن‌های کوچک اما غیرصفر).
+        \item منظم‌سازی \en{L1} می‌تواند وزن‌ها را \textbf{دقیقاً صفر} کند و راه‌حل‌های \textbf{پراکنده (\en{sparse})} ایجاد کند.
+        \item در این مثال، \(\nabla L_{L1}\) برای \(w_2\) کوچک‌تر از \(\nabla L_{L2}\) است، که نشان می‌دهد \en{L1} فشار بیشتری برای کاهش وزن‌های منفی اعمال می‌کند.
+    \end{itemize}
+\end{enumerate}
+
+\separator
+\section{جمع‌بندی و پاسخ نهایی}
+
+\begin{center}
+\fbox{\parbox{0.95\linewidth}{\centering
+\textbf{پاسخ نهایی:}
+\begin{itemize}
+    \item \textbf{گرادیان بدون \en{Regularization}:} \(\nabla L = [-0.4454,\; 0.2227]\)
+    \item \textbf{گرادیان با \en{L2} (\en{Ridge}):} \(\nabla L_{L2} = [-0.3454,\; 0.1727]\)
+    \item \textbf{گرادیان با \en{L1} (\en{LASSO}):} \(\nabla L_{L1} = [-0.3454,\; 0.1227]\)
+\end{itemize}
+\textbf{مقایسه:} هر دو نوع منظم‌سازی باعث کاهش قدر مطلق گرادیان شدند. تأثیر \en{L1} روی وزن منفی \(w_2\) قوی‌تر از \en{L2} بود، که این امر با خاصیت \textbf{پراکندگی (\en{sparsity})} منظم‌سازی \en{L1} همخوانی دارد و در بلندمدت می‌تواند برخی وزن‌ها را دقیقاً به صفر برساند.
+}}
+\end{center}
+
+\thickseparator
+
+\end{document}</code></pre></details></section></div><section class="related"><h2>مطالب دیگر این درس</h2><div><a href="../hw1-language-models/">تمرین ۱: N-gram و Naive Bayes ←</a><a href="../hw3-neural-models/">تمرین ۳: مدل‌های عصبی ←</a><a href="../hw4-rnn/">تمرین ۴: طراحی RNN ←</a><a href="../hw4-attention/">تمرین ۴: Attention و Transformer ←</a><a href="../hw4-gpt2/">تمرین ۴: Fine-Tuning مدل GPT-2 ←</a><a href="../hw5-bert/">تمرین ۵: BERT برای Sentiment Analysis ←</a><a href="../hw5-post-training/">تمرین ۵: Post-Training با SFT و LoRA ←</a><a href="../hw6-rag-translation/">تمرین ۶: RAG و Machine Translation ←</a><a href="../study-notes/">یادداشت‌های مرور NLP ←</a></div></section></main><footer class="site-footer wrap"><span>محمد باغبان‌زاده</span><a href="https://github.com/MohammadBaghbanzadeh/MasterCourses" target="_blank" rel="noopener noreferrer">کدها در <bdi>GitHub ↗</bdi></a><a href="../../../courses/">همهٔ درس‌ها</a></footer></body></html>
