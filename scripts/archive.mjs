@@ -25,9 +25,18 @@ async function build() {
     if (!path.startsWith(local + '/')) throw new Error('Report sources must be inside .private');
     reports.push({week:report.week, title:report.title, summary:report.summary || '', html:await readFile(path, 'utf8')});
   }
-  const envelope = await seal({version:1, title:catalog.title, description:catalog.description, reports, ...(catalog.activity ? {activity:catalog.activity} : {})}, await readPassword());
+  const documents = [];
+  for (const document of catalog.documents || []) {
+    const path = resolve(local, document.source);
+    if (!path.startsWith(local + '/') || document.mime !== 'application/pdf' || typeof document.title !== 'string') throw new Error('Invalid document');
+    const bytes = await readFile(path);
+    if (bytes.subarray(0, 5).toString() !== '%PDF-') throw new Error('Invalid PDF');
+    documents.push({title:document.title, summary:document.summary || '', filename:document.filename || 'document.pdf', mime:document.mime, data:bytes.toString('base64')});
+  }
+  const envelope = await seal({version:1, title:catalog.title, description:catalog.description, reports, documents, ...(catalog.activity ? {activity:catalog.activity} : {})}, await readPassword());
   const check = await unseal(envelope, await readPassword());
   if (check.reports.length !== reports.length || check.reports.some((r,i) => r.html !== reports[i].html)) throw new Error('Archive verification failed');
+  if (JSON.stringify(check.documents) !== JSON.stringify(documents)) throw new Error('Document verification failed');
   await mkdir(dirname(outputPath), {recursive:true});
   await writeFile(outputPath, JSON.stringify(envelope) + '\n');
   console.log(`Encrypted archive saved and verified (${reports.length} report(s)). No plaintext was published.`);

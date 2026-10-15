@@ -1,7 +1,8 @@
-import {unseal, toBase64} from './crypto.js';
+import {unseal, toBase64, fromBase64} from './crypto.js';
 import {loadActivity, clearActivity} from './activity.js';
 const $ = id => document.getElementById(id);
 let archive = null, idleTimer, lastOpener, generation = 0, reportFont = '';
+const documentUrls = new Set();
 const digits = n => new Intl.NumberFormat('fa-IR').format(n);
 const message = $('unlock-message');
 function resetIdle() {
@@ -22,6 +23,8 @@ function lock(reason = '') {
   clearTimeout(idleTimer);
   closeReport();
   archive = null;
+  for (const url of documentUrls) URL.revokeObjectURL(url);
+  documentUrls.clear();
   clearActivity();
   lastOpener = null;
   $('report-list').replaceChildren();
@@ -68,10 +71,24 @@ async function openReport(report, opener) {
 }
 function render(payload) {
   if (payload?.version !== 1 || typeof payload.title !== 'string' || !Array.isArray(payload.reports) || !payload.reports.length || payload.reports.some(r => !Number.isInteger(r.week) || typeof r.title !== 'string' || typeof r.html !== 'string' || typeof r.summary !== 'string')) throw new Error('Invalid content');
+  if (payload.documents !== undefined && (!Array.isArray(payload.documents) || payload.documents.some(d => d.mime !== 'application/pdf' || typeof d.data !== 'string' || typeof d.title !== 'string'))) throw new Error('Invalid documents');
   archive = payload;
   $('workspace-title').textContent = payload.title;
   $('workspace-description').textContent = payload.description || '';
-  $('workspace-count').textContent = `${digits(payload.reports.length)} گزارش ثبت‌شده`;
+  $('workspace-count').textContent = `${digits(payload.reports.length + (payload.documents || []).length)} مورد ثبت‌شده`;
+  for (const documentFile of payload.documents || []) {
+    const card = document.createElement('article');card.className = 'report-card';
+    const type = document.createElement('span');type.className = 'report-number';type.textContent = 'PDF';type.dir = 'ltr';
+    const copy = document.createElement('div');copy.className = 'report-copy';
+    const title = document.createElement('h2');title.textContent = documentFile.title;
+    const summary = document.createElement('p');summary.textContent = documentFile.summary || '';
+    copy.append(title, summary);
+    const actions = document.createElement('div');actions.className = 'report-actions';
+    const url = URL.createObjectURL(new Blob([fromBase64(documentFile.data)], {type:'application/pdf'}));documentUrls.add(url);
+    const view = document.createElement('a');view.className = 'button primary';view.href = url;view.target = '_blank';view.rel = 'noopener noreferrer';view.textContent = 'مشاهدهٔ PDF ↗';
+    const download = document.createElement('a');download.className = 'button outline';download.href = url;download.download = (documentFile.filename || 'document.pdf').replace(/[^a-zA-Z0-9._-]/g, '_');download.textContent = 'دانلود';
+    actions.append(view, download);card.append(type, copy, actions);$('report-list').append(card);
+  }
   for (const report of [...payload.reports].sort((a,b) => a.week - b.week)) {
     const card = document.createElement('article');card.className = 'report-card';
     const number = document.createElement('span');number.className = 'report-number';number.textContent = digits(report.week).padStart(2,'۰');
