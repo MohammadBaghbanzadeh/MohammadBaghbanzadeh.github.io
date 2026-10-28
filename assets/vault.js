@@ -97,10 +97,12 @@ function render(payload) {
     toggle.append(label, total, action);heading.append(toggle);
     section.append(heading, list);$('report-list').append(section);return list;
   }
-  const proposals = (payload.documents || []).filter(d => d.category !== 'paper');
+  const proposals = (payload.documents || []).filter(d => d.category !== 'paper' && d.category !== 'report');
+  const reportPdfs = (payload.documents || []).filter(d => d.category === 'report');
   const papers = (payload.documents || []).filter(d => d.category === 'paper');
   const documentList = proposals.length ? group('پروپوزال', proposals.length) : null;
   const weeklyList = group('گزارش‌های هفتگی پیاده‌سازی', payload.reports.length);
+  const reportPdfList = reportPdfs.length ? group('نسخه‌های PDF گزارش هفتگی', reportPdfs.length) : null;
   const paperList = papers.length ? group('مقالات پایه و مرتبط', papers.length) : null;
   for (const documentFile of payload.documents || []) {
     const card = document.createElement('article');card.className = 'report-card';
@@ -144,7 +146,7 @@ function render(payload) {
     }
     view.addEventListener('click', () => getPdf('view'));
     download.addEventListener('click', () => getPdf('download'));
-    actions.append(view, download, status);card.append(type, copy, actions);(documentFile.category === 'paper' ? paperList : documentList).append(card);
+    actions.append(view, download, status);card.append(type, copy, actions);(documentFile.category === 'paper' ? paperList : documentFile.category === 'report' ? reportPdfList : documentList).append(card);
   }
   for (const report of [...payload.reports].sort((a,b) => a.week - b.week)) {
     const card = document.createElement('article');card.className = 'report-card';

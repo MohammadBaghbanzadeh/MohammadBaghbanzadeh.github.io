@@ -40,7 +40,7 @@ async function build() {
     if (!Buffer.from(verified.data, 'base64').equals(bytes)) throw new Error('PDF verification failed');
     await mkdir(resolve(root, 'data/documents'), {recursive:true});
     await writeFile(resolve(root, encryptedUrl), JSON.stringify(encrypted) + '\n');
-    documents.push({category:document.category === 'paper' ? 'paper' : 'proposal', title:document.title, summary:document.summary || '', filename:document.filename || 'document.pdf', mime:document.mime, encryptedUrl, key:document.assetKey});
+    documents.push({category:['paper', 'report'].includes(document.category) ? document.category : 'proposal', title:document.title, summary:document.summary || '', filename:document.filename || 'document.pdf', mime:document.mime, encryptedUrl, key:document.assetKey});
   }
   await writeFile(catalogPath, JSON.stringify(catalog, null, 2) + '\n', {mode:0o600});
   const envelope = await seal({version:1, title:catalog.title, description:catalog.description, reports, documents, ...(catalog.activity ? {activity:catalog.activity} : {})}, await readPassword());
