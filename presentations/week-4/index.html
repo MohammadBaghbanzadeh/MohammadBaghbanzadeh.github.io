@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="fa">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>گزارش هفتهٔ چهارم | مقایسهٔ LoRA و HypLoRA روی NCBI</title>
+<style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-color: #0B0C13;
+      --text-main: #F8FAFC;
+      --text-secondary: #CBD5E1;
+      --text-muted: #94A3B8;
+      --card-bg: rgba(21, 23, 34, 0.88);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --window-bg: #0D0F17;
+      --window-border: rgba(255, 255, 255, 0.07);
+      --slot-bg: rgba(255, 255, 255, 0.028);
+      --slot-border: rgba(255, 255, 255, 0.06);
+      --accent-orange: #F68B65;
+      --accent-pink: #C468A8;
+      --accent-blue: #46A5E5;
+      --accent-green: #34D399;
+      --accent-red: #F87171;
+      --table-row-alt: rgba(255, 255, 255, 0.022);
+      --table-hover: rgba(196, 104, 168, 0.08);
+    }
+
+    body {
+      font-family: 'Vazirmatn', Tahoma, -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      overflow: hidden;
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      direction: rtl;
+      text-align: right;
+      user-select: text;
+      transition: background-color 0.35s ease, color 0.35s ease;
+    }
+
+    bdi, .ltr-inline, code, .mono {
+      direction: ltr;
+      unicode-bidi: isolate;
+      font-family: 'JetBrains Mono', 'Inter', monospace;
+    }
+
+    .ltr-sans {
+      direction: ltr;
+      unicode-bidi: isolate;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .ltr-block {
+      direction: ltr;
+      text-align: left;
+      unicode-bidi: isolate;
+      font-family: 'JetBrains Mono', 'Inter', monospace;
+    }
+
+    /* Ambient Background Glows matching reference file */
+    .bg-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(150px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .glow-top-left {
+      top: -18%;
+      left: -8%;
+      width: 50vw;
+      height: 50vw;
+      background: rgba(246, 139, 101, 0.16);
+    }
+    .glow-bottom-right {
+      bottom: -18%;
+      right: -8%;
+      width: 55vw;
+      height: 55vw;
+      background: rgba(140, 82, 185, 0.15);
+    }
+    .glow-center {
+      top: 20%;
+      left: 30%;
+      width: 45vw;
+      height: 45vw;
+      background: rgba(40, 156, 226, 0.08);
+    }
+
+    /* Top Progress Bar */
+    #progress-track {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      z-index: 200;
+    }
+    #progress-fill {
+      height: 100%;
+      width: 5%;
+      background: linear-gradient(90deg, #46A5E5 0%, #C468A8 50%, #F68B65 100%);
+      transition: width 0.25s ease;
+    }
+
+    #presentation-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #slides-wrapper {
+      width: 1280px;
+      height: 720px;
+      position: relative;
+      transform-origin: center center;
+    }
+
+    .slide-container {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: none;
+      flex-direction: column;
+      padding: 32px 56px 64px 56px;
+      opacity: 0;
+      transition: opacity 0.22s ease;
+      overflow: hidden;
+    }
+
+    .slide-container.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .header-area {
+      margin-bottom: 16px;
+      flex-shrink: 0;
+    }
+
+    .eyebrow {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.4px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .slide-title {
+      font-size: 31px;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.3;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .text-grad {
+      background: linear-gradient(90deg, #F68B65 0%, #C468A8 50%, #46A5E5 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .title-sparkle {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .inline-sparkle {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+
+    .slide-subtitle {
+      font-size: 16.5px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      padding-right: 40px;
+      line-height: 1.55;
+    }
+
+    .content-area {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 100%;
+      gap: 14px;
+      min-height: 0;
+    }
+
+    .row {
+      display: flex;
+      flex-direction: row;
+      gap: 18px;
+      width: 100%;
+      align-items: stretch;
+    }
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 18px 22px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .card-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+      display: block;
+      line-height: 1.45;
+    }
+
+    .card-subtitle {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .card-body {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    .bullet-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .bullet-list li {
+      position: relative;
+      padding-right: 18px;
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .bullet-list li::before {
+      content: "•";
+      position: absolute;
+      right: 0;
+      top: 0;
+      color: var(--accent-orange);
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .ui-window {
+      background: var(--window-bg);
+      border: 1px solid var(--window-border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .ui-window-header {
+      height: 32px;
+      background: rgba(255, 255, 255, 0.025);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+    }
+
+    .ui-dots {
+      display: flex;
+      gap: 6px;
+      direction: ltr;
+    }
+
+    .ui-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #475569;
+    }
+
+    .ui-window-body {
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .ui-highlight-box {
+      background: rgba(184, 86, 161, 0.085);
+      border: 1px solid rgba(184, 86, 161, 0.3);
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .approve-boundary {
+      border-color: rgba(246, 139, 101, 0.45) !important;
+      background: linear-gradient(180deg, rgba(246, 139, 101, 0.09) 0%, rgba(21, 23, 34, 0.88) 100%) !important;
+    }
+
+    .blue-boundary {
+      border-color: rgba(70, 165, 229, 0.45) !important;
+      background: linear-gradient(180deg, rgba(70, 165, 229, 0.09) 0%, rgba(21, 23, 34, 0.88) 100%) !important;
+    }
+
+    .ai-pill {
+      background: rgba(184, 86, 161, 0.12);
+      border: 1px solid rgba(184, 86, 161, 0.35);
+      color: #F8FAFC;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 500;
+      display: inline-block;
+      line-height: 1.5;
+    }
+
+    .neutral-pill {
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #CBD5E1;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 500;
+      display: inline-block;
+      line-height: 1.5;
+    }
+
+    .number-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: rgba(184, 86, 161, 0.15);
+      border: 1px solid rgba(184, 86, 161, 0.35);
+      color: #F8FAFC;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .data-table-wrap {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(13, 15, 23, 0.78);
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      direction: rtl;
+      text-align: right;
+      font-size: 15.5px;
+    }
+
+    table.data-table th {
+      background: rgba(255, 255, 255, 0.055);
+      color: #FFFFFF;
+      font-weight: 700;
+      padding: 9px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 15px;
+    }
+
+    table.data-table td {
+      padding: 8px 14px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      line-height: 1.45;
+    }
+
+    table.data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    table.data-table tr:nth-child(even) td {
+      background: var(--table-row-alt);
+    }
+
+    table.data-table tr.row-highlight td {
+      background: rgba(246, 139, 101, 0.11);
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    table.data-table tr.row-blue td {
+      background: rgba(70, 165, 229, 0.11);
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    .slide-footer {
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-shrink: 0;
+      font-size: 14.5px;
+    }
+
+    .closing-note {
+      color: #F1F5F9;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-refs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .ref-chip {
+      color: #CBD5E1;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .ref-chip:hover {
+      border-color: var(--accent-orange);
+      color: #FFFFFF;
+      background: rgba(246, 139, 101, 0.14);
+    }
+
+    #bottom-bar {
+      position: fixed;
+      bottom: 12px;
+      left: 24px;
+      z-index: 150;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(17, 19, 28, 0.92);
+      backdrop-filter: blur(12px);
+      padding: 5px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      direction: ltr;
+    }
+
+    .control-btn {
+      background: transparent;
+      border: none;
+      color: #94A3B8;
+      font-size: 14px;
+      font-family: 'Vazirmatn', sans-serif;
+      cursor: pointer;
+      height: 28px;
+      padding: 0 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .control-btn:hover {
+      background: rgba(255, 255, 255, 0.09);
+      color: #FFFFFF;
+    }
+
+    #slide-counter {
+      color: #CBD5E1;
+      font-size: 13.5px;
+      font-weight: 600;
+      min-width: 54px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .bar-divider {
+      width: 1px;
+      height: 16px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Slide Index Modal */
+    #index-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 9, 15, 0.82);
+      backdrop-filter: blur(10px);
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+    }
+
+    #index-modal.open {
+      display: flex;
+    }
+
+    .index-dialog {
+      background: #141722;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 980px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    .index-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .index-grid {
+      padding: 20px 24px;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .index-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: right;
+      color: var(--text-secondary);
+      font-family: 'Vazirmatn', sans-serif;
+      font-size: 14.5px;
+      transition: all 0.18s;
+    }
+
+    .index-item:hover, .index-item.current {
+      border-color: var(--accent-orange);
+      background: rgba(246, 139, 101, 0.1);
+      color: #FFFFFF;
+    }
+
+    /* ==========================================================================
+       PROJECTOR-FRIENDLY LIGHT MODE THEME
+       ========================================================================== */
+    body.light-mode {
+      --bg-color: #FAF9F5;
+      --text-main: #0F172A;
+      --text-secondary: #334155;
+      --text-muted: #475569;
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --card-border: rgba(15, 23, 42, 0.12);
+      --window-bg: #F1F5F9;
+      --window-border: rgba(15, 23, 42, 0.12);
+      --table-row-alt: rgba(15, 23, 42, 0.03);
+    }
+
+    body.light-mode .glow-top-left { background: rgba(246, 139, 101, 0.12); }
+    body.light-mode .glow-bottom-right { background: rgba(184, 86, 161, 0.10); }
+    body.light-mode .glow-center { background: rgba(56, 161, 219, 0.08); }
+
+    body.light-mode .slide-title,
+    body.light-mode .card-title,
+    body.light-mode .closing-note {
+      color: #0F172A !important;
+    }
+
+    body.light-mode .card {
+      box-shadow: 0 8px 24px -8px rgba(15, 23, 42, 0.07);
+    }
+
+    body.light-mode .approve-boundary {
+      border-color: rgba(234, 88, 12, 0.5) !important;
+      background: linear-gradient(180deg, rgba(246, 139, 101, 0.14) 0%, rgba(255, 255, 255, 0.95) 100%) !important;
+    }
+
+    body.light-mode .blue-boundary {
+      border-color: rgba(2, 132, 199, 0.5) !important;
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.14) 0%, rgba(255, 255, 255, 0.95) 100%) !important;
+    }
+
+    body.light-mode .data-table-wrap {
+      background: #FFFFFF;
+      border-color: rgba(15, 23, 42, 0.15);
+    }
+
+    body.light-mode table.data-table th {
+      background: #F1F5F9;
+      color: #0F172A;
+      border-bottom-color: rgba(15, 23, 42, 0.15);
+    }
+
+    body.light-mode table.data-table td {
+      color: #1E293B;
+      border-bottom-color: rgba(15, 23, 42, 0.08);
+    }
+
+    body.light-mode table.data-table tr.row-highlight td {
+      background: rgba(246, 139, 101, 0.18);
+      color: #0F172A;
+    }
+
+    body.light-mode table.data-table tr.row-blue td {
+      background: rgba(56, 189, 248, 0.18);
+      color: #0F172A;
+    }
+
+    body.light-mode .ai-pill {
+      background: rgba(184, 86, 161, 0.12);
+      border-color: rgba(184, 86, 161, 0.4);
+      color: #581C87;
+    }
+
+    body.light-mode .neutral-pill,
+    body.light-mode .ref-chip {
+      background: #FFFFFF;
+      border-color: rgba(15, 23, 42, 0.18);
+      color: #1E293B;
+    }
+
+    body.light-mode .number-badge {
+      background: rgba(184, 86, 161, 0.14);
+      border-color: rgba(184, 86, 161, 0.4);
+      color: #581C87;
+    }
+
+    body.light-mode .slide-footer {
+      border-top-color: rgba(15, 23, 42, 0.12);
+    }
+
+    body.light-mode #bottom-bar {
+      background: rgba(255, 255, 255, 0.94);
+      border-color: rgba(15, 23, 42, 0.15);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    body.light-mode .control-btn { color: #475569; }
+    body.light-mode .control-btn:hover { background: rgba(15, 23, 42, 0.07); color: #0F172A; }
+    body.light-mode #slide-counter { color: #0F172A; }
+    body.light-mode .bar-divider { background: rgba(15, 23, 42, 0.15); }
+    body.light-mode .index-dialog { background: #FFFFFF; border-color: rgba(15, 23, 42, 0.15); }
+    body.light-mode .index-item { background: #F8FAFC; border-color: rgba(15, 23, 42, 0.1); color: #1E293B; }
+    body.light-mode .index-item.current { background: rgba(246, 139, 101, 0.18); color: #0F172A; }
+  </style>
+<style>
+.cover-label {margin-bottom:26px;color:var(--accent-orange);font-size:17px;font-weight:600;}
+.cover-title {max-width:1050px;font-size:43px!important;line-height:1.65!important;margin-bottom:20px!important;}
+.cover-subtitle {font-size:21px;line-height:1.9;color:var(--text-secondary);max-width:940px;margin-bottom:32px;}
+.cover-meta {display:flex;gap:14px;justify-content:center;align-items:center;flex-wrap:wrap;}
+.cover-affiliation {font-size:16px;color:var(--text-muted);margin-top:18px;}
+@media print {body{width:1280px;height:720px;print-color-adjust:exact;-webkit-print-color-adjust:exact}#bottom-bar,#index-modal{display:none!important}#slides-wrapper{transform:none!important}@page{size:338.67mm 190.5mm;margin:0}}
+</style><style>@media print {
+body{height:auto;overflow:visible} .bg-glow,#progress-track,.cover-page{display:none}
+#presentation-container{display:block;height:auto}#slides-wrapper{height:auto;transform:none!important}
+.slide-container,.slide-container.active{display:flex;opacity:1;position:relative;width:1280px;height:720px;break-after:page;page-break-after:always}
+.slide-container:last-child{break-after:auto;page-break-after:auto}
+}</style><style>#slide17 table.data-table td{padding:8px 14px;line-height:1.65}#slide17 .header-area{margin-bottom:14px}</style><style>
+.report-points{direction:rtl;text-align:right;padding-inline-start:25px;margin:0;font-size:19px;line-height:1.95;color:var(--text-secondary)}
+.report-points li+li{margin-top:7px}
+.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.report-card{padding:24px}.report-card h3{font-size:23px;margin-bottom:15px;color:var(--accent-blue)}
+.report-finding{font-size:21px;font-weight:600;line-height:1.8;color:var(--text-main);margin:0}
+.report-content .data-table-wrap{flex-shrink:0}.report-content table.data-table td{padding:8px 14px;line-height:1.65}
+</style><style>
+@font-face{font-family:Vazirmatn;src:url('assets/Vazir.ttf')}@font-face{font-family:Vazirmatn;src:url('assets/Vazir-Bold.ttf');font-weight:700 900}
+.slide-container{padding:38px 64px 72px;background:radial-gradient(ellipse at 0 0,rgba(246,139,101,.07),transparent 48%),radial-gradient(ellipse at 100% 100%,rgba(124,85,192,.08),transparent 55%),var(--bg-color)}
+.header-area{margin:0 0 22px}.eyebrow{font-size:14px;letter-spacing:0;margin-bottom:12px}.slide-title{display:block;font-size:34px!important;line-height:1.65!important}
+.content-area{justify-content:center;gap:23px;flex-grow:1}.evidence-table{flex-shrink:0;width:100%}.data-table{width:100%;font-size:23px;border-collapse:collapse;table-layout:fixed;border:none;border-radius:0;overflow:visible}
+.data-table th{background:rgba(255,255,255,.045);color:var(--text-main);font-size:20px;font-weight:700;padding:14px 18px;border-bottom:1px solid var(--card-border)}
+.data-table td{padding:17px 18px;color:var(--text-secondary);line-height:1.6;border-bottom:1px solid var(--card-border);background:transparent}
+.data-table tr:nth-child(even) td{background:var(--table-row-alt)}.data-table.compact{font-size:20px}.compact td{padding:12px 16px;line-height:1.65}.compact th{padding:12px 16px}
+.finding{font-size:26px;line-height:1.8;color:var(--text-main);font-weight:700;margin:0}.context{font-size:18px;line-height:1.8;color:var(--text-muted);margin:0}
+.slide-source{font-size:12px;color:var(--text-muted);line-height:1.8;padding-top:18px;margin-top:18px;display:flex;justify-content:space-between;gap:16px;flex-shrink:0}
+.slide-source a{color:inherit;text-decoration:none}.source-number{direction:ltr;flex-shrink:0}.blue{color:var(--accent-blue)}.orange{color:var(--accent-orange)}
+.model-name{font-size:24px;color:var(--accent-blue);font-weight:700;line-height:1.6}.formula{font-family:Inter,Arial,sans-serif;font-size:38px;color:var(--text-secondary);text-align:center;line-height:1.8;padding:16px 0}.formula strong{color:var(--accent-orange)}
+.cover{align-items:center;text-align:center;justify-content:center}.cover-heading{font-size:56px;line-height:1.55;font-weight:800;margin:5px 0 22px}.cover-subtitle{font-size:24px;margin:0 0 45px}.cover-person{font-size:21px;color:var(--text-secondary)}.cover-label{margin-bottom:24px}.cover-affiliation{margin-top:14px;font-size:17px}
+.key-points{font-size:22px;line-height:1.9;padding-inline-start:26px;color:var(--text-secondary)}.key-points li+li{margin-top:10px}
+.next-item{display:flex;align-items:flex-start;gap:25px;padding:16px 0;border-bottom:1px solid var(--card-border)}.next-item h3{font-size:26px;line-height:1.7;color:var(--text-main)}.next-item p{font-size:20px;line-height:1.8;color:var(--text-secondary)}.step-no{font-size:29px;color:var(--accent-blue);padding-top:3px}
+.source-entry{padding:14px 0;border-bottom:1px solid var(--card-border)}.source-entry h3{font-size:24px;margin-bottom:10px}.source-entry p{font-size:20px;line-height:1.9;color:var(--text-secondary)}.source-entry a{color:var(--accent-blue);text-decoration:none}
+.data-table th:first-child,.data-table td:first-child{width:31%}#slide2 .data-table td{padding:22px 20px;font-size:28px}#slide5 th:first-child,#slide5 td:first-child{width:22%}#slide5 th:nth-child(2),#slide5 td:nth-child(2){width:15%}#slide5 .compact{font-size:19px}#slide9 .data-table td{font-size:21px}#slide9 th:first-child,#slide9 td:first-child{width:20%}#slide9 th:nth-child(2),#slide9 td:nth-child(2){width:38%}#slide9 .finding{font-size:24px}
+body.light-mode .slide-container{background:radial-gradient(ellipse at 0 0,rgba(246,139,101,.06),transparent 48%),var(--bg-color)}body.light-mode .slide-title{color:var(--text-main)}body.light-mode .data-table th{background:rgba(15,23,42,.04)}
+@media print{@page{size:1280px 720px;margin:0}html,body{width:1280px;margin:0;height:auto;overflow:visible}body{background:var(--bg-color);-webkit-print-color-adjust:exact;print-color-adjust:exact}#presentation-container,#slides-wrapper{display:block;width:1280px;height:auto;transform:none!important}.slide-container,.slide-container.active{display:flex!important;opacity:1!important;position:relative;width:1280px;height:720px;break-after:page;page-break-after:always}.slide-container:last-child{break-after:auto;page-break-after:auto}#bottom-bar,#progress-track,#index-modal,.bg-glow{display:none!important}}
+</style><style>
+#slide2 .data-table td {font-size:20px;padding:13px 16px}
+#slide2 .data-table th {font-size:19px;padding:11px 16px}
+#slide3 .data-table td,#slide4 .data-table td,#slide8 .data-table td {font-size:20px;padding:12px 16px}
+#slide5 .data-table td {font-size:25px;padding:20px 16px}
+#slide6 .data-table td {font-size:20px;padding:11px 13px}
+#slide6 .data-table th {font-size:18px;padding:11px 13px}
+#slide9 .data-table td {font-size:20px;padding:17px 14px}
+#slide11 .source-entry p {font-size:17px;overflow-wrap:anywhere}
+#slide3 .finding,#slide4 .finding,#slide6 .finding,#slide8 .finding {font-size:23px;line-height:1.55}
+#slide5 .finding {font-size:31px;color:var(--accent-orange)}
+#slide5 .data-table strong.blue {color:var(--accent-blue);font-size:32px}
+#slide9 .finding {font-size:29px;color:var(--accent-orange)}
+</style></head>
+<body><div id="progress-track"><div id="progress-fill"></div></div><main id="presentation-container"><div id="slides-wrapper"><section aria-label="مقایسهٔ روش‌ها روی سلسله‌مراتب واقعی" class="slide-container active cover" id="slide1">
+<p class="cover-label">گزارش پیشرفت پژوهش · هفتهٔ چهارم</p>
+<h1 class="cover-heading">مقایسهٔ <span class="text-grad"><bdi dir="ltr">LoRA / HypLoRA</bdi></span><br/>روی سلسله‌مراتب واقعی</h1>
+<p class="cover-subtitle"><bdi dir="ltr">NCBI Taxonomy</bdi> · اجرای رسمی با بودجهٔ ثابت · گزارش نتیجه و محدودیت</p>
+<p class="cover-person">محمد باغبان‌زاده</p><p class="cover-affiliation">دانشگاه فردوسی مشهد · ۱۳ آبان ۱۴۰۵</p></section><section aria-label="از بازخورد استادان تا نتیجهٔ این هفته" class="slide-container" id="slide2">
+<header class="header-area"><span class="eyebrow">گزارش هفتهٔ چهارم</span><h2 class="slide-title">از بازخورد استادان تا نتیجهٔ این هفته</h2></header>
+<div class="content-area"><div class="evidence-table"><table class="data-table compact"><thead><tr><th>مرحله</th><th>چه کردیم؟</th><th>به چه رسیدیم؟</th></tr></thead><tbody><tr><td>تا پایان هفتهٔ ۲</td><td>کنترل‌های مصنوعی و تشخیصی</td><td>شاهد ساختاری؛ هنوز نتیجهٔ دادهٔ واقعی نبود</td></tr><tr><td>بازخورد استادان</td><td>مرجع رسمی را از نسخهٔ تشخیصی D جدا کردیم</td><td>اولویت به اجرای نزدیک مقاله داده شد</td></tr><tr><td>هفتهٔ ۳</td><td>کد مرجع را روی Math10K → GSM8K اجرا کردیم</td><td>دقت HypLoRA: <strong>۸۷٫۷۲٪</strong>، نزدیک مقاله</td></tr><tr><td>هفتهٔ ۴</td><td>دو روش را روی NCBI واقعی مقایسه کردیم</td><td>در validation، LoRA برابر <strong>۸٫۰۵ واحد درصد</strong> بالاتر بود</td></tr></tbody></table></div><p class="context">نتیجهٔ هفتهٔ سوم به این وظیفه منتقل یا به‌عنوان شاهد برتری عمومی تعبیر نمی‌شود.</p></div>
+<footer class="slide-source"><span>منبع: checkpoint هفتهٔ دوم و سوم؛ گزارش ارائهٔ هفتهٔ سوم</span><span class="source-number">2 / 11</span></footer>
+</section><section aria-label="دادهٔ واقعی پیش از دیدن نمرهٔ مدل تثبیت شد" class="slide-container" id="slide3">
+<header class="header-area"><span class="eyebrow">گزارش هفتهٔ چهارم</span><h2 class="slide-title">دادهٔ واقعی پیش از دیدن نمرهٔ مدل تثبیت شد</h2></header>
+<div class="content-area"><div class="evidence-table"><table class="data-table compact"><thead><tr><th>مؤلفه</th><th>وضعیت</th></tr></thead><tbody><tr><td>منبع</td><td>رده‌بندی رسمی NCBI؛ WordNet نیز ساخته و ممیزی شد</td></tr><tr><td>وظیفه</td><td>رابطهٔ چندمرحله‌ای میان موجودیت‌های دیده‌شده</td></tr><tr><td>تقسیم NCBI</td><td>۲۴٬۰۰۰ آموزش · ۲٬۰۰۰ اعتبارسنجی · ۴٬۰۰۰ آزمون</td></tr><tr><td>کنترل داده</td><td>قرارداد real-hierarchy-v1.1 و ممیزی مستقل PASSED_REAL_DATA_CONTRACT</td></tr></tbody></table></div><p class="finding">خروجی: دو مجموعهٔ واقعیِ ۳۰هزارنمونه‌ای آماده و ممیزی شد؛ اجرای مدل فعلاً فقط روی NCBI است.</p><p class="context">آزمون ۴٬۰۰۰ نمونه‌ای تا این لحظه باز نشده است؛ WordNet هنوز نمرهٔ مدل ندارد.</p></div>
+<footer class="slide-source"><span>منبع: یادداشت روز ۱ و دادهٔ ممیزی‌شدهٔ real-hierarchy-v1.1</span><span class="source-number">3 / 11</span></footer>
+</section><section aria-label="برای دو روش، ورودی و بودجهٔ یکسان کنترل شد" class="slide-container" id="slide4">
+<header class="header-area"><span class="eyebrow">گزارش هفتهٔ چهارم</span><h2 class="slide-title">برای دو روش، ورودی و بودجهٔ یکسان کنترل شد</h2></header>
+<div class="content-area"><div class="evidence-table"><table class="data-table compact"><thead><tr><th>شرط</th><th>مقدار / شواهد</th></tr></thead><tbody><tr><td>روش</td><td>پیاده‌سازی رسمی LoRA و HypLoRA؛ نه نسخهٔ تشخیصی D</td></tr><tr><td>داده و seed</td><td>NCBI یکسان؛ seed = 42؛ همان batch ID در همهٔ ۱۲٬۰۰۰ به‌روزرسانی</td></tr><tr><td>بودجه</td><td>۱۲٬۰۰۰ به‌روزرسانی ثابت؛ validation در ۰، ۳۰۰۰، ۶۰۰۰، ۹۰۰۰، ۱۲۰۰۰</td></tr><tr><td>انتخاب</td><td>بیشترین balanced accuracy در validation؛ آزمون بسته</td></tr></tbody></table></div><p class="finding">خروجی: ۱۲٬۰۰۰ batch مشترک و معیار انتخاب از پیش ثابت‌شده.</p><p class="context">مقایسهٔ تک‌seed است؛ همسانی batch و بودجه، همهٔ تفاوت‌های روش‌ها را حذف نمی‌کند.</p></div>
+<footer class="slide-source"><span>منبع: ممیزی مستقل HypLoRA و گزارش نهایی LoRA</span><span class="source-number">4 / 11</span></footer>
+</section><section aria-label="روی NCBI، LoRA در اعتبارسنجی ۸٫۰۵ واحد درصد بالاتر است" class="slide-container" id="slide5">
+<header class="header-area"><span class="eyebrow">گزارش هفتهٔ چهارم</span><h2 class="slide-title">روی NCBI، LoRA در اعتبارسنجی ۸٫۰۵ واحد درصد بالاتر است</h2></header>
+<div class="content-area"><div class="evidence-table"><table class="data-table"><thead><tr><th>روش · گام منتخب</th><th>Balanced accuracy</th><th>Yes / No</th><th>Answer NLL</th></tr></thead><tbody><tr><td>LoRA · ۱۲۰۰۰</td><td><strong class="blue">۷۳٫۴۵٪</strong></td><td>۶۷٫۴٪ / ۷۹٫۵٪</td><td>۱٫۰۵۷۷۴۱</td></tr><tr><td>HypLoRA · ۱۲۰۰۰</td><td><strong>۶۵٫۴۰٪</strong></td><td>۵۳٫۴٪ / ۷۷٫۴٪</td><td>۰٫۶۳۰۶۷۰</td></tr></tbody></table></div><p class="finding">اختلاف HypLoRA − LoRA: <span class="orange">−۸٫۰۵ واحد درصد</span></p><p class="context">۲٬۰۰۰ نمونهٔ validation؛ یک seed؛ نه نتیجهٔ TEST و نه نتیجهٔ کل مطالعه.</p></div>
+<footer class="slide-source"><span>منبع: raw validation ۱۲۰۰۰ و ممیزی مستقل هر دو اجرا</span><span class="source-number">5 / 11</span></footer>
+</section><section aria-label="روند اعتبارسنجی HypLoRA آهسته به ۶۵٫۴٪ رسید" class="slide-container" id="slide6">
+<header class="header-area"><span class="eyebrow">گزارش هفتهٔ چهارم</span><h2 class="slide-title">روند اعتبارسنجی HypLoRA آهسته به ۶۵٫۴٪ رسید</h2></header>
+<div class="content-area"><div class="evidence-table"><table class="data-table compact"><thead><tr><th>گام</th><th>Balanced accuracy</th><th>Yes</th><th>No</th><th>Answer NLL</th></tr></thead><tbody><tr><td>۰</td><td>۶۴٫۴۰٪</td><td>۵۹٫۳٪</td><td>۶۹٫۵٪</td><td>۱٫۳۳۷۳۵۵</td></tr><tr><td>۳۰۰۰</td><td>۶۴٫۵۵٪</td><td>۵۹٫۲٪</td><td>۶۹٫۹٪</td><td>۰٫۶۷۹۰۹۱</td></tr><tr><td>۶۰۰۰</td><td>۶۵٫۰۵٪</td><td>۴۷٫۲٪</td><td>۸۲٫۹٪</td><td>۰٫۶۵۳۰۶۵</td></tr><tr><td>۹۰۰۰</td><td>۶۵٫۳۰٪</td><td>۵۴٫۳٪</td><td>۷۶٫۳٪</td><td>۰٫۶۳۱۰۸۲</td></tr><tr><td>۱۲۰۰۰</td><td>۶۵٫۴۰٪</td><td>۵۳٫۴٪</td><td>۷۷٫۴٪</td><td>۰٫۶۳۰۶۷۰</td></tr></tbody></table></div><p class="finding">از آغاز تا گام ۱۲۰۰۰: فقط <strong class="blue">۱٫۰۰ واحد درصد</strong> بهبود دقت متوازن.</p><p class="context">گام ۱۲۰۰۰ با معیار balanced accuracy انتخاب شد.</p></div>
+<footer class="slide-source"><span>منبع: hyplora42_12000_independent_audit_20261103.json</span><span class="source-number">6 / 11</span></footer>
+</section><section aria-label="NLL کمتر، دقت تصمیم بالاتر را ثابت نمی‌کند" class="slide-container" id="slide7">
+<header class="header-area"><span class="eyebrow">گزارش هفتهٔ چهارم</span><h2 class="slide-title">NLL کمتر، دقت تصمیم بالاتر را ثابت نمی‌کند</h2></header>
+<div class="content-area"><ul class="key-points"><li>در گام ۱۲۰۰۰، NLL پاسخِ HypLoRA برابر <strong>۰٫۶۳۱</strong> و LoRA برابر <strong>۱٫۰۵۸</strong> است.</li><li>این NLL روی پاسخ درست با teacher forcing محاسبه می‌شود؛ balanced accuracy از تصمیم Yes/No به دست می‌آید.</li><li>HypLoRA با وجود NLL کمتر، روی همان validation برابر <strong class="orange">۸٫۰۵ واحد درصد</strong> balanced accuracy پایین‌تر دارد.</li></ul><p class="finding">برای این وظیفه، معیار اصلی انتخاب همان balanced accuracy است.</p></div>
+<footer class="slide-source"><span>منبع: فایل‌های metrics و پاسخ خام validation در گام ۱۲۰۰۰</span><span class="source-number">7 / 11</span></footer>
+</section><section aria-label="آموزش HypLoRA ممیزی شد؛ آرشیو نهایی کامل نیست" class="slide-container" id="slide8">
+<header class="header-area"><span class="eyebrow">گزارش هفتهٔ چهارم</span><h2 class="slide-title">آموزش HypLoRA ممیزی شد؛ آرشیو نهایی کامل نیست</h2></header>
+<div class="content-area"><div class="evidence-table"><table class="data-table compact"><thead><tr><th>جزء</th><th>وضعیت مستند</th></tr></thead><tbody><tr><td>آموزش</td><td>۱۲٬۰۰۰ به‌روزرسانی پیوسته؛ loss/gradient/LR متناهی</td></tr><tr><td>اعتبارسنجی</td><td>همهٔ گام‌ها از پاسخ خام بازشماری؛ گام ۱۲۰۰۰ منتخب</td></tr><tr><td>TRAIN کامل</td><td>۲۰٬۸۶۴ از ۲۴٬۰۰۰ سطر حفظ شده؛ معیار نهایی کامل نیست</td></tr><tr><td>وزن گام ۱۲۰۰۰</td><td>در runtime قبلی ثبت شد؛ پشتیبان بیرونی تأیید نشد</td></tr><tr><td>بازگشت‌پذیری</td><td>checkpoint کامل گام ۹۰۰۰ با SHA و رسید واقعی محفوظ</td></tr></tbody></table></div><p class="finding">نتیجهٔ علمی validation محفوظ است؛ مدل نهایی گام ۱۲۰۰۰ بازیابی‌پذیر نیست.</p><p class="context">TEST اجرا نشد. از فایل موجود LoRA به‌عنوان checkpoint HypLoRA استفاده نشده است.</p></div>
+<footer class="slide-source"><span>منبع: گزارش incomplete و runtime_recovery_observation</span><span class="source-number">8 / 11</span></footer>
+</section><section aria-label="نتیجهٔ دو benchmark را جدا می‌خوانیم" class="slide-container" id="slide9">
+<header class="header-area"><span class="eyebrow">گزارش هفتهٔ چهارم</span><h2 class="slide-title">نتیجهٔ دو benchmark را جدا می‌خوانیم</h2></header>
+<div class="content-area"><div class="evidence-table"><table class="data-table compact"><thead><tr><th>محیط</th><th>نتیجهٔ مشاهده‌شده</th><th>حد تفسیر</th></tr></thead><tbody><tr><td>Math10K → GSM8K · هفتهٔ ۳</td><td>HypLoRA: ۸۷٫۷۲٪؛ LoRA: ۷۸٫۷۰٪</td><td>بازتولید نزدیک دو خانهٔ مقاله؛ یک seed</td></tr><tr><td>NCBI validation · هفتهٔ ۴</td><td>HypLoRA: ۶۵٫۴۰٪؛ LoRA: ۷۳٫۴۵٪</td><td>وظیفه و معیار متفاوت؛ TEST باز نشده</td></tr></tbody></table></div><p class="finding">در این اجرای NCBI، برتری HypLoRA مشاهده نشد.</p><p class="context">این اختلاف، علت هندسی یا رد عمومی روش را تعیین نمی‌کند.</p></div>
+<footer class="slide-source"><span>منبع: گزارش هفتهٔ سوم + گزارش‌های raw اعتبارسنجی NCBI</span><span class="source-number">9 / 11</span></footer>
+</section><section aria-label="کارهای باز، جدا از نتیجهٔ انجام‌شده ثبت می‌شوند" class="slide-container" id="slide10">
+<header class="header-area"><span class="eyebrow">گزارش هفتهٔ چهارم</span><h2 class="slide-title">کارهای باز، جدا از نتیجهٔ انجام‌شده ثبت می‌شوند</h2></header>
+<div class="content-area"><div class="next-item"><span class="step-no">۰۱</span><div><h3>گزارش فعلی</h3><p>مقایسهٔ validation تک‌seed و محدودیت آرشیو HypLoRA ارائه می‌شود.</p></div></div><div class="next-item"><span class="step-no">۰۲</span><div><h3>برای ادعای تعمیم</h3><p>seedهای مستقل، WordNet و کنترل‌های هم‌ظرفیت طبق پروتکل قفل‌شده لازم‌اند.</p></div></div><div class="next-item"><span class="step-no">۰۳</span><div><h3>آزمون نهایی</h3><p>TEST تا تکمیل تصمیم روش‌شناختی و آداپتر قابل بازیابی بسته می‌ماند.</p></div></div></div>
+<footer class="slide-source"><span>این‌ها کارهای انجام‌نشده‌اند؛ نتیجهٔ این ارائه به validation محدود است</span><span class="source-number">10 / 11</span></footer>
+</section><section aria-label="مسیرهای ممیزی برای هر ادعا محفوظ‌اند" class="slide-container" id="slide11">
+<header class="header-area"><span class="eyebrow">پیوست · هفتهٔ چهارم</span><h2 class="slide-title">مسیرهای ممیزی برای هر ادعا محفوظ‌اند</h2></header>
+<div class="content-area"><div class="source-entry"><h3>بازخورد و زمینه</h3><p>notes/checkpoint_week_2.md · notes/checkpoint_week_3.md · presentations/week_3/</p></div><div class="source-entry"><h3>LoRA روی NCBI</h3><p>phase2/reports/real_hierarchy_ncbi_lora42_12000_20261102/ · raw و final_raw_arithmetic_audit</p></div><div class="source-entry"><h3>HypLoRA روی NCBI</h3><p>hyplora42_12000_independent_audit_20261103.json · phase2/reports/real_hierarchy_ncbi_hyplora42_12000_incomplete_20261103/</p></div><p class="context">وزن‌ها و ZIPها خارج از Git هستند. مسیرهای کامل در evidence_manifest.json آمده‌اند.</p></div>
+<footer class="slide-source"><span>پیوست · شواهد قابل بازبینی</span><span class="source-number">11 / 11</span></footer>
+</section></div></main><!-- Slide Index Modal -->
+<div aria-label="فهرست اسلایدها" aria-modal="true" id="index-modal" role="dialog">
+<div class="index-dialog">
+<div class="index-header">
+<div style="display: flex; align-items: center; gap: 10px;">
+<strong style="font-size: 18px; color: var(--text-main);">فهرست اسلایدها (رفتن مستقیم به بخش موردنظر)</strong>
+</div>
+<button class="control-btn" id="close-index-btn" style="font-size: 15px; padding: 4px 12px;">بستن (Esc)</button>
+</div>
+<div class="index-grid" id="index-grid"></div>
+</div>
+</div>
+<!-- Bottom Control Dock -->
+<div id="bottom-bar">
+<button class="control-btn" id="prev-btn" title="اسلاید قبلی (کلید راست یا بالا)">◁ قبلی</button>
+<div id="slide-counter">۱ / ۱۱</div>
+<button class="control-btn" id="next-btn" title="اسلاید بعدی (کلید چپ، پایین یا Space)">بعدی ▷</button>
+<div class="bar-divider"></div>
+<button class="control-btn" id="index-btn" title="فهرست اسلایدها (کلید I)">فهرست</button>
+<button class="control-btn" id="theme-btn" title="تغییر حالت روشن پروژکتور / تیره (کلید T)">حالت روشن</button>
+<button class="control-btn" id="fullscreen-btn" title="نمایش تمام‌صفحه (کلید F)">تمام‌صفحه</button>
+</div>
+<script>
+    const totalSlides = document.querySelectorAll('.slide-container').length;
+    let currentSlide = Math.max(1,Math.min(totalSlides,Number(location.hash.slice(1))||1));
+
+    const toPersianDigits = (num) => {
+      const persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+      return String(num).replace(/\d/g, (d) => persian[d]);
+    };
+
+    const indexModal = document.getElementById('index-modal');
+    const indexGrid = document.getElementById('index-grid');
+
+    const buildSlideIndex = () => {
+      indexGrid.innerHTML = '';
+      document.querySelectorAll('.slide-container').forEach((slide, idx) => {
+        const slideNum = idx + 1;
+        const title = slide.getAttribute('data-title') || slide.getAttribute('aria-label') || `اسلاید ${toPersianDigits(slideNum)}`;
+        const btn = document.createElement('button');
+        btn.className = 'index-item' + (slideNum === currentSlide ? ' current' : '');
+        btn.innerHTML = `<span class="number-badge" style="width:24px;height:24px;font-size:12px;">${toPersianDigits(slideNum)}</span><span>${title.replace(/^[۰-۹]+\.\s*/, '')}</span>`;
+        btn.addEventListener('click', () => {
+          currentSlide = slideNum;
+          updateSlide();
+          indexModal.classList.remove('open');
+        });
+        indexGrid.appendChild(btn);
+      });
+    };
+
+    const updateSlide = () => {
+      document.querySelectorAll('.slide-container').forEach((slide) => {
+        slide.classList.remove('active');
+      });
+
+      const activeSlide = document.getElementById('slide' + currentSlide);
+      if (activeSlide) activeSlide.classList.add('active');
+
+      document.getElementById('slide-counter').innerText = `${toPersianDigits(currentSlide)} / ${toPersianDigits(totalSlides)}`;
+      const progressPercent = (currentSlide / totalSlides) * 100;
+      document.getElementById('progress-fill').style.width = `${progressPercent}%`;
+
+      // Address updates are optional: opaque-origin srcdoc frames block History API.
+      try { history.replaceState(null, '', '#' + currentSlide); } catch { /* Keep navigation working in the private viewer. */ }
+      if (indexModal.classList.contains('open')) {
+        buildSlideIndex();
+      }
+    };
+
+    const nextSlide = () => {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        updateSlide();
+      }
+    };
+
+    const prevSlide = () => {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updateSlide();
+      }
+    };
+
+    const toggleTheme = () => {
+      document.body.classList.toggle('light-mode');
+      const btn = document.getElementById('theme-btn');
+      if (document.body.classList.contains('light-mode')) {
+        btn.innerText = 'حالت تیره';
+      } else {
+        btn.innerText = 'حالت روشن';
+      }
+    };
+
+    const toggleFullScreen = () => {
+      const elem = document.documentElement;
+      if (!document.fullscreenElement) {
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen().catch(() => {});
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    };
+
+    const toggleIndexModal = () => {
+      if (indexModal.classList.contains('open')) {
+        indexModal.classList.remove('open');
+      } else {
+        buildSlideIndex();
+        indexModal.classList.add('open');
+      }
+    };
+
+    const resizeSlides = () => {
+      const wrapper = document.getElementById('slides-wrapper');
+      const scaleX = window.innerWidth / 1280;
+      const scaleY = window.innerHeight / 720;
+      const scale = Math.min(scaleX, scaleY);
+      wrapper.style.transform = `scale(${scale})`;
+    };
+
+    window.addEventListener('resize', resizeSlides);
+    resizeSlides();
+    updateSlide();
+
+    document.getElementById('next-btn').addEventListener('click', nextSlide);
+    document.getElementById('prev-btn').addEventListener('click', prevSlide);
+    document.getElementById('theme-btn').addEventListener('click', toggleTheme);
+    document.getElementById('fullscreen-btn').addEventListener('click', toggleFullScreen);
+    document.getElementById('index-btn').addEventListener('click', toggleIndexModal);
+    document.getElementById('close-index-btn').addEventListener('click', () => indexModal.classList.remove('open'));
+    indexModal.addEventListener('click', (e) => {
+      if (e.target === indexModal) indexModal.classList.remove('open');
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && indexModal.classList.contains('open')) {
+        indexModal.classList.remove('open');
+        return;
+      }
+      if (indexModal.classList.contains('open')) return;
+
+      if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowUp' || e.key === 'PageUp' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullScreen();
+      } else if (e.key === 't' || e.key === 'T') {
+        toggleTheme();
+      } else if (e.key === 'i' || e.key === 'I') {
+        toggleIndexModal();
+      }
+    });
+  </script>
+</body></html>
