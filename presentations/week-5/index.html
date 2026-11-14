@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="fa">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>گزارش هفتهٔ پنجم | StableD و سهم هندسه</title>
+<style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-color: #0B0C13;
+      --text-main: #F8FAFC;
+      --text-secondary: #CBD5E1;
+      --text-muted: #94A3B8;
+      --card-bg: rgba(21, 23, 34, 0.88);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --window-bg: #0D0F17;
+      --window-border: rgba(255, 255, 255, 0.07);
+      --slot-bg: rgba(255, 255, 255, 0.028);
+      --slot-border: rgba(255, 255, 255, 0.06);
+      --accent-orange: #F68B65;
+      --accent-pink: #C468A8;
+      --accent-blue: #46A5E5;
+      --accent-green: #34D399;
+      --accent-red: #F87171;
+      --table-row-alt: rgba(255, 255, 255, 0.022);
+      --table-hover: rgba(196, 104, 168, 0.08);
+    }
+
+    body {
+      font-family: 'Vazirmatn', Tahoma, -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      overflow: hidden;
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      direction: rtl;
+      text-align: right;
+      user-select: text;
+      transition: background-color 0.35s ease, color 0.35s ease;
+    }
+
+    bdi, .ltr-inline, code, .mono {
+      direction: ltr;
+      unicode-bidi: isolate;
+      font-family: 'JetBrains Mono', 'Inter', monospace;
+    }
+
+    .ltr-sans {
+      direction: ltr;
+      unicode-bidi: isolate;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .ltr-block {
+      direction: ltr;
+      text-align: left;
+      unicode-bidi: isolate;
+      font-family: 'JetBrains Mono', 'Inter', monospace;
+    }
+
+    /* Ambient Background Glows matching reference file */
+    .bg-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(150px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .glow-top-left {
+      top: -18%;
+      left: -8%;
+      width: 50vw;
+      height: 50vw;
+      background: rgba(246, 139, 101, 0.16);
+    }
+    .glow-bottom-right {
+      bottom: -18%;
+      right: -8%;
+      width: 55vw;
+      height: 55vw;
+      background: rgba(140, 82, 185, 0.15);
+    }
+    .glow-center {
+      top: 20%;
+      left: 30%;
+      width: 45vw;
+      height: 45vw;
+      background: rgba(40, 156, 226, 0.08);
+    }
+
+    /* Top Progress Bar */
+    #progress-track {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      z-index: 200;
+    }
+    #progress-fill {
+      height: 100%;
+      width: 5%;
+      background: linear-gradient(90deg, #46A5E5 0%, #C468A8 50%, #F68B65 100%);
+      transition: width 0.25s ease;
+    }
+
+    #presentation-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #slides-wrapper {
+      width: 1280px;
+      height: 720px;
+      position: relative;
+      transform-origin: center center;
+    }
+
+    .slide-container {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: none;
+      flex-direction: column;
+      padding: 32px 56px 64px 56px;
+      opacity: 0;
+      transition: opacity 0.22s ease;
+      overflow: hidden;
+    }
+
+    .slide-container.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .header-area {
+      margin-bottom: 16px;
+      flex-shrink: 0;
+    }
+
+    .eyebrow {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.4px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .slide-title {
+      font-size: 31px;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.3;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .text-grad {
+      background: linear-gradient(90deg, #F68B65 0%, #C468A8 50%, #46A5E5 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .title-sparkle {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .inline-sparkle {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+
+    .slide-subtitle {
+      font-size: 16.5px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      padding-right: 40px;
+      line-height: 1.55;
+    }
+
+    .content-area {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 100%;
+      gap: 14px;
+      min-height: 0;
+    }
+
+    .row {
+      display: flex;
+      flex-direction: row;
+      gap: 18px;
+      width: 100%;
+      align-items: stretch;
+    }
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 18px 22px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .card-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+      display: block;
+      line-height: 1.45;
+    }
+
+    .card-subtitle {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .card-body {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    .bullet-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .bullet-list li {
+      position: relative;
+      padding-right: 18px;
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .bullet-list li::before {
+      content: "•";
+      position: absolute;
+      right: 0;
+      top: 0;
+      color: var(--accent-orange);
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .ui-window {
+      background: var(--window-bg);
+      border: 1px solid var(--window-border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .ui-window-header {
+      height: 32px;
+      background: rgba(255, 255, 255, 0.025);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+    }
+
+    .ui-dots {
+      display: flex;
+      gap: 6px;
+      direction: ltr;
+    }
+
+    .ui-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #475569;
+    }
+
+    .ui-window-body {
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .ui-highlight-box {
+      background: rgba(184, 86, 161, 0.085);
+      border: 1px solid rgba(184, 86, 161, 0.3);
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .approve-boundary {
+      border-color: rgba(246, 139, 101, 0.45) !important;
+      background: linear-gradient(180deg, rgba(246, 139, 101, 0.09) 0%, rgba(21, 23, 34, 0.88) 100%) !important;
+    }
+
+    .blue-boundary {
+      border-color: rgba(70, 165, 229, 0.45) !important;
+      background: linear-gradient(180deg, rgba(70, 165, 229, 0.09) 0%, rgba(21, 23, 34, 0.88) 100%) !important;
+    }
+
+    .ai-pill {
+      background: rgba(184, 86, 161, 0.12);
+      border: 1px solid rgba(184, 86, 161, 0.35);
+      color: #F8FAFC;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 500;
+      display: inline-block;
+      line-height: 1.5;
+    }
+
+    .neutral-pill {
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #CBD5E1;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 500;
+      display: inline-block;
+      line-height: 1.5;
+    }
+
+    .number-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: rgba(184, 86, 161, 0.15);
+      border: 1px solid rgba(184, 86, 161, 0.35);
+      color: #F8FAFC;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .data-table-wrap {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(13, 15, 23, 0.78);
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      direction: rtl;
+      text-align: right;
+      font-size: 15.5px;
+    }
+
+    table.data-table th {
+      background: rgba(255, 255, 255, 0.055);
+      color: #FFFFFF;
+      font-weight: 700;
+      padding: 9px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 15px;
+    }
+
+    table.data-table td {
+      padding: 8px 14px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      line-height: 1.45;
+    }
+
+    table.data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    table.data-table tr:nth-child(even) td {
+      background: var(--table-row-alt);
+    }
+
+    table.data-table tr.row-highlight td {
+      background: rgba(246, 139, 101, 0.11);
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    table.data-table tr.row-blue td {
+      background: rgba(70, 165, 229, 0.11);
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    .slide-footer {
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-shrink: 0;
+      font-size: 14.5px;
+    }
+
+    .closing-note {
+      color: #F1F5F9;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-refs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .ref-chip {
+      color: #CBD5E1;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .ref-chip:hover {
+      border-color: var(--accent-orange);
+      color: #FFFFFF;
+      background: rgba(246, 139, 101, 0.14);
+    }
+
+    #bottom-bar {
+      position: fixed;
+      bottom: 12px;
+      left: 24px;
+      z-index: 150;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(17, 19, 28, 0.92);
+      backdrop-filter: blur(12px);
+      padding: 5px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      direction: ltr;
+    }
+
+    .control-btn {
+      background: transparent;
+      border: none;
+      color: #94A3B8;
+      font-size: 14px;
+      font-family: 'Vazirmatn', sans-serif;
+      cursor: pointer;
+      height: 28px;
+      padding: 0 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .control-btn:hover {
+      background: rgba(255, 255, 255, 0.09);
+      color: #FFFFFF;
+    }
+
+    #slide-counter {
+      color: #CBD5E1;
+      font-size: 13.5px;
+      font-weight: 600;
+      min-width: 54px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .bar-divider {
+      width: 1px;
+      height: 16px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Slide Index Modal */
+    #index-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 9, 15, 0.82);
+      backdrop-filter: blur(10px);
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+    }
+
+    #index-modal.open {
+      display: flex;
+    }
+
+    .index-dialog {
+      background: #141722;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 980px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    .index-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .index-grid {
+      padding: 20px 24px;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .index-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: right;
+      color: var(--text-secondary);
+      font-family: 'Vazirmatn', sans-serif;
+      font-size: 14.5px;
+      transition: all 0.18s;
+    }
+
+    .index-item:hover, .index-item.current {
+      border-color: var(--accent-orange);
+      background: rgba(246, 139, 101, 0.1);
+      color: #FFFFFF;
+    }
+
+    /* ==========================================================================
+       PROJECTOR-FRIENDLY LIGHT MODE THEME
+       ========================================================================== */
+    body.light-mode {
+      --bg-color: #FAF9F5;
+      --text-main: #0F172A;
+      --text-secondary: #334155;
+      --text-muted: #475569;
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --card-border: rgba(15, 23, 42, 0.12);
+      --window-bg: #F1F5F9;
+      --window-border: rgba(15, 23, 42, 0.12);
+      --table-row-alt: rgba(15, 23, 42, 0.03);
+    }
+
+    body.light-mode .glow-top-left { background: rgba(246, 139, 101, 0.12); }
+    body.light-mode .glow-bottom-right { background: rgba(184, 86, 161, 0.10); }
+    body.light-mode .glow-center { background: rgba(56, 161, 219, 0.08); }
+
+    body.light-mode .slide-title,
+    body.light-mode .card-title,
+    body.light-mode .closing-note {
+      color: #0F172A !important;
+    }
+
+    body.light-mode .card {
+      box-shadow: 0 8px 24px -8px rgba(15, 23, 42, 0.07);
+    }
+
+    body.light-mode .approve-boundary {
+      border-color: rgba(234, 88, 12, 0.5) !important;
+      background: linear-gradient(180deg, rgba(246, 139, 101, 0.14) 0%, rgba(255, 255, 255, 0.95) 100%) !important;
+    }
+
+    body.light-mode .blue-boundary {
+      border-color: rgba(2, 132, 199, 0.5) !important;
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.14) 0%, rgba(255, 255, 255, 0.95) 100%) !important;
+    }
+
+    body.light-mode .data-table-wrap {
+      background: #FFFFFF;
+      border-color: rgba(15, 23, 42, 0.15);
+    }
+
+    body.light-mode table.data-table th {
+      background: #F1F5F9;
+      color: #0F172A;
+      border-bottom-color: rgba(15, 23, 42, 0.15);
+    }
+
+    body.light-mode table.data-table td {
+      color: #1E293B;
+      border-bottom-color: rgba(15, 23, 42, 0.08);
+    }
+
+    body.light-mode table.data-table tr.row-highlight td {
+      background: rgba(246, 139, 101, 0.18);
+      color: #0F172A;
+    }
+
+    body.light-mode table.data-table tr.row-blue td {
+      background: rgba(56, 189, 248, 0.18);
+      color: #0F172A;
+    }
+
+    body.light-mode .ai-pill {
+      background: rgba(184, 86, 161, 0.12);
+      border-color: rgba(184, 86, 161, 0.4);
+      color: #581C87;
+    }
+
+    body.light-mode .neutral-pill,
+    body.light-mode .ref-chip {
+      background: #FFFFFF;
+      border-color: rgba(15, 23, 42, 0.18);
+      color: #1E293B;
+    }
+
+    body.light-mode .number-badge {
+      background: rgba(184, 86, 161, 0.14);
+      border-color: rgba(184, 86, 161, 0.4);
+      color: #581C87;
+    }
+
+    body.light-mode .slide-footer {
+      border-top-color: rgba(15, 23, 42, 0.12);
+    }
+
+    body.light-mode #bottom-bar {
+      background: rgba(255, 255, 255, 0.94);
+      border-color: rgba(15, 23, 42, 0.15);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    body.light-mode .control-btn { color: #475569; }
+    body.light-mode .control-btn:hover { background: rgba(15, 23, 42, 0.07); color: #0F172A; }
+    body.light-mode #slide-counter { color: #0F172A; }
+    body.light-mode .bar-divider { background: rgba(15, 23, 42, 0.15); }
+    body.light-mode .index-dialog { background: #FFFFFF; border-color: rgba(15, 23, 42, 0.15); }
+    body.light-mode .index-item { background: #F8FAFC; border-color: rgba(15, 23, 42, 0.1); color: #1E293B; }
+    body.light-mode .index-item.current { background: rgba(246, 139, 101, 0.18); color: #0F172A; }
+  </style>
+<style>
+.cover-label {margin-bottom:26px;color:var(--accent-orange);font-size:17px;font-weight:600;}
+.cover-title {max-width:1050px;font-size:43px!important;line-height:1.65!important;margin-bottom:20px!important;}
+.cover-subtitle {font-size:21px;line-height:1.9;color:var(--text-secondary);max-width:940px;margin-bottom:32px;}
+.cover-meta {display:flex;gap:14px;justify-content:center;align-items:center;flex-wrap:wrap;}
+.cover-affiliation {font-size:16px;color:var(--text-muted);margin-top:18px;}
+@media print {body{width:1280px;height:720px;print-color-adjust:exact;-webkit-print-color-adjust:exact}#bottom-bar,#index-modal{display:none!important}#slides-wrapper{transform:none!important}@page{size:338.67mm 190.5mm;margin:0}}
+</style><style>@media print {
+body{height:auto;overflow:visible} .bg-glow,#progress-track,.cover-page{display:none}
+#presentation-container{display:block;height:auto}#slides-wrapper{height:auto;transform:none!important}
+.slide-container,.slide-container.active{display:flex;opacity:1;position:relative;width:1280px;height:720px;break-after:page;page-break-after:always}
+.slide-container:last-child{break-after:auto;page-break-after:auto}
+}</style><style>#slide17 table.data-table td{padding:8px 14px;line-height:1.65}#slide17 .header-area{margin-bottom:14px}</style><style>
+.report-points{direction:rtl;text-align:right;padding-inline-start:25px;margin:0;font-size:19px;line-height:1.95;color:var(--text-secondary)}
+.report-points li+li{margin-top:7px}
+.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.report-card{padding:24px}.report-card h3{font-size:23px;margin-bottom:15px;color:var(--accent-blue)}
+.report-finding{font-size:21px;font-weight:600;line-height:1.8;color:var(--text-main);margin:0}
+.report-content .data-table-wrap{flex-shrink:0}.report-content table.data-table td{padding:8px 14px;line-height:1.65}
+</style><style>
+@font-face{font-family:Vazirmatn;src:url('assets/Vazir.ttf')}@font-face{font-family:Vazirmatn;src:url('assets/Vazir-Bold.ttf');font-weight:700 900}
+.slide-container{padding:38px 64px 72px;background:radial-gradient(ellipse at 0 0,rgba(246,139,101,.07),transparent 48%),radial-gradient(ellipse at 100% 100%,rgba(124,85,192,.08),transparent 55%),var(--bg-color)}
+.header-area{margin:0 0 22px}.eyebrow{font-size:14px;letter-spacing:0;margin-bottom:12px}.slide-title{display:block;font-size:34px!important;line-height:1.65!important}
+.content-area{justify-content:center;gap:23px;flex-grow:1}.evidence-table{flex-shrink:0;width:100%}.data-table{width:100%;font-size:23px;border-collapse:collapse;table-layout:fixed;border:none;border-radius:0;overflow:visible}
+.data-table th{background:rgba(255,255,255,.045);color:var(--text-main);font-size:20px;font-weight:700;padding:14px 18px;border-bottom:1px solid var(--card-border)}
+.data-table td{padding:17px 18px;color:var(--text-secondary);line-height:1.6;border-bottom:1px solid var(--card-border);background:transparent}
+.data-table tr:nth-child(even) td{background:var(--table-row-alt)}.data-table.compact{font-size:20px}.compact td{padding:12px 16px;line-height:1.65}.compact th{padding:12px 16px}
+.finding{font-size:26px;line-height:1.8;color:var(--text-main);font-weight:700;margin:0}.context{font-size:18px;line-height:1.8;color:var(--text-muted);margin:0}
+.slide-source{font-size:12px;color:var(--text-muted);line-height:1.8;padding-top:18px;margin-top:18px;display:flex;justify-content:space-between;gap:16px;flex-shrink:0}
+.slide-source a{color:inherit;text-decoration:none}.source-number{direction:ltr;flex-shrink:0}.blue{color:var(--accent-blue)}.orange{color:var(--accent-orange)}
+.model-name{font-size:24px;color:var(--accent-blue);font-weight:700;line-height:1.6}.formula{font-family:Inter,Arial,sans-serif;font-size:38px;color:var(--text-secondary);text-align:center;line-height:1.8;padding:16px 0}.formula strong{color:var(--accent-orange)}
+.cover{align-items:center;text-align:center;justify-content:center}.cover-heading{font-size:56px;line-height:1.55;font-weight:800;margin:5px 0 22px}.cover-subtitle{font-size:24px;margin:0 0 45px}.cover-person{font-size:21px;color:var(--text-secondary)}.cover-label{margin-bottom:24px}.cover-affiliation{margin-top:14px;font-size:17px}
+.key-points{font-size:22px;line-height:1.9;padding-inline-start:26px;color:var(--text-secondary)}.key-points li+li{margin-top:10px}
+.next-item{display:flex;align-items:flex-start;gap:25px;padding:16px 0;border-bottom:1px solid var(--card-border)}.next-item h3{font-size:26px;line-height:1.7;color:var(--text-main)}.next-item p{font-size:20px;line-height:1.8;color:var(--text-secondary)}.step-no{font-size:29px;color:var(--accent-blue);padding-top:3px}
+.source-entry{padding:14px 0;border-bottom:1px solid var(--card-border)}.source-entry h3{font-size:24px;margin-bottom:10px}.source-entry p{font-size:20px;line-height:1.9;color:var(--text-secondary)}.source-entry a{color:var(--accent-blue);text-decoration:none}
+body.light-mode .slide-container{background:radial-gradient(ellipse at 0 0,rgba(246,139,101,.06),transparent 48%),var(--bg-color)}body.light-mode .slide-title{color:var(--text-main)}body.light-mode .data-table th{background:rgba(15,23,42,.04)}
+@media print{@page{size:1280px 720px;margin:0}html,body{width:1280px;margin:0;height:auto;overflow:visible}body{background:var(--bg-color);-webkit-print-color-adjust:exact;print-color-adjust:exact}#presentation-container,#slides-wrapper{display:block;width:1280px;height:auto;transform:none!important}.slide-container,.slide-container.active{display:flex!important;opacity:1!important;position:relative;width:1280px;height:720px;break-after:page;page-break-after:always}.slide-container:last-child{break-after:auto;page-break-after:auto}#bottom-bar,#progress-track,#index-modal,.bg-glow{display:none!important}}
+</style><style>
+.deck-columns{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+.deck-columns section{padding:20px 0;border-top:1px solid var(--card-border)}
+.deck-columns h3,.section-label{font-size:25px;margin-bottom:12px}
+.deck-columns p{font-size:22px;line-height:1.85;color:var(--text-secondary)}
+.emphasis{color:var(--accent-orange);font-weight:800}
+.result-table th,.result-table td{padding:11px 16px;text-align:right}
+.result-table td:nth-child(2),.result-table th:nth-child(2){text-align:center}
+.result-table .highlight td{font-weight:700;color:var(--text-main);background:var(--slot-bg)}
+.result-table .highlight td:nth-child(2){font-size:30px;color:var(--accent-orange)}
+.result-table td small{color:var(--text-muted);font-size:15px;display:block}
+.result-change{font-size:24px;font-weight:700;line-height:1.7;text-align:right;color:var(--text-main)}
+.result-evidence th:nth-child(1){width:34%}.result-evidence th:nth-child(2){width:28%}
+.method-note{font-size:20px;line-height:1.8;color:var(--text-secondary)}
+.formula-line{font-family:Arial,sans-serif;direction:ltr;text-align:left;font-size:30px;margin-bottom:13px}
+.cover-pills{display:flex;gap:16px;margin-bottom:38px;justify-content:center;flex-wrap:wrap}
+.cover-pills span{border:1px solid var(--card-border);padding:7px 16px;font-size:19px;color:var(--text-secondary)}
+.takeaways{display:grid;gap:18px}
+.takeaways>div{padding:4px 0 16px;border-bottom:1px solid var(--card-border)}
+.takeaways h3{font-size:24px;margin-bottom:6px}.takeaways p{font-size:21px;line-height:1.7;color:var(--text-secondary)}
+body.light-mode .emphasis,body.light-mode .result-table .highlight td:nth-child(2){color:#8c3e26}
+</style></head>
+<body><div id="progress-track"><div id="progress-fill"></div></div><main id="presentation-container"><div id="slides-wrapper"><section aria-label="نتیجهٔ StableD روی دو وظیفه" class="slide-container active cover" id="slide1">
+<p class="cover-label">گزارش پیشرفت پژوهش · هفتهٔ پنجم</p>
+<h1 class="cover-heading">ارزیابی دو اصلاح <span class="text-grad"><bdi dir="ltr">HypLoRA</bdi></span><br>روی دادهٔ سلسله‌مراتبی و ریاضی</h1>
+<div class="cover-pills"><span><bdi dir="ltr">NCBI</bdi> · StableD &nbsp; ۷۶٫۱۵٪</span><span><bdi dir="ltr">GSM8K</bdi> · StableD &nbsp; ۸۰٫۵۲٪</span></div>
+<p class="cover-person">محمد باغبان‌زاده</p><p class="cover-affiliation">دانشگاه فردوسی مشهد · ۲۳ آبان ۱۴۰۵</p></section>
+<section aria-label="دو سؤال پروپوزال" class="slide-container" id="slide2">
+<header class="header-area"><h2 class="slide-title">دو سؤال پروپوزال</h2></header>
+<div class="content-area"><div class="deck-columns"><section><h3>فاز اول · هندسه و غیرخطی‌بودن</h3><p>چه مقدار از بهبود HypLoRA به هندسهٔ هذلولوی مربوط است؟ مقایسه با یک آداپتر اقلیدسیِ غیرخطی و هم‌ظرفیت، سهمِ تبدیل غیرخطی را بررسی می‌کند.</p></section><section><h3>فاز دوم · جهت رابطه در استنتاج</h3><p>قید جهت‌دار را به آداپتر اضافه می‌کنیم و می‌سنجیم آیا مدل رابطهٔ معکوس را کمتر تأیید می‌کند و در استنتاج چندگامی بهتر عمل می‌کند.</p></section></div></div>
+<footer class="slide-source"><span>هدف‌های پروپوزال · مبنای انتخاب آزمایش‌ها</span><span class="source-number">2 / 8</span></footer>
+</section>
+<section aria-label="دو اصلاح StableD در آداپتر HypLoRA" class="slide-container" id="slide3">
+<header class="header-area"><h2 class="slide-title">دو اصلاح StableD در آداپتر HypLoRA</h2></header>
+<div class="content-area"><div class="deck-columns"><section><h3>سازگاری با معادلهٔ لورنتس</h3><div class="formula-line">√(‖v‖² + 1/K) → √(‖v‖² + K)</div><p>در مؤلفهٔ زمانی، K را مطابق معادلهٔ مقاله استفاده کردیم تا بردار روی همان سطح هذلولوی بماند.</p></section><section><h3>پایداری نگاشت برگشت</h3><div class="formula-line">asinh(t) / t → 1 &nbsp; (t → 0)</div><p>بازنویسی با asinh محاسبهٔ نزدیک مبدأ را پایدارتر می‌کند. این دو اصلاح کنار هم نسخهٔ StableD را می‌سازند.</p></section></div></div>
+<footer class="slide-source"><span><a href="https://arxiv.org/html/2410.04010v2#A4">معادلات لورنتس در مقالهٔ HypLoRA</a> · آزمون اثر دو اصلاح به‌صورت مشترک</span><span class="source-number">3 / 8</span></footer>
+</section>
+<section aria-label="StableD روی اعتبارسنجی NCBI به ۷۶٫۱۵٪ رسید" class="slide-container" id="slide4">
+<header class="header-area"><h2 class="slide-title">StableD روی اعتبارسنجی NCBI به ۷۶٫۱۵٪ رسید</h2></header>
+<div class="content-area"><div class="evidence-table"><table class="data-table compact result-table result-evidence"><thead><tr><th scope="col">روش</th><th scope="col">دقت متوازن</th><th scope="col">پاسخ درست از ۲۰۰۰</th></tr></thead><tbody><tr><td>مدل پایه</td><td>۶۴٫۴۰٪</td><td>۱۲۸۸</td></tr><tr><td>LoRA</td><td>۷۳٫۴۵٪</td><td>۱۴۶۹</td></tr><tr><td>HypLoRA رسمی</td><td>۶۵٫۴۰٪</td><td>۱۳۰۸</td></tr><tr class="highlight"><td>StableD</td><td>۷۶٫۱۵٪</td><td>۱۵۲۳</td></tr></tbody></table></div><p class="result-change"><span class="emphasis">۱۰٫۷۵</span> واحد درصد بالاتر از HypLoRA رسمی و <span class="emphasis">۲٫۷۰</span> واحد درصد بالاتر از LoRA</p></div>
+<footer class="slide-source"><span>اعتبارسنجی ۲۰۰۰ سؤال متوازن · seed ۴۲ · ۱۲٬۰۰۰ گام برای روش‌های آموزش‌دیده · آزمون مستقل بسته است</span><span class="source-number">4 / 8</span></footer>
+</section>
+<section aria-label="روی GSM8K، HypLoRA رسمی جلوتر ماند" class="slide-container" id="slide5">
+<header class="header-area"><h2 class="slide-title">روی GSM8K، HypLoRA رسمی جلوتر ماند</h2></header>
+<div class="content-area"><div class="evidence-table"><table class="data-table compact result-table result-evidence"><thead><tr><th scope="col">روش</th><th scope="col">دقت آزمون</th><th scope="col">پاسخ درست از ۱۳۱۹</th></tr></thead><tbody><tr><td>مدل پایه</td><td>۸۷٫۷۹٪</td><td>۱۱۵۸</td></tr><tr><td>HypLoRA رسمی</td><td>۸۷٫۷۲٪</td><td>۱۱۵۷</td></tr><tr class="highlight"><td>StableD</td><td>۸۰٫۵۲٪</td><td>۱۰۶۲</td></tr><tr><td>LoRA</td><td>۷۸٫۷۰٪</td><td>۱۰۳۸</td></tr></tbody></table></div><p class="result-change">StableD <span class="emphasis">۱٫۸۲</span> واحد درصد بالاتر از LoRA و <span class="emphasis">۷٫۲۰</span> واحد درصد پایین‌تر از HypLoRA رسمی بود</p></div>
+<footer class="slide-source"><span>آموزش StableD روی Math10K در ۱۸۳۶ گام · همان آزمون هفتهٔ سوم · ممیزی مستقل پاسخ خام StableD باقی است</span><span class="source-number">5 / 8</span></footer>
+</section>
+<section aria-label="اثر اصلاح‌ها در دو آزمایش متفاوت بود" class="slide-container" id="slide6">
+<header class="header-area"><h2 class="slide-title">اثر اصلاح‌ها در دو آزمایش متفاوت بود</h2></header>
+<div class="content-area"><div class="evidence-table"><table class="data-table compact result-table result-evidence"><thead><tr><th scope="col">داده و مرحله</th><th scope="col">اختلاف StableD با HypLoRA رسمی</th><th scope="col">آنچه مقایسه شد</th></tr></thead><tbody><tr><td>اعتبارسنجی NCBI</td><td><span class="emphasis"><bdi dir="ltr">+10.75 pp</bdi></span></td><td>تشخیص رابطهٔ سلسله‌مراتبی</td></tr><tr><td>آزمون GSM8K</td><td><span class="emphasis"><bdi dir="ltr">−7.20 pp</bdi></span></td><td>حل مسئلهٔ ریاضی</td></tr></tbody></table></div><p class="method-note">StableD در این دو اجرا روی NCBI جلو افتاد و روی GSM8K عقب ماند. مقایسهٔ هر داده با یک seed انجام شده است. اختلاف این دو آداپتر، اثر دو اصلاحِ پیاده‌سازی را در همین شرایط نشان می‌دهد.</p></div>
+<footer class="slide-source"><span>اختلاف بر حسب واحد درصد · NCBI و GSM8K وظیفه، داده و معیار ارزیابی متفاوت دارند</span><span class="source-number">6 / 8</span></footer>
+</section>
+<section aria-label="کنترل اقلیدسی برای جداکردن نقش غیرخطی‌بودن" class="slide-container" id="slide7">
+<header class="header-area"><h2 class="slide-title">کنترل اقلیدسی برای جداکردن نقش غیرخطی‌بودن</h2></header>
+<div class="content-area"><div class="deck-columns"><section><h3>چرا این کنترل لازم است؟</h3><p>در پایلوت مصنوعی سه‌ـseed، کنترل غیرخطی MLP-LoRA به <strong>۶۹٫۴۴٪</strong> و HypLoRA رسمی به <strong>۵۴٫۷۲٪</strong> در آزمون تعمیم رسیدند. این نتیجه انگیزهٔ مقایسه با کنترل نزدیک‌تر بود.</p></section><section><h3>مقایسهٔ فعلی روی NCBI</h3><p>StableD و کنترل اقلیدسیِ غیرخطی مدل پایه، پارامترهای قابل‌آموزش، آغازدهی، ترتیب نمونه‌ها و بودجهٔ مشترک دارند. رفتار نگاشت‌ها برای ورودی‌های بزرگ متفاوت است.</p></section></div><p class="finding">کنترل اقلیدسی به گام ۵۲۰ از ۱۲٬۰۰۰ رسیده و اولین ولیدیشن پس از آموزش در گام ۳۰۰۰ است.</p></div>
+<footer class="slide-source"><span>آخرین خروجی ثبت‌شدهٔ Molab · مقایسهٔ اولیه روی همان ۲۰۰۰ سؤال اعتبارسنجی</span><span class="source-number">7 / 8</span></footer>
+</section>
+<section aria-label="وضعیت دو فاز و تصمیم آزمایش بعد" class="slide-container" id="slide8">
+<header class="header-area"><h2 class="slide-title">وضعیت دو فاز و تصمیم آزمایش بعد</h2></header>
+<div class="content-area"><div class="takeaways"><div><h3>فاز اول · مقایسه در حال اجرا</h3><p>خط‌پایه‌ها و StableD آماده‌اند. خروجی بعدی، اختلاف StableD و کنترل اقلیدسیِ غیرخطی روی NCBI است.</p></div><div><h3>دامنهٔ پاسخ فاز اول</h3><p>این آزمایش به NCBI مربوط است. برای سنجش منشأ بهبود گزارش‌شده روی GSM8K، کنترل متناظر باید روی همان پروتکل ریاضی اجرا شود.</p></div><div><h3>فاز دوم · طراحی قید جهت‌دار</h3><p>طرح سنجش جهت رابطه و استنتاج چندگامی آماده است. پیاده‌سازی قید و آزمون اثر آن مانده است.</p></div></div></div>
+<footer class="slide-source"><span>گام بعدی · تکمیل همان مقایسهٔ ثبت‌شده روی NCBI</span><span class="source-number">8 / 8</span></footer>
+</section></div></main><!-- Slide Index Modal -->
+<div aria-label="فهرست اسلایدها" aria-modal="true" id="index-modal" role="dialog">
+<div class="index-dialog">
+<div class="index-header">
+<div style="display: flex; align-items: center; gap: 10px;">
+<strong style="font-size: 18px; color: var(--text-main);">فهرست اسلایدها (رفتن مستقیم به بخش موردنظر)</strong>
+</div>
+<button class="control-btn" id="close-index-btn" style="font-size: 15px; padding: 4px 12px;">بستن (Esc)</button>
+</div>
+<div class="index-grid" id="index-grid"></div>
+</div>
+</div>
+<!-- Bottom Control Dock -->
+<div id="bottom-bar">
+<button class="control-btn" id="prev-btn" title="اسلاید قبلی (کلید راست یا بالا)">◁ قبلی</button>
+<div id="slide-counter">۱ / ۸</div>
+<button class="control-btn" id="next-btn" title="اسلاید بعدی (کلید چپ، پایین یا Space)">بعدی ▷</button>
+<div class="bar-divider"></div>
+<button class="control-btn" id="index-btn" title="فهرست اسلایدها (کلید I)">فهرست</button>
+<button class="control-btn" id="theme-btn" title="تغییر حالت روشن پروژکتور / تیره (کلید T)">حالت روشن</button>
+<button class="control-btn" id="fullscreen-btn" title="نمایش تمام‌صفحه (کلید F)">تمام‌صفحه</button>
+</div>
+<script>
+    const totalSlides = document.querySelectorAll('.slide-container').length;
+    let currentSlide = Math.max(1,Math.min(totalSlides,Number(location.hash.slice(1))||1));
+
+    const toPersianDigits = (num) => {
+      const persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+      return String(num).replace(/\d/g, (d) => persian[d]);
+    };
+
+    const indexModal = document.getElementById('index-modal');
+    const indexGrid = document.getElementById('index-grid');
+
+    const buildSlideIndex = () => {
+      indexGrid.innerHTML = '';
+      document.querySelectorAll('.slide-container').forEach((slide, idx) => {
+        const slideNum = idx + 1;
+        const title = slide.getAttribute('data-title') || slide.getAttribute('aria-label') || `اسلاید ${toPersianDigits(slideNum)}`;
+        const btn = document.createElement('button');
+        btn.className = 'index-item' + (slideNum === currentSlide ? ' current' : '');
+        btn.innerHTML = `<span class="number-badge" style="width:24px;height:24px;font-size:12px;">${toPersianDigits(slideNum)}</span><span>${title.replace(/^[۰-۹]+\.\s*/, '')}</span>`;
+        btn.addEventListener('click', () => {
+          currentSlide = slideNum;
+          updateSlide();
+          indexModal.classList.remove('open');
+        });
+        indexGrid.appendChild(btn);
+      });
+    };
+
+    const updateSlide = () => {
+      document.querySelectorAll('.slide-container').forEach((slide) => {
+        slide.classList.remove('active');
+      });
+
+      const activeSlide = document.getElementById('slide' + currentSlide);
+      if (activeSlide) activeSlide.classList.add('active');
+
+      document.getElementById('slide-counter').innerText = `${toPersianDigits(currentSlide)} / ${toPersianDigits(totalSlides)}`;
+      const progressPercent = (currentSlide / totalSlides) * 100;
+      document.getElementById('progress-fill').style.width = `${progressPercent}%`;
+
+      // Address updates are optional: opaque-origin srcdoc frames block History API.
+      try { history.replaceState(null, '', '#' + currentSlide); } catch { /* Keep navigation working in the private viewer. */ }
+      if (indexModal.classList.contains('open')) {
+        buildSlideIndex();
+      }
+    };
+
+    const nextSlide = () => {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        updateSlide();
+      }
+    };
+
+    const prevSlide = () => {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updateSlide();
+      }
+    };
+
+    const toggleTheme = () => {
+      document.body.classList.toggle('light-mode');
+      const btn = document.getElementById('theme-btn');
+      if (document.body.classList.contains('light-mode')) {
+        btn.innerText = 'حالت تیره';
+      } else {
+        btn.innerText = 'حالت روشن';
+      }
+    };
+
+    const toggleFullScreen = () => {
+      const elem = document.documentElement;
+      if (!document.fullscreenElement) {
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen().catch(() => {});
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    };
+
+    const toggleIndexModal = () => {
+      if (indexModal.classList.contains('open')) {
+        indexModal.classList.remove('open');
+      } else {
+        buildSlideIndex();
+        indexModal.classList.add('open');
+      }
+    };
+
+    const resizeSlides = () => {
+      const wrapper = document.getElementById('slides-wrapper');
+      const scaleX = window.innerWidth / 1280;
+      const scaleY = window.innerHeight / 720;
+      const scale = Math.min(scaleX, scaleY);
+      wrapper.style.transform = `scale(${scale})`;
+    };
+
+    window.addEventListener('resize', resizeSlides);
+    resizeSlides();
+    updateSlide();
+
+    document.getElementById('next-btn').addEventListener('click', nextSlide);
+    document.getElementById('prev-btn').addEventListener('click', prevSlide);
+    document.getElementById('theme-btn').addEventListener('click', toggleTheme);
+    document.getElementById('fullscreen-btn').addEventListener('click', toggleFullScreen);
+    document.getElementById('index-btn').addEventListener('click', toggleIndexModal);
+    document.getElementById('close-index-btn').addEventListener('click', () => indexModal.classList.remove('open'));
+    indexModal.addEventListener('click', (e) => {
+      if (e.target === indexModal) indexModal.classList.remove('open');
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && indexModal.classList.contains('open')) {
+        indexModal.classList.remove('open');
+        return;
+      }
+      if (indexModal.classList.contains('open')) return;
+
+      if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowUp' || e.key === 'PageUp' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullScreen();
+      } else if (e.key === 't' || e.key === 'T') {
+        toggleTheme();
+      } else if (e.key === 'i' || e.key === 'I') {
+        toggleIndexModal();
+      }
+    });
+  </script>
+</body></html>
