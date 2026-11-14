@@ -770,15 +770,22 @@ body.light-mode .emphasis,body.light-mode .result-table .highlight td:nth-child(
 <h1 class="cover-heading">ارزیابی دو اصلاح <span class="text-grad"><bdi dir="ltr">HypLoRA</bdi></span><br>روی دادهٔ سلسله‌مراتبی و ریاضی</h1>
 <div class="cover-pills"><span><bdi dir="ltr">NCBI</bdi> · StableD &nbsp; ۷۶٫۱۵٪</span><span><bdi dir="ltr">GSM8K</bdi> · StableD &nbsp; ۸۰٫۵۲٪</span></div>
 <p class="cover-person">محمد باغبان‌زاده</p><p class="cover-affiliation">دانشگاه فردوسی مشهد · ۲۳ آبان ۱۴۰۵</p></section>
-<section aria-label="دو سؤال پروپوزال" class="slide-container" id="slide2">
-<header class="header-area"><h2 class="slide-title">دو سؤال پروپوزال</h2></header>
-<div class="content-area"><div class="deck-columns"><section><h3>فاز اول · هندسه و غیرخطی‌بودن</h3><p>چه مقدار از بهبود HypLoRA به هندسهٔ هذلولوی مربوط است؟ مقایسه با یک آداپتر اقلیدسیِ غیرخطی و هم‌ظرفیت، سهمِ تبدیل غیرخطی را بررسی می‌کند.</p></section><section><h3>فاز دوم · جهت رابطه در استنتاج</h3><p>قید جهت‌دار را به آداپتر اضافه می‌کنیم و می‌سنجیم آیا مدل رابطهٔ معکوس را کمتر تأیید می‌کند و در استنتاج چندگامی بهتر عمل می‌کند.</p></section></div></div>
-<footer class="slide-source"><span>هدف‌های پروپوزال · مبنای انتخاب آزمایش‌ها</span><span class="source-number">2 / 8</span></footer>
+<section aria-label="این هفته چه آزمایش‌هایی انجام دادم؟" class="slide-container" id="slide2">
+<header class="header-area"><h2 class="slide-title">این هفته چه آزمایش‌هایی انجام دادم؟</h2></header>
+<div class="content-area"><div class="takeaways">
+<div><h3>نسخهٔ اصلاح‌شده را روی دادهٔ درختی ارزیابی کردم</h3><p>روی NCBI سنجیدم که StableD با چه دقتی تشخیص می‌دهد آیا یک مفهوم زیرمجموعهٔ مفهوم دیگری است.</p></div>
+<div><h3>همان نسخه را روی مسائل ریاضی هم آزمودم</h3><p>به آزمون GSM8K هفتهٔ سوم برگشتم تا ببینم نتیجهٔ بهتر StableD روی NCBI در ریاضی هم تکرار می‌شود یا نه.</p></div>
+<div><h3>یک مقایسهٔ مستقیم برای سنجش نقش هندسه شروع کردم</h3><p>آموزش یک نسخهٔ اقلیدسی با تبدیل غیرخطی و ظرفیت یکسان را روی NCBI شروع کردم و اولین نتیجه را در گام ۳٬۰۰۰ گرفتم.</p></div>
+</div></div>
+<footer class="slide-source"><span>کارهای انجام‌شده در هفتهٔ پنجم</span><span class="source-number">2 / 8</span></footer>
 </section>
-<section aria-label="دو اصلاح StableD در آداپتر HypLoRA" class="slide-container" id="slide3">
-<header class="header-area"><h2 class="slide-title">دو اصلاح StableD در آداپتر HypLoRA</h2></header>
-<div class="content-area"><div class="deck-columns"><section><h3>سازگاری با معادلهٔ لورنتس</h3><div class="formula-line">√(‖v‖² + 1/K) → √(‖v‖² + K)</div><p>در مؤلفهٔ زمانی، K را مطابق معادلهٔ مقاله استفاده کردیم تا بردار روی همان سطح هذلولوی بماند.</p></section><section><h3>پایداری نگاشت برگشت</h3><div class="formula-line">asinh(t) / t → 1 &nbsp; (t → 0)</div><p>بازنویسی با asinh محاسبهٔ نزدیک مبدأ را پایدارتر می‌کند. این دو اصلاح کنار هم نسخهٔ StableD را می‌سازند.</p></section></div></div>
-<footer class="slide-source"><span><a href="https://arxiv.org/html/2410.04010v2#A4">معادلات لورنتس در مقالهٔ HypLoRA</a> · آزمون اثر دو اصلاح به‌صورت مشترک</span><span class="source-number">3 / 8</span></footer>
+<section aria-label="در StableD چه چیزی را اصلاح کردم؟" class="slide-container" id="slide3">
+<header class="header-area"><h2 class="slide-title">در StableD چه چیزی را اصلاح کردم؟</h2></header>
+<div class="content-area"><div class="deck-columns">
+<section><h3>بردار روی سطح تعریف‌شده در مقاله قرار بگیرد</h3><p>در فرمول ساخت بردار هذلولوی، به‌جای <bdi dir="ltr">1/K</bdi> از <bdi dir="ltr">K</bdi> استفاده کردم. با این تغییر، بردار روی سطحی قرار می‌گیرد که شعاع آن در مقاله <bdi dir="ltr">√K</bdi> تعریف شده است.</p></section>
+<section><h3>محاسبهٔ برگشت نزدیک مبدأ پایدار بماند</h3><p>وقتی بردار به مبدأ نزدیک است، محاسبهٔ مستقیم می‌تواند دقت عددی از دست بدهد. همان نگاشت را با فرمولی بازنویسی کردم که در این ناحیه پایدارتر محاسبه می‌شود.</p></section>
+</div><p class="method-note">StableD هر دو اصلاح هفتهٔ دوم را با هم دارد. مقایسه با HypLoRA رسمی اثر مشترک آن‌ها را در این اجرا می‌سنجد.</p></div>
+<footer class="slide-source"><span><a href="https://arxiv.org/html/2410.04010v2#A4">تعریف مدل لورنتس در مقالهٔ HypLoRA</a></span><span class="source-number">3 / 8</span></footer>
 </section>
 <section aria-label="StableD روی اعتبارسنجی NCBI به ۷۶٫۱۵٪ رسید" class="slide-container" id="slide4">
 <header class="header-area"><h2 class="slide-title">StableD روی اعتبارسنجی NCBI به ۷۶٫۱۵٪ رسید</h2></header>
@@ -795,15 +802,22 @@ body.light-mode .emphasis,body.light-mode .result-table .highlight td:nth-child(
 <div class="content-area"><div class="evidence-table"><table class="data-table compact result-table result-evidence"><thead><tr><th scope="col">داده و مرحله</th><th scope="col">اختلاف StableD با HypLoRA رسمی</th><th scope="col">آنچه مقایسه شد</th></tr></thead><tbody><tr><td>اعتبارسنجی NCBI</td><td><span class="emphasis"><bdi dir="ltr">+10.75 pp</bdi></span></td><td>تشخیص رابطهٔ سلسله‌مراتبی</td></tr><tr><td>آزمون GSM8K</td><td><span class="emphasis"><bdi dir="ltr">−7.20 pp</bdi></span></td><td>حل مسئلهٔ ریاضی</td></tr></tbody></table></div><p class="method-note">StableD در این دو اجرا روی NCBI جلو افتاد و روی GSM8K عقب ماند. مقایسهٔ هر داده با یک seed انجام شده است. اختلاف این دو آداپتر، اثر دو اصلاحِ پیاده‌سازی را در همین شرایط نشان می‌دهد.</p></div>
 <footer class="slide-source"><span>اختلاف بر حسب واحد درصد · NCBI و GSM8K وظیفه، داده و معیار ارزیابی متفاوت دارند</span><span class="source-number">6 / 8</span></footer>
 </section>
-<section aria-label="کنترل اقلیدسی برای جداکردن نقش غیرخطی‌بودن" class="slide-container" id="slide7">
-<header class="header-area"><h2 class="slide-title">کنترل اقلیدسی برای جداکردن نقش غیرخطی‌بودن</h2></header>
-<div class="content-area"><div class="deck-columns"><section><h3>چرا این کنترل لازم است؟</h3><p>در پایلوت مصنوعی سه‌ـseed، کنترل غیرخطی MLP-LoRA به <strong>۶۹٫۴۴٪</strong> و HypLoRA رسمی به <strong>۵۴٫۷۲٪</strong> در آزمون تعمیم رسیدند. این نتیجه انگیزهٔ مقایسه با کنترل نزدیک‌تر بود.</p></section><section><h3>مقایسهٔ فعلی روی NCBI</h3><p>StableD و کنترل اقلیدسیِ غیرخطی مدل پایه، پارامترهای قابل‌آموزش، آغازدهی، ترتیب نمونه‌ها و بودجهٔ مشترک دارند. رفتار نگاشت‌ها برای ورودی‌های بزرگ متفاوت است.</p></section></div><p class="finding">کنترل اقلیدسی به گام ۵۲۰ از ۱۲٬۰۰۰ رسیده و اولین ولیدیشن پس از آموزش در گام ۳۰۰۰ است.</p></div>
-<footer class="slide-source"><span>آخرین خروجی ثبت‌شدهٔ Molab · مقایسهٔ اولیه روی همان ۲۰۰۰ سؤال اعتبارسنجی</span><span class="source-number">7 / 8</span></footer>
+<section aria-label="در گام ۳٬۰۰۰ تعداد پاسخ‌های درست فقط یک عدد فرق داشت" class="slide-container" id="slide7">
+<header class="header-area"><h2 class="slide-title">در گام ۳٬۰۰۰ تعداد پاسخ‌های درست فقط یک عدد فرق داشت</h2></header>
+<div class="content-area">
+<p class="method-note">برای سنجش نقش هندسه، StableD را با یک نسخهٔ اقلیدسیِ غیرخطی مقایسه کردم. مدل پایه، تعداد پارامترهای قابل‌آموزش و ترتیب نمونه‌ها یکسان بود.</p>
+<div class="evidence-table"><table class="data-table compact result-table result-evidence"><thead><tr><th scope="col">روش</th><th scope="col">دقت متوازن</th><th scope="col">پاسخ درست از ۲۰۰۰</th></tr></thead><tbody><tr><td>StableD هذلولوی</td><td><span class="emphasis">۶۹٫۶۰٪</span></td><td>۱۳۹۲</td></tr><tr><td>کنترل اقلیدسیِ غیرخطی</td><td><span class="emphasis">۶۹٫۵۵٪</span></td><td>۱۳۹۱</td></tr></tbody></table></div>
+</div>
+<footer class="slide-source"><span>اعتبارسنجی NCBI در گام یکسان · seed ۴۲ · نتیجهٔ اولیه</span><span class="source-number">7 / 8</span></footer>
 </section>
-<section aria-label="وضعیت دو فاز و تصمیم آزمایش بعد" class="slide-container" id="slide8">
-<header class="header-area"><h2 class="slide-title">وضعیت دو فاز و تصمیم آزمایش بعد</h2></header>
-<div class="content-area"><div class="takeaways"><div><h3>فاز اول · مقایسه در حال اجرا</h3><p>خط‌پایه‌ها و StableD آماده‌اند. خروجی بعدی، اختلاف StableD و کنترل اقلیدسیِ غیرخطی روی NCBI است.</p></div><div><h3>دامنهٔ پاسخ فاز اول</h3><p>این آزمایش به NCBI مربوط است. برای سنجش منشأ بهبود گزارش‌شده روی GSM8K، کنترل متناظر باید روی همان پروتکل ریاضی اجرا شود.</p></div><div><h3>فاز دوم · طراحی قید جهت‌دار</h3><p>طرح سنجش جهت رابطه و استنتاج چندگامی آماده است. پیاده‌سازی قید و آزمون اثر آن مانده است.</p></div></div></div>
-<footer class="slide-source"><span>گام بعدی · تکمیل همان مقایسهٔ ثبت‌شده روی NCBI</span><span class="source-number">8 / 8</span></footer>
+<section aria-label="نتیجهٔ هفته و سؤال بعدی" class="slide-container" id="slide8">
+<header class="header-area"><h2 class="slide-title">نتیجهٔ هفته و سؤال بعدی</h2></header>
+<div class="content-area"><div class="takeaways">
+<div><h3>فاز اول · هندسه در ادامهٔ آموزش چه اثری دارد؟</h3><p>دو نسخه را در گام‌های یکسان تا ۱۲٬۰۰۰ مقایسه می‌کنم تا ببینم فاصلهٔ کمِ فعلی حفظ می‌شود یا یکی از روش‌ها جلو می‌افتد.</p></div>
+<div><h3>این مقایسه روی دادهٔ درختی انجام شده است</h3><p>برای بررسی نقش هندسه در نتیجهٔ ریاضی، همین مقایسه با کنترل اقلیدسی باید روی GSM8K هم انجام شود.</p></div>
+<div><h3>فاز دوم در مرحلهٔ طراحی است</h3><p>در فاز دوم می‌سنجم آیا قید جهت‌دار جلوی اشتباه گرفتن یک رابطهٔ سلسله‌مراتبی با جهت معکوسش را می‌گیرد و به استنتاج چندگامی کمک می‌کند.</p></div>
+</div></div>
+<footer class="slide-source"><span class="source-number">8 / 8</span></footer>
 </section></div></main><!-- Slide Index Modal -->
 <div aria-label="فهرست اسلایدها" aria-modal="true" id="index-modal" role="dialog">
 <div class="index-dialog">
